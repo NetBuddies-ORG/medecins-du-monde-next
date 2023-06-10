@@ -1,7 +1,5 @@
-import {ParagraphComponentFragment} from '@/services/GraphQL';
+import {BasicProperty} from '@/services/GraphQL';
 
-export type ParagraphProps = ParagraphComponentFragment["Content"];
-
-export function Paragraph({content}: ParagraphProps){
-    return <div className="wyswigContent" dangerouslySetInnerHTML={{__html:content}} />;
+export function Paragraph({value}: BasicProperty){
+    return <div className="wyswigContent" dangerouslySetInnerHTML={{__html:value}} />;
 }
