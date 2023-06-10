@@ -5,7 +5,9 @@
   "scripts": {
     "graphql": "yarn graphql-codegen --config codegen.yml",
     "start": "yarn env-cmd -f env.js yarn next dev",
+    "build:pre": "yarn ts-node ./build/scripts/prebuild.ts",
     "build:static": "yarn run build:next",
+    "build:next": "yarn run build:pre && yarn next build",
     "lint": "next lint"
   },
   "dependencies": {
@@ -29,6 +31,7 @@
     "graphql": "^16.6.0",
     "graphql-request": "5.1.0",
     "graphql-tag": "^2.12.6",
+    "ts-node": "^10.9.1",
     "server-only-context": "^0.0.4"
   }
 }

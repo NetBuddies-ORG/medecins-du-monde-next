@@ -21,16 +21,7 @@ export function Blocks({ blocks }: BlocksProps)
     );
 }
 
-export function BlockItem({__typename, Content }: BlocksProps['blocks'][0])
+export function BlockItem({__typename, contentProperties }: BasicBlockListItem)
 {
-    switch (__typename)
-    {
-        case "ParagraphComponentBlockListItem":
-            return <Paragraph {...Content} />;
-
-        default:
-            //throw new Error(`Unknown BlockListItem: ${__typename}`);
-            console.error(`Unknown BlockListItem: ${__typename}`);
-            return <p>{`Unknown BlockListItem: ${__typename}`}</p>
-    }
+    return <>coucou</>
 }

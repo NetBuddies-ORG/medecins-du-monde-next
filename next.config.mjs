@@ -51,7 +51,7 @@ const config = {
 function build(phase)
 {
     const isExport = phase === PHASE_PRODUCTION_BUILD;
-    return {
+    let result = {
         ...config,
         headers: !isExport ? config.headers : undefined,
         redirects: !isExport ? config.redirects : undefined,
@@ -60,7 +60,6 @@ function build(phase)
         images:{
             ...config.images,
             loader: isExport ? 'custom' : 'default',
-            loaderFile: isExport ? './src/images/loader.ts' : undefined,
             domains: ['ik.imagekit.io', 'placehold.co', 'placekitten.com']
         },
         webpack(config, options)
@@ -73,6 +72,12 @@ function build(phase)
             return config;
         },
     }
+
+    if(isExport){
+        delete result.rewrites;
+    }
+
+    return result;
 }
 
 export default build;
