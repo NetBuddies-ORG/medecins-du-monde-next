@@ -12,9 +12,14 @@ const {
     }
 } = getConfiguration();
 
+export type PageContent<PageType extends {} = GetPageQuery['page']> = Omit<GetPageQuery, 'page'> &
+    {
+        page: PageType;
+    };
+
 export const getUmbracoClient = () =>
 {
-    const client = new GraphQLClient(new URL("/graphql", umbracoCmsBaseUrl).toString());
-    console.log(client);
+    const client = new GraphQLClient(
+        new URL("/graphql", umbracoCmsBaseUrl).toString());
     return getSdk(client);
 };

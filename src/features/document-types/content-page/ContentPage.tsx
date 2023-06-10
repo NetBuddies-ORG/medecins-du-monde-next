@@ -1,10 +1,12 @@
-
+import {getPage} from "@/context/server";
 import {Blocks} from "@/features/components";
 
 export function ContentPage() {
+    const page = getPage();
+    const components = 'components' in page && page.components;
     return (
-        <>
-            coucou content
-        </>
-    );
+        <div className="pageContenu">
+            {components && <Blocks blocks={components}/>}
+        </div >
+    )
 }
