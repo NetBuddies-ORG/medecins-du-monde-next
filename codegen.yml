@@ -1,0 +1,19 @@
+overwrite: true
+schema: "https://medecins-du-monde.azurewebsites.net/graphql"
+documents: "src/**/*.graphql"
+generates:
+  src/services/GraphQL.ts:
+    config:
+      scalars:
+        HTML: string
+        Long: number
+        Date: string
+        DateTime: string
+        JSON: any
+        Unknown: unknown
+      maybeValue: T
+      avoidOptionals: true
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-graphql-request"

@@ -1,0 +1,12 @@
+query getPage($url: String!) {
+  contentByAbsoluteRoute(route: $url) {
+      properties {
+        value{
+          ... on BasicPropertyValue {
+            alias
+            value
+          }
+        }
+      }
+  }
+}

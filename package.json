@@ -1,0 +1,34 @@
+{
+  "name": "medecins-du-monde-next",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "graphql": "yarn graphql-codegen --config codegen.yml",
+    "start": "yarn env-cmd -f env.js yarn next dev",
+    "build:static": "yarn run build:next",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "13.4.4",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "5.1.3"
+  },
+  "devDependencies": {
+    "@types/node": "20.2.6",
+    "@types/react": "18.2.10",
+    "@types/react-dom": "18.2.4",
+    "@graphql-codegen/cli": "^3.3.1",
+    "@graphql-codegen/typescript": "^3.0.4",
+    "@graphql-codegen/typescript-graphql-request": "^4.5.9",
+    "@graphql-codegen/typescript-operations": "^3.0.4",
+    "env-cmd": "^10.1.0",
+    "jsonwebtoken": "^8.5.1",
+    "eslint": "8.42.0",
+    "eslint-config-next": "13.4.4",
+    "graphql": "^16.6.0",
+    "graphql-request": "5.1.0",
+    "graphql-tag": "^2.12.6",
+    "server-only-context": "^0.0.4"
+  }
+}

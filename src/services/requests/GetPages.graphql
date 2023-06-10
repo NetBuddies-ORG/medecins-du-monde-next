@@ -1,0 +1,14 @@
+query getPages($culture: String!) {
+  contentByAbsoluteRoute(route: "/", culture: $culture) {
+    children {
+      properties {
+        value{
+          ... on BasicPropertyValue {
+            alias
+            value
+          }
+        }
+      }
+    }
+  }
+}

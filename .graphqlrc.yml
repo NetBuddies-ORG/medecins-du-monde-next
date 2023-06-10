@@ -1,0 +1,2 @@
+schema: "https://medecins-du-monde.azurewebsites.net/graphql"
+documents: "src/**/*.{graphql,js,ts,jsx,tsx}"
