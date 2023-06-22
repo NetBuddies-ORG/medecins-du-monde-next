@@ -3,16 +3,12 @@
     // these options are overrides used only by ts-node
     // same as the --compilerOptions flag and the TS_NODE_COMPILER_OPTIONS environment variable
     "compilerOptions": {
-      "module": "commonjs",
-      "types": ["node"]
+      "module": "commonjs"
     }
   },
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "target": "esnext",
+    "lib": ["esnext", "DOM"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -22,6 +18,7 @@
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
+    "pretty": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",

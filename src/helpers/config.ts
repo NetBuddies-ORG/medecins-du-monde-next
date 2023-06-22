@@ -1,10 +1,11 @@
-import config from 'next/config';
+import getConfig from 'next/config';
 
 export interface Configuration
 {
     isDev: boolean;
     isPreview: boolean;
     isStatic: boolean;
+    isExport: boolean;
     umbracoCmsBaseUrl: string;
     domain: string;
     apiBaseUrl: string;
@@ -16,20 +17,14 @@ export interface Configuration
 }
 
 // TODO add other languages
-export const languages: readonly string[] = ['fr'];
+export const languages: readonly string[] = ['fr', 'nl', 'en', 'de'];
 
 export function getConfiguration(): Configuration
 {
-    const { serverRuntimeConfig, publicRuntimeConfig } = config() ?? {};
+    const { serverRuntimeConfig, publicRuntimeConfig } = getConfig() ?? {};
     return {
         ...publicRuntimeConfig,
         ...serverRuntimeConfig,
-        umbracoCmsBaseUrl: process.env.UMBRACO_CMS_BASE_URL,
-        domain: process.env.DOMAIN,
-        jwt: {
-            backendIssuer: process.env.JWT_BACKEND_ISSUER,
-            frontendIssuer: process.env.JWT_FRONTEND_ISSUER,
-            secret: process.env.JWT_SECRET,
-        },
+        umbracoCmsBaseUrl: process.env.STRAPI_CMS_BASE_URL,
     };
 }

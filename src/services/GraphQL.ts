@@ -13,1276 +13,1202 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  Any: any;
   DateTime: string;
-  UUID: any;
+  I18NLocaleCode: any;
+  JSON: any;
+  Upload: any;
 };
 
-/** Represents a block list item. */
-export type BasicBlockListItem = {
-  __typename?: 'BasicBlockListItem';
-  /** Gets the alias of the content block list item. */
-  contentAlias: Maybe<Scalars['String']>;
-  /** Gets the content properties of the block list item. */
-  contentProperties: Array<Maybe<BasicProperty>>;
-  /** Gets the alias of the settings block list item. */
-  settingsAlias: Maybe<Scalars['String']>;
-  /** Gets the setting properties of the block list item. */
-  settingsProperties: Array<Maybe<BasicProperty>>;
-};
-
-/** Represents a block list model. */
-export type BasicBlockListModel = PropertyValue & {
-  __typename?: 'BasicBlockListModel';
-  alias: Scalars['String'];
-  /** Gets the blocks of a block list model. */
-  blocks: Maybe<Array<BasicBlockListItem>>;
-};
-
-/** Represents a content item. */
-export type BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect = {
-  __typename?: 'BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect';
-  /** Gets the absolute url of the content item. */
-  absoluteUrl: Maybe<Scalars['String']>;
-  /** Gets the children of the content item that are available for the current culture. */
-  children: Maybe<Array<Maybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect>>>;
-  /** Gets all the children of the content item, regardless of whether they are available for the current culture. */
-  childrenForAllCultures: Maybe<Array<Maybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect>>>;
-  /** Gets the content type. */
-  contentType: Maybe<BasicContentType>;
-  /** Gets the date that the content was created. */
-  createDate: Maybe<Scalars['DateTime']>;
-  /** Gets the identifier of the user who created the content item. */
-  creatorId: Maybe<Scalars['Int']>;
-  /** Gets available culture infos. */
-  cultures: Maybe<Array<KeyValuePairOfStringAndPublishedCultureInfo>>;
-  /** Gets the unique identifier of the content item. */
-  id: Maybe<Scalars['Int']>;
-  /** Gets the type of the content item (document, media...). */
-  itemType: Maybe<PublishedItemType>;
-  /** Gets the unique key of the element. */
-  key: Maybe<Scalars['UUID']>;
-  /** Gets the tree level of the content item. */
-  level: Maybe<Scalars['Int']>;
-  /** Gets the name of the content item for the current culture. */
-  name: Maybe<Scalars['String']>;
-  /** Gets the parent of the content item. */
-  parent: Maybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect>;
-  /** Gets the tree path of the content item. */
-  path: Maybe<Scalars['String']>;
-  /** Gets the properties of the element. */
-  properties: Maybe<Array<Maybe<BasicProperty>>>;
-  /** Gets the redirect information. */
-  redirect: Maybe<BasicContentRedirect>;
-  /** Gets the sort order of the content item. */
-  sortOrder: Maybe<Scalars['Int']>;
-  /** Gets the identifier of the template to use to render the content item. */
-  templateId: Maybe<Scalars['Int']>;
-  /** Gets the date the content item was last updated. */
-  updateDate: Maybe<Scalars['DateTime']>;
-  /** Gets the url of the content item. */
-  url: Maybe<Scalars['String']>;
-  /** Gets the URL segment of the content item for the current culture. */
-  urlSegment: Maybe<Scalars['String']>;
-  /** Gets the identifier of the user who last updated the content item. */
-  writerId: Maybe<Scalars['Int']>;
-};
-
-
-/** Represents a content item. */
-export type BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectChildrenArgs = {
-  order: InputMaybe<Array<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectSortInput>>;
-  where: InputMaybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectFilterInput>;
-};
-
-
-/** Represents a content item. */
-export type BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectChildrenForAllCulturesArgs = {
-  order: InputMaybe<Array<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectSortInput>>;
-  where: InputMaybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectFilterInput>;
-};
-
-
-/** Represents a content item. */
-export type BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectPropertiesArgs = {
-  where: InputMaybe<BasicPropertyFilterInput>;
-};
-
-/** Represents a content item. */
-export type BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectFilterInput = {
-  /** Gets the absolute url of the content item. */
-  absoluteUrl: InputMaybe<StringOperationFilterInput>;
-  and: InputMaybe<Array<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectFilterInput>>;
-  /** Gets the children of the content item that are available for the current culture. */
-  children: InputMaybe<ListFilterInputTypeOfBasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectFilterInput>;
-  /** Gets all the children of the content item, regardless of whether they are available for the current culture. */
-  childrenForAllCultures: InputMaybe<ListFilterInputTypeOfBasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectFilterInput>;
-  /** Gets the content type. */
-  contentType: InputMaybe<BasicContentTypeFilterInput>;
-  /** Gets the date that the content was created. */
-  createDate: InputMaybe<ComparableNullableOfDateTimeOperationFilterInput>;
-  /** Gets the identifier of the user who created the content item. */
-  creatorId: InputMaybe<ComparableNullableOfInt32OperationFilterInput>;
-  /** Gets available culture infos. */
-  cultures: InputMaybe<IReadOnlyDictionaryOfStringAndPublishedCultureInfoFilterInput>;
-  /** Gets the unique identifier of the content item. */
-  id: InputMaybe<ComparableNullableOfInt32OperationFilterInput>;
-  /** Gets the type of the content item (document, media...). */
-  itemType: InputMaybe<NullableOfPublishedItemTypeOperationFilterInput>;
-  /** Gets the unique key of the element. */
-  key: InputMaybe<ComparableNullableOfGuidOperationFilterInput>;
-  /** Gets the tree level of the content item. */
-  level: InputMaybe<ComparableNullableOfInt32OperationFilterInput>;
-  /** Gets the name of the content item for the current culture. */
-  name: InputMaybe<StringOperationFilterInput>;
-  or: InputMaybe<Array<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectFilterInput>>;
-  /** Gets the parent of the content item. */
-  parent: InputMaybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectFilterInput>;
-  /** Gets the tree path of the content item. */
-  path: InputMaybe<StringOperationFilterInput>;
-  /** Gets the properties of the element. */
-  properties: InputMaybe<ListFilterInputTypeOfBasicPropertyFilterInput>;
-  /** Gets the redirect information. */
-  redirect: InputMaybe<BasicContentRedirectFilterInput>;
-  /** Gets the sort order of the content item. */
-  sortOrder: InputMaybe<ComparableNullableOfInt32OperationFilterInput>;
-  /** Gets the identifier of the template to use to render the content item. */
-  templateId: InputMaybe<ComparableNullableOfInt32OperationFilterInput>;
-  /** Gets the date the content item was last updated. */
-  updateDate: InputMaybe<ComparableNullableOfDateTimeOperationFilterInput>;
-  /** Gets the url of the content item. */
-  url: InputMaybe<StringOperationFilterInput>;
-  /** Gets the URL segment of the content item for the current culture. */
-  urlSegment: InputMaybe<StringOperationFilterInput>;
-  /** Gets the identifier of the user who last updated the content item. */
-  writerId: InputMaybe<ComparableNullableOfInt32OperationFilterInput>;
-};
-
-/** Represents a content item. */
-export type BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectSortInput = {
-  /** Gets the absolute url of the content item. */
-  absoluteUrl: InputMaybe<SortEnumType>;
-  /** Gets the content type. */
-  contentType: InputMaybe<BasicContentTypeSortInput>;
-  /** Gets the date that the content was created. */
-  createDate: InputMaybe<SortEnumType>;
-  /** Gets the identifier of the user who created the content item. */
-  creatorId: InputMaybe<SortEnumType>;
-  /** Gets the unique identifier of the content item. */
-  id: InputMaybe<SortEnumType>;
-  /** Gets the type of the content item (document, media...). */
-  itemType: InputMaybe<SortEnumType>;
-  /** Gets the unique key of the element. */
-  key: InputMaybe<SortEnumType>;
-  /** Gets the tree level of the content item. */
-  level: InputMaybe<SortEnumType>;
-  /** Gets the name of the content item for the current culture. */
-  name: InputMaybe<SortEnumType>;
-  /** Gets the parent of the content item. */
-  parent: InputMaybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectSortInput>;
-  /** Gets the tree path of the content item. */
-  path: InputMaybe<SortEnumType>;
-  /** Gets the redirect information. */
-  redirect: InputMaybe<BasicContentRedirectSortInput>;
-  /** Gets the sort order of the content item. */
-  sortOrder: InputMaybe<SortEnumType>;
-  /** Gets the identifier of the template to use to render the content item. */
-  templateId: InputMaybe<SortEnumType>;
-  /** Gets the date the content item was last updated. */
-  updateDate: InputMaybe<SortEnumType>;
-  /** Gets the url of the content item. */
-  url: InputMaybe<SortEnumType>;
-  /** Gets the URL segment of the content item for the current culture. */
-  urlSegment: InputMaybe<SortEnumType>;
-  /** Gets the identifier of the user who last updated the content item. */
-  writerId: InputMaybe<SortEnumType>;
-};
-
-/** Represents a content picker value. */
-export type BasicContentPicker = PropertyValue & {
-  __typename?: 'BasicContentPicker';
-  alias: Scalars['String'];
-  /** Gets the list of content. */
-  contentList: Array<BasicContentPickerItem>;
-};
-
-/** Represents a content picker item. */
-export type BasicContentPickerItem = {
-  __typename?: 'BasicContentPickerItem';
-  /** Gets the absolute url of a content item. */
-  absoluteUrl: Scalars['String'];
-  /** Gets the id of a content item. */
-  id: Scalars['Int'];
-  /** Gets the key of a content item. */
-  key: Scalars['UUID'];
-  /** Gets the name of a content item. */
-  name: Maybe<Scalars['String']>;
-  /** Gets the url of a content item. */
-  url: Scalars['String'];
-  /** Gets the url segment of the content item. */
-  urlSegment: Maybe<Scalars['String']>;
-};
-
-/** Represents a content redirect */
-export type BasicContentRedirect = {
-  __typename?: 'BasicContentRedirect';
-  /** Is the redirect permanent */
-  isPermanent: Scalars['Boolean'];
-  /** The url to redirect to */
-  redirectUrl: Scalars['String'];
-};
-
-/** Represents a content redirect */
-export type BasicContentRedirectFilterInput = {
-  and: InputMaybe<Array<BasicContentRedirectFilterInput>>;
-  /** Is the redirect permanent */
-  isPermanent: InputMaybe<BooleanOperationFilterInput>;
-  or: InputMaybe<Array<BasicContentRedirectFilterInput>>;
-  /** The url to redirect to */
-  redirectUrl: InputMaybe<StringOperationFilterInput>;
-};
-
-/** Represents a content redirect */
-export type BasicContentRedirectSortInput = {
-  /** Is the redirect permanent */
-  isPermanent: InputMaybe<SortEnumType>;
-  /** The url to redirect to */
-  redirectUrl: InputMaybe<SortEnumType>;
-};
-
-/** Represents a content type. */
-export type BasicContentType = {
-  __typename?: 'BasicContentType';
-  /** Gets the content type alias. */
-  alias: Maybe<Scalars['String']>;
-  /** Gets the aliases of the content types participating in the composition. */
-  compositionAliases: Maybe<Array<Scalars['String']>>;
-  /** Gets the content type identifier. */
-  id: Scalars['Int'];
-  /** Gets a value indicating whether this content type is for an element. */
-  isElement: Scalars['Boolean'];
-  /** Gets the content item type. */
-  itemType: PublishedItemType;
-  /** Gets the unique key for the content type. */
-  key: Scalars['UUID'];
-  /** Gets the content variations of the content type. */
-  variations: ContentVariation;
-};
-
-/** Represents a content type. */
-export type BasicContentTypeFilterInput = {
-  /** Gets the content type alias. */
-  alias: InputMaybe<StringOperationFilterInput>;
-  and: InputMaybe<Array<BasicContentTypeFilterInput>>;
-  /** Gets the aliases of the content types participating in the composition. */
-  compositionAliases: InputMaybe<ListStringOperationFilterInput>;
-  /** Gets the content type identifier. */
-  id: InputMaybe<ComparableInt32OperationFilterInput>;
-  /** Gets a value indicating whether this content type is for an element. */
-  isElement: InputMaybe<BooleanOperationFilterInput>;
-  /** Gets the content item type. */
-  itemType: InputMaybe<PublishedItemTypeOperationFilterInput>;
-  /** Gets the unique key for the content type. */
-  key: InputMaybe<ComparableGuidOperationFilterInput>;
-  or: InputMaybe<Array<BasicContentTypeFilterInput>>;
-  /** Gets the content variations of the content type. */
-  variations: InputMaybe<ContentVariationOperationFilterInput>;
-};
-
-/** Represents a content type. */
-export type BasicContentTypeSortInput = {
-  /** Gets the content type alias. */
-  alias: InputMaybe<SortEnumType>;
-  /** Gets the content type identifier. */
-  id: InputMaybe<SortEnumType>;
-  /** Gets a value indicating whether this content type is for an element. */
-  isElement: InputMaybe<SortEnumType>;
-  /** Gets the content item type. */
-  itemType: InputMaybe<SortEnumType>;
-  /** Gets the unique key for the content type. */
-  key: InputMaybe<SortEnumType>;
-  /** Gets the content variations of the content type. */
-  variations: InputMaybe<SortEnumType>;
-};
-
-/** Represents a date time property value. */
-export type BasicDateTimePicker = PropertyValue & {
-  __typename?: 'BasicDateTimePicker';
-  alias: Scalars['String'];
-  /** Gets the value of the property. */
-  value: Maybe<Scalars['DateTime']>;
-};
-
-/** Represents a date time property value. */
-export type BasicLabel = PropertyValue & {
-  __typename?: 'BasicLabel';
-  alias: Scalars['String'];
-  /** Gets the value of the property. */
-  value: Maybe<Scalars['Any']>;
-};
-
-/** Represents a Media item. */
-export type BasicMediaOfBasicPropertyAndBasicContentType = {
-  __typename?: 'BasicMediaOfBasicPropertyAndBasicContentType';
-  /** Gets the absolute url of the Media item. */
-  absoluteUrl: Maybe<Scalars['String']>;
-  /** Gets the children of the Media item that are available for the current culture. */
-  children: Maybe<Array<Maybe<BasicMediaOfBasicPropertyAndBasicContentType>>>;
-  /** Gets all the children of the Media item, regardless of whether they are available for the current culture. */
-  childrenForAllCultures: Maybe<Array<Maybe<BasicMediaOfBasicPropertyAndBasicContentType>>>;
-  /** Gets the content type. */
-  contentType: Maybe<BasicContentType>;
-  /** Gets the date that the Media was created. */
-  createDate: Maybe<Scalars['DateTime']>;
-  /** Gets the identifier of the user who created the Media item. */
-  creatorId: Maybe<Scalars['Int']>;
-  /** Gets available culture infos. */
-  cultures: Maybe<Array<KeyValuePairOfStringAndPublishedCultureInfo>>;
-  /** Gets the unique identifier of the Media item. */
-  id: Maybe<Scalars['Int']>;
-  /** Gets the type of the Media item (document, media...). */
-  itemType: Maybe<PublishedItemType>;
-  /** Gets the unique key of the element. */
-  key: Maybe<Scalars['UUID']>;
-  /** Gets the tree level of the Media item. */
-  level: Maybe<Scalars['Int']>;
-  /** Gets the name of the Media item for the current culture. */
-  name: Maybe<Scalars['String']>;
-  /** Gets the parent of the Media item. */
-  parent: Maybe<BasicMediaOfBasicPropertyAndBasicContentType>;
-  /** Gets the tree path of the Media item. */
-  path: Maybe<Scalars['String']>;
-  /** Gets the properties of the element. */
-  properties: Maybe<Array<Maybe<BasicProperty>>>;
-  /** Gets the sort order of the Media item. */
-  sortOrder: Maybe<Scalars['Int']>;
-  /** Gets the identifier of the template to use to render the Media item. */
-  templateId: Maybe<Scalars['Int']>;
-  /** Gets the date the Media item was last updated. */
-  updateDate: Maybe<Scalars['DateTime']>;
-  /** Gets the url of the Media item. */
-  url: Maybe<Scalars['String']>;
-  /** Gets the URL segment of the Media item for the current culture. */
-  urlSegment: Maybe<Scalars['String']>;
-  /** Gets the identifier of the user who last updated the Media item. */
-  writerId: Maybe<Scalars['Int']>;
-};
-
-
-/** Represents a Media item. */
-export type BasicMediaOfBasicPropertyAndBasicContentTypePropertiesArgs = {
-  where: InputMaybe<BasicPropertyFilterInput>;
-};
-
-/** Represents a Media item. */
-export type BasicMediaOfBasicPropertyAndBasicContentTypeFilterInput = {
-  /** Gets the absolute url of the Media item. */
-  absoluteUrl: InputMaybe<StringOperationFilterInput>;
-  and: InputMaybe<Array<BasicMediaOfBasicPropertyAndBasicContentTypeFilterInput>>;
-  /** Gets the children of the Media item that are available for the current culture. */
-  children: InputMaybe<ListFilterInputTypeOfBasicMediaOfBasicPropertyAndBasicContentTypeFilterInput>;
-  /** Gets all the children of the Media item, regardless of whether they are available for the current culture. */
-  childrenForAllCultures: InputMaybe<ListFilterInputTypeOfBasicMediaOfBasicPropertyAndBasicContentTypeFilterInput>;
-  /** Gets the content type. */
-  contentType: InputMaybe<BasicContentTypeFilterInput>;
-  /** Gets the date that the Media was created. */
-  createDate: InputMaybe<ComparableNullableOfDateTimeOperationFilterInput>;
-  /** Gets the identifier of the user who created the Media item. */
-  creatorId: InputMaybe<ComparableNullableOfInt32OperationFilterInput>;
-  /** Gets available culture infos. */
-  cultures: InputMaybe<IReadOnlyDictionaryOfStringAndPublishedCultureInfoFilterInput>;
-  /** Gets the unique identifier of the Media item. */
-  id: InputMaybe<ComparableNullableOfInt32OperationFilterInput>;
-  /** Gets the type of the Media item (document, media...). */
-  itemType: InputMaybe<NullableOfPublishedItemTypeOperationFilterInput>;
-  /** Gets the unique key of the element. */
-  key: InputMaybe<ComparableNullableOfGuidOperationFilterInput>;
-  /** Gets the tree level of the Media item. */
-  level: InputMaybe<ComparableNullableOfInt32OperationFilterInput>;
-  /** Gets the name of the Media item for the current culture. */
-  name: InputMaybe<StringOperationFilterInput>;
-  or: InputMaybe<Array<BasicMediaOfBasicPropertyAndBasicContentTypeFilterInput>>;
-  /** Gets the parent of the Media item. */
-  parent: InputMaybe<BasicMediaOfBasicPropertyAndBasicContentTypeFilterInput>;
-  /** Gets the tree path of the Media item. */
-  path: InputMaybe<StringOperationFilterInput>;
-  /** Gets the properties of the element. */
-  properties: InputMaybe<ListFilterInputTypeOfBasicPropertyFilterInput>;
-  /** Gets the sort order of the Media item. */
-  sortOrder: InputMaybe<ComparableNullableOfInt32OperationFilterInput>;
-  /** Gets the identifier of the template to use to render the Media item. */
-  templateId: InputMaybe<ComparableNullableOfInt32OperationFilterInput>;
-  /** Gets the date the Media item was last updated. */
-  updateDate: InputMaybe<ComparableNullableOfDateTimeOperationFilterInput>;
-  /** Gets the url of the Media item. */
-  url: InputMaybe<StringOperationFilterInput>;
-  /** Gets the URL segment of the Media item for the current culture. */
-  urlSegment: InputMaybe<StringOperationFilterInput>;
-  /** Gets the identifier of the user who last updated the Media item. */
-  writerId: InputMaybe<ComparableNullableOfInt32OperationFilterInput>;
-};
-
-/** Represents a Media item. */
-export type BasicMediaOfBasicPropertyAndBasicContentTypeSortInput = {
-  /** Gets the absolute url of the Media item. */
-  absoluteUrl: InputMaybe<SortEnumType>;
-  /** Gets the content type. */
-  contentType: InputMaybe<BasicContentTypeSortInput>;
-  /** Gets the date that the Media was created. */
-  createDate: InputMaybe<SortEnumType>;
-  /** Gets the identifier of the user who created the Media item. */
-  creatorId: InputMaybe<SortEnumType>;
-  /** Gets the unique identifier of the Media item. */
-  id: InputMaybe<SortEnumType>;
-  /** Gets the type of the Media item (document, media...). */
-  itemType: InputMaybe<SortEnumType>;
-  /** Gets the unique key of the element. */
-  key: InputMaybe<SortEnumType>;
-  /** Gets the tree level of the Media item. */
-  level: InputMaybe<SortEnumType>;
-  /** Gets the name of the Media item for the current culture. */
-  name: InputMaybe<SortEnumType>;
-  /** Gets the parent of the Media item. */
-  parent: InputMaybe<BasicMediaOfBasicPropertyAndBasicContentTypeSortInput>;
-  /** Gets the tree path of the Media item. */
-  path: InputMaybe<SortEnumType>;
-  /** Gets the sort order of the Media item. */
-  sortOrder: InputMaybe<SortEnumType>;
-  /** Gets the identifier of the template to use to render the Media item. */
-  templateId: InputMaybe<SortEnumType>;
-  /** Gets the date the Media item was last updated. */
-  updateDate: InputMaybe<SortEnumType>;
-  /** Gets the url of the Media item. */
-  url: InputMaybe<SortEnumType>;
-  /** Gets the URL segment of the Media item for the current culture. */
-  urlSegment: InputMaybe<SortEnumType>;
-  /** Gets the identifier of the user who last updated the Media item. */
-  writerId: InputMaybe<SortEnumType>;
-};
-
-/** Represents a media picker item. */
-export type BasicMediaPicker = PropertyValue & {
-  __typename?: 'BasicMediaPicker';
-  alias: Scalars['String'];
-  /** Gets the media items of a picker. */
-  mediaItems: Array<BasicMediaPickerItem>;
-};
-
-/** Represents a media item. */
-export type BasicMediaPickerItem = {
-  __typename?: 'BasicMediaPickerItem';
-  /** Gets the id of a media item. */
-  id: Scalars['Int'];
-  /** Gets the absolute url of a media item. */
-  url: Scalars['String'];
-};
-
-/** Represents a member picker. */
-export type BasicMemberPicker = PropertyValue & {
-  __typename?: 'BasicMemberPicker';
-  alias: Scalars['String'];
-  /** Gets the members. */
-  members: Array<BasicMemberPickerItem>;
-};
-
-/** Represents a member item. */
-export type BasicMemberPickerItem = {
-  __typename?: 'BasicMemberPickerItem';
-  /** Gets the id of the member. */
-  id: Maybe<Scalars['Int']>;
-  /** Gets the name of a member. */
-  name: Maybe<Scalars['String']>;
-  /** Gets the properties of a member. */
-  properties: Array<Maybe<BasicProperty>>;
-};
-
-/** Represents a multi url picker. */
-export type BasicMultiUrlPicker = PropertyValue & {
-  __typename?: 'BasicMultiUrlPicker';
-  alias: Scalars['String'];
-  /** Gets the links. */
-  links: Array<BasicMultiUrlPickerItem>;
-};
-
-/** Represents a link item. */
-export type BasicMultiUrlPickerItem = {
-  __typename?: 'BasicMultiUrlPickerItem';
-  /** Gets the name of the link. */
-  name: Maybe<Scalars['String']>;
-  /** Gets the target of the link. */
-  target: Maybe<Scalars['String']>;
-  /** Gets the type of the link. */
-  type: LinkType;
-  /** Gets the url of a link. */
-  url: Maybe<Scalars['String']>;
-};
-
-/** Represents nested content. */
-export type BasicNestedContent = PropertyValue & {
-  __typename?: 'BasicNestedContent';
-  alias: Scalars['String'];
-  /** Gets the elements of a nested content. */
-  elements: Maybe<Array<BasicNestedContentElement>>;
-};
-
-/** Represents nested content. */
-export type BasicNestedContentElement = {
-  __typename?: 'BasicNestedContentElement';
-  /** Gets the properties of the nested content. */
-  properties: Array<Maybe<BasicProperty>>;
-};
-
-/** Represents a property. */
-export type BasicProperty = {
-  __typename?: 'BasicProperty';
-  /** Gets the alias of a property. */
-  alias: Maybe<Scalars['String']>;
-  /** Gets the editor alias of a property. */
-  editorAlias: Maybe<Scalars['String']>;
-  /** Gets the value of a property. */
-  value: Maybe<PropertyValue>;
-};
-
-/** Represents a property. */
-export type BasicPropertyFilterInput = {
-  /** Gets the alias of a property. */
-  alias: InputMaybe<StringOperationFilterInput>;
-  and: InputMaybe<Array<BasicPropertyFilterInput>>;
-  /** Gets the editor alias of a property. */
-  editorAlias: InputMaybe<StringOperationFilterInput>;
-  or: InputMaybe<Array<BasicPropertyFilterInput>>;
-  /** Gets the value of a property. */
-  value: InputMaybe<PropertyValueFilterInput>;
-};
-
-/** Represents a basic property value. */
-export type BasicPropertyValue = PropertyValue & {
-  __typename?: 'BasicPropertyValue';
-  alias: Scalars['String'];
-  /** Gets the value of the property. */
-  value: Maybe<Scalars['Any']>;
-};
-
-/** Represents a rich text editor. */
-export type BasicRichText = PropertyValue & {
-  __typename?: 'BasicRichText';
-  alias: Scalars['String'];
-  /** Gets the original value of the rich text editor or markdown editor. */
-  sourceValue: Maybe<Scalars['String']>;
-  /** Gets the HTML value of the rich text editor or markdown editor. */
-  value: Maybe<Scalars['String']>;
-};
-
-/** Represents an unsupported property value. */
-export type BasicUnsupportedPropertyValue = PropertyValue & {
-  __typename?: 'BasicUnsupportedPropertyValue';
-  alias: Scalars['String'];
-  /** Gets the message of the property. */
-  message: Scalars['String'];
-};
-
-export type BooleanOperationFilterInput = {
+export type BooleanFilterInput = {
+  and: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
+  between: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
+  contains: InputMaybe<Scalars['Boolean']>;
+  containsi: InputMaybe<Scalars['Boolean']>;
+  endsWith: InputMaybe<Scalars['Boolean']>;
   eq: InputMaybe<Scalars['Boolean']>;
-  neq: InputMaybe<Scalars['Boolean']>;
+  eqi: InputMaybe<Scalars['Boolean']>;
+  gt: InputMaybe<Scalars['Boolean']>;
+  gte: InputMaybe<Scalars['Boolean']>;
+  in: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
+  lt: InputMaybe<Scalars['Boolean']>;
+  lte: InputMaybe<Scalars['Boolean']>;
+  ne: InputMaybe<Scalars['Boolean']>;
+  not: InputMaybe<BooleanFilterInput>;
+  notContains: InputMaybe<Scalars['Boolean']>;
+  notContainsi: InputMaybe<Scalars['Boolean']>;
+  notIn: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
+  notNull: InputMaybe<Scalars['Boolean']>;
+  null: InputMaybe<Scalars['Boolean']>;
+  or: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
+  startsWith: InputMaybe<Scalars['Boolean']>;
 };
 
-export type ComparableDateTimeOperationFilterInput = {
+export type CategorieDeSousThematique = {
+  __typename?: 'CategorieDeSousThematique';
+  Nom: Maybe<Scalars['String']>;
+  createdAt: Maybe<Scalars['DateTime']>;
+  publishedAt: Maybe<Scalars['DateTime']>;
+  sous_thematiques: Maybe<SousThematiqueRelationResponseCollection>;
+  thematique: Maybe<ThematiqueEntityResponse>;
+  updatedAt: Maybe<Scalars['DateTime']>;
+};
+
+
+export type CategorieDeSousThematiqueSous_ThematiquesArgs = {
+  filters: InputMaybe<SousThematiqueFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type CategorieDeSousThematiqueEntity = {
+  __typename?: 'CategorieDeSousThematiqueEntity';
+  attributes: Maybe<CategorieDeSousThematique>;
+  id: Maybe<Scalars['ID']>;
+};
+
+export type CategorieDeSousThematiqueEntityResponse = {
+  __typename?: 'CategorieDeSousThematiqueEntityResponse';
+  data: Maybe<CategorieDeSousThematiqueEntity>;
+};
+
+export type CategorieDeSousThematiqueEntityResponseCollection = {
+  __typename?: 'CategorieDeSousThematiqueEntityResponseCollection';
+  data: Array<CategorieDeSousThematiqueEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type CategorieDeSousThematiqueFiltersInput = {
+  Nom: InputMaybe<StringFilterInput>;
+  and: InputMaybe<Array<InputMaybe<CategorieDeSousThematiqueFiltersInput>>>;
+  createdAt: InputMaybe<DateTimeFilterInput>;
+  id: InputMaybe<IdFilterInput>;
+  not: InputMaybe<CategorieDeSousThematiqueFiltersInput>;
+  or: InputMaybe<Array<InputMaybe<CategorieDeSousThematiqueFiltersInput>>>;
+  publishedAt: InputMaybe<DateTimeFilterInput>;
+  sous_thematiques: InputMaybe<SousThematiqueFiltersInput>;
+  thematique: InputMaybe<ThematiqueFiltersInput>;
+  updatedAt: InputMaybe<DateTimeFilterInput>;
+};
+
+export type CategorieDeSousThematiqueInput = {
+  Nom: InputMaybe<Scalars['String']>;
+  publishedAt: InputMaybe<Scalars['DateTime']>;
+  sous_thematiques: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  thematique: InputMaybe<Scalars['ID']>;
+};
+
+export type CategorieDeSousThematiqueRelationResponseCollection = {
+  __typename?: 'CategorieDeSousThematiqueRelationResponseCollection';
+  data: Array<CategorieDeSousThematiqueEntity>;
+};
+
+export type DateTimeFilterInput = {
+  and: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  between: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  contains: InputMaybe<Scalars['DateTime']>;
+  containsi: InputMaybe<Scalars['DateTime']>;
+  endsWith: InputMaybe<Scalars['DateTime']>;
   eq: InputMaybe<Scalars['DateTime']>;
-  gt: InputMaybe<Scalars['DateTime']>;
-  gte: InputMaybe<Scalars['DateTime']>;
-  in: InputMaybe<Array<Scalars['DateTime']>>;
-  lt: InputMaybe<Scalars['DateTime']>;
-  lte: InputMaybe<Scalars['DateTime']>;
-  neq: InputMaybe<Scalars['DateTime']>;
-  ngt: InputMaybe<Scalars['DateTime']>;
-  ngte: InputMaybe<Scalars['DateTime']>;
-  nin: InputMaybe<Array<Scalars['DateTime']>>;
-  nlt: InputMaybe<Scalars['DateTime']>;
-  nlte: InputMaybe<Scalars['DateTime']>;
-};
-
-export type ComparableGuidOperationFilterInput = {
-  eq: InputMaybe<Scalars['UUID']>;
-  gt: InputMaybe<Scalars['UUID']>;
-  gte: InputMaybe<Scalars['UUID']>;
-  in: InputMaybe<Array<Scalars['UUID']>>;
-  lt: InputMaybe<Scalars['UUID']>;
-  lte: InputMaybe<Scalars['UUID']>;
-  neq: InputMaybe<Scalars['UUID']>;
-  ngt: InputMaybe<Scalars['UUID']>;
-  ngte: InputMaybe<Scalars['UUID']>;
-  nin: InputMaybe<Array<Scalars['UUID']>>;
-  nlt: InputMaybe<Scalars['UUID']>;
-  nlte: InputMaybe<Scalars['UUID']>;
-};
-
-export type ComparableInt32OperationFilterInput = {
-  eq: InputMaybe<Scalars['Int']>;
-  gt: InputMaybe<Scalars['Int']>;
-  gte: InputMaybe<Scalars['Int']>;
-  in: InputMaybe<Array<Scalars['Int']>>;
-  lt: InputMaybe<Scalars['Int']>;
-  lte: InputMaybe<Scalars['Int']>;
-  neq: InputMaybe<Scalars['Int']>;
-  ngt: InputMaybe<Scalars['Int']>;
-  ngte: InputMaybe<Scalars['Int']>;
-  nin: InputMaybe<Array<Scalars['Int']>>;
-  nlt: InputMaybe<Scalars['Int']>;
-  nlte: InputMaybe<Scalars['Int']>;
-};
-
-export type ComparableNullableOfDateTimeOperationFilterInput = {
-  eq: InputMaybe<Scalars['DateTime']>;
+  eqi: InputMaybe<Scalars['DateTime']>;
   gt: InputMaybe<Scalars['DateTime']>;
   gte: InputMaybe<Scalars['DateTime']>;
   in: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
   lt: InputMaybe<Scalars['DateTime']>;
   lte: InputMaybe<Scalars['DateTime']>;
-  neq: InputMaybe<Scalars['DateTime']>;
-  ngt: InputMaybe<Scalars['DateTime']>;
-  ngte: InputMaybe<Scalars['DateTime']>;
-  nin: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  nlt: InputMaybe<Scalars['DateTime']>;
-  nlte: InputMaybe<Scalars['DateTime']>;
+  ne: InputMaybe<Scalars['DateTime']>;
+  not: InputMaybe<DateTimeFilterInput>;
+  notContains: InputMaybe<Scalars['DateTime']>;
+  notContainsi: InputMaybe<Scalars['DateTime']>;
+  notIn: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  notNull: InputMaybe<Scalars['Boolean']>;
+  null: InputMaybe<Scalars['Boolean']>;
+  or: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  startsWith: InputMaybe<Scalars['DateTime']>;
 };
 
-export type ComparableNullableOfGuidOperationFilterInput = {
-  eq: InputMaybe<Scalars['UUID']>;
-  gt: InputMaybe<Scalars['UUID']>;
-  gte: InputMaybe<Scalars['UUID']>;
-  in: InputMaybe<Array<InputMaybe<Scalars['UUID']>>>;
-  lt: InputMaybe<Scalars['UUID']>;
-  lte: InputMaybe<Scalars['UUID']>;
-  neq: InputMaybe<Scalars['UUID']>;
-  ngt: InputMaybe<Scalars['UUID']>;
-  ngte: InputMaybe<Scalars['UUID']>;
-  nin: InputMaybe<Array<InputMaybe<Scalars['UUID']>>>;
-  nlt: InputMaybe<Scalars['UUID']>;
-  nlte: InputMaybe<Scalars['UUID']>;
+export type FileInfoInput = {
+  alternativeText: InputMaybe<Scalars['String']>;
+  caption: InputMaybe<Scalars['String']>;
+  name: InputMaybe<Scalars['String']>;
 };
 
-export type ComparableNullableOfInt32OperationFilterInput = {
+export type FloatFilterInput = {
+  and: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  between: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  contains: InputMaybe<Scalars['Float']>;
+  containsi: InputMaybe<Scalars['Float']>;
+  endsWith: InputMaybe<Scalars['Float']>;
+  eq: InputMaybe<Scalars['Float']>;
+  eqi: InputMaybe<Scalars['Float']>;
+  gt: InputMaybe<Scalars['Float']>;
+  gte: InputMaybe<Scalars['Float']>;
+  in: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  lt: InputMaybe<Scalars['Float']>;
+  lte: InputMaybe<Scalars['Float']>;
+  ne: InputMaybe<Scalars['Float']>;
+  not: InputMaybe<FloatFilterInput>;
+  notContains: InputMaybe<Scalars['Float']>;
+  notContainsi: InputMaybe<Scalars['Float']>;
+  notIn: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  notNull: InputMaybe<Scalars['Boolean']>;
+  null: InputMaybe<Scalars['Boolean']>;
+  or: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  startsWith: InputMaybe<Scalars['Float']>;
+};
+
+export type GenericMorph = CategorieDeSousThematique | I18NLocale | SousThematique | Thematique | UploadFile | UploadFolder | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+
+export type I18NLocale = {
+  __typename?: 'I18NLocale';
+  code: Maybe<Scalars['String']>;
+  createdAt: Maybe<Scalars['DateTime']>;
+  name: Maybe<Scalars['String']>;
+  updatedAt: Maybe<Scalars['DateTime']>;
+};
+
+export type I18NLocaleEntity = {
+  __typename?: 'I18NLocaleEntity';
+  attributes: Maybe<I18NLocale>;
+  id: Maybe<Scalars['ID']>;
+};
+
+export type I18NLocaleEntityResponse = {
+  __typename?: 'I18NLocaleEntityResponse';
+  data: Maybe<I18NLocaleEntity>;
+};
+
+export type I18NLocaleEntityResponseCollection = {
+  __typename?: 'I18NLocaleEntityResponseCollection';
+  data: Array<I18NLocaleEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type I18NLocaleFiltersInput = {
+  and: InputMaybe<Array<InputMaybe<I18NLocaleFiltersInput>>>;
+  code: InputMaybe<StringFilterInput>;
+  createdAt: InputMaybe<DateTimeFilterInput>;
+  id: InputMaybe<IdFilterInput>;
+  name: InputMaybe<StringFilterInput>;
+  not: InputMaybe<I18NLocaleFiltersInput>;
+  or: InputMaybe<Array<InputMaybe<I18NLocaleFiltersInput>>>;
+  updatedAt: InputMaybe<DateTimeFilterInput>;
+};
+
+export type IdFilterInput = {
+  and: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  between: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  contains: InputMaybe<Scalars['ID']>;
+  containsi: InputMaybe<Scalars['ID']>;
+  endsWith: InputMaybe<Scalars['ID']>;
+  eq: InputMaybe<Scalars['ID']>;
+  eqi: InputMaybe<Scalars['ID']>;
+  gt: InputMaybe<Scalars['ID']>;
+  gte: InputMaybe<Scalars['ID']>;
+  in: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  lt: InputMaybe<Scalars['ID']>;
+  lte: InputMaybe<Scalars['ID']>;
+  ne: InputMaybe<Scalars['ID']>;
+  not: InputMaybe<IdFilterInput>;
+  notContains: InputMaybe<Scalars['ID']>;
+  notContainsi: InputMaybe<Scalars['ID']>;
+  notIn: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  notNull: InputMaybe<Scalars['Boolean']>;
+  null: InputMaybe<Scalars['Boolean']>;
+  or: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  startsWith: InputMaybe<Scalars['ID']>;
+};
+
+export type IntFilterInput = {
+  and: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  between: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  contains: InputMaybe<Scalars['Int']>;
+  containsi: InputMaybe<Scalars['Int']>;
+  endsWith: InputMaybe<Scalars['Int']>;
   eq: InputMaybe<Scalars['Int']>;
+  eqi: InputMaybe<Scalars['Int']>;
   gt: InputMaybe<Scalars['Int']>;
   gte: InputMaybe<Scalars['Int']>;
   in: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   lt: InputMaybe<Scalars['Int']>;
   lte: InputMaybe<Scalars['Int']>;
-  neq: InputMaybe<Scalars['Int']>;
-  ngt: InputMaybe<Scalars['Int']>;
-  ngte: InputMaybe<Scalars['Int']>;
-  nin: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
-  nlt: InputMaybe<Scalars['Int']>;
-  nlte: InputMaybe<Scalars['Int']>;
+  ne: InputMaybe<Scalars['Int']>;
+  not: InputMaybe<IntFilterInput>;
+  notContains: InputMaybe<Scalars['Int']>;
+  notContainsi: InputMaybe<Scalars['Int']>;
+  notIn: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  notNull: InputMaybe<Scalars['Boolean']>;
+  null: InputMaybe<Scalars['Boolean']>;
+  or: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  startsWith: InputMaybe<Scalars['Int']>;
 };
 
-/** A connection to a list of items. */
-export type ContentAllConnection = {
-  __typename?: 'ContentAllConnection';
-  /** A list of edges. */
-  edges: Maybe<Array<ContentAllEdge>>;
-  /** A flattened list of the nodes. */
-  nodes: Maybe<Array<Maybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect>>>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
+export type JsonFilterInput = {
+  and: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
+  between: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
+  contains: InputMaybe<Scalars['JSON']>;
+  containsi: InputMaybe<Scalars['JSON']>;
+  endsWith: InputMaybe<Scalars['JSON']>;
+  eq: InputMaybe<Scalars['JSON']>;
+  eqi: InputMaybe<Scalars['JSON']>;
+  gt: InputMaybe<Scalars['JSON']>;
+  gte: InputMaybe<Scalars['JSON']>;
+  in: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
+  lt: InputMaybe<Scalars['JSON']>;
+  lte: InputMaybe<Scalars['JSON']>;
+  ne: InputMaybe<Scalars['JSON']>;
+  not: InputMaybe<JsonFilterInput>;
+  notContains: InputMaybe<Scalars['JSON']>;
+  notContainsi: InputMaybe<Scalars['JSON']>;
+  notIn: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
+  notNull: InputMaybe<Scalars['Boolean']>;
+  null: InputMaybe<Scalars['Boolean']>;
+  or: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
+  startsWith: InputMaybe<Scalars['JSON']>;
 };
 
-/** An edge in a connection. */
-export type ContentAllEdge = {
-  __typename?: 'ContentAllEdge';
-  /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
-  /** The item at the end of the edge. */
-  node: Maybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect>;
+export type Mutation = {
+  __typename?: 'Mutation';
+  /** Change user password. Confirm with the current password. */
+  changePassword: Maybe<UsersPermissionsLoginPayload>;
+  createCategorieDeSousThematique: Maybe<CategorieDeSousThematiqueEntityResponse>;
+  createSousThematique: Maybe<SousThematiqueEntityResponse>;
+  createSousThematiqueLocalization: Maybe<SousThematiqueEntityResponse>;
+  createThematique: Maybe<ThematiqueEntityResponse>;
+  createThematiqueLocalization: Maybe<ThematiqueEntityResponse>;
+  createUploadFile: Maybe<UploadFileEntityResponse>;
+  createUploadFolder: Maybe<UploadFolderEntityResponse>;
+  /** Create a new role */
+  createUsersPermissionsRole: Maybe<UsersPermissionsCreateRolePayload>;
+  /** Create a new user */
+  createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
+  deleteCategorieDeSousThematique: Maybe<CategorieDeSousThematiqueEntityResponse>;
+  deleteSousThematique: Maybe<SousThematiqueEntityResponse>;
+  deleteThematique: Maybe<ThematiqueEntityResponse>;
+  deleteUploadFile: Maybe<UploadFileEntityResponse>;
+  deleteUploadFolder: Maybe<UploadFolderEntityResponse>;
+  /** Delete an existing role */
+  deleteUsersPermissionsRole: Maybe<UsersPermissionsDeleteRolePayload>;
+  /** Delete an existing user */
+  deleteUsersPermissionsUser: UsersPermissionsUserEntityResponse;
+  /** Confirm an email users email address */
+  emailConfirmation: Maybe<UsersPermissionsLoginPayload>;
+  /** Request a reset password token */
+  forgotPassword: Maybe<UsersPermissionsPasswordPayload>;
+  login: UsersPermissionsLoginPayload;
+  multipleUpload: Array<Maybe<UploadFileEntityResponse>>;
+  /** Register a user */
+  register: UsersPermissionsLoginPayload;
+  removeFile: Maybe<UploadFileEntityResponse>;
+  /** Reset user password. Confirm with a code (resetToken from forgotPassword) */
+  resetPassword: Maybe<UsersPermissionsLoginPayload>;
+  updateCategorieDeSousThematique: Maybe<CategorieDeSousThematiqueEntityResponse>;
+  updateFileInfo: UploadFileEntityResponse;
+  updateSousThematique: Maybe<SousThematiqueEntityResponse>;
+  updateThematique: Maybe<ThematiqueEntityResponse>;
+  updateUploadFile: Maybe<UploadFileEntityResponse>;
+  updateUploadFolder: Maybe<UploadFolderEntityResponse>;
+  /** Update an existing role */
+  updateUsersPermissionsRole: Maybe<UsersPermissionsUpdateRolePayload>;
+  /** Update an existing user */
+  updateUsersPermissionsUser: UsersPermissionsUserEntityResponse;
+  upload: UploadFileEntityResponse;
 };
 
-/** A connection to a list of items. */
-export type ContentAtRootConnection = {
-  __typename?: 'ContentAtRootConnection';
-  /** A list of edges. */
-  edges: Maybe<Array<ContentAtRootEdge>>;
-  /** A flattened list of the nodes. */
-  nodes: Maybe<Array<Maybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect>>>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
+
+export type MutationChangePasswordArgs = {
+  currentPassword: Scalars['String'];
+  password: Scalars['String'];
+  passwordConfirmation: Scalars['String'];
 };
 
-/** An edge in a connection. */
-export type ContentAtRootEdge = {
-  __typename?: 'ContentAtRootEdge';
-  /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
-  /** The item at the end of the edge. */
-  node: Maybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect>;
+
+export type MutationCreateCategorieDeSousThematiqueArgs = {
+  data: CategorieDeSousThematiqueInput;
 };
 
-/** A connection to a list of items. */
-export type ContentByContentTypeConnection = {
-  __typename?: 'ContentByContentTypeConnection';
-  /** A list of edges. */
-  edges: Maybe<Array<ContentByContentTypeEdge>>;
-  /** A flattened list of the nodes. */
-  nodes: Maybe<Array<Maybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect>>>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
+
+export type MutationCreateSousThematiqueArgs = {
+  data: SousThematiqueInput;
+  locale: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
-/** An edge in a connection. */
-export type ContentByContentTypeEdge = {
-  __typename?: 'ContentByContentTypeEdge';
-  /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
-  /** The item at the end of the edge. */
-  node: Maybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect>;
+
+export type MutationCreateSousThematiqueLocalizationArgs = {
+  data: InputMaybe<SousThematiqueInput>;
+  id: InputMaybe<Scalars['ID']>;
+  locale: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
-/** A connection to a list of items. */
-export type ContentByTagConnection = {
-  __typename?: 'ContentByTagConnection';
-  /** A list of edges. */
-  edges: Maybe<Array<ContentByTagEdge>>;
-  /** A flattened list of the nodes. */
-  nodes: Maybe<Array<Maybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect>>>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
+
+export type MutationCreateThematiqueArgs = {
+  data: ThematiqueInput;
+  locale: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
-/** An edge in a connection. */
-export type ContentByTagEdge = {
-  __typename?: 'ContentByTagEdge';
-  /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
-  /** The item at the end of the edge. */
-  node: Maybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect>;
+
+export type MutationCreateThematiqueLocalizationArgs = {
+  data: InputMaybe<ThematiqueInput>;
+  id: InputMaybe<Scalars['ID']>;
+  locale: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
-/** A connection to a list of items. */
-export type ContentDescendantsByAbsoluteRouteConnection = {
-  __typename?: 'ContentDescendantsByAbsoluteRouteConnection';
-  /** A list of edges. */
-  edges: Maybe<Array<ContentDescendantsByAbsoluteRouteEdge>>;
-  /** A flattened list of the nodes. */
-  nodes: Maybe<Array<Maybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect>>>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
+
+export type MutationCreateUploadFileArgs = {
+  data: UploadFileInput;
 };
 
-/** An edge in a connection. */
-export type ContentDescendantsByAbsoluteRouteEdge = {
-  __typename?: 'ContentDescendantsByAbsoluteRouteEdge';
-  /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
-  /** The item at the end of the edge. */
-  node: Maybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect>;
+
+export type MutationCreateUploadFolderArgs = {
+  data: UploadFolderInput;
 };
 
-/** A connection to a list of items. */
-export type ContentDescendantsByContentTypeConnection = {
-  __typename?: 'ContentDescendantsByContentTypeConnection';
-  /** A list of edges. */
-  edges: Maybe<Array<ContentDescendantsByContentTypeEdge>>;
-  /** A flattened list of the nodes. */
-  nodes: Maybe<Array<Maybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect>>>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
+
+export type MutationCreateUsersPermissionsRoleArgs = {
+  data: UsersPermissionsRoleInput;
 };
 
-/** An edge in a connection. */
-export type ContentDescendantsByContentTypeEdge = {
-  __typename?: 'ContentDescendantsByContentTypeEdge';
-  /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
-  /** The item at the end of the edge. */
-  node: Maybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect>;
+
+export type MutationCreateUsersPermissionsUserArgs = {
+  data: UsersPermissionsUserInput;
 };
 
-/** A connection to a list of items. */
-export type ContentDescendantsByGuidConnection = {
-  __typename?: 'ContentDescendantsByGuidConnection';
-  /** A list of edges. */
-  edges: Maybe<Array<ContentDescendantsByGuidEdge>>;
-  /** A flattened list of the nodes. */
-  nodes: Maybe<Array<Maybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect>>>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
+
+export type MutationDeleteCategorieDeSousThematiqueArgs = {
+  id: Scalars['ID'];
 };
 
-/** An edge in a connection. */
-export type ContentDescendantsByGuidEdge = {
-  __typename?: 'ContentDescendantsByGuidEdge';
-  /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
-  /** The item at the end of the edge. */
-  node: Maybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect>;
+
+export type MutationDeleteSousThematiqueArgs = {
+  id: Scalars['ID'];
+  locale: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
-/** A connection to a list of items. */
-export type ContentDescendantsByIdConnection = {
-  __typename?: 'ContentDescendantsByIdConnection';
-  /** A list of edges. */
-  edges: Maybe<Array<ContentDescendantsByIdEdge>>;
-  /** A flattened list of the nodes. */
-  nodes: Maybe<Array<Maybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect>>>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
+
+export type MutationDeleteThematiqueArgs = {
+  id: Scalars['ID'];
+  locale: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
-/** An edge in a connection. */
-export type ContentDescendantsByIdEdge = {
-  __typename?: 'ContentDescendantsByIdEdge';
-  /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
-  /** The item at the end of the edge. */
-  node: Maybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect>;
+
+export type MutationDeleteUploadFileArgs = {
+  id: Scalars['ID'];
 };
 
-export enum ContentVariation {
-  Culture = 'CULTURE',
-  CultureAndSegment = 'CULTURE_AND_SEGMENT',
-  Nothing = 'NOTHING',
-  Segment = 'SEGMENT'
+
+export type MutationDeleteUploadFolderArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteUsersPermissionsRoleArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteUsersPermissionsUserArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationEmailConfirmationArgs = {
+  confirmation: Scalars['String'];
+};
+
+
+export type MutationForgotPasswordArgs = {
+  email: Scalars['String'];
+};
+
+
+export type MutationLoginArgs = {
+  input: UsersPermissionsLoginInput;
+};
+
+
+export type MutationMultipleUploadArgs = {
+  field: InputMaybe<Scalars['String']>;
+  files: Array<InputMaybe<Scalars['Upload']>>;
+  ref: InputMaybe<Scalars['String']>;
+  refId: InputMaybe<Scalars['ID']>;
+};
+
+
+export type MutationRegisterArgs = {
+  input: UsersPermissionsRegisterInput;
+};
+
+
+export type MutationRemoveFileArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationResetPasswordArgs = {
+  code: Scalars['String'];
+  password: Scalars['String'];
+  passwordConfirmation: Scalars['String'];
+};
+
+
+export type MutationUpdateCategorieDeSousThematiqueArgs = {
+  data: CategorieDeSousThematiqueInput;
+  id: Scalars['ID'];
+};
+
+
+export type MutationUpdateFileInfoArgs = {
+  id: Scalars['ID'];
+  info: InputMaybe<FileInfoInput>;
+};
+
+
+export type MutationUpdateSousThematiqueArgs = {
+  data: SousThematiqueInput;
+  id: Scalars['ID'];
+  locale: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type MutationUpdateThematiqueArgs = {
+  data: ThematiqueInput;
+  id: Scalars['ID'];
+  locale: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type MutationUpdateUploadFileArgs = {
+  data: UploadFileInput;
+  id: Scalars['ID'];
+};
+
+
+export type MutationUpdateUploadFolderArgs = {
+  data: UploadFolderInput;
+  id: Scalars['ID'];
+};
+
+
+export type MutationUpdateUsersPermissionsRoleArgs = {
+  data: UsersPermissionsRoleInput;
+  id: Scalars['ID'];
+};
+
+
+export type MutationUpdateUsersPermissionsUserArgs = {
+  data: UsersPermissionsUserInput;
+  id: Scalars['ID'];
+};
+
+
+export type MutationUploadArgs = {
+  field: InputMaybe<Scalars['String']>;
+  file: Scalars['Upload'];
+  info: InputMaybe<FileInfoInput>;
+  ref: InputMaybe<Scalars['String']>;
+  refId: InputMaybe<Scalars['ID']>;
+};
+
+export type Pagination = {
+  __typename?: 'Pagination';
+  page: Scalars['Int'];
+  pageCount: Scalars['Int'];
+  pageSize: Scalars['Int'];
+  total: Scalars['Int'];
+};
+
+export type PaginationArg = {
+  limit: InputMaybe<Scalars['Int']>;
+  page: InputMaybe<Scalars['Int']>;
+  pageSize: InputMaybe<Scalars['Int']>;
+  start: InputMaybe<Scalars['Int']>;
+};
+
+export enum PublicationState {
+  Live = 'LIVE',
+  Preview = 'PREVIEW'
 }
-
-export type ContentVariationOperationFilterInput = {
-  eq: InputMaybe<ContentVariation>;
-  in: InputMaybe<Array<ContentVariation>>;
-  neq: InputMaybe<ContentVariation>;
-  nin: InputMaybe<Array<ContentVariation>>;
-};
-
-export type IReadOnlyDictionaryOfStringAndPublishedCultureInfoFilterInput = {
-  and: InputMaybe<Array<IReadOnlyDictionaryOfStringAndPublishedCultureInfoFilterInput>>;
-  keys: InputMaybe<ListStringOperationFilterInput>;
-  or: InputMaybe<Array<IReadOnlyDictionaryOfStringAndPublishedCultureInfoFilterInput>>;
-  values: InputMaybe<ListFilterInputTypeOfPublishedCultureInfoFilterInput>;
-};
-
-export type KeyValuePairOfStringAndPublishedCultureInfo = {
-  __typename?: 'KeyValuePairOfStringAndPublishedCultureInfo';
-  key: Scalars['String'];
-  value: PublishedCultureInfo;
-};
-
-export enum LinkType {
-  Content = 'CONTENT',
-  External = 'EXTERNAL',
-  Media = 'MEDIA'
-}
-
-export type ListFilterInputTypeOfBasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectFilterInput = {
-  all: InputMaybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectFilterInput>;
-  any: InputMaybe<Scalars['Boolean']>;
-  none: InputMaybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectFilterInput>;
-  some: InputMaybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectFilterInput>;
-};
-
-export type ListFilterInputTypeOfBasicMediaOfBasicPropertyAndBasicContentTypeFilterInput = {
-  all: InputMaybe<BasicMediaOfBasicPropertyAndBasicContentTypeFilterInput>;
-  any: InputMaybe<Scalars['Boolean']>;
-  none: InputMaybe<BasicMediaOfBasicPropertyAndBasicContentTypeFilterInput>;
-  some: InputMaybe<BasicMediaOfBasicPropertyAndBasicContentTypeFilterInput>;
-};
-
-export type ListFilterInputTypeOfBasicPropertyFilterInput = {
-  all: InputMaybe<BasicPropertyFilterInput>;
-  any: InputMaybe<Scalars['Boolean']>;
-  none: InputMaybe<BasicPropertyFilterInput>;
-  some: InputMaybe<BasicPropertyFilterInput>;
-};
-
-export type ListFilterInputTypeOfPublishedCultureInfoFilterInput = {
-  all: InputMaybe<PublishedCultureInfoFilterInput>;
-  any: InputMaybe<Scalars['Boolean']>;
-  none: InputMaybe<PublishedCultureInfoFilterInput>;
-  some: InputMaybe<PublishedCultureInfoFilterInput>;
-};
-
-export type ListStringOperationFilterInput = {
-  all: InputMaybe<StringOperationFilterInput>;
-  any: InputMaybe<Scalars['Boolean']>;
-  none: InputMaybe<StringOperationFilterInput>;
-  some: InputMaybe<StringOperationFilterInput>;
-};
-
-/** A connection to a list of items. */
-export type MediaAtRootConnection = {
-  __typename?: 'MediaAtRootConnection';
-  /** A list of edges. */
-  edges: Maybe<Array<MediaAtRootEdge>>;
-  /** A flattened list of the nodes. */
-  nodes: Maybe<Array<Maybe<BasicMediaOfBasicPropertyAndBasicContentType>>>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-};
-
-/** An edge in a connection. */
-export type MediaAtRootEdge = {
-  __typename?: 'MediaAtRootEdge';
-  /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
-  /** The item at the end of the edge. */
-  node: Maybe<BasicMediaOfBasicPropertyAndBasicContentType>;
-};
-
-/** A connection to a list of items. */
-export type MediaByContentTypeConnection = {
-  __typename?: 'MediaByContentTypeConnection';
-  /** A list of edges. */
-  edges: Maybe<Array<MediaByContentTypeEdge>>;
-  /** A flattened list of the nodes. */
-  nodes: Maybe<Array<Maybe<BasicMediaOfBasicPropertyAndBasicContentType>>>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-};
-
-/** An edge in a connection. */
-export type MediaByContentTypeEdge = {
-  __typename?: 'MediaByContentTypeEdge';
-  /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
-  /** The item at the end of the edge. */
-  node: Maybe<BasicMediaOfBasicPropertyAndBasicContentType>;
-};
-
-export type NullableOfPublishedItemTypeOperationFilterInput = {
-  eq: InputMaybe<PublishedItemType>;
-  in: InputMaybe<Array<InputMaybe<PublishedItemType>>>;
-  neq: InputMaybe<PublishedItemType>;
-  nin: InputMaybe<Array<InputMaybe<PublishedItemType>>>;
-};
-
-/** Information about pagination in a connection. */
-export type PageInfo = {
-  __typename?: 'PageInfo';
-  /** When paginating forwards, the cursor to continue. */
-  endCursor: Maybe<Scalars['String']>;
-  /** Indicates whether more edges exist following the set defined by the clients arguments. */
-  hasNextPage: Scalars['Boolean'];
-  /** Indicates whether more edges exist prior the set defined by the clients arguments. */
-  hasPreviousPage: Scalars['Boolean'];
-  /** When paginating backwards, the cursor to continue. */
-  startCursor: Maybe<Scalars['String']>;
-};
-
-export type PropertyValue = {
-  alias: Scalars['String'];
-};
-
-export type PropertyValueFilterInput = {
-  alias: InputMaybe<StringOperationFilterInput>;
-  and: InputMaybe<Array<PropertyValueFilterInput>>;
-  or: InputMaybe<Array<PropertyValueFilterInput>>;
-};
-
-export type PublishedCultureInfo = {
-  __typename?: 'PublishedCultureInfo';
-  culture: Scalars['String'];
-  date: Scalars['DateTime'];
-  name: Scalars['String'];
-  urlSegment: Maybe<Scalars['String']>;
-};
-
-export type PublishedCultureInfoFilterInput = {
-  and: InputMaybe<Array<PublishedCultureInfoFilterInput>>;
-  culture: InputMaybe<StringOperationFilterInput>;
-  date: InputMaybe<ComparableDateTimeOperationFilterInput>;
-  name: InputMaybe<StringOperationFilterInput>;
-  or: InputMaybe<Array<PublishedCultureInfoFilterInput>>;
-  urlSegment: InputMaybe<StringOperationFilterInput>;
-};
-
-export enum PublishedItemType {
-  Content = 'CONTENT',
-  Element = 'ELEMENT',
-  Media = 'MEDIA',
-  Member = 'MEMBER',
-  Unknown = 'UNKNOWN'
-}
-
-export type PublishedItemTypeOperationFilterInput = {
-  eq: InputMaybe<PublishedItemType>;
-  in: InputMaybe<Array<PublishedItemType>>;
-  neq: InputMaybe<PublishedItemType>;
-  nin: InputMaybe<Array<PublishedItemType>>;
-};
 
 export type Query = {
   __typename?: 'Query';
-  /** Gets all the content items available. */
-  contentAll: Maybe<ContentAllConnection>;
-  /** Gets all the content items at root level. */
-  contentAtRoot: Maybe<ContentAtRootConnection>;
-  /** Gets a content item by an absolute route. */
-  contentByAbsoluteRoute: Maybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect>;
-  /** Gets all the content items by content type. */
-  contentByContentType: Maybe<ContentByContentTypeConnection>;
-  /** Gets a content item by guid. */
-  contentByGuid: Maybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect>;
-  /** Gets a content item by id. */
-  contentById: Maybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect>;
-  /** Gets content items by tag. */
-  contentByTag: Maybe<ContentByTagConnection>;
-  /** Gets content item descendants by an absolute route. */
-  contentDescendantsByAbsoluteRoute: Maybe<ContentDescendantsByAbsoluteRouteConnection>;
-  /** Gets all descendants of content items with a specific content type. */
-  contentDescendantsByContentType: Maybe<ContentDescendantsByContentTypeConnection>;
-  /** Gets descendants on a content item selected by guid. */
-  contentDescendantsByGuid: Maybe<ContentDescendantsByGuidConnection>;
-  /** Gets descendants on a content item selected by id. */
-  contentDescendantsById: Maybe<ContentDescendantsByIdConnection>;
-  /** Gets all the Media items at root level. */
-  mediaAtRoot: Maybe<MediaAtRootConnection>;
-  /** Gets all the media items by content type. */
-  mediaByContentType: Maybe<MediaByContentTypeConnection>;
-  /** Gets a Media item by guid. */
-  mediaByGuid: Maybe<BasicMediaOfBasicPropertyAndBasicContentType>;
-  /** Gets a Media item by id. */
-  mediaById: Maybe<BasicMediaOfBasicPropertyAndBasicContentType>;
+  categorieDeSousThematique: Maybe<CategorieDeSousThematiqueEntityResponse>;
+  categorieDeSousThematiques: Maybe<CategorieDeSousThematiqueEntityResponseCollection>;
+  i18NLocale: Maybe<I18NLocaleEntityResponse>;
+  i18NLocales: Maybe<I18NLocaleEntityResponseCollection>;
+  me: Maybe<UsersPermissionsMe>;
+  sousThematique: Maybe<SousThematiqueEntityResponse>;
+  sousThematiques: Maybe<SousThematiqueEntityResponseCollection>;
+  thematique: Maybe<ThematiqueEntityResponse>;
+  thematiques: Maybe<ThematiqueEntityResponseCollection>;
+  uploadFile: Maybe<UploadFileEntityResponse>;
+  uploadFiles: Maybe<UploadFileEntityResponseCollection>;
+  uploadFolder: Maybe<UploadFolderEntityResponse>;
+  uploadFolders: Maybe<UploadFolderEntityResponseCollection>;
+  usersPermissionsRole: Maybe<UsersPermissionsRoleEntityResponse>;
+  usersPermissionsRoles: Maybe<UsersPermissionsRoleEntityResponseCollection>;
+  usersPermissionsUser: Maybe<UsersPermissionsUserEntityResponse>;
+  usersPermissionsUsers: Maybe<UsersPermissionsUserEntityResponseCollection>;
 };
 
 
-export type QueryContentAllArgs = {
-  after: InputMaybe<Scalars['String']>;
-  before: InputMaybe<Scalars['String']>;
-  culture: InputMaybe<Scalars['String']>;
-  first: InputMaybe<Scalars['Int']>;
-  last: InputMaybe<Scalars['Int']>;
-  order: InputMaybe<Array<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectSortInput>>;
-  preview?: Scalars['Boolean'];
-  where: InputMaybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectFilterInput>;
+export type QueryCategorieDeSousThematiqueArgs = {
+  id: InputMaybe<Scalars['ID']>;
 };
 
 
-export type QueryContentAtRootArgs = {
-  after: InputMaybe<Scalars['String']>;
-  before: InputMaybe<Scalars['String']>;
-  culture: InputMaybe<Scalars['String']>;
-  first: InputMaybe<Scalars['Int']>;
-  last: InputMaybe<Scalars['Int']>;
-  order: InputMaybe<Array<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectSortInput>>;
-  preview?: Scalars['Boolean'];
-  where: InputMaybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectFilterInput>;
+export type QueryCategorieDeSousThematiquesArgs = {
+  filters: InputMaybe<CategorieDeSousThematiqueFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 
-export type QueryContentByAbsoluteRouteArgs = {
-  baseUrl?: Scalars['String'];
-  culture: InputMaybe<Scalars['String']>;
-  order: InputMaybe<Array<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectSortInput>>;
-  preview?: Scalars['Boolean'];
-  route: Scalars['String'];
-  routeMode?: RouteMode;
-  where: InputMaybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectFilterInput>;
+export type QueryI18NLocaleArgs = {
+  id: InputMaybe<Scalars['ID']>;
 };
 
 
-export type QueryContentByContentTypeArgs = {
-  after: InputMaybe<Scalars['String']>;
-  before: InputMaybe<Scalars['String']>;
-  contentType: Scalars['String'];
-  culture: InputMaybe<Scalars['String']>;
-  first: InputMaybe<Scalars['Int']>;
-  last: InputMaybe<Scalars['Int']>;
-  order: InputMaybe<Array<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectSortInput>>;
-  where: InputMaybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectFilterInput>;
+export type QueryI18NLocalesArgs = {
+  filters: InputMaybe<I18NLocaleFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 
-export type QueryContentByGuidArgs = {
-  culture: InputMaybe<Scalars['String']>;
-  id: Scalars['UUID'];
-  order: InputMaybe<Array<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectSortInput>>;
-  preview?: Scalars['Boolean'];
-  where: InputMaybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectFilterInput>;
+export type QuerySousThematiqueArgs = {
+  id: InputMaybe<Scalars['ID']>;
+  locale: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type QueryContentByIdArgs = {
-  culture: InputMaybe<Scalars['String']>;
-  id: Scalars['Int'];
-  order: InputMaybe<Array<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectSortInput>>;
-  preview?: Scalars['Boolean'];
-  where: InputMaybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectFilterInput>;
+export type QuerySousThematiquesArgs = {
+  filters: InputMaybe<SousThematiqueFiltersInput>;
+  locale: InputMaybe<Scalars['I18NLocaleCode']>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 
-export type QueryContentByTagArgs = {
-  after: InputMaybe<Scalars['String']>;
-  before: InputMaybe<Scalars['String']>;
-  culture: InputMaybe<Scalars['String']>;
-  first: InputMaybe<Scalars['Int']>;
-  last: InputMaybe<Scalars['Int']>;
-  order: InputMaybe<Array<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectSortInput>>;
-  tag: Scalars['String'];
-  tagGroup: InputMaybe<Scalars['String']>;
-  where: InputMaybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectFilterInput>;
+export type QueryThematiqueArgs = {
+  id: InputMaybe<Scalars['ID']>;
+  locale: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type QueryContentDescendantsByAbsoluteRouteArgs = {
-  after: InputMaybe<Scalars['String']>;
-  baseUrl?: Scalars['String'];
-  before: InputMaybe<Scalars['String']>;
-  culture: InputMaybe<Scalars['String']>;
-  first: InputMaybe<Scalars['Int']>;
-  last: InputMaybe<Scalars['Int']>;
-  order: InputMaybe<Array<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectSortInput>>;
-  preview?: Scalars['Boolean'];
-  route: Scalars['String'];
-  routeMode?: RouteMode;
-  where: InputMaybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectFilterInput>;
+export type QueryThematiquesArgs = {
+  filters: InputMaybe<ThematiqueFiltersInput>;
+  locale: InputMaybe<Scalars['I18NLocaleCode']>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 
-export type QueryContentDescendantsByContentTypeArgs = {
-  after: InputMaybe<Scalars['String']>;
-  before: InputMaybe<Scalars['String']>;
-  contentType: Scalars['String'];
-  culture: InputMaybe<Scalars['String']>;
-  first: InputMaybe<Scalars['Int']>;
-  last: InputMaybe<Scalars['Int']>;
-  order: InputMaybe<Array<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectSortInput>>;
-  where: InputMaybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectFilterInput>;
+export type QueryUploadFileArgs = {
+  id: InputMaybe<Scalars['ID']>;
 };
 
 
-export type QueryContentDescendantsByGuidArgs = {
-  after: InputMaybe<Scalars['String']>;
-  before: InputMaybe<Scalars['String']>;
-  culture: InputMaybe<Scalars['String']>;
-  first: InputMaybe<Scalars['Int']>;
-  id: Scalars['UUID'];
-  last: InputMaybe<Scalars['Int']>;
-  order: InputMaybe<Array<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectSortInput>>;
-  preview?: Scalars['Boolean'];
-  where: InputMaybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectFilterInput>;
+export type QueryUploadFilesArgs = {
+  filters: InputMaybe<UploadFileFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 
-export type QueryContentDescendantsByIdArgs = {
-  after: InputMaybe<Scalars['String']>;
-  before: InputMaybe<Scalars['String']>;
-  culture: InputMaybe<Scalars['String']>;
-  first: InputMaybe<Scalars['Int']>;
-  id: Scalars['Int'];
-  last: InputMaybe<Scalars['Int']>;
-  order: InputMaybe<Array<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectSortInput>>;
-  preview?: Scalars['Boolean'];
-  where: InputMaybe<BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirectFilterInput>;
+export type QueryUploadFolderArgs = {
+  id: InputMaybe<Scalars['ID']>;
 };
 
 
-export type QueryMediaAtRootArgs = {
-  after: InputMaybe<Scalars['String']>;
-  before: InputMaybe<Scalars['String']>;
-  culture: InputMaybe<Scalars['String']>;
-  first: InputMaybe<Scalars['Int']>;
-  last: InputMaybe<Scalars['Int']>;
-  order: InputMaybe<Array<BasicMediaOfBasicPropertyAndBasicContentTypeSortInput>>;
-  preview?: Scalars['Boolean'];
-  where: InputMaybe<BasicMediaOfBasicPropertyAndBasicContentTypeFilterInput>;
+export type QueryUploadFoldersArgs = {
+  filters: InputMaybe<UploadFolderFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 
-export type QueryMediaByContentTypeArgs = {
-  after: InputMaybe<Scalars['String']>;
-  before: InputMaybe<Scalars['String']>;
-  contentType: Scalars['String'];
-  culture: InputMaybe<Scalars['String']>;
-  first: InputMaybe<Scalars['Int']>;
-  last: InputMaybe<Scalars['Int']>;
-  order: InputMaybe<Array<BasicMediaOfBasicPropertyAndBasicContentTypeSortInput>>;
-  where: InputMaybe<BasicMediaOfBasicPropertyAndBasicContentTypeFilterInput>;
+export type QueryUsersPermissionsRoleArgs = {
+  id: InputMaybe<Scalars['ID']>;
 };
 
 
-export type QueryMediaByGuidArgs = {
-  culture: InputMaybe<Scalars['String']>;
-  id: Scalars['UUID'];
-  order: InputMaybe<Array<BasicMediaOfBasicPropertyAndBasicContentTypeSortInput>>;
-  preview?: Scalars['Boolean'];
-  where: InputMaybe<BasicMediaOfBasicPropertyAndBasicContentTypeFilterInput>;
+export type QueryUsersPermissionsRolesArgs = {
+  filters: InputMaybe<UsersPermissionsRoleFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 
-export type QueryMediaByIdArgs = {
-  culture: InputMaybe<Scalars['String']>;
-  id: Scalars['Int'];
-  order: InputMaybe<Array<BasicMediaOfBasicPropertyAndBasicContentTypeSortInput>>;
-  preview?: Scalars['Boolean'];
-  where: InputMaybe<BasicMediaOfBasicPropertyAndBasicContentTypeFilterInput>;
+export type QueryUsersPermissionsUserArgs = {
+  id: InputMaybe<Scalars['ID']>;
 };
 
-/** Modes for requesting by route */
-export enum RouteMode {
-  /** Cache only will only look in the content cache for the url */
-  CacheOnly = 'CACHE_ONLY',
-  /** Cache or routing will first use the content cache to find content and then use routing. This will only find redirects if no content is found in the content cache */
-  CacheOrRouting = 'CACHE_OR_ROUTING',
-  /** Routing will use routing to determine a route. This will also show redirects */
-  Routing = 'ROUTING',
-  /** Routing or cache will first use routing to find content and then use the cache if none is found. This also shows redirects */
-  RoutingOrCache = 'ROUTING_OR_CACHE'
-}
 
-export enum SortEnumType {
-  Asc = 'ASC',
-  Desc = 'DESC'
-}
+export type QueryUsersPermissionsUsersArgs = {
+  filters: InputMaybe<UsersPermissionsUserFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
 
-export type StringOperationFilterInput = {
-  and: InputMaybe<Array<StringOperationFilterInput>>;
+export type ResponseCollectionMeta = {
+  __typename?: 'ResponseCollectionMeta';
+  pagination: Pagination;
+};
+
+export type SousThematique = {
+  __typename?: 'SousThematique';
+  Nom: Maybe<Scalars['String']>;
+  categorie_de_sous_thematique: Maybe<CategorieDeSousThematiqueEntityResponse>;
+  createdAt: Maybe<Scalars['DateTime']>;
+  locale: Maybe<Scalars['String']>;
+  localizations: Maybe<SousThematiqueRelationResponseCollection>;
+  publishedAt: Maybe<Scalars['DateTime']>;
+  updatedAt: Maybe<Scalars['DateTime']>;
+};
+
+
+export type SousThematiqueLocalizationsArgs = {
+  filters: InputMaybe<SousThematiqueFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type SousThematiqueEntity = {
+  __typename?: 'SousThematiqueEntity';
+  attributes: Maybe<SousThematique>;
+  id: Maybe<Scalars['ID']>;
+};
+
+export type SousThematiqueEntityResponse = {
+  __typename?: 'SousThematiqueEntityResponse';
+  data: Maybe<SousThematiqueEntity>;
+};
+
+export type SousThematiqueEntityResponseCollection = {
+  __typename?: 'SousThematiqueEntityResponseCollection';
+  data: Array<SousThematiqueEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type SousThematiqueFiltersInput = {
+  Nom: InputMaybe<StringFilterInput>;
+  and: InputMaybe<Array<InputMaybe<SousThematiqueFiltersInput>>>;
+  categorie_de_sous_thematique: InputMaybe<CategorieDeSousThematiqueFiltersInput>;
+  createdAt: InputMaybe<DateTimeFilterInput>;
+  id: InputMaybe<IdFilterInput>;
+  locale: InputMaybe<StringFilterInput>;
+  localizations: InputMaybe<SousThematiqueFiltersInput>;
+  not: InputMaybe<SousThematiqueFiltersInput>;
+  or: InputMaybe<Array<InputMaybe<SousThematiqueFiltersInput>>>;
+  publishedAt: InputMaybe<DateTimeFilterInput>;
+  updatedAt: InputMaybe<DateTimeFilterInput>;
+};
+
+export type SousThematiqueInput = {
+  Nom: InputMaybe<Scalars['String']>;
+  categorie_de_sous_thematique: InputMaybe<Scalars['ID']>;
+  publishedAt: InputMaybe<Scalars['DateTime']>;
+};
+
+export type SousThematiqueRelationResponseCollection = {
+  __typename?: 'SousThematiqueRelationResponseCollection';
+  data: Array<SousThematiqueEntity>;
+};
+
+export type StringFilterInput = {
+  and: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  between: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   contains: InputMaybe<Scalars['String']>;
+  containsi: InputMaybe<Scalars['String']>;
   endsWith: InputMaybe<Scalars['String']>;
   eq: InputMaybe<Scalars['String']>;
+  eqi: InputMaybe<Scalars['String']>;
+  gt: InputMaybe<Scalars['String']>;
+  gte: InputMaybe<Scalars['String']>;
   in: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  ncontains: InputMaybe<Scalars['String']>;
-  nendsWith: InputMaybe<Scalars['String']>;
-  neq: InputMaybe<Scalars['String']>;
-  nin: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  nstartsWith: InputMaybe<Scalars['String']>;
-  or: InputMaybe<Array<StringOperationFilterInput>>;
+  lt: InputMaybe<Scalars['String']>;
+  lte: InputMaybe<Scalars['String']>;
+  ne: InputMaybe<Scalars['String']>;
+  not: InputMaybe<StringFilterInput>;
+  notContains: InputMaybe<Scalars['String']>;
+  notContainsi: InputMaybe<Scalars['String']>;
+  notIn: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  notNull: InputMaybe<Scalars['Boolean']>;
+  null: InputMaybe<Scalars['Boolean']>;
+  or: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   startsWith: InputMaybe<Scalars['String']>;
 };
 
-export type GetPageQueryVariables = Exact<{
+export type Thematique = {
+  __typename?: 'Thematique';
+  Nom: Maybe<Scalars['String']>;
+  categorie_de_sous_thematiques: Maybe<CategorieDeSousThematiqueRelationResponseCollection>;
+  createdAt: Maybe<Scalars['DateTime']>;
+  locale: Maybe<Scalars['String']>;
+  localizations: Maybe<ThematiqueRelationResponseCollection>;
+  publishedAt: Maybe<Scalars['DateTime']>;
+  updatedAt: Maybe<Scalars['DateTime']>;
+};
+
+
+export type ThematiqueCategorie_De_Sous_ThematiquesArgs = {
+  filters: InputMaybe<CategorieDeSousThematiqueFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type ThematiqueLocalizationsArgs = {
+  filters: InputMaybe<ThematiqueFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type ThematiqueEntity = {
+  __typename?: 'ThematiqueEntity';
+  attributes: Maybe<Thematique>;
+  id: Maybe<Scalars['ID']>;
+};
+
+export type ThematiqueEntityResponse = {
+  __typename?: 'ThematiqueEntityResponse';
+  data: Maybe<ThematiqueEntity>;
+};
+
+export type ThematiqueEntityResponseCollection = {
+  __typename?: 'ThematiqueEntityResponseCollection';
+  data: Array<ThematiqueEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type ThematiqueFiltersInput = {
+  Nom: InputMaybe<StringFilterInput>;
+  and: InputMaybe<Array<InputMaybe<ThematiqueFiltersInput>>>;
+  categorie_de_sous_thematiques: InputMaybe<CategorieDeSousThematiqueFiltersInput>;
+  createdAt: InputMaybe<DateTimeFilterInput>;
+  id: InputMaybe<IdFilterInput>;
+  locale: InputMaybe<StringFilterInput>;
+  localizations: InputMaybe<ThematiqueFiltersInput>;
+  not: InputMaybe<ThematiqueFiltersInput>;
+  or: InputMaybe<Array<InputMaybe<ThematiqueFiltersInput>>>;
+  publishedAt: InputMaybe<DateTimeFilterInput>;
+  updatedAt: InputMaybe<DateTimeFilterInput>;
+};
+
+export type ThematiqueInput = {
+  Nom: InputMaybe<Scalars['String']>;
+  categorie_de_sous_thematiques: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  publishedAt: InputMaybe<Scalars['DateTime']>;
+};
+
+export type ThematiqueRelationResponseCollection = {
+  __typename?: 'ThematiqueRelationResponseCollection';
+  data: Array<ThematiqueEntity>;
+};
+
+export type UploadFile = {
+  __typename?: 'UploadFile';
+  alternativeText: Maybe<Scalars['String']>;
+  caption: Maybe<Scalars['String']>;
+  createdAt: Maybe<Scalars['DateTime']>;
+  ext: Maybe<Scalars['String']>;
+  formats: Maybe<Scalars['JSON']>;
+  hash: Scalars['String'];
+  height: Maybe<Scalars['Int']>;
+  mime: Scalars['String'];
+  name: Scalars['String'];
+  previewUrl: Maybe<Scalars['String']>;
+  provider: Scalars['String'];
+  provider_metadata: Maybe<Scalars['JSON']>;
+  related: Maybe<Array<Maybe<GenericMorph>>>;
+  size: Scalars['Float'];
+  updatedAt: Maybe<Scalars['DateTime']>;
   url: Scalars['String'];
-}>;
+  width: Maybe<Scalars['Int']>;
+};
+
+export type UploadFileEntity = {
+  __typename?: 'UploadFileEntity';
+  attributes: Maybe<UploadFile>;
+  id: Maybe<Scalars['ID']>;
+};
+
+export type UploadFileEntityResponse = {
+  __typename?: 'UploadFileEntityResponse';
+  data: Maybe<UploadFileEntity>;
+};
+
+export type UploadFileEntityResponseCollection = {
+  __typename?: 'UploadFileEntityResponseCollection';
+  data: Array<UploadFileEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type UploadFileFiltersInput = {
+  alternativeText: InputMaybe<StringFilterInput>;
+  and: InputMaybe<Array<InputMaybe<UploadFileFiltersInput>>>;
+  caption: InputMaybe<StringFilterInput>;
+  createdAt: InputMaybe<DateTimeFilterInput>;
+  ext: InputMaybe<StringFilterInput>;
+  folder: InputMaybe<UploadFolderFiltersInput>;
+  folderPath: InputMaybe<StringFilterInput>;
+  formats: InputMaybe<JsonFilterInput>;
+  hash: InputMaybe<StringFilterInput>;
+  height: InputMaybe<IntFilterInput>;
+  id: InputMaybe<IdFilterInput>;
+  mime: InputMaybe<StringFilterInput>;
+  name: InputMaybe<StringFilterInput>;
+  not: InputMaybe<UploadFileFiltersInput>;
+  or: InputMaybe<Array<InputMaybe<UploadFileFiltersInput>>>;
+  previewUrl: InputMaybe<StringFilterInput>;
+  provider: InputMaybe<StringFilterInput>;
+  provider_metadata: InputMaybe<JsonFilterInput>;
+  size: InputMaybe<FloatFilterInput>;
+  updatedAt: InputMaybe<DateTimeFilterInput>;
+  url: InputMaybe<StringFilterInput>;
+  width: InputMaybe<IntFilterInput>;
+};
+
+export type UploadFileInput = {
+  alternativeText: InputMaybe<Scalars['String']>;
+  caption: InputMaybe<Scalars['String']>;
+  ext: InputMaybe<Scalars['String']>;
+  folder: InputMaybe<Scalars['ID']>;
+  folderPath: InputMaybe<Scalars['String']>;
+  formats: InputMaybe<Scalars['JSON']>;
+  hash: InputMaybe<Scalars['String']>;
+  height: InputMaybe<Scalars['Int']>;
+  mime: InputMaybe<Scalars['String']>;
+  name: InputMaybe<Scalars['String']>;
+  previewUrl: InputMaybe<Scalars['String']>;
+  provider: InputMaybe<Scalars['String']>;
+  provider_metadata: InputMaybe<Scalars['JSON']>;
+  size: InputMaybe<Scalars['Float']>;
+  url: InputMaybe<Scalars['String']>;
+  width: InputMaybe<Scalars['Int']>;
+};
+
+export type UploadFileRelationResponseCollection = {
+  __typename?: 'UploadFileRelationResponseCollection';
+  data: Array<UploadFileEntity>;
+};
+
+export type UploadFolder = {
+  __typename?: 'UploadFolder';
+  children: Maybe<UploadFolderRelationResponseCollection>;
+  createdAt: Maybe<Scalars['DateTime']>;
+  files: Maybe<UploadFileRelationResponseCollection>;
+  name: Scalars['String'];
+  parent: Maybe<UploadFolderEntityResponse>;
+  path: Scalars['String'];
+  pathId: Scalars['Int'];
+  updatedAt: Maybe<Scalars['DateTime']>;
+};
 
 
-export type GetPageQuery = { __typename?: 'Query', contentByAbsoluteRoute: { __typename?: 'BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect', properties: Array<{ __typename?: 'BasicProperty', value: { __typename?: 'BasicBlockListModel' } | { __typename?: 'BasicContentPicker' } | { __typename?: 'BasicDateTimePicker' } | { __typename?: 'BasicLabel' } | { __typename?: 'BasicMediaPicker' } | { __typename?: 'BasicMemberPicker' } | { __typename?: 'BasicMultiUrlPicker' } | { __typename?: 'BasicNestedContent' } | { __typename?: 'BasicPropertyValue', alias: string, value: any } | { __typename?: 'BasicRichText' } | { __typename?: 'BasicUnsupportedPropertyValue' } }> } };
-
-export type GetPagesQueryVariables = Exact<{
-  culture: Scalars['String'];
-}>;
-
-
-export type GetPagesQuery = { __typename?: 'Query', contentByAbsoluteRoute: { __typename?: 'BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect', children: Array<{ __typename?: 'BasicContentOfBasicPropertyAndBasicContentTypeAndBasicContentRedirect', properties: Array<{ __typename?: 'BasicProperty', value: { __typename?: 'BasicBlockListModel' } | { __typename?: 'BasicContentPicker' } | { __typename?: 'BasicDateTimePicker' } | { __typename?: 'BasicLabel' } | { __typename?: 'BasicMediaPicker' } | { __typename?: 'BasicMemberPicker' } | { __typename?: 'BasicMultiUrlPicker' } | { __typename?: 'BasicNestedContent' } | { __typename?: 'BasicPropertyValue', alias: string, value: any } | { __typename?: 'BasicRichText' } | { __typename?: 'BasicUnsupportedPropertyValue' } }> }> } };
+export type UploadFolderChildrenArgs = {
+  filters: InputMaybe<UploadFolderFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
 
 
-export const GetPageDocument = gql`
-    query getPage($url: String!) {
-  contentByAbsoluteRoute(route: $url) {
-    properties {
-      value {
-        ... on BasicPropertyValue {
-          alias
-          value
-        }
-      }
-    }
-  }
-}
-    `;
-export const GetPagesDocument = gql`
-    query getPages($culture: String!) {
-  contentByAbsoluteRoute(route: "/", culture: $culture) {
-    children {
-      properties {
-        value {
-          ... on BasicPropertyValue {
-            alias
-            value
+export type UploadFolderFilesArgs = {
+  filters: InputMaybe<UploadFileFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type UploadFolderEntity = {
+  __typename?: 'UploadFolderEntity';
+  attributes: Maybe<UploadFolder>;
+  id: Maybe<Scalars['ID']>;
+};
+
+export type UploadFolderEntityResponse = {
+  __typename?: 'UploadFolderEntityResponse';
+  data: Maybe<UploadFolderEntity>;
+};
+
+export type UploadFolderEntityResponseCollection = {
+  __typename?: 'UploadFolderEntityResponseCollection';
+  data: Array<UploadFolderEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type UploadFolderFiltersInput = {
+  and: InputMaybe<Array<InputMaybe<UploadFolderFiltersInput>>>;
+  children: InputMaybe<UploadFolderFiltersInput>;
+  createdAt: InputMaybe<DateTimeFilterInput>;
+  files: InputMaybe<UploadFileFiltersInput>;
+  id: InputMaybe<IdFilterInput>;
+  name: InputMaybe<StringFilterInput>;
+  not: InputMaybe<UploadFolderFiltersInput>;
+  or: InputMaybe<Array<InputMaybe<UploadFolderFiltersInput>>>;
+  parent: InputMaybe<UploadFolderFiltersInput>;
+  path: InputMaybe<StringFilterInput>;
+  pathId: InputMaybe<IntFilterInput>;
+  updatedAt: InputMaybe<DateTimeFilterInput>;
+};
+
+export type UploadFolderInput = {
+  children: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  files: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  name: InputMaybe<Scalars['String']>;
+  parent: InputMaybe<Scalars['ID']>;
+  path: InputMaybe<Scalars['String']>;
+  pathId: InputMaybe<Scalars['Int']>;
+};
+
+export type UploadFolderRelationResponseCollection = {
+  __typename?: 'UploadFolderRelationResponseCollection';
+  data: Array<UploadFolderEntity>;
+};
+
+export type UsersPermissionsCreateRolePayload = {
+  __typename?: 'UsersPermissionsCreateRolePayload';
+  ok: Scalars['Boolean'];
+};
+
+export type UsersPermissionsDeleteRolePayload = {
+  __typename?: 'UsersPermissionsDeleteRolePayload';
+  ok: Scalars['Boolean'];
+};
+
+export type UsersPermissionsLoginInput = {
+  identifier: Scalars['String'];
+  password: Scalars['String'];
+  provider: Scalars['String'];
+};
+
+export type UsersPermissionsLoginPayload = {
+  __typename?: 'UsersPermissionsLoginPayload';
+  jwt: Maybe<Scalars['String']>;
+  user: UsersPermissionsMe;
+};
+
+export type UsersPermissionsMe = {
+  __typename?: 'UsersPermissionsMe';
+  blocked: Maybe<Scalars['Boolean']>;
+  confirmed: Maybe<Scalars['Boolean']>;
+  email: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  role: Maybe<UsersPermissionsMeRole>;
+  username: Scalars['String'];
+};
+
+export type UsersPermissionsMeRole = {
+  __typename?: 'UsersPermissionsMeRole';
+  description: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  type: Maybe<Scalars['String']>;
+};
+
+export type UsersPermissionsPasswordPayload = {
+  __typename?: 'UsersPermissionsPasswordPayload';
+  ok: Scalars['Boolean'];
+};
+
+export type UsersPermissionsPermission = {
+  __typename?: 'UsersPermissionsPermission';
+  action: Scalars['String'];
+  createdAt: Maybe<Scalars['DateTime']>;
+  role: Maybe<UsersPermissionsRoleEntityResponse>;
+  updatedAt: Maybe<Scalars['DateTime']>;
+};
+
+export type UsersPermissionsPermissionEntity = {
+  __typename?: 'UsersPermissionsPermissionEntity';
+  attributes: Maybe<UsersPermissionsPermission>;
+  id: Maybe<Scalars['ID']>;
+};
+
+export type UsersPermissionsPermissionFiltersInput = {
+  action: InputMaybe<StringFilterInput>;
+  and: InputMaybe<Array<InputMaybe<UsersPermissionsPermissionFiltersInput>>>;
+  createdAt: InputMaybe<DateTimeFilterInput>;
+  id: InputMaybe<IdFilterInput>;
+  not: InputMaybe<UsersPermissionsPermissionFiltersInput>;
+  or: InputMaybe<Array<InputMaybe<UsersPermissionsPermissionFiltersInput>>>;
+  role: InputMaybe<UsersPermissionsRoleFiltersInput>;
+  updatedAt: InputMaybe<DateTimeFilterInput>;
+};
+
+export type UsersPermissionsPermissionRelationResponseCollection = {
+  __typename?: 'UsersPermissionsPermissionRelationResponseCollection';
+  data: Array<UsersPermissionsPermissionEntity>;
+};
+
+export type UsersPermissionsRegisterInput = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+  username: Scalars['String'];
+};
+
+export type UsersPermissionsRole = {
+  __typename?: 'UsersPermissionsRole';
+  createdAt: Maybe<Scalars['DateTime']>;
+  description: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  permissions: Maybe<UsersPermissionsPermissionRelationResponseCollection>;
+  type: Maybe<Scalars['String']>;
+  updatedAt: Maybe<Scalars['DateTime']>;
+  users: Maybe<UsersPermissionsUserRelationResponseCollection>;
+};
+
+
+export type UsersPermissionsRolePermissionsArgs = {
+  filters: InputMaybe<UsersPermissionsPermissionFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type UsersPermissionsRoleUsersArgs = {
+  filters: InputMaybe<UsersPermissionsUserFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type UsersPermissionsRoleEntity = {
+  __typename?: 'UsersPermissionsRoleEntity';
+  attributes: Maybe<UsersPermissionsRole>;
+  id: Maybe<Scalars['ID']>;
+};
+
+export type UsersPermissionsRoleEntityResponse = {
+  __typename?: 'UsersPermissionsRoleEntityResponse';
+  data: Maybe<UsersPermissionsRoleEntity>;
+};
+
+export type UsersPermissionsRoleEntityResponseCollection = {
+  __typename?: 'UsersPermissionsRoleEntityResponseCollection';
+  data: Array<UsersPermissionsRoleEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type UsersPermissionsRoleFiltersInput = {
+  and: InputMaybe<Array<InputMaybe<UsersPermissionsRoleFiltersInput>>>;
+  createdAt: InputMaybe<DateTimeFilterInput>;
+  description: InputMaybe<StringFilterInput>;
+  id: InputMaybe<IdFilterInput>;
+  name: InputMaybe<StringFilterInput>;
+  not: InputMaybe<UsersPermissionsRoleFiltersInput>;
+  or: InputMaybe<Array<InputMaybe<UsersPermissionsRoleFiltersInput>>>;
+  permissions: InputMaybe<UsersPermissionsPermissionFiltersInput>;
+  type: InputMaybe<StringFilterInput>;
+  updatedAt: InputMaybe<DateTimeFilterInput>;
+  users: InputMaybe<UsersPermissionsUserFiltersInput>;
+};
+
+export type UsersPermissionsRoleInput = {
+  description: InputMaybe<Scalars['String']>;
+  name: InputMaybe<Scalars['String']>;
+  permissions: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  type: InputMaybe<Scalars['String']>;
+  users: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+};
+
+export type UsersPermissionsUpdateRolePayload = {
+  __typename?: 'UsersPermissionsUpdateRolePayload';
+  ok: Scalars['Boolean'];
+};
+
+export type UsersPermissionsUser = {
+  __typename?: 'UsersPermissionsUser';
+  blocked: Maybe<Scalars['Boolean']>;
+  confirmed: Maybe<Scalars['Boolean']>;
+  createdAt: Maybe<Scalars['DateTime']>;
+  email: Scalars['String'];
+  provider: Maybe<Scalars['String']>;
+  role: Maybe<UsersPermissionsRoleEntityResponse>;
+  updatedAt: Maybe<Scalars['DateTime']>;
+  username: Scalars['String'];
+};
+
+export type UsersPermissionsUserEntity = {
+  __typename?: 'UsersPermissionsUserEntity';
+  attributes: Maybe<UsersPermissionsUser>;
+  id: Maybe<Scalars['ID']>;
+};
+
+export type UsersPermissionsUserEntityResponse = {
+  __typename?: 'UsersPermissionsUserEntityResponse';
+  data: Maybe<UsersPermissionsUserEntity>;
+};
+
+export type UsersPermissionsUserEntityResponseCollection = {
+  __typename?: 'UsersPermissionsUserEntityResponseCollection';
+  data: Array<UsersPermissionsUserEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type UsersPermissionsUserFiltersInput = {
+  and: InputMaybe<Array<InputMaybe<UsersPermissionsUserFiltersInput>>>;
+  blocked: InputMaybe<BooleanFilterInput>;
+  confirmationToken: InputMaybe<StringFilterInput>;
+  confirmed: InputMaybe<BooleanFilterInput>;
+  createdAt: InputMaybe<DateTimeFilterInput>;
+  email: InputMaybe<StringFilterInput>;
+  id: InputMaybe<IdFilterInput>;
+  not: InputMaybe<UsersPermissionsUserFiltersInput>;
+  or: InputMaybe<Array<InputMaybe<UsersPermissionsUserFiltersInput>>>;
+  password: InputMaybe<StringFilterInput>;
+  provider: InputMaybe<StringFilterInput>;
+  resetPasswordToken: InputMaybe<StringFilterInput>;
+  role: InputMaybe<UsersPermissionsRoleFiltersInput>;
+  updatedAt: InputMaybe<DateTimeFilterInput>;
+  username: InputMaybe<StringFilterInput>;
+};
+
+export type UsersPermissionsUserInput = {
+  blocked: InputMaybe<Scalars['Boolean']>;
+  confirmationToken: InputMaybe<Scalars['String']>;
+  confirmed: InputMaybe<Scalars['Boolean']>;
+  email: InputMaybe<Scalars['String']>;
+  password: InputMaybe<Scalars['String']>;
+  provider: InputMaybe<Scalars['String']>;
+  resetPasswordToken: InputMaybe<Scalars['String']>;
+  role: InputMaybe<Scalars['ID']>;
+  username: InputMaybe<Scalars['String']>;
+};
+
+export type UsersPermissionsUserRelationResponseCollection = {
+  __typename?: 'UsersPermissionsUserRelationResponseCollection';
+  data: Array<UsersPermissionsUserEntity>;
+};
+
+export type GetThematiquesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetThematiquesQuery = { __typename?: 'Query', thematiques: { __typename?: 'ThematiqueEntityResponseCollection', data: Array<{ __typename?: 'ThematiqueEntity', attributes: { __typename?: 'Thematique', Nom: string, categorie_de_sous_thematiques: { __typename?: 'CategorieDeSousThematiqueRelationResponseCollection', data: Array<{ __typename?: 'CategorieDeSousThematiqueEntity', attributes: { __typename?: 'CategorieDeSousThematique', Nom: string, sous_thematiques: { __typename?: 'SousThematiqueRelationResponseCollection', data: Array<{ __typename?: 'SousThematiqueEntity', attributes: { __typename?: 'SousThematique', Nom: string } }> } } }> } } }> } };
+
+
+export const GetThematiquesDocument = gql`
+    query getThematiques {
+  thematiques {
+    data {
+      attributes {
+        Nom
+        categorie_de_sous_thematiques {
+          data {
+            attributes {
+              Nom
+              sous_thematiques {
+                data {
+                  attributes {
+                    Nom
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -1298,11 +1224,8 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    getPage(variables: GetPageQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetPageQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetPageQuery>(GetPageDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getPage', 'query');
-    },
-    getPages(variables: GetPagesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetPagesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetPagesQuery>(GetPagesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getPages', 'query');
+    getThematiques(variables?: GetThematiquesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetThematiquesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetThematiquesQuery>(GetThematiquesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getThematiques', 'query');
     }
   };
 }

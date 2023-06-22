@@ -4,10 +4,8 @@ import {
     PHASE_PRODUCTION_SERVER,
 } from 'next/constants.js';
 
+/** @type {import("next").NextConfig} */
 const config = {
-    experimental: {
-        appDir: true
-    },
     reactStrictMode: true,
     trailingSlash: true,
     async headers(){
@@ -23,7 +21,7 @@ const config = {
                     " script-src 'self' 'unsafe-eval' 'unsafe-inline';" +
                     " font-src 'self' fonts.gstatic.com;" +
                     " manifest-src 'self';" +
-                    " img-src 'self' data: https://ik.imagekit.io;" +
+                    " img-src 'self'" +
                     " connect-src 'self';"
             }]
         }]
@@ -41,25 +39,26 @@ const config = {
         return [
             {
                 source: '/locales/:endpoint*',
-                destination: 'https://medecins-du-monde.azurewebsites.net/locales/:endpoint*',
+                destination: 'https://visitwalloniapass-umbraco.thankfulsmoke-f4b5636e.westeurope.azurecontainerapps.io/locales/:endpoint*',
             },
         ];
-    }
+    },
 };
+
 
 /** @type {(phase: PHASE_DEVELOPMENT_SERVER | PHASE_PRODUCTION_BUILD | PHASE_PRODUCTION_SERVER) => import("next").NextConfig} */
 function build(phase)
 {
     const isExport = phase === PHASE_PRODUCTION_BUILD;
-    let result = {
+    const res = {
         ...config,
         headers: !isExport ? config.headers : undefined,
-        redirects: !isExport ? config.redirects : undefined,
         output: isExport ? 'export' : undefined,
         distDir: isExport ? 'dist' : undefined,
         images:{
             ...config.images,
             loader: isExport ? 'custom' : 'default',
+            loaderFile: isExport ? './src/images/loader.ts' : undefined,
             domains: ['ik.imagekit.io', 'placehold.co', 'placekitten.com']
         },
         webpack(config, options)
@@ -68,16 +67,16 @@ function build(phase)
             let cfg = options.config.serverRuntimeConfig;
             options.config.publicRuntimeConfig.isDev = cfg.isDev = options.dev;
             options.config.publicRuntimeConfig.isStatic = cfg.isStatic = !options.dev && !cfg.isPreview;
-            options.config.publicRuntimeConfig.isExport = cfg.isExport = isExport;
+
             return config;
         },
     }
-
-    if(isExport){
-        delete result.rewrites;
+    if (isExport)
+    {
+        delete res.rewrites;
+        delete res.redirects;
     }
-
-    return result;
+    return res;
 }
 
 export default build;

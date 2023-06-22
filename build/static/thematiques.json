@@ -1,0 +1,40 @@
+{
+  "data": [
+    {
+      "attributes": {
+        "Nom": "Aide à domicile",
+        "categorie_de_sous_thematiques": {
+          "data": [
+            {
+              "attributes": {
+                "Nom": "Activité pour les parents",
+                "sous_thematiques": {
+                  "data": [
+                    {
+                      "attributes": {
+                        "Nom": "Activités physiques et sportives"
+                      }
+                    },
+                    {
+                      "attributes": {
+                        "Nom": "Loisirs et culture à petits prix"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "attributes": {
+        "Nom": "Energie",
+        "categorie_de_sous_thematiques": {
+          "data": []
+        }
+      }
+    }
+  ]
+}

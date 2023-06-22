@@ -1,0 +1,23 @@
+query getThematiques {
+  thematiques{
+    data{
+      attributes{
+        Nom
+        categorie_de_sous_thematiques{
+          data{
+            attributes{
+              Nom
+              sous_thematiques{
+                data{
+                  attributes{
+                    Nom
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

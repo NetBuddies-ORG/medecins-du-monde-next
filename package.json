@@ -1,37 +1,57 @@
 {
-  "name": "medecins-du-monde-next",
-  "version": "0.1.0",
+  "name": "visitwallonia-pass-react",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "graphql": "yarn graphql-codegen --config codegen.yml",
-    "start": "yarn env-cmd -f env.js yarn next dev",
-    "build:pre": "yarn ts-node ./build/scripts/prebuild.ts",
+    "start": "yarn env-cmd --no-override yarn next dev",
     "build:static": "yarn run build:next",
+    "build:pre": "yarn ts-node ./build/scripts/prebuild.ts",
     "build:next": "yarn run build:pre && yarn next build",
-    "lint": "next lint"
+    "build:post": "ts-node ./build/scripts/postbuild.ts",
+    "build:preview": "ts-node ./build/scripts/postbuild.ts",
+    "lint": "next lint",
+    "env": "yarn env-cmd --no-override yarn run"
   },
   "dependencies": {
-    "next": "13.4.4",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "typescript": "5.1.3"
+    "classnames": "^2.3.2",
+    "i18next": "^22.5.1",
+    "i18next-http-backend": "^2.2.1",
+    "i18next-resources-to-backend": "^1.1.4",
+    "next": "13.4.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-i18next": "^12.3.1",
+    "react-leaflet": "^4.2.1",
+    "react-slick": "^0.29.0",
+    "react-use": "^17.4.0"
   },
   "devDependencies": {
-    "@types/node": "20.2.6",
-    "@types/react": "18.2.10",
-    "@types/react-dom": "18.2.4",
     "@graphql-codegen/cli": "^3.3.1",
     "@graphql-codegen/typescript": "^3.0.4",
     "@graphql-codegen/typescript-graphql-request": "^4.5.9",
     "@graphql-codegen/typescript-operations": "^3.0.4",
+    "@types/jsonwebtoken": "^9.0.2",
+    "@types/node": "20.1.0",
+    "@types/node-fetch": "^2.6.4",
+    "@types/react": "18.2.8",
+    "@types/react-dom": "18.2.4",
+    "@types/react-slick": "^0.23.10",
     "env-cmd": "^10.1.0",
-    "jsonwebtoken": "^8.5.1",
-    "eslint": "8.42.0",
-    "eslint-config-next": "13.4.4",
+    "eslint": "8.40.0",
+    "eslint-config-next": "13.4.1",
     "graphql": "^16.6.0",
     "graphql-request": "5.1.0",
     "graphql-tag": "^2.12.6",
+    "jsonwebtoken": "^8.5.1",
+    "node-fetch": "^2.6.9",
+    "sass": "^1.62.1",
+    "server-only-context": "^0.0.4",
+    "slick-carousel": "^1.8.1",
     "ts-node": "^10.9.1",
-    "server-only-context": "^0.0.4"
+    "typescript": "5.1.3"
+  },
+  "engines": {
+    "node": "18.16.0"
   }
 }
