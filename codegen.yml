@@ -1,5 +1,5 @@
 overwrite: true
-schema: "http://127.0.0.1:1337/graphql"
+schema: "https://strapi-mdm.azurewebsites.net/graphql"
 documents: "src/**/*.graphql"
 generates:
   src/services/GraphQL.ts:

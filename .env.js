@@ -13,7 +13,7 @@ async function getVariables()
 {
     try {
         return {
-            STRAPI_CMS_BASE_URL: 'http://127.0.0.1:1337',
+            STRAPI_CMS_BASE_URL: 'https://strapi-mdm.azurewebsites.net/',
             NEXT_PUBLIC_REVISION_THEMATIQUE: await getHash('thematiques.json'),
         };
     } catch (e) {
