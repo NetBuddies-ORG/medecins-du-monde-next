@@ -1,4 +1,4 @@
-import '@/assets/styles/scss/main.scss';
+import '@/assets/styles/main.scss';
 import {Metadata} from "next";
 import React from "react";
 

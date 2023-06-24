@@ -1,12 +1,17 @@
-import React from 'react';
+'use client';
+import React, {useEffect} from 'react';
+import {useSearch} from "@/services/Search";
+import {useAsyncEffect} from "@/hooks";
 
-type CmsPageProps = {
-    params: {
-        p?: string[];
-    }
-};
+export default function MainPage() {
 
-export default function CmsPage({params: {p}}: CmsPageProps) {
+    const {isReady, search} = useSearch('fr');
+
+    useAsyncEffect(async () => {
+        if (isReady) {
+            await search({keyword: ''});
+        }
+    }, [isReady]);
 
     return (
         <>
@@ -14,5 +19,5 @@ export default function CmsPage({params: {p}}: CmsPageProps) {
                 coucou
             </main>
         </>
-);
+    );
 }

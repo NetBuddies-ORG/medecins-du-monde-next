@@ -12,9 +12,8 @@ export async function fetchThematiques() {
 
 async function buildCmsPageByCulture() {
     const client = getStrapiClient();
-    console.info(client);
 
-    const pages = (await client.getThematiques()).thematiques;
+    const pages = (await client.getThematiques()).thematiques.data;
 
     writeFile(join(__dirname, `../../static/thematiques.json`), JSON.stringify(pages), { encoding: 'utf8' });
 

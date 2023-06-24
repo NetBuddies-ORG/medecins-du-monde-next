@@ -14,7 +14,7 @@ const config = {
             headers:[{
                 key:"content-security-policy",
                 value:"" +
-                    "default-src 'none';" +
+                    "default-src 'self';" +
                     " style-src 'self' 'unsafe-inline' fonts.googleapis.com; prefetch-src 'self';" +
                     " base-uri 'none';" +
                     " form-action 'self';" +
@@ -58,8 +58,6 @@ function build(phase)
         images:{
             ...config.images,
             loader: isExport ? 'custom' : 'default',
-            loaderFile: isExport ? './src/images/loader.ts' : undefined,
-            domains: ['ik.imagekit.io', 'placehold.co', 'placekitten.com']
         },
         webpack(config, options)
         {
