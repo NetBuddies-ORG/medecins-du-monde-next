@@ -58,6 +58,7 @@ function build(phase)
         images:{
             ...config.images,
             loader: isExport ? 'custom' : 'default',
+            loaderFile: isExport ? './src/images/loader.ts' : undefined,
         },
         webpack(config, options)
         {

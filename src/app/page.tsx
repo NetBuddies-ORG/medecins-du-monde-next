@@ -2,6 +2,7 @@
 import React, {useEffect} from 'react';
 import {useSearch} from "@/services/Search";
 import {useAsyncEffect} from "@/hooks";
+import {getStrapiClient} from "@/services/Strapi";
 
 export default function MainPage() {
 
