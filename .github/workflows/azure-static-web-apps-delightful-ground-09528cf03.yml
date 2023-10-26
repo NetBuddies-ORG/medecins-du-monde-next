@@ -1,6 +1,7 @@
 name: Site - CI/CD - Staging
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
