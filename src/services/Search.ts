@@ -1,10 +1,10 @@
 import {DBSchema, IDBPDatabase, openDB} from "idb";
 import type {Index} from 'lunr';
 import {Deferred} from "@/helpers";
-import {Thematique} from "@/services/GraphQL";
+import {Organisme} from "@/services/GraphQL";
 import {useAsync} from "react-use";
 
-interface ThematiqueSchema {
+interface OrganismeSchema {
     value: any;
     key: string;
     indexes:
@@ -14,24 +14,25 @@ interface ThematiqueSchema {
 }
 
 interface MdmDB extends DBSchema {
-    'thematiques': ThematiqueSchema,
+    'organismes': OrganismeSchema,
     revision:
         {
             value: string;
-            key: 'REVISION_THEMATIQUE';
+            key: 'REVISION_ORGANISME';
         }
 }
 
 let indexLanguage: string;
 let db: Promise<IDBPDatabase<MdmDB>>;
 let index: Index;
-let thematiquesStoreName: 'thematiques' = 'thematiques';
+let organismesStoreName: 'organismes' = 'organismes';
 let revisionStoreName: 'revision' = 'revision';
 
-const NEXT_PUBLIC_REVISION_THEMATIQUE = process.env.NEXT_PUBLIC_REVISION_THEMATIQUE;
+const NEXT_PUBLIC_REVISION_ORGANISME = process.env.NEXT_PUBLIC_REVISION_ORGANISME;
 
-const getThematique = (id: string) => db.then(data => data.get(thematiquesStoreName, id));
-const getThematiques = () => import(`../../build/static/thematiques.json`).then(({default: p}) => p);
+const getOrganisme = (id: string) => db.then(data => data.get(organismesStoreName, id));
+const getOrganismes = () => import(`../../build/static/organismes.json`).then(({default: p}) => p);
+
 
 async function setupDB(language: string): Promise<IDBPDatabase<MdmDB>> {
 
@@ -39,27 +40,26 @@ async function setupDB(language: string): Promise<IDBPDatabase<MdmDB>> {
         upgrade(db, oldVersion, _, transaction) {
             if (oldVersion < 1) {
                 db.createObjectStore(revisionStoreName);
-                db.createObjectStore(thematiquesStoreName, {keyPath: 'id'});
+                db.createObjectStore(organismesStoreName, {keyPath: 'id'});
             }
         }
     }));
 
-    const thematiquesRevisionIndexDb = await data.get('revision', 'REVISION_THEMATIQUE');
-    const thematiquesRevisionBuilt = NEXT_PUBLIC_REVISION_THEMATIQUE;
+    const organismesRevisionIndexDb = await data.get('revision', 'REVISION_ORGANISME');
+    const organismesRevisionBuilt = NEXT_PUBLIC_REVISION_ORGANISME;
 
-    if (!thematiquesRevisionIndexDb || thematiquesRevisionBuilt !== thematiquesRevisionIndexDb) {
-        const thematiques = await getThematiques();
-        const transaction = data.transaction([revisionStoreName, thematiquesStoreName], 'readwrite');
+    if (!organismesRevisionIndexDb || organismesRevisionBuilt !== organismesRevisionIndexDb) {
+        const organismes = await getOrganismes();
+        const transaction = data.transaction([revisionStoreName, organismesStoreName], 'readwrite');
         const revisionStore = transaction.objectStore(revisionStoreName);
-        const thematiquesStore = transaction.objectStore(thematiquesStoreName);
+        const organismesStore = transaction.objectStore(organismesStoreName);
 
 
-        await revisionStore.put(thematiquesRevisionBuilt!, 'REVISION_THEMATIQUE');
-        await thematiquesStore.clear();
-        await Promise.all(thematiques.map(t => thematiquesStore.put(t)));
+        await revisionStore.put(organismesRevisionBuilt!, 'REVISION_ORGANISME');
+        await organismesStore.clear();
+        await Promise.all(organismes.map(t => organismesStore.put(t)));
         await transaction.done;
     }
-
     return data;
 }
 
@@ -75,7 +75,7 @@ async function initialize(language: string = 'fr') {
     const deferred = new Deferred();
     initialization.set(language, deferred.promise);
     indexLanguage = language;
-    thematiquesStoreName = `thematiques`;
+    organismesStoreName = `organismes`;
     db = setupDB(language);
     const [
         {default: lunr},
@@ -104,8 +104,8 @@ export interface SearchParams {
 interface SearchInterface {
     isReady: boolean;
     search(params: SearchParams): Promise<string[]>;
-    getThematique(id: string): Promise<Thematique>;
-    getThematiques(): Promise<Thematique[]>;
+    getOrganisme(id: string): Promise<Organisme>;
+    getOrganismes(): Promise<Organisme[]>;
 }
 
 export function useSearch(language: string): SearchInterface {
@@ -114,9 +114,9 @@ export function useSearch(language: string): SearchInterface {
     return {
         isReady: !loading,
         search: !loading ? search : () => Promise.reject(new Error('Search engine is not ready')),
-        getThematique: !loading ? getThematique : () => Promise.reject(new Error('DB is not ready')),
-        getThematiques(): Promise<any[]> {
-            return db.then(data => data.getAll(thematiquesStoreName));
+        getOrganisme: !loading ? getOrganisme : () => Promise.reject(new Error('DB is not ready')),
+        getOrganismes(): Promise<any[]> {
+            return db.then(data => data.getAll(organismesStoreName));
         }
     };
 }

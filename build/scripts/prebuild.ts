@@ -1,10 +1,10 @@
-import {fetchThematiques} from "./fetch-data/fetchThematiques";
+import {fetchOrganismes} from "./fetch-data/fetchOrganismes";
 import {buildIndexes} from "./index-builder/build-indexes";
 
 console.info('Prebuild started...');
 
 /* Write here procedures to execute before the build */
 Promise.all([
-    fetchThematiques(),
+    fetchOrganismes(),
     buildIndexes()
 ]).then(() => console.info('Prebuild done!'));

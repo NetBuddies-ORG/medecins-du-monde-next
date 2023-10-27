@@ -2,7 +2,7 @@ import {writeFile} from "fs/promises";
 import {join} from "path";
 import lunr from 'lunr';
 import {removeDiacriticsSpelling} from "./removeDiacriticsSpelling";
-import {ThematiqueEntity} from "@/services/GraphQL";
+import {OrganismeEntity} from "@/services/GraphQL";
 require('lunr-languages/lunr.stemmer.support')(lunr);
 require('lunr-languages/lunr.fr')(lunr);
 require('lunr-languages/lunr.nl')(lunr);
@@ -10,13 +10,13 @@ require('lunr-languages/lunr.de')(lunr);
 
 async function buildIndex()
 {
-    const thematiques = require(`../../static/thematiques.json`);
+    const organismes = require(`../../static/organismes.json`);
     const index = lunr(function ()
     {
         this.use(removeDiacriticsSpelling);
         this.ref('id');
-        this.field('name_thematique', {extractor: (p: ThematiqueEntity)  => p.attributes.Nom});
-        thematiques.forEach(p => this.add(p));
+        this.field('name_organismes', {extractor: (p: OrganismeEntity)  => p.attributes.Nom});
+        organismes.forEach(p => this.add(p));
     });
 
     const jsonIndex = JSON.stringify(index);

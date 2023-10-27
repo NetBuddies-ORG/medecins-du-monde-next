@@ -34,6 +34,7 @@ export type BooleanFilterInput = {
   lt: InputMaybe<Scalars['Boolean']>;
   lte: InputMaybe<Scalars['Boolean']>;
   ne: InputMaybe<Scalars['Boolean']>;
+  nei: InputMaybe<Scalars['Boolean']>;
   not: InputMaybe<BooleanFilterInput>;
   notContains: InputMaybe<Scalars['Boolean']>;
   notContainsi: InputMaybe<Scalars['Boolean']>;
@@ -44,64 +45,56 @@ export type BooleanFilterInput = {
   startsWith: InputMaybe<Scalars['Boolean']>;
 };
 
-export type CategorieDeSousThematique = {
-  __typename?: 'CategorieDeSousThematique';
+export type Categorie = {
+  __typename?: 'Categorie';
   Nom: Maybe<Scalars['String']>;
   createdAt: Maybe<Scalars['DateTime']>;
   publishedAt: Maybe<Scalars['DateTime']>;
-  sous_thematiques: Maybe<SousThematiqueRelationResponseCollection>;
-  thematique: Maybe<ThematiqueEntityResponse>;
+  sous_categories: Maybe<SousCategorieRelationResponseCollection>;
   updatedAt: Maybe<Scalars['DateTime']>;
 };
 
 
-export type CategorieDeSousThematiqueSous_ThematiquesArgs = {
-  filters: InputMaybe<SousThematiqueFiltersInput>;
+export type CategorieSous_CategoriesArgs = {
+  filters: InputMaybe<SousCategorieFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   publicationState?: InputMaybe<PublicationState>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
-export type CategorieDeSousThematiqueEntity = {
-  __typename?: 'CategorieDeSousThematiqueEntity';
-  attributes: Maybe<CategorieDeSousThematique>;
+export type CategorieEntity = {
+  __typename?: 'CategorieEntity';
+  attributes: Maybe<Categorie>;
   id: Maybe<Scalars['ID']>;
 };
 
-export type CategorieDeSousThematiqueEntityResponse = {
-  __typename?: 'CategorieDeSousThematiqueEntityResponse';
-  data: Maybe<CategorieDeSousThematiqueEntity>;
+export type CategorieEntityResponse = {
+  __typename?: 'CategorieEntityResponse';
+  data: Maybe<CategorieEntity>;
 };
 
-export type CategorieDeSousThematiqueEntityResponseCollection = {
-  __typename?: 'CategorieDeSousThematiqueEntityResponseCollection';
-  data: Array<CategorieDeSousThematiqueEntity>;
+export type CategorieEntityResponseCollection = {
+  __typename?: 'CategorieEntityResponseCollection';
+  data: Array<CategorieEntity>;
   meta: ResponseCollectionMeta;
 };
 
-export type CategorieDeSousThematiqueFiltersInput = {
+export type CategorieFiltersInput = {
   Nom: InputMaybe<StringFilterInput>;
-  and: InputMaybe<Array<InputMaybe<CategorieDeSousThematiqueFiltersInput>>>;
+  and: InputMaybe<Array<InputMaybe<CategorieFiltersInput>>>;
   createdAt: InputMaybe<DateTimeFilterInput>;
   id: InputMaybe<IdFilterInput>;
-  not: InputMaybe<CategorieDeSousThematiqueFiltersInput>;
-  or: InputMaybe<Array<InputMaybe<CategorieDeSousThematiqueFiltersInput>>>;
+  not: InputMaybe<CategorieFiltersInput>;
+  or: InputMaybe<Array<InputMaybe<CategorieFiltersInput>>>;
   publishedAt: InputMaybe<DateTimeFilterInput>;
-  sous_thematiques: InputMaybe<SousThematiqueFiltersInput>;
-  thematique: InputMaybe<ThematiqueFiltersInput>;
+  sous_categories: InputMaybe<SousCategorieFiltersInput>;
   updatedAt: InputMaybe<DateTimeFilterInput>;
 };
 
-export type CategorieDeSousThematiqueInput = {
+export type CategorieInput = {
   Nom: InputMaybe<Scalars['String']>;
   publishedAt: InputMaybe<Scalars['DateTime']>;
-  sous_thematiques: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
-  thematique: InputMaybe<Scalars['ID']>;
-};
-
-export type CategorieDeSousThematiqueRelationResponseCollection = {
-  __typename?: 'CategorieDeSousThematiqueRelationResponseCollection';
-  data: Array<CategorieDeSousThematiqueEntity>;
+  sous_categories: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
 };
 
 export type ComponentComponentsSeo = {
@@ -130,6 +123,7 @@ export type DateTimeFilterInput = {
   lt: InputMaybe<Scalars['DateTime']>;
   lte: InputMaybe<Scalars['DateTime']>;
   ne: InputMaybe<Scalars['DateTime']>;
+  nei: InputMaybe<Scalars['DateTime']>;
   not: InputMaybe<DateTimeFilterInput>;
   notContains: InputMaybe<Scalars['DateTime']>;
   notContainsi: InputMaybe<Scalars['DateTime']>;
@@ -166,6 +160,7 @@ export type FloatFilterInput = {
   lt: InputMaybe<Scalars['Float']>;
   lte: InputMaybe<Scalars['Float']>;
   ne: InputMaybe<Scalars['Float']>;
+  nei: InputMaybe<Scalars['Float']>;
   not: InputMaybe<FloatFilterInput>;
   notContains: InputMaybe<Scalars['Float']>;
   notContainsi: InputMaybe<Scalars['Float']>;
@@ -176,7 +171,7 @@ export type FloatFilterInput = {
   startsWith: InputMaybe<Scalars['Float']>;
 };
 
-export type GenericMorph = CategorieDeSousThematique | ComponentComponentsSeo | ComponentComponentsTitre | I18NLocale | Organisme | Page | SousThematique | Thematique | UploadFile | UploadFolder | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = Categorie | ComponentComponentsSeo | ComponentComponentsTitre | I18NLocale | Langue | Organisme | Page | PublicSpecifique | Service | SousCategorie | UploadFile | UploadFolder | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type I18NLocale = {
   __typename?: 'I18NLocale';
@@ -228,6 +223,7 @@ export type IdFilterInput = {
   lt: InputMaybe<Scalars['ID']>;
   lte: InputMaybe<Scalars['ID']>;
   ne: InputMaybe<Scalars['ID']>;
+  nei: InputMaybe<Scalars['ID']>;
   not: InputMaybe<IdFilterInput>;
   notContains: InputMaybe<Scalars['ID']>;
   notContainsi: InputMaybe<Scalars['ID']>;
@@ -252,6 +248,7 @@ export type IntFilterInput = {
   lt: InputMaybe<Scalars['Int']>;
   lte: InputMaybe<Scalars['Int']>;
   ne: InputMaybe<Scalars['Int']>;
+  nei: InputMaybe<Scalars['Int']>;
   not: InputMaybe<IntFilterInput>;
   notContains: InputMaybe<Scalars['Int']>;
   notContainsi: InputMaybe<Scalars['Int']>;
@@ -276,6 +273,7 @@ export type JsonFilterInput = {
   lt: InputMaybe<Scalars['JSON']>;
   lte: InputMaybe<Scalars['JSON']>;
   ne: InputMaybe<Scalars['JSON']>;
+  nei: InputMaybe<Scalars['JSON']>;
   not: InputMaybe<JsonFilterInput>;
   notContains: InputMaybe<Scalars['JSON']>;
   notContainsi: InputMaybe<Scalars['JSON']>;
@@ -286,29 +284,91 @@ export type JsonFilterInput = {
   startsWith: InputMaybe<Scalars['JSON']>;
 };
 
+export type Langue = {
+  __typename?: 'Langue';
+  Drapeau: Maybe<UploadFileEntityResponse>;
+  Nom: Maybe<Scalars['String']>;
+  createdAt: Maybe<Scalars['DateTime']>;
+  organismes: Maybe<OrganismeRelationResponseCollection>;
+  publishedAt: Maybe<Scalars['DateTime']>;
+  updatedAt: Maybe<Scalars['DateTime']>;
+};
+
+
+export type LangueOrganismesArgs = {
+  filters: InputMaybe<OrganismeFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type LangueEntity = {
+  __typename?: 'LangueEntity';
+  attributes: Maybe<Langue>;
+  id: Maybe<Scalars['ID']>;
+};
+
+export type LangueEntityResponse = {
+  __typename?: 'LangueEntityResponse';
+  data: Maybe<LangueEntity>;
+};
+
+export type LangueEntityResponseCollection = {
+  __typename?: 'LangueEntityResponseCollection';
+  data: Array<LangueEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type LangueFiltersInput = {
+  Nom: InputMaybe<StringFilterInput>;
+  and: InputMaybe<Array<InputMaybe<LangueFiltersInput>>>;
+  createdAt: InputMaybe<DateTimeFilterInput>;
+  id: InputMaybe<IdFilterInput>;
+  not: InputMaybe<LangueFiltersInput>;
+  or: InputMaybe<Array<InputMaybe<LangueFiltersInput>>>;
+  organismes: InputMaybe<OrganismeFiltersInput>;
+  publishedAt: InputMaybe<DateTimeFilterInput>;
+  updatedAt: InputMaybe<DateTimeFilterInput>;
+};
+
+export type LangueInput = {
+  Drapeau: InputMaybe<Scalars['ID']>;
+  Nom: InputMaybe<Scalars['String']>;
+  organismes: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  publishedAt: InputMaybe<Scalars['DateTime']>;
+};
+
+export type LangueRelationResponseCollection = {
+  __typename?: 'LangueRelationResponseCollection';
+  data: Array<LangueEntity>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   /** Change user password. Confirm with the current password. */
   changePassword: Maybe<UsersPermissionsLoginPayload>;
-  createCategorieDeSousThematique: Maybe<CategorieDeSousThematiqueEntityResponse>;
+  createCategorie: Maybe<CategorieEntityResponse>;
+  createLangue: Maybe<LangueEntityResponse>;
   createOrganisme: Maybe<OrganismeEntityResponse>;
   createPage: Maybe<PageEntityResponse>;
   createPageLocalization: Maybe<PageEntityResponse>;
-  createSousThematique: Maybe<SousThematiqueEntityResponse>;
-  createSousThematiqueLocalization: Maybe<SousThematiqueEntityResponse>;
-  createThematique: Maybe<ThematiqueEntityResponse>;
-  createThematiqueLocalization: Maybe<ThematiqueEntityResponse>;
+  createPublicSpecifique: Maybe<PublicSpecifiqueEntityResponse>;
+  createService: Maybe<ServiceEntityResponse>;
+  createServiceLocalization: Maybe<ServiceEntityResponse>;
+  createSousCategorie: Maybe<SousCategorieEntityResponse>;
   createUploadFile: Maybe<UploadFileEntityResponse>;
   createUploadFolder: Maybe<UploadFolderEntityResponse>;
   /** Create a new role */
   createUsersPermissionsRole: Maybe<UsersPermissionsCreateRolePayload>;
   /** Create a new user */
   createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
-  deleteCategorieDeSousThematique: Maybe<CategorieDeSousThematiqueEntityResponse>;
+  deleteCategorie: Maybe<CategorieEntityResponse>;
+  deleteLangue: Maybe<LangueEntityResponse>;
   deleteOrganisme: Maybe<OrganismeEntityResponse>;
   deletePage: Maybe<PageEntityResponse>;
-  deleteSousThematique: Maybe<SousThematiqueEntityResponse>;
-  deleteThematique: Maybe<ThematiqueEntityResponse>;
+  deletePublicSpecifique: Maybe<PublicSpecifiqueEntityResponse>;
+  deleteService: Maybe<ServiceEntityResponse>;
+  deleteSousCategorie: Maybe<SousCategorieEntityResponse>;
   deleteUploadFile: Maybe<UploadFileEntityResponse>;
   deleteUploadFolder: Maybe<UploadFolderEntityResponse>;
   /** Delete an existing role */
@@ -326,12 +386,14 @@ export type Mutation = {
   removeFile: Maybe<UploadFileEntityResponse>;
   /** Reset user password. Confirm with a code (resetToken from forgotPassword) */
   resetPassword: Maybe<UsersPermissionsLoginPayload>;
-  updateCategorieDeSousThematique: Maybe<CategorieDeSousThematiqueEntityResponse>;
+  updateCategorie: Maybe<CategorieEntityResponse>;
   updateFileInfo: UploadFileEntityResponse;
+  updateLangue: Maybe<LangueEntityResponse>;
   updateOrganisme: Maybe<OrganismeEntityResponse>;
   updatePage: Maybe<PageEntityResponse>;
-  updateSousThematique: Maybe<SousThematiqueEntityResponse>;
-  updateThematique: Maybe<ThematiqueEntityResponse>;
+  updatePublicSpecifique: Maybe<PublicSpecifiqueEntityResponse>;
+  updateService: Maybe<ServiceEntityResponse>;
+  updateSousCategorie: Maybe<SousCategorieEntityResponse>;
   updateUploadFile: Maybe<UploadFileEntityResponse>;
   updateUploadFolder: Maybe<UploadFolderEntityResponse>;
   /** Update an existing role */
@@ -349,8 +411,13 @@ export type MutationChangePasswordArgs = {
 };
 
 
-export type MutationCreateCategorieDeSousThematiqueArgs = {
-  data: CategorieDeSousThematiqueInput;
+export type MutationCreateCategorieArgs = {
+  data: CategorieInput;
+};
+
+
+export type MutationCreateLangueArgs = {
+  data: LangueInput;
 };
 
 
@@ -372,29 +439,26 @@ export type MutationCreatePageLocalizationArgs = {
 };
 
 
-export type MutationCreateSousThematiqueArgs = {
-  data: SousThematiqueInput;
+export type MutationCreatePublicSpecifiqueArgs = {
+  data: PublicSpecifiqueInput;
+};
+
+
+export type MutationCreateServiceArgs = {
+  data: ServiceInput;
   locale: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type MutationCreateSousThematiqueLocalizationArgs = {
-  data: InputMaybe<SousThematiqueInput>;
+export type MutationCreateServiceLocalizationArgs = {
+  data: InputMaybe<ServiceInput>;
   id: InputMaybe<Scalars['ID']>;
   locale: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type MutationCreateThematiqueArgs = {
-  data: ThematiqueInput;
-  locale: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type MutationCreateThematiqueLocalizationArgs = {
-  data: InputMaybe<ThematiqueInput>;
-  id: InputMaybe<Scalars['ID']>;
-  locale: InputMaybe<Scalars['I18NLocaleCode']>;
+export type MutationCreateSousCategorieArgs = {
+  data: SousCategorieInput;
 };
 
 
@@ -418,7 +482,12 @@ export type MutationCreateUsersPermissionsUserArgs = {
 };
 
 
-export type MutationDeleteCategorieDeSousThematiqueArgs = {
+export type MutationDeleteCategorieArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteLangueArgs = {
   id: Scalars['ID'];
 };
 
@@ -434,15 +503,19 @@ export type MutationDeletePageArgs = {
 };
 
 
-export type MutationDeleteSousThematiqueArgs = {
+export type MutationDeletePublicSpecifiqueArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteServiceArgs = {
   id: Scalars['ID'];
   locale: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type MutationDeleteThematiqueArgs = {
+export type MutationDeleteSousCategorieArgs = {
   id: Scalars['ID'];
-  locale: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
@@ -506,8 +579,8 @@ export type MutationResetPasswordArgs = {
 };
 
 
-export type MutationUpdateCategorieDeSousThematiqueArgs = {
-  data: CategorieDeSousThematiqueInput;
+export type MutationUpdateCategorieArgs = {
+  data: CategorieInput;
   id: Scalars['ID'];
 };
 
@@ -515,6 +588,12 @@ export type MutationUpdateCategorieDeSousThematiqueArgs = {
 export type MutationUpdateFileInfoArgs = {
   id: Scalars['ID'];
   info: InputMaybe<FileInfoInput>;
+};
+
+
+export type MutationUpdateLangueArgs = {
+  data: LangueInput;
+  id: Scalars['ID'];
 };
 
 
@@ -531,17 +610,22 @@ export type MutationUpdatePageArgs = {
 };
 
 
-export type MutationUpdateSousThematiqueArgs = {
-  data: SousThematiqueInput;
+export type MutationUpdatePublicSpecifiqueArgs = {
+  data: PublicSpecifiqueInput;
+  id: Scalars['ID'];
+};
+
+
+export type MutationUpdateServiceArgs = {
+  data: ServiceInput;
   id: Scalars['ID'];
   locale: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type MutationUpdateThematiqueArgs = {
-  data: ThematiqueInput;
+export type MutationUpdateSousCategorieArgs = {
+  data: SousCategorieInput;
   id: Scalars['ID'];
-  locale: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
@@ -579,16 +663,43 @@ export type MutationUploadArgs = {
 
 export type Organisme = {
   __typename?: 'Organisme';
+  Adresse: Maybe<Scalars['String']>;
+  Conditions: Maybe<Scalars['String']>;
+  Departement: Maybe<Scalars['String']>;
+  Description: Maybe<Scalars['String']>;
+  Email: Maybe<Scalars['String']>;
+  Horaires: Maybe<Scalars['String']>;
+  Logo: Maybe<UploadFileEntityResponse>;
   Nom: Maybe<Scalars['String']>;
+  Telephone: Maybe<Scalars['String']>;
+  Website: Maybe<Scalars['String']>;
   createdAt: Maybe<Scalars['DateTime']>;
+  langues: Maybe<LangueRelationResponseCollection>;
   publishedAt: Maybe<Scalars['DateTime']>;
-  sous_thematiques: Maybe<SousThematiqueRelationResponseCollection>;
+  services: Maybe<ServiceRelationResponseCollection>;
+  sous_categories: Maybe<SousCategorieRelationResponseCollection>;
   updatedAt: Maybe<Scalars['DateTime']>;
 };
 
 
-export type OrganismeSous_ThematiquesArgs = {
-  filters: InputMaybe<SousThematiqueFiltersInput>;
+export type OrganismeLanguesArgs = {
+  filters: InputMaybe<LangueFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type OrganismeServicesArgs = {
+  filters: InputMaybe<ServiceFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type OrganismeSous_CategoriesArgs = {
+  filters: InputMaybe<SousCategorieFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   publicationState?: InputMaybe<PublicationState>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -612,21 +723,42 @@ export type OrganismeEntityResponseCollection = {
 };
 
 export type OrganismeFiltersInput = {
+  Adresse: InputMaybe<StringFilterInput>;
+  Conditions: InputMaybe<StringFilterInput>;
+  Departement: InputMaybe<StringFilterInput>;
+  Description: InputMaybe<StringFilterInput>;
+  Email: InputMaybe<StringFilterInput>;
+  Horaires: InputMaybe<StringFilterInput>;
   Nom: InputMaybe<StringFilterInput>;
+  Telephone: InputMaybe<StringFilterInput>;
+  Website: InputMaybe<StringFilterInput>;
   and: InputMaybe<Array<InputMaybe<OrganismeFiltersInput>>>;
   createdAt: InputMaybe<DateTimeFilterInput>;
   id: InputMaybe<IdFilterInput>;
+  langues: InputMaybe<LangueFiltersInput>;
   not: InputMaybe<OrganismeFiltersInput>;
   or: InputMaybe<Array<InputMaybe<OrganismeFiltersInput>>>;
   publishedAt: InputMaybe<DateTimeFilterInput>;
-  sous_thematiques: InputMaybe<SousThematiqueFiltersInput>;
+  services: InputMaybe<ServiceFiltersInput>;
+  sous_categories: InputMaybe<SousCategorieFiltersInput>;
   updatedAt: InputMaybe<DateTimeFilterInput>;
 };
 
 export type OrganismeInput = {
+  Adresse: InputMaybe<Scalars['String']>;
+  Conditions: InputMaybe<Scalars['String']>;
+  Departement: InputMaybe<Scalars['String']>;
+  Description: InputMaybe<Scalars['String']>;
+  Email: InputMaybe<Scalars['String']>;
+  Horaires: InputMaybe<Scalars['String']>;
+  Logo: InputMaybe<Scalars['ID']>;
   Nom: InputMaybe<Scalars['String']>;
+  Telephone: InputMaybe<Scalars['String']>;
+  Website: InputMaybe<Scalars['String']>;
+  langues: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   publishedAt: InputMaybe<Scalars['DateTime']>;
-  sous_thematiques: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  services: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  sous_categories: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
 };
 
 export type OrganismeRelationResponseCollection = {
@@ -714,6 +846,47 @@ export type PaginationArg = {
   start: InputMaybe<Scalars['Int']>;
 };
 
+export type PublicSpecifique = {
+  __typename?: 'PublicSpecifique';
+  Nom: Maybe<Scalars['String']>;
+  createdAt: Maybe<Scalars['DateTime']>;
+  publishedAt: Maybe<Scalars['DateTime']>;
+  updatedAt: Maybe<Scalars['DateTime']>;
+};
+
+export type PublicSpecifiqueEntity = {
+  __typename?: 'PublicSpecifiqueEntity';
+  attributes: Maybe<PublicSpecifique>;
+  id: Maybe<Scalars['ID']>;
+};
+
+export type PublicSpecifiqueEntityResponse = {
+  __typename?: 'PublicSpecifiqueEntityResponse';
+  data: Maybe<PublicSpecifiqueEntity>;
+};
+
+export type PublicSpecifiqueEntityResponseCollection = {
+  __typename?: 'PublicSpecifiqueEntityResponseCollection';
+  data: Array<PublicSpecifiqueEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type PublicSpecifiqueFiltersInput = {
+  Nom: InputMaybe<StringFilterInput>;
+  and: InputMaybe<Array<InputMaybe<PublicSpecifiqueFiltersInput>>>;
+  createdAt: InputMaybe<DateTimeFilterInput>;
+  id: InputMaybe<IdFilterInput>;
+  not: InputMaybe<PublicSpecifiqueFiltersInput>;
+  or: InputMaybe<Array<InputMaybe<PublicSpecifiqueFiltersInput>>>;
+  publishedAt: InputMaybe<DateTimeFilterInput>;
+  updatedAt: InputMaybe<DateTimeFilterInput>;
+};
+
+export type PublicSpecifiqueInput = {
+  Nom: InputMaybe<Scalars['String']>;
+  publishedAt: InputMaybe<Scalars['DateTime']>;
+};
+
 export enum PublicationState {
   Live = 'LIVE',
   Preview = 'PREVIEW'
@@ -721,19 +894,23 @@ export enum PublicationState {
 
 export type Query = {
   __typename?: 'Query';
-  categorieDeSousThematique: Maybe<CategorieDeSousThematiqueEntityResponse>;
-  categorieDeSousThematiques: Maybe<CategorieDeSousThematiqueEntityResponseCollection>;
+  categorie: Maybe<CategorieEntityResponse>;
+  categories: Maybe<CategorieEntityResponseCollection>;
   i18NLocale: Maybe<I18NLocaleEntityResponse>;
   i18NLocales: Maybe<I18NLocaleEntityResponseCollection>;
+  langue: Maybe<LangueEntityResponse>;
+  langues: Maybe<LangueEntityResponseCollection>;
   me: Maybe<UsersPermissionsMe>;
   organisme: Maybe<OrganismeEntityResponse>;
   organismes: Maybe<OrganismeEntityResponseCollection>;
   page: Maybe<PageEntityResponse>;
   pages: Maybe<PageEntityResponseCollection>;
-  sousThematique: Maybe<SousThematiqueEntityResponse>;
-  sousThematiques: Maybe<SousThematiqueEntityResponseCollection>;
-  thematique: Maybe<ThematiqueEntityResponse>;
-  thematiques: Maybe<ThematiqueEntityResponseCollection>;
+  publicSpecifique: Maybe<PublicSpecifiqueEntityResponse>;
+  publicSpecifiques: Maybe<PublicSpecifiqueEntityResponseCollection>;
+  service: Maybe<ServiceEntityResponse>;
+  services: Maybe<ServiceEntityResponseCollection>;
+  sousCategorie: Maybe<SousCategorieEntityResponse>;
+  sousCategories: Maybe<SousCategorieEntityResponseCollection>;
   uploadFile: Maybe<UploadFileEntityResponse>;
   uploadFiles: Maybe<UploadFileEntityResponseCollection>;
   uploadFolder: Maybe<UploadFolderEntityResponse>;
@@ -745,13 +922,13 @@ export type Query = {
 };
 
 
-export type QueryCategorieDeSousThematiqueArgs = {
+export type QueryCategorieArgs = {
   id: InputMaybe<Scalars['ID']>;
 };
 
 
-export type QueryCategorieDeSousThematiquesArgs = {
-  filters: InputMaybe<CategorieDeSousThematiqueFiltersInput>;
+export type QueryCategoriesArgs = {
+  filters: InputMaybe<CategorieFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   publicationState?: InputMaybe<PublicationState>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -766,6 +943,19 @@ export type QueryI18NLocaleArgs = {
 export type QueryI18NLocalesArgs = {
   filters: InputMaybe<I18NLocaleFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type QueryLangueArgs = {
+  id: InputMaybe<Scalars['ID']>;
+};
+
+
+export type QueryLanguesArgs = {
+  filters: InputMaybe<LangueFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
@@ -798,14 +988,27 @@ export type QueryPagesArgs = {
 };
 
 
-export type QuerySousThematiqueArgs = {
+export type QueryPublicSpecifiqueArgs = {
+  id: InputMaybe<Scalars['ID']>;
+};
+
+
+export type QueryPublicSpecifiquesArgs = {
+  filters: InputMaybe<PublicSpecifiqueFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type QueryServiceArgs = {
   id: InputMaybe<Scalars['ID']>;
   locale: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type QuerySousThematiquesArgs = {
-  filters: InputMaybe<SousThematiqueFiltersInput>;
+export type QueryServicesArgs = {
+  filters: InputMaybe<ServiceFiltersInput>;
   locale: InputMaybe<Scalars['I18NLocaleCode']>;
   pagination?: InputMaybe<PaginationArg>;
   publicationState?: InputMaybe<PublicationState>;
@@ -813,15 +1016,13 @@ export type QuerySousThematiquesArgs = {
 };
 
 
-export type QueryThematiqueArgs = {
+export type QuerySousCategorieArgs = {
   id: InputMaybe<Scalars['ID']>;
-  locale: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type QueryThematiquesArgs = {
-  filters: InputMaybe<ThematiqueFiltersInput>;
-  locale: InputMaybe<Scalars['I18NLocaleCode']>;
+export type QuerySousCategoriesArgs = {
+  filters: InputMaybe<SousCategorieFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   publicationState?: InputMaybe<PublicationState>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -880,76 +1081,125 @@ export type ResponseCollectionMeta = {
   pagination: Pagination;
 };
 
-export type SousThematique = {
-  __typename?: 'SousThematique';
+export type Service = {
+  __typename?: 'Service';
   Nom: Maybe<Scalars['String']>;
-  categorie_de_sous_thematique: Maybe<CategorieDeSousThematiqueEntityResponse>;
   createdAt: Maybe<Scalars['DateTime']>;
   locale: Maybe<Scalars['String']>;
-  localizations: Maybe<SousThematiqueRelationResponseCollection>;
+  localizations: Maybe<ServiceRelationResponseCollection>;
   organismes: Maybe<OrganismeRelationResponseCollection>;
   publishedAt: Maybe<Scalars['DateTime']>;
   updatedAt: Maybe<Scalars['DateTime']>;
 };
 
 
-export type SousThematiqueLocalizationsArgs = {
-  filters: InputMaybe<SousThematiqueFiltersInput>;
+export type ServiceLocalizationsArgs = {
+  filters: InputMaybe<ServiceFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   publicationState?: InputMaybe<PublicationState>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 
-export type SousThematiqueOrganismesArgs = {
+export type ServiceOrganismesArgs = {
   filters: InputMaybe<OrganismeFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   publicationState?: InputMaybe<PublicationState>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
-export type SousThematiqueEntity = {
-  __typename?: 'SousThematiqueEntity';
-  attributes: Maybe<SousThematique>;
+export type ServiceEntity = {
+  __typename?: 'ServiceEntity';
+  attributes: Maybe<Service>;
   id: Maybe<Scalars['ID']>;
 };
 
-export type SousThematiqueEntityResponse = {
-  __typename?: 'SousThematiqueEntityResponse';
-  data: Maybe<SousThematiqueEntity>;
+export type ServiceEntityResponse = {
+  __typename?: 'ServiceEntityResponse';
+  data: Maybe<ServiceEntity>;
 };
 
-export type SousThematiqueEntityResponseCollection = {
-  __typename?: 'SousThematiqueEntityResponseCollection';
-  data: Array<SousThematiqueEntity>;
+export type ServiceEntityResponseCollection = {
+  __typename?: 'ServiceEntityResponseCollection';
+  data: Array<ServiceEntity>;
   meta: ResponseCollectionMeta;
 };
 
-export type SousThematiqueFiltersInput = {
+export type ServiceFiltersInput = {
   Nom: InputMaybe<StringFilterInput>;
-  and: InputMaybe<Array<InputMaybe<SousThematiqueFiltersInput>>>;
-  categorie_de_sous_thematique: InputMaybe<CategorieDeSousThematiqueFiltersInput>;
+  and: InputMaybe<Array<InputMaybe<ServiceFiltersInput>>>;
   createdAt: InputMaybe<DateTimeFilterInput>;
   id: InputMaybe<IdFilterInput>;
   locale: InputMaybe<StringFilterInput>;
-  localizations: InputMaybe<SousThematiqueFiltersInput>;
-  not: InputMaybe<SousThematiqueFiltersInput>;
-  or: InputMaybe<Array<InputMaybe<SousThematiqueFiltersInput>>>;
+  localizations: InputMaybe<ServiceFiltersInput>;
+  not: InputMaybe<ServiceFiltersInput>;
+  or: InputMaybe<Array<InputMaybe<ServiceFiltersInput>>>;
   organismes: InputMaybe<OrganismeFiltersInput>;
   publishedAt: InputMaybe<DateTimeFilterInput>;
   updatedAt: InputMaybe<DateTimeFilterInput>;
 };
 
-export type SousThematiqueInput = {
+export type ServiceInput = {
   Nom: InputMaybe<Scalars['String']>;
-  categorie_de_sous_thematique: InputMaybe<Scalars['ID']>;
   organismes: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   publishedAt: InputMaybe<Scalars['DateTime']>;
 };
 
-export type SousThematiqueRelationResponseCollection = {
-  __typename?: 'SousThematiqueRelationResponseCollection';
-  data: Array<SousThematiqueEntity>;
+export type ServiceRelationResponseCollection = {
+  __typename?: 'ServiceRelationResponseCollection';
+  data: Array<ServiceEntity>;
+};
+
+export type SousCategorie = {
+  __typename?: 'SousCategorie';
+  Nom: Maybe<Scalars['String']>;
+  category: Maybe<CategorieEntityResponse>;
+  createdAt: Maybe<Scalars['DateTime']>;
+  organisme: Maybe<OrganismeEntityResponse>;
+  publishedAt: Maybe<Scalars['DateTime']>;
+  updatedAt: Maybe<Scalars['DateTime']>;
+};
+
+export type SousCategorieEntity = {
+  __typename?: 'SousCategorieEntity';
+  attributes: Maybe<SousCategorie>;
+  id: Maybe<Scalars['ID']>;
+};
+
+export type SousCategorieEntityResponse = {
+  __typename?: 'SousCategorieEntityResponse';
+  data: Maybe<SousCategorieEntity>;
+};
+
+export type SousCategorieEntityResponseCollection = {
+  __typename?: 'SousCategorieEntityResponseCollection';
+  data: Array<SousCategorieEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type SousCategorieFiltersInput = {
+  Nom: InputMaybe<StringFilterInput>;
+  and: InputMaybe<Array<InputMaybe<SousCategorieFiltersInput>>>;
+  category: InputMaybe<CategorieFiltersInput>;
+  createdAt: InputMaybe<DateTimeFilterInput>;
+  id: InputMaybe<IdFilterInput>;
+  not: InputMaybe<SousCategorieFiltersInput>;
+  or: InputMaybe<Array<InputMaybe<SousCategorieFiltersInput>>>;
+  organisme: InputMaybe<OrganismeFiltersInput>;
+  publishedAt: InputMaybe<DateTimeFilterInput>;
+  updatedAt: InputMaybe<DateTimeFilterInput>;
+};
+
+export type SousCategorieInput = {
+  Nom: InputMaybe<Scalars['String']>;
+  category: InputMaybe<Scalars['ID']>;
+  organisme: InputMaybe<Scalars['ID']>;
+  publishedAt: InputMaybe<Scalars['DateTime']>;
+};
+
+export type SousCategorieRelationResponseCollection = {
+  __typename?: 'SousCategorieRelationResponseCollection';
+  data: Array<SousCategorieEntity>;
 };
 
 export type StringFilterInput = {
@@ -966,6 +1216,7 @@ export type StringFilterInput = {
   lt: InputMaybe<Scalars['String']>;
   lte: InputMaybe<Scalars['String']>;
   ne: InputMaybe<Scalars['String']>;
+  nei: InputMaybe<Scalars['String']>;
   not: InputMaybe<StringFilterInput>;
   notContains: InputMaybe<Scalars['String']>;
   notContainsi: InputMaybe<Scalars['String']>;
@@ -974,75 +1225,6 @@ export type StringFilterInput = {
   null: InputMaybe<Scalars['Boolean']>;
   or: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   startsWith: InputMaybe<Scalars['String']>;
-};
-
-export type Thematique = {
-  __typename?: 'Thematique';
-  Nom: Maybe<Scalars['String']>;
-  categorie_de_sous_thematiques: Maybe<CategorieDeSousThematiqueRelationResponseCollection>;
-  createdAt: Maybe<Scalars['DateTime']>;
-  locale: Maybe<Scalars['String']>;
-  localizations: Maybe<ThematiqueRelationResponseCollection>;
-  publishedAt: Maybe<Scalars['DateTime']>;
-  updatedAt: Maybe<Scalars['DateTime']>;
-};
-
-
-export type ThematiqueCategorie_De_Sous_ThematiquesArgs = {
-  filters: InputMaybe<CategorieDeSousThematiqueFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-export type ThematiqueLocalizationsArgs = {
-  filters: InputMaybe<ThematiqueFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-export type ThematiqueEntity = {
-  __typename?: 'ThematiqueEntity';
-  attributes: Maybe<Thematique>;
-  id: Maybe<Scalars['ID']>;
-};
-
-export type ThematiqueEntityResponse = {
-  __typename?: 'ThematiqueEntityResponse';
-  data: Maybe<ThematiqueEntity>;
-};
-
-export type ThematiqueEntityResponseCollection = {
-  __typename?: 'ThematiqueEntityResponseCollection';
-  data: Array<ThematiqueEntity>;
-  meta: ResponseCollectionMeta;
-};
-
-export type ThematiqueFiltersInput = {
-  Nom: InputMaybe<StringFilterInput>;
-  and: InputMaybe<Array<InputMaybe<ThematiqueFiltersInput>>>;
-  categorie_de_sous_thematiques: InputMaybe<CategorieDeSousThematiqueFiltersInput>;
-  createdAt: InputMaybe<DateTimeFilterInput>;
-  id: InputMaybe<IdFilterInput>;
-  locale: InputMaybe<StringFilterInput>;
-  localizations: InputMaybe<ThematiqueFiltersInput>;
-  not: InputMaybe<ThematiqueFiltersInput>;
-  or: InputMaybe<Array<InputMaybe<ThematiqueFiltersInput>>>;
-  publishedAt: InputMaybe<DateTimeFilterInput>;
-  updatedAt: InputMaybe<DateTimeFilterInput>;
-};
-
-export type ThematiqueInput = {
-  Nom: InputMaybe<Scalars['String']>;
-  categorie_de_sous_thematiques: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
-  publishedAt: InputMaybe<Scalars['DateTime']>;
-};
-
-export type ThematiqueRelationResponseCollection = {
-  __typename?: 'ThematiqueRelationResponseCollection';
-  data: Array<ThematiqueEntity>;
 };
 
 export type UploadFile = {
@@ -1418,35 +1600,63 @@ export type UsersPermissionsUserRelationResponseCollection = {
   data: Array<UsersPermissionsUserEntity>;
 };
 
-export type GetThematiquesQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetOrganismesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetThematiquesQuery = { __typename?: 'Query', thematiques: { __typename?: 'ThematiqueEntityResponseCollection', data: Array<{ __typename?: 'ThematiqueEntity', id: string, attributes: { __typename?: 'Thematique', Nom: string, categorie_de_sous_thematiques: { __typename?: 'CategorieDeSousThematiqueRelationResponseCollection', data: Array<{ __typename?: 'CategorieDeSousThematiqueEntity', attributes: { __typename?: 'CategorieDeSousThematique', Nom: string, sous_thematiques: { __typename?: 'SousThematiqueRelationResponseCollection', data: Array<{ __typename?: 'SousThematiqueEntity', attributes: { __typename?: 'SousThematique', Nom: string, organismes: { __typename?: 'OrganismeRelationResponseCollection', data: Array<{ __typename?: 'OrganismeEntity', id: string, attributes: { __typename?: 'Organisme', Nom: string } }> } } }> } } }> } } }> } };
+export type GetOrganismesQuery = { __typename?: 'Query', organismes: { __typename?: 'OrganismeEntityResponseCollection', data: Array<{ __typename?: 'OrganismeEntity', id: string, attributes: { __typename?: 'Organisme', Nom: string, Departement: string, Description: string, Telephone: string, Adresse: string, Email: string, Website: string, Horaires: string, Conditions: string, Logo: { __typename?: 'UploadFileEntityResponse', data: { __typename?: 'UploadFileEntity', attributes: { __typename?: 'UploadFile', url: string } } }, langues: { __typename?: 'LangueRelationResponseCollection', data: Array<{ __typename?: 'LangueEntity', attributes: { __typename?: 'Langue', Nom: string, Drapeau: { __typename?: 'UploadFileEntityResponse', data: { __typename?: 'UploadFileEntity', attributes: { __typename?: 'UploadFile', url: string } } } } }> }, services: { __typename?: 'ServiceRelationResponseCollection', data: Array<{ __typename?: 'ServiceEntity', attributes: { __typename?: 'Service', Nom: string } }> }, sous_categories: { __typename?: 'SousCategorieRelationResponseCollection', data: Array<{ __typename?: 'SousCategorieEntity', attributes: { __typename?: 'SousCategorie', Nom: string, category: { __typename?: 'CategorieEntityResponse', data: { __typename?: 'CategorieEntity', attributes: { __typename?: 'Categorie', Nom: string } } } } }> } } }> } };
 
 
-export const GetThematiquesDocument = gql`
-    query getThematiques {
-  thematiques {
+export const GetOrganismesDocument = gql`
+    query getOrganismes {
+  organismes {
     data {
       id
       attributes {
         Nom
-        categorie_de_sous_thematiques {
+        Departement
+        Logo {
+          data {
+            attributes {
+              url
+            }
+          }
+        }
+        Description
+        Telephone
+        Adresse
+        Email
+        Website
+        Horaires
+        langues {
           data {
             attributes {
               Nom
-              sous_thematiques {
+              Drapeau {
+                data {
+                  attributes {
+                    url
+                  }
+                }
+              }
+            }
+          }
+        }
+        services {
+          data {
+            attributes {
+              Nom
+            }
+          }
+        }
+        Conditions
+        sous_categories {
+          data {
+            attributes {
+              Nom
+              category {
                 data {
                   attributes {
                     Nom
-                    organismes {
-                      data {
-                        id
-                        attributes {
-                          Nom
-                        }
-                      }
-                    }
                   }
                 }
               }
@@ -1466,8 +1676,8 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    getThematiques(variables?: GetThematiquesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetThematiquesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetThematiquesQuery>(GetThematiquesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getThematiques', 'query');
+    getOrganismes(variables?: GetOrganismesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetOrganismesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetOrganismesQuery>(GetOrganismesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getOrganismes', 'query');
     }
   };
 }

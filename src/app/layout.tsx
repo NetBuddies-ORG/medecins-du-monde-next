@@ -3,15 +3,15 @@ import {Metadata} from "next";
 import React from "react";
 
 export const metadata: Metadata = {
-    applicationName: 'Pass VisitWallonia.be',
-    title: 'Pass VisitWallonia.be',
-    description: 'Pass VisitWallonia.be',
+    applicationName: 'Monbo Réseau',
+    title: 'Monbo Réseau',
+    description: 'Monbo Réseau',
     manifest: '/manifest.json',
     themeColor: "#FFFFFF",
     appleWebApp: {
         capable: true,
         statusBarStyle: "default",
-        title: 'Pass VisitWallonia.be',
+        title: 'Monbo Réseau',
     },
 };
 

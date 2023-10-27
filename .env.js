@@ -13,8 +13,8 @@ async function getVariables()
 {
     try {
         return {
-            STRAPI_CMS_BASE_URL: 'https://strapi-mdm.azurewebsites.net/',
-            NEXT_PUBLIC_REVISION_THEMATIQUE: await getHash('thematiques.json'),
+            STRAPI_CMS_BASE_URL: 'https://strapi-mdm.alexianmoins.be',
+            NEXT_PUBLIC_REVISION_ORGANISME: await getHash('organismes.json'),
         };
     } catch (e) {
         console.error(e);

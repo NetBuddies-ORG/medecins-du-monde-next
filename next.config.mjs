@@ -34,15 +34,7 @@ const config = {
                 permanent: false,
             },
         ]
-    },
-    async rewrites() {
-        return [
-            {
-                source: '/locales/:endpoint*',
-                destination: 'https://visitwalloniapass-umbraco.thankfulsmoke-f4b5636e.westeurope.azurecontainerapps.io/locales/:endpoint*',
-            },
-        ];
-    },
+    }
 };
 
 
