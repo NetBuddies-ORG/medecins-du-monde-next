@@ -13,7 +13,7 @@ async function getVariables()
 {
     try {
         return {
-            STRAPI_CMS_BASE_URL: 'http://127.0.0.1:1337',
+            STRAPI_CMS_BASE_URL: 'https://strapi-mdm.alexianmoins.be',
             NEXT_PUBLIC_REVISION_ORGANISME: await getHash('organismes.json'),
             NEXT_PUBLIC_REVISION_PUBLICS: await getHash('publics.json'),
         };
