@@ -1,0 +1,56 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  outline: none;
+
+  &:focus{
+    outline: 1px dotted $primaryColor;
+  }
+}
+
+body {
+  font-family: $fontFamily;
+  font-size: 1.2rem;
+  line-height: 2rem;
+  color: $textColor;
+  height: 100%;
+  position: relative;
+  overflow-x: hidden;
+
+  .blob{
+    position: absolute;
+    opacity: 0.05;
+    z-index: 2;
+    height: 30dvh;
+  }
+
+  .blob-1{
+    top: 5%;
+    left: -3rem;
+  }
+  .blob-2{
+    top: 40%;
+    right: -1rem;
+  }
+  .blob-3{
+    top: 75%;
+    left: 35vw;
+  }
+
+  main {
+    padding-inline: 1rem;
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+}
+
+.page-container{
+  max-width: 1224px;
+  width: 100%;
+  margin: auto;
+  margin-bottom: 6rem;
+}

@@ -15,13 +15,13 @@ const config = {
                 key:"content-security-policy",
                 value:"" +
                     "default-src 'self';" +
-                    " style-src 'self' 'unsafe-inline' fonts.googleapis.com; prefetch-src 'self';" +
+                    " style-src 'self' 'unsafe-inline' fonts.googleapis.com;" +
                     " base-uri 'none';" +
                     " form-action 'self';" +
                     " script-src 'self' 'unsafe-eval' 'unsafe-inline';" +
                     " font-src 'self' fonts.gstatic.com;" +
                     " manifest-src 'self';" +
-                    " img-src 'self'" +
+                    " img-src 'self';" +
                     " connect-src 'self';"
             }]
         }]

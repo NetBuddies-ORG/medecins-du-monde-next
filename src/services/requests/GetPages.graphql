@@ -1,0 +1,9 @@
+query getPages($locale: I18NLocaleCode) {
+  pages(locale: $locale){
+    data{
+      attributes{
+        Titre
+      }
+    }
+  }
+}

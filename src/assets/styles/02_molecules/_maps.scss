@@ -1,0 +1,27 @@
+.map-container{
+  margin: 0 -1rem;
+  img{
+    width: 100%;
+    object-fit: cover;
+  }
+  .controllers{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    bottom: 0;
+    right: 0;
+    i{
+      margin-left: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 50%;
+      border: 1px solid $btnTextColor;
+      background-color: $primaryColor;
+    }
+  }
+}
+
+@media (min-width: 1224px) {
+  .map-container{
+    margin: 0;
+  }
+}

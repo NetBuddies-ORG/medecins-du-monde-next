@@ -1,0 +1,32 @@
+.btn {
+  width: 100%;
+  height: $primaryBtnHeight;
+  font-size: $primaryBtnFontSize;
+  padding: $primaryBtnPadding;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+
+  &-with-icon{
+    i{
+        margin-left: 0.5rem;
+    }
+  }
+
+  &-primary {
+    cursor: pointer;
+    color: $btnTextColor;
+    background-color: $primaryColor;
+  }
+
+  &-danger {
+    width: 100%;
+    background-color: $cardDangerBackgroundColor;
+    color: $cardDangerTextColor;
+  }
+}
+
+.btn-group {
+  display: flex;
+  gap: 0.5rem;
+}

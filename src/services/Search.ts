@@ -1,10 +1,10 @@
 import {DBSchema, IDBPDatabase, openDB} from "idb";
 import type {Index} from 'lunr';
 import {Deferred} from "@/helpers";
-import {Organisme} from "@/services/GraphQL";
+import {Organisme, PublicSpecifique, PublicSpecifiqueEntity} from "@/services/GraphQL";
 import {useAsync} from "react-use";
 
-interface OrganismeSchema {
+interface IndexDBchema {
     value: any;
     key: string;
     indexes:
@@ -14,24 +14,29 @@ interface OrganismeSchema {
 }
 
 interface MdmDB extends DBSchema {
-    'organismes': OrganismeSchema,
+    'organismes': IndexDBchema,
+    'publics': IndexDBchema,
     revision:
         {
             value: string;
-            key: 'REVISION_ORGANISME';
+            key: 'REVISION_ORGANISME' | 'REVISION_PUBLICS';
         }
 }
 
 let indexLanguage: string;
 let db: Promise<IDBPDatabase<MdmDB>>;
 let index: Index;
+
+let publicsStoreName: 'publics' = 'publics';
 let organismesStoreName: 'organismes' = 'organismes';
 let revisionStoreName: 'revision' = 'revision';
 
 const NEXT_PUBLIC_REVISION_ORGANISME = process.env.NEXT_PUBLIC_REVISION_ORGANISME;
+const NEXT_PUBLIC_REVISION_PUBLICS = process.env.NEXT_PUBLIC_REVISION_PUBLICS;
 
 const getOrganisme = (id: string) => db.then(data => data.get(organismesStoreName, id));
 const getOrganismes = () => import(`../../build/static/organismes.json`).then(({default: p}) => p);
+const getPublics = () => import('../../build/static/publics.json').then(({default: p}) => p)
 
 
 async function setupDB(language: string): Promise<IDBPDatabase<MdmDB>> {
@@ -40,6 +45,7 @@ async function setupDB(language: string): Promise<IDBPDatabase<MdmDB>> {
         upgrade(db, oldVersion, _, transaction) {
             if (oldVersion < 1) {
                 db.createObjectStore(revisionStoreName);
+                db.createObjectStore(publicsStoreName);
                 db.createObjectStore(organismesStoreName, {keyPath: 'id'});
             }
         }
@@ -60,22 +66,36 @@ async function setupDB(language: string): Promise<IDBPDatabase<MdmDB>> {
         await Promise.all(organismes.map(t => organismesStore.put(t)));
         await transaction.done;
     }
+
+    const publicsRevisionIndexDb = await data.get('revision', 'REVISION_PUBLICS');
+    const publicsRevisionBuilt = NEXT_PUBLIC_REVISION_PUBLICS;
+
+    if (!publicsRevisionIndexDb || publicsRevisionBuilt !== publicsRevisionIndexDb) {
+        const publics = await getPublics();
+        const transaction = data.transaction([revisionStoreName, publicsStoreName], 'readwrite');
+        const revisionStore = transaction.objectStore(revisionStoreName);
+        const publicsStore = transaction.objectStore(publicsStoreName);
+
+        await revisionStore.put(publicsRevisionBuilt!, 'REVISION_PUBLICS');
+        await publicsStore.clear();
+        await Promise.all(publics.map(t => publicsStore.put(t
+
+        )));
+        await transaction.done;
+    }
     return data;
 }
 
 let initialization = new Map<string, Promise<void>>();
 
 async function initialize(language: string = 'fr') {
-    // @ts-ignore
     if (typeof window === 'undefined' || indexLanguage === language) {
         await initialization.get(language);
         return;
     }
-
     const deferred = new Deferred();
     initialization.set(language, deferred.promise);
     indexLanguage = language;
-    organismesStoreName = `organismes`;
     db = setupDB(language);
     const [
         {default: lunr},
@@ -106,12 +126,13 @@ interface SearchInterface {
     search(params: SearchParams): Promise<string[]>;
     getOrganisme(id: string): Promise<Organisme>;
     getOrganismes(): Promise<Organisme[]>;
+    getPublics(): Promise<PublicSpecifique[]>;
 }
 
-export function useSearch(language: string): SearchInterface {
+export function useDBIndex(language: string): SearchInterface {
     const {loading} = useAsync(() => initialize(language), [language]);
 
-    return {
+    return <SearchInterface>{
         isReady: !loading,
         search: !loading ? search : () => Promise.reject(new Error('Search engine is not ready')),
         getOrganisme: !loading ? getOrganisme : () => Promise.reject(new Error('DB is not ready')),

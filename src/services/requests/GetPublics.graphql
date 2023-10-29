@@ -1,0 +1,9 @@
+query getPublics {
+    publicSpecifiques{
+        data{
+            attributes{
+                Nom
+            }
+        }
+    }
+}

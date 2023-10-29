@@ -768,8 +768,9 @@ export type OrganismeRelationResponseCollection = {
 
 export type Page = {
   __typename?: 'Page';
-  Slug: Maybe<Scalars['String']>;
+  ContentType: Scalars['String'];
   Titre: Maybe<Scalars['String']>;
+  Url: Maybe<Scalars['String']>;
   blocks: Maybe<Array<Maybe<PageBlocksDynamicZone>>>;
   createdAt: Maybe<Scalars['DateTime']>;
   locale: Maybe<Scalars['String']>;
@@ -806,8 +807,9 @@ export type PageEntityResponseCollection = {
 };
 
 export type PageFiltersInput = {
-  Slug: InputMaybe<StringFilterInput>;
+  ContentType: InputMaybe<StringFilterInput>;
   Titre: InputMaybe<StringFilterInput>;
+  Url: InputMaybe<StringFilterInput>;
   and: InputMaybe<Array<InputMaybe<PageFiltersInput>>>;
   createdAt: InputMaybe<DateTimeFilterInput>;
   id: InputMaybe<IdFilterInput>;
@@ -820,8 +822,9 @@ export type PageFiltersInput = {
 };
 
 export type PageInput = {
-  Slug: InputMaybe<Scalars['String']>;
+  ContentType: InputMaybe<Scalars['String']>;
   Titre: InputMaybe<Scalars['String']>;
+  Url: InputMaybe<Scalars['String']>;
   blocks: InputMaybe<Array<Scalars['PageBlocksDynamicZoneInput']>>;
   publishedAt: InputMaybe<Scalars['DateTime']>;
 };
@@ -1605,6 +1608,26 @@ export type GetOrganismesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetOrganismesQuery = { __typename?: 'Query', organismes: { __typename?: 'OrganismeEntityResponseCollection', data: Array<{ __typename?: 'OrganismeEntity', id: string, attributes: { __typename?: 'Organisme', Nom: string, Departement: string, Description: string, Telephone: string, Adresse: string, Email: string, Website: string, Horaires: string, Conditions: string, Logo: { __typename?: 'UploadFileEntityResponse', data: { __typename?: 'UploadFileEntity', attributes: { __typename?: 'UploadFile', url: string } } }, langues: { __typename?: 'LangueRelationResponseCollection', data: Array<{ __typename?: 'LangueEntity', attributes: { __typename?: 'Langue', Nom: string, Drapeau: { __typename?: 'UploadFileEntityResponse', data: { __typename?: 'UploadFileEntity', attributes: { __typename?: 'UploadFile', url: string } } } } }> }, services: { __typename?: 'ServiceRelationResponseCollection', data: Array<{ __typename?: 'ServiceEntity', attributes: { __typename?: 'Service', Nom: string } }> }, sous_categories: { __typename?: 'SousCategorieRelationResponseCollection', data: Array<{ __typename?: 'SousCategorieEntity', attributes: { __typename?: 'SousCategorie', Nom: string, category: { __typename?: 'CategorieEntityResponse', data: { __typename?: 'CategorieEntity', attributes: { __typename?: 'Categorie', Nom: string } } } } }> } } }> } };
 
+export type GetPageQueryVariables = Exact<{
+  locale: InputMaybe<Scalars['I18NLocaleCode']>;
+  filters: InputMaybe<PageFiltersInput>;
+}>;
+
+
+export type GetPageQuery = { __typename?: 'Query', pages: { __typename?: 'PageEntityResponseCollection', data: Array<{ __typename?: 'PageEntity', attributes: { __typename?: 'Page', Titre: string, ContentType: string } }> } };
+
+export type GetPagesQueryVariables = Exact<{
+  locale: InputMaybe<Scalars['I18NLocaleCode']>;
+}>;
+
+
+export type GetPagesQuery = { __typename?: 'Query', pages: { __typename?: 'PageEntityResponseCollection', data: Array<{ __typename?: 'PageEntity', attributes: { __typename?: 'Page', Titre: string } }> } };
+
+export type GetPublicsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetPublicsQuery = { __typename?: 'Query', publicSpecifiques: { __typename?: 'PublicSpecifiqueEntityResponseCollection', data: Array<{ __typename?: 'PublicSpecifiqueEntity', attributes: { __typename?: 'PublicSpecifique', Nom: string } }> } };
+
 
 export const GetOrganismesDocument = gql`
     query getOrganismes {
@@ -1668,6 +1691,40 @@ export const GetOrganismesDocument = gql`
   }
 }
     `;
+export const GetPageDocument = gql`
+    query getPage($locale: I18NLocaleCode, $filters: PageFiltersInput) {
+  pages(locale: $locale, filters: $filters) {
+    data {
+      attributes {
+        Titre
+        ContentType
+      }
+    }
+  }
+}
+    `;
+export const GetPagesDocument = gql`
+    query getPages($locale: I18NLocaleCode) {
+  pages(locale: $locale) {
+    data {
+      attributes {
+        Titre
+      }
+    }
+  }
+}
+    `;
+export const GetPublicsDocument = gql`
+    query getPublics {
+  publicSpecifiques {
+    data {
+      attributes {
+        Nom
+      }
+    }
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
@@ -1678,6 +1735,15 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
   return {
     getOrganismes(variables?: GetOrganismesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetOrganismesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetOrganismesQuery>(GetOrganismesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getOrganismes', 'query');
+    },
+    getPage(variables?: GetPageQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetPageQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetPageQuery>(GetPageDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getPage', 'query');
+    },
+    getPages(variables?: GetPagesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetPagesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetPagesQuery>(GetPagesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getPages', 'query');
+    },
+    getPublics(variables?: GetPublicsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetPublicsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetPublicsQuery>(GetPublicsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getPublics', 'query');
     }
   };
 }

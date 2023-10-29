@@ -1,0 +1,43 @@
+//@use './mixin--text' as text;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/*  Fonts  */
+$fontFamily: 'Poppins', Helvetica, Arial, sans-serif;
+
+/* Body */
+$backgroundColor: #D2DBEE;
+$textColor: #023047;
+
+/* Color: primary */
+$primaryColor: #ffb703;
+
+
+/* Color: button */
+$btnTextColor: #023047;
+$btnInfoColor: #8ecae6;
+
+/* Color: cards */
+  /* primary */
+  $cardBackgroundColor: #ffffff;
+  $cardTextColor: #023047;
+  $cardBorder: none;
+  $cardBorderColor: #8ecae6;
+  $cardBorderRadius: 0.25rem;
+
+  /* danger */
+  $cardDangerBackgroundColor: #6a040f;
+  $cardDangerTextColor: #ffffff;
+
+/* Color : greys */
+$whiteColor: #ffffff;
+$greyColorEF: #efefef;
+$greyColor70: #707070;
+$greyColor3E: #3e3e3e;
+$blackColor: #000000;
+
+/* Validation Color */
+$validColor: #1AC42B;
+$invalidColor: #ff0000;
+
+/* Icon */
+

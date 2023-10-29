@@ -1,0 +1,102 @@
+
+.footer-search.isHidden{
+    visibility: hidden;
+}
+
+.footer-search {
+  position: sticky;
+  bottom: 0;
+  text-align: center;
+  padding: 1rem 0;
+  gap: 10px;
+  width: 100%;
+  z-index: 1000000;
+
+  span {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    font-size: 0.8rem;
+  }
+
+  button {
+    box-shadow: inset 0 0 25px rgba(243, 243, 243, 0.3);
+    font-family: $fontFamily;
+    font-size: 1.05rem;
+    font-weight: 400;
+    height: 3rem;
+
+    a {
+      text-decoration: none;
+      color: $btnTextColor;
+    }
+  }
+}
+
+.footer {
+  background-color: $textColor;
+  color: white;
+  width: 100%;
+  padding-inline: 10dvw;
+  padding-top: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.footer .content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 1rem 0;
+  font-size: 1rem;
+  line-height: 36px;
+
+  .details{
+    display: block;
+    width: 100%;
+  }
+
+  h4 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-decoration: underline;
+  }
+
+}
+
+.footer .content a {
+  text-decoration: none;
+  color: white;
+}
+
+.footer .content a:hover {
+}
+
+footer {
+  text-align: center;
+  padding-bottom: 2rem;
+}
+
+footer hr {
+  margin: 2rem 0;
+}
+
+@media (max-width: 767px) {
+  .footer .content {
+    display: flex;
+    flex-wrap: wrap;
+    div {
+      text-align: center;
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+  }
+
+  .footer {
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .footer {
+  }
+}
