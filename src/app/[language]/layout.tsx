@@ -44,7 +44,6 @@ export function generateMetadata(
         applicationName: 'MonBo Réseau',
         title: 'MonBo Réseau',
         description: 'MonBo Réseau',
-        themeColor: "#FFFFFF",
         robots: 'noindex',
         appleWebApp: {
             capable: true,

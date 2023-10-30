@@ -7,7 +7,6 @@ export const metadata: Metadata = {
     title: 'Monbo Réseau',
     description: 'Monbo Réseau',
     manifest: '/manifest.json',
-    themeColor: "#FFFFFF",
     appleWebApp: {
         capable: true,
         statusBarStyle: "default",

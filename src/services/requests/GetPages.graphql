@@ -3,6 +3,8 @@ query getPages($locale: I18NLocaleCode) {
     data{
       attributes{
         Titre
+        Url
+        ContentType
       }
     }
   }

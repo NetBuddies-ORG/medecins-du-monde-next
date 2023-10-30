@@ -1,8 +1,7 @@
-'use client'
-import {useDBIndex} from "@/services/Search";
+
 
 export async function HomePage() {
-    const {isReady} = useDBIndex('fr');
+    // const {isReady} = useDBIndex('fr');
 
     // const publics = await getPublics();
     return (

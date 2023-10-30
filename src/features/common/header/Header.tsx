@@ -20,13 +20,13 @@ export async function CustomHeader() {
                         </li>
                     </ul>
                     <div className='lang-picker input'>
-                        <select>
-                            <option>🇫🇷</option>
-                            <option>🇳🇱</option>
-                            <option>🇩🇪</option>
-                            <option>🇬🇧</option>
-                            <option>🇮🇹</option>
-                        </select>
+                        {/*<select>*/}
+                        {/*    <option>🇫🇷</option>*/}
+                        {/*    <option>🇳🇱</option>*/}
+                        {/*    <option>🇩🇪</option>*/}
+                        {/*    <option>🇬🇧</option>*/}
+                        {/*    <option>🇮🇹</option>*/}
+                        {/*</select>*/}
                         <i className="fa-regular fa-angle-down"></i>
                     </div>
                 </div>

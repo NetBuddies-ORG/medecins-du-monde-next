@@ -17,7 +17,7 @@ export interface Configuration
 }
 
 // TODO add other languages
-export const languages: readonly string[] = ['fr', 'nl', 'en', 'de'];
+export const languages: readonly string[] = ['fr','en'];
 
 export function getConfiguration(): Configuration
 {
