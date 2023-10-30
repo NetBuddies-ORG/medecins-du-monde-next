@@ -63,7 +63,7 @@
   .card.danger{
     border: 2px solid $cardDangerBackgroundColor;
     color: $cardDangerBackgroundColor;
-    i{
+    svg{
       color: $cardDangerBackgroundColor;
     }
   }

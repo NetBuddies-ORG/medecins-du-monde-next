@@ -4,6 +4,8 @@ import {useAsyncEffect} from "@/hooks";
 import {useState} from "react";
 import {Categorie, CategorieEntity, PublicSpecifiqueEntity} from "@/services/GraphQL"
 import {IconComponent} from "@/features/common/react-icons/IconComponent";
+import {FaAngleDown, FaCircleInfo, FaHeadphones} from "react-icons/fa6";
+import {FaSearch, FaTimes} from "react-icons/fa";
 
 export function HomePage() {
     const {isReady, getCategories, getPublics} = useDBIndex('fr');
@@ -22,11 +24,12 @@ export function HomePage() {
             <div className="page-container">
                 <div className="searchbar">
                     <div className="info">
-                        <i className="fa-regular fa-circle-info"></i>
+                        <FaCircleInfo />
+                        <FaTimes className={'cancel'} />
                         <h2>{"Besoin d'aide pour comprendre l'outil ?"} <a>Cliquez ici</a></h2>
                     </div>
                     <div className='searchbar input'>
-                        <i className='fa-regular fa-search'></i>
+                        <FaSearch />
                         <input type='text' placeholder='Entrez un mot clé ..' />
                     </div>
                     <div className="searchbar__input input">
@@ -35,14 +38,14 @@ export function HomePage() {
                                 publics.map(item => <option key={item.id}>{item.attributes.Nom}</option>)
                             }
                         </select>
-                        <i className="fa-regular fa-angle-down"></i>
+                        <FaAngleDown/>
                     </div>
                 </div>
 
                 <div className="card-container">
                     <a href="urgences.html">
                         <div className="card danger">
-                            <i className="fa-solid fa-headphones"></i>
+                            <FaHeadphones />
                             <div className="card__title"><span>Urgences</span></div>
                         </div>
                     </a>

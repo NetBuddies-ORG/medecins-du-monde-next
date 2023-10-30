@@ -15,20 +15,16 @@
       width: 80%;
     }
 
-    &:before{
-      font-family: "Font Awesome 6 Free";
-      content: '\f00d';
+    .cancel{
       position: absolute;
-      top: 0.2rem;
-      right: 1.6rem;
-      width: 0;
-      height: 0;
-      opacity: 0.7;
+      top: 0.5rem;
+      right: 0.25rem;
+      opacity: 0.75;
       cursor: pointer;
-      font-size: 1.4rem;
+      font-size: 1.25rem;
     }
 
-    i {
+    svg {
       margin: 0 .5rem;
       font-size: 2rem;
     }
@@ -50,7 +46,7 @@
 .input {
   position: relative;
 
-  i {
+  svg {
     // Positioning
     z-index: 1000;
     position: absolute;
@@ -85,14 +81,14 @@
       text-decoration: none;
       color: unset;
     }
-    i{
+    svg{
       margin-left: 0.5rem;
       padding: 0.5rem;
       border-radius: 50%;
       border: 1px solid $btnTextColor;
     }
 
-    i.active{
+    svg.active{
       background-color: $primaryColor;
     }
 
