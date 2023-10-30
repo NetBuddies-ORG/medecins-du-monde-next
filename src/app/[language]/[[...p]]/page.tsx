@@ -47,8 +47,7 @@ export async function generateStaticParams() {
     for (const language of languages) {
         try {
             for (let page of (await getPagesList(language))){
-                if(page.attributes.Url !== '/')
-                    dynamicRoutes.push(language + page.attributes.Url)
+                dynamicRoutes.push(language + page.attributes.Url)
             }
         } catch (missingLanguage){
             console.error('MissingLanguage', language, missingLanguage);
