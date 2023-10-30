@@ -1,9 +1,22 @@
+'use client'
+import {useDBIndex} from "@/services/Search";
+import {useAsyncEffect} from "@/hooks";
+import {useState} from "react";
+import {Categorie, CategorieEntity, PublicSpecifiqueEntity} from "@/services/GraphQL"
+import {IconComponent} from "@/features/common/react-icons/IconComponent";
 
+export function HomePage() {
+    const {isReady, getCategories, getPublics} = useDBIndex('fr');
+    const [categories, setCategories] = useState<CategorieEntity[]>([]);
+    const [publics, setPublics] = useState<PublicSpecifiqueEntity[]>([]);
 
-export async function HomePage() {
-    // const {isReady} = useDBIndex('fr');
+    useAsyncEffect(async () => {
+        if(isReady){
+            setCategories(await getCategories());
+            setPublics(await getPublics());
+        }
+    }, [isReady]);
 
-    // const publics = await getPublics();
     return (
         <>
             <div className="page-container">
@@ -18,11 +31,14 @@ export async function HomePage() {
                     </div>
                     <div className="searchbar__input input">
                         <select>
-                            <option>test</option>
+                            {
+                                publics.map(item => <option key={item.id}>{item.attributes.Nom}</option>)
+                            }
                         </select>
                         <i className="fa-regular fa-angle-down"></i>
                     </div>
                 </div>
+
                 <div className="card-container">
                     <a href="urgences.html">
                         <div className="card danger">
@@ -30,81 +46,15 @@ export async function HomePage() {
                             <div className="card__title"><span>Urgences</span></div>
                         </div>
                     </a>
-                    <div className="card">
-                        <i className="fa-solid fa-check"></i>
-                        <i className="fa-solid fa-folder-open"></i>
-                        <div className="card__title"><span>Aide administrative</span></div>
-                    </div>
-                    <div className="card">
-                        <i className="fa-solid fa-check"></i>
-                        <i className="fa-solid fa-house-user"></i>
-                        <div className="card__title"><span>Aide à domicile</span></div>
-                    </div>
-                    <div className="card">
-                        <i className="fa-solid fa-check"></i>
-                        <i className="fa-solid fa-road"></i>
-                        <div className="card__title"><span>Aide en rue</span></div>
-                    </div>
-                    <div className="card">
-                        <i className="fa-solid fa-check"></i>
-                        <i className="fa-solid fa-hand-holding-dollar"></i>
-                        <div className="card__title"><span>Aide financière et matérielle</span></div>
-                    </div>
-                    <div className="card">
-                        <i className="fa-solid fa-check"></i>
-                        <i className="fa-solid fa-scale-balanced"></i>
-                        <div className="card__title"><span>Aide juridique</span></div>
-                    </div>
-                    <div className="card">
-                        <i className="fa-solid fa-check"></i>
-                        <i className="fa-solid fa-language"></i>
-                        <div className="card__title"><span>Communication et langues</span></div>
-                    </div>
-                    <div className="card">
-                        <i className="fa-solid fa-check"></i>
-                        <i className="fa-solid fa-masks-theater"></i>
-                        <div className="card__title"><span>Culture et loisirs</span></div>
-                    </div>
-                    <div className="card">
-                        <i className="fa-solid fa-check"></i>
-                        <i className="fa-solid fa-link"></i>
-                        <div className="card__title"><span>Dépendance</span></div>
-                    </div>
-                    <div className="card">
-                        <i className="fa-solid fa-check"></i>
-                        <i className="fa-solid fa-user-graduate"></i>
-                        <div className="card__title"><span>Education</span></div>
-                    </div>
-                    <div className="card">
-                        <i className="fa-solid fa-check"></i>
-                        <i className="fa-solid fa-briefcase"></i>
-                        <div className="card__title"><span>Emploi et formation</span></div>
-                    </div>
-                    <div className="card">
-                        <i className="fa-solid fa-check"></i>
-                        <i className="fa-solid fa-building"></i>
-                        <div className="card__title"><span>Logement</span></div>
-                    </div>
-                    <div className="card">
-                        <i className="fa-solid fa-check"></i>
-                        <i className="fa-solid fa-train-subway"></i>
-                        <div className="card__title"><span>Mobilité / Déplacement</span></div>
-                    </div>
-                    <div className="card">
-                        <i className="fa-solid fa-check"></i>
-                        <i className="fa-solid fa-compass"></i>
-                        <div className="card__title"><span>Orientation / Je suis perdu</span></div>
-                    </div>
-                    <div className="card">
-                        <i className="fa-solid fa-check"></i>
-                        <i className="fa-solid fa-notes-medical"></i>
-                        <div className="card__title"><span>Santé</span></div>
-                    </div>
-                    <div className="card">
-                        <i className="fa-solid fa-check"></i>
-                        <i className="fa-solid fa-person-burst"></i>
-                        <div className="card__title"><span>Violences</span></div>
-                    </div>
+                    {
+                        categories.map(category => {
+                            return <div key={category.id} className="card">
+                                <i className="fa-solid fa-check"></i>
+                                <IconComponent icon={category?.attributes.Icon} />
+                                <div className="card__title"><span>{category?.attributes.Nom}</span></div>
+                            </div>
+                        })
+                    }
                 </div>
                 <div className="footer-search isHidden">
                     <button className="btn btn-primary">

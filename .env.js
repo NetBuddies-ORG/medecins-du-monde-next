@@ -16,6 +16,7 @@ async function getVariables()
             STRAPI_CMS_BASE_URL: 'https://strapi-mdm.alexianmoins.be',
             NEXT_PUBLIC_REVISION_ORGANISME: await getHash('organismes.json'),
             NEXT_PUBLIC_REVISION_PUBLICS: await getHash('publics.json'),
+            NEXT_PUBLIC_REVISION_CATEGORIES: await getHash('categories.json'),
         };
     } catch (e) {
         console.error(e);

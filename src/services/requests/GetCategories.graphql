@@ -1,9 +1,10 @@
-query getPublics {
-    publicSpecifiques{
+query getCategories {
+    categories{
         data{
             id
             attributes{
                 Nom
+                Icon
             }
         }
     }

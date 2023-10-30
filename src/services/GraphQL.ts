@@ -49,6 +49,7 @@ export type BooleanFilterInput = {
 
 export type Categorie = {
   __typename?: 'Categorie';
+  Icon: Scalars['String']['output'];
   Nom: Maybe<Scalars['String']['output']>;
   createdAt: Maybe<Scalars['DateTime']['output']>;
   publishedAt: Maybe<Scalars['DateTime']['output']>;
@@ -82,6 +83,7 @@ export type CategorieEntityResponseCollection = {
 };
 
 export type CategorieFiltersInput = {
+  Icon: InputMaybe<StringFilterInput>;
   Nom: InputMaybe<StringFilterInput>;
   and: InputMaybe<Array<InputMaybe<CategorieFiltersInput>>>;
   createdAt: InputMaybe<DateTimeFilterInput>;
@@ -94,6 +96,7 @@ export type CategorieFiltersInput = {
 };
 
 export type CategorieInput = {
+  Icon: InputMaybe<Scalars['String']['input']>;
   Nom: InputMaybe<Scalars['String']['input']>;
   publishedAt: InputMaybe<Scalars['DateTime']['input']>;
   sous_categories: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
@@ -173,7 +176,7 @@ export type FloatFilterInput = {
   startsWith: InputMaybe<Scalars['Float']['input']>;
 };
 
-export type GenericMorph = Categorie | ComponentComponentsSeo | ComponentComponentsTitre | I18NLocale | Langue | Organisme | Page | PublicSpecifique | Service | SousCategorie | UploadFile | UploadFolder | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = Categorie | ComponentComponentsSeo | ComponentComponentsTitre | I18NLocale | Langue | Organisme | Page | PublicSpecifique | ReactIconsIconlibrary | Service | SousCategorie | UploadFile | UploadFolder | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type I18NLocale = {
   __typename?: 'I18NLocale';
@@ -355,6 +358,7 @@ export type Mutation = {
   createPage: Maybe<PageEntityResponse>;
   createPageLocalization: Maybe<PageEntityResponse>;
   createPublicSpecifique: Maybe<PublicSpecifiqueEntityResponse>;
+  createReactIconsIconlibrary: Maybe<ReactIconsIconlibraryEntityResponse>;
   createService: Maybe<ServiceEntityResponse>;
   createServiceLocalization: Maybe<ServiceEntityResponse>;
   createSousCategorie: Maybe<SousCategorieEntityResponse>;
@@ -369,6 +373,7 @@ export type Mutation = {
   deleteOrganisme: Maybe<OrganismeEntityResponse>;
   deletePage: Maybe<PageEntityResponse>;
   deletePublicSpecifique: Maybe<PublicSpecifiqueEntityResponse>;
+  deleteReactIconsIconlibrary: Maybe<ReactIconsIconlibraryEntityResponse>;
   deleteService: Maybe<ServiceEntityResponse>;
   deleteSousCategorie: Maybe<SousCategorieEntityResponse>;
   deleteUploadFile: Maybe<UploadFileEntityResponse>;
@@ -394,6 +399,7 @@ export type Mutation = {
   updateOrganisme: Maybe<OrganismeEntityResponse>;
   updatePage: Maybe<PageEntityResponse>;
   updatePublicSpecifique: Maybe<PublicSpecifiqueEntityResponse>;
+  updateReactIconsIconlibrary: Maybe<ReactIconsIconlibraryEntityResponse>;
   updateService: Maybe<ServiceEntityResponse>;
   updateSousCategorie: Maybe<SousCategorieEntityResponse>;
   updateUploadFile: Maybe<UploadFileEntityResponse>;
@@ -443,6 +449,11 @@ export type MutationCreatePageLocalizationArgs = {
 
 export type MutationCreatePublicSpecifiqueArgs = {
   data: PublicSpecifiqueInput;
+};
+
+
+export type MutationCreateReactIconsIconlibraryArgs = {
+  data: ReactIconsIconlibraryInput;
 };
 
 
@@ -506,6 +517,11 @@ export type MutationDeletePageArgs = {
 
 
 export type MutationDeletePublicSpecifiqueArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteReactIconsIconlibraryArgs = {
   id: Scalars['ID']['input'];
 };
 
@@ -614,6 +630,12 @@ export type MutationUpdatePageArgs = {
 
 export type MutationUpdatePublicSpecifiqueArgs = {
   data: PublicSpecifiqueInput;
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationUpdateReactIconsIconlibraryArgs = {
+  data: ReactIconsIconlibraryInput;
   id: Scalars['ID']['input'];
 };
 
@@ -912,6 +934,8 @@ export type Query = {
   pages: Maybe<PageEntityResponseCollection>;
   publicSpecifique: Maybe<PublicSpecifiqueEntityResponse>;
   publicSpecifiques: Maybe<PublicSpecifiqueEntityResponseCollection>;
+  reactIconsIconlibraries: Maybe<ReactIconsIconlibraryEntityResponseCollection>;
+  reactIconsIconlibrary: Maybe<ReactIconsIconlibraryEntityResponse>;
   service: Maybe<ServiceEntityResponse>;
   services: Maybe<ServiceEntityResponseCollection>;
   sousCategorie: Maybe<SousCategorieEntityResponse>;
@@ -1006,6 +1030,18 @@ export type QueryPublicSpecifiquesArgs = {
 };
 
 
+export type QueryReactIconsIconlibrariesArgs = {
+  filters: InputMaybe<ReactIconsIconlibraryFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+
+export type QueryReactIconsIconlibraryArgs = {
+  id: InputMaybe<Scalars['ID']['input']>;
+};
+
+
 export type QueryServiceArgs = {
   id: InputMaybe<Scalars['ID']['input']>;
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
@@ -1079,6 +1115,50 @@ export type QueryUsersPermissionsUsersArgs = {
   filters: InputMaybe<UsersPermissionsUserFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+export type ReactIconsIconlibrary = {
+  __typename?: 'ReactIconsIconlibrary';
+  abbreviation: Scalars['String']['output'];
+  createdAt: Maybe<Scalars['DateTime']['output']>;
+  isEnabled: Maybe<Scalars['Boolean']['output']>;
+  name: Scalars['String']['output'];
+  updatedAt: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type ReactIconsIconlibraryEntity = {
+  __typename?: 'ReactIconsIconlibraryEntity';
+  attributes: Maybe<ReactIconsIconlibrary>;
+  id: Maybe<Scalars['ID']['output']>;
+};
+
+export type ReactIconsIconlibraryEntityResponse = {
+  __typename?: 'ReactIconsIconlibraryEntityResponse';
+  data: Maybe<ReactIconsIconlibraryEntity>;
+};
+
+export type ReactIconsIconlibraryEntityResponseCollection = {
+  __typename?: 'ReactIconsIconlibraryEntityResponseCollection';
+  data: Array<ReactIconsIconlibraryEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type ReactIconsIconlibraryFiltersInput = {
+  abbreviation: InputMaybe<StringFilterInput>;
+  and: InputMaybe<Array<InputMaybe<ReactIconsIconlibraryFiltersInput>>>;
+  createdAt: InputMaybe<DateTimeFilterInput>;
+  id: InputMaybe<IdFilterInput>;
+  isEnabled: InputMaybe<BooleanFilterInput>;
+  name: InputMaybe<StringFilterInput>;
+  not: InputMaybe<ReactIconsIconlibraryFiltersInput>;
+  or: InputMaybe<Array<InputMaybe<ReactIconsIconlibraryFiltersInput>>>;
+  updatedAt: InputMaybe<DateTimeFilterInput>;
+};
+
+export type ReactIconsIconlibraryInput = {
+  abbreviation: InputMaybe<Scalars['String']['input']>;
+  isEnabled: InputMaybe<Scalars['Boolean']['input']>;
+  name: InputMaybe<Scalars['String']['input']>;
 };
 
 export type ResponseCollectionMeta = {
@@ -1605,6 +1685,11 @@ export type UsersPermissionsUserRelationResponseCollection = {
   data: Array<UsersPermissionsUserEntity>;
 };
 
+export type GetCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCategoriesQuery = { __typename?: 'Query', categories: { __typename?: 'CategorieEntityResponseCollection', data: Array<{ __typename?: 'CategorieEntity', id: string, attributes: { __typename?: 'Categorie', Nom: string, Icon: string } }> } };
+
 export type GetOrganismesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1628,9 +1713,22 @@ export type GetPagesQuery = { __typename?: 'Query', pages: { __typename?: 'PageE
 export type GetPublicsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetPublicsQuery = { __typename?: 'Query', publicSpecifiques: { __typename?: 'PublicSpecifiqueEntityResponseCollection', data: Array<{ __typename?: 'PublicSpecifiqueEntity', attributes: { __typename?: 'PublicSpecifique', Nom: string } }> } };
+export type GetPublicsQuery = { __typename?: 'Query', publicSpecifiques: { __typename?: 'PublicSpecifiqueEntityResponseCollection', data: Array<{ __typename?: 'PublicSpecifiqueEntity', id: string, attributes: { __typename?: 'PublicSpecifique', Nom: string } }> } };
 
 
+export const GetCategoriesDocument = gql`
+    query getCategories {
+  categories {
+    data {
+      id
+      attributes {
+        Nom
+        Icon
+      }
+    }
+  }
+}
+    `;
 export const GetOrganismesDocument = gql`
     query getOrganismes {
   organismes {
@@ -1722,6 +1820,7 @@ export const GetPublicsDocument = gql`
     query getPublics {
   publicSpecifiques {
     data {
+      id
       attributes {
         Nom
       }
@@ -1737,6 +1836,9 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    getCategories(variables?: GetCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCategoriesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesQuery>(GetCategoriesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategories', 'query');
+    },
     getOrganismes(variables?: GetOrganismesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetOrganismesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetOrganismesQuery>(GetOrganismesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getOrganismes', 'query');
     },
