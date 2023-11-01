@@ -1,0 +1,16 @@
+fragment HomeCardListComponent on ComponentHomeCardList {
+    categories{
+        data{
+            attributes{
+                Nom
+            }
+        }
+    }
+    topCategorie{
+        data{
+            attributes{
+                Nom
+            }
+        }
+    }
+}

@@ -1,10 +1,10 @@
-# Write your query or mutation here
 query getPage($locale: I18NLocaleCode,$filters: PageFiltersInput) {
     pages(locale: $locale,filters: $filters){
         data{
             attributes{
                 Titre
                 ContentType
+                ...BlocksComposition
             }
         }
     }

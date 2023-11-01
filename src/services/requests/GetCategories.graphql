@@ -4,7 +4,7 @@ query getCategories {
             id
             attributes{
                 Nom
-                Icon
+                Icone
             }
         }
     }

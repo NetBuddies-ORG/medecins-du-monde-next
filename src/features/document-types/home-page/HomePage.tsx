@@ -1,24 +1,24 @@
-'use client'
-import {useDBIndex} from "@/services/Search";
-import {useAsyncEffect} from "@/hooks";
-import {useState} from "react";
-import {Categorie, CategorieEntity, PublicSpecifiqueEntity} from "@/services/GraphQL"
-import {IconComponent} from "@/features/common/react-icons/IconComponent";
 import {FaAngleDown, FaCircleInfo, FaHeadphones} from "react-icons/fa6";
 import {FaSearch, FaTimes} from "react-icons/fa";
+import {getPage} from "@/context/server";
+import {cache, use} from "react";
+import {getStrapiClient} from "@/services/Strapi";
+import {IconComponent} from "@/features/common/react-icons/IconComponent";
+
+const getCategories = cache(async function getCategories() {
+    const client = getStrapiClient();
+    return await client.getCategories();
+});
+
+const getPublics = cache(async function getPublics() {
+    const client = getStrapiClient();
+    return await client.getPublics();
+});
 
 export function HomePage() {
-    const {isReady, getCategories, getPublics} = useDBIndex('fr');
-    const [categories, setCategories] = useState<CategorieEntity[]>([]);
-    const [publics, setPublics] = useState<PublicSpecifiqueEntity[]>([]);
-
-    useAsyncEffect(async () => {
-        if(isReady){
-            setCategories(await getCategories());
-            setPublics(await getPublics());
-        }
-    }, [isReady]);
-
+    const page = getPage();
+    const {categories} = use(getCategories());
+    const {publicSpecifiques} = use(getPublics());
     return (
         <>
             <div className="page-container">
@@ -35,7 +35,8 @@ export function HomePage() {
                     <div className="searchbar__input input">
                         <select>
                             {
-                                publics.map(item => <option key={item.id}>{item.attributes.Nom}</option>)
+                                publicSpecifiques.data.map(item =>
+                                    <option key={item.id}>{item.attributes.Nom}</option>)
                             }
                         </select>
                         <FaAngleDown/>
@@ -50,10 +51,10 @@ export function HomePage() {
                         </div>
                     </a>
                     {
-                        categories.map(category => {
+                        categories.data.map(category => {
                             return <div key={category.id} className="card">
                                 <i className="fa-solid fa-check"></i>
-                                <IconComponent icon={category?.attributes.Icon} />
+                                <IconComponent icon={category?.attributes.Icone} />
                                 <div className="card__title"><span>{category?.attributes.Nom}</span></div>
                             </div>
                         })

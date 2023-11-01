@@ -44,13 +44,6 @@ query getOrganismes {
           data{
             attributes{
               Nom
-              category{
-                data{
-                  attributes{
-                    Nom
-                  }
-                }
-              }
             }
           }
         }

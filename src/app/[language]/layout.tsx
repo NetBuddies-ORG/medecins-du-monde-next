@@ -2,6 +2,8 @@ import {ResolvingMetadata} from "next";
 import React, {cache, use} from "react";
 import {getStrapiClient} from "@/services/Strapi";
 import {PageFiltersInput} from "@/services/GraphQL";
+import {notFound} from "next/navigation";
+import {setPage} from "@/context/server";
 
 const getPage = cache(async function getPage(locale: string, url: string) {
     const client = getStrapiClient();
@@ -23,6 +25,9 @@ interface LanguagePageProps {
 export default function LanguageLayout({children, params: {language}}: LanguagePageProps & { children: React.ReactNode }) {
 
     const {pages} = use(getPage(language ,`/`));
+
+    if(!pages) notFound()
+    setPage(pages);
 
     return (
         <html lang={language}>
