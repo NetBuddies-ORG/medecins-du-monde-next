@@ -1,0 +1,10 @@
+query getTranslations($locale: I18NLocaleCode){
+    traductions(locale: $locale){
+        data{
+            attributes{
+                Traduction
+                Key
+            }
+        }
+    }
+}

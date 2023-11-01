@@ -1,7 +1,0 @@
-fragment BlocksComposition on Page {
-    Blocks {
-        __typename
-        ...HomeCardListComponent
-        ...SeoComponent
-    }
-}

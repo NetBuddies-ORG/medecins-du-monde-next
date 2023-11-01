@@ -1,24 +1,29 @@
 import {FaAngleDown, FaCircleInfo, FaHeadphones} from "react-icons/fa6";
 import {FaSearch, FaTimes} from "react-icons/fa";
-import {getPage} from "@/context/server";
-import {cache, use} from "react";
+import {getLanguage, getPage} from "@/context/server";
+import {cache} from "react";
 import {getStrapiClient} from "@/services/Strapi";
+import i18next from "i18next";
+import {useTranslation} from "@/app/i18n";
 import {IconComponent} from "@/features/common/react-icons/IconComponent";
 
-const getCategories = cache(async function getCategories() {
+const getCategories = cache(async function getCategories(lang: string) {
     const client = getStrapiClient();
-    return await client.getCategories();
+    return await client.getCategories({locale: lang});
 });
 
-const getPublics = cache(async function getPublics() {
+const getPublics = cache(async function getPublics(lang: string) {
     const client = getStrapiClient();
-    return await client.getPublics();
+    return await client.getPublics({locale: lang});
 });
 
-export function HomePage() {
+export async function HomePage() {
+    const language = getLanguage();
     const page = getPage();
-    const {categories} = use(getCategories());
-    const {publicSpecifiques} = use(getPublics());
+    const {categories} = await getCategories(language);
+    const {publicSpecifiques} = await getPublics(language);
+    const {t, i18n} = await useTranslation(language)
+
     return (
         <>
             <div className="page-container">
@@ -26,11 +31,11 @@ export function HomePage() {
                     <div className="info">
                         <FaCircleInfo />
                         <FaTimes className={'cancel'} />
-                        <h2>{"Besoin d'aide pour comprendre l'outil ?"} <a>Cliquez ici</a></h2>
+                        <h2> {t('HOME_HELP_WITH_TOOLS')} <a>{t('HOME_CLICK_HERE')}</a> </h2>
                     </div>
                     <div className='searchbar input'>
                         <FaSearch />
-                        <input type='text' placeholder='Entrez un mot clé ..' />
+                        <input type='text' placeholder={t('HOME_ENTER_KEYWORD')} />
                     </div>
                     <div className="searchbar__input input">
                         <select>
@@ -44,10 +49,10 @@ export function HomePage() {
                 </div>
 
                 <div className="card-container">
-                    <a href="urgences.html">
+                    <a href="urgences">
                         <div className="card danger">
                             <FaHeadphones />
-                            <div className="card__title"><span>Urgences</span></div>
+                            <div className="card__title"><span>{t('HOME_URGENCES')}</span></div>
                         </div>
                     </a>
                     {

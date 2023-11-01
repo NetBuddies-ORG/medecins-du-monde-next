@@ -4,7 +4,6 @@ query getPage($locale: I18NLocaleCode,$filters: PageFiltersInput) {
             attributes{
                 Titre
                 ContentType
-                ...BlocksComposition
             }
         }
     }

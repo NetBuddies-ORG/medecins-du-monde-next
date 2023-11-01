@@ -1,4 +1,0 @@
-fragment SeoComponent on ComponentGlobalSeo {
-    Title
-    Description
-}

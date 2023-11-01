@@ -3,7 +3,10 @@ import React, {cache, use} from "react";
 import {getStrapiClient} from "@/services/Strapi";
 import {PageFiltersInput} from "@/services/GraphQL";
 import {notFound} from "next/navigation";
-import {setPage} from "@/context/server";
+import {setLanguage, setPage} from "@/context/server";
+import i18next from 'i18next';
+import {useTranslation} from "@/app/i18n";
+
 
 const getPage = cache(async function getPage(locale: string, url: string) {
     const client = getStrapiClient();
@@ -22,12 +25,16 @@ interface LanguagePageProps {
     }
 }
 
-export default function LanguageLayout({children, params: {language}}: LanguagePageProps & { children: React.ReactNode }) {
+export default async function LanguageLayout({children, params: {language}}: LanguagePageProps & { children: React.ReactNode }) {
 
-    const {pages} = use(getPage(language ,`/`));
+    const {pages} = await getPage(language ,`/`);
+    const {i18n} = await useTranslation(language);
 
     if(!pages) notFound()
     setPage(pages);
+    setLanguage(language);
+
+
 
     return (
         <html lang={language}>

@@ -1,5 +1,5 @@
-query getPublics {
-    publicSpecifiques{
+query getPublics($locale: I18NLocaleCode) {
+    publicSpecifiques(locale: $locale){
         data{
             id
             attributes{
