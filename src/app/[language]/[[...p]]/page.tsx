@@ -3,7 +3,7 @@ import {PageFiltersInput} from "@/services/GraphQL";
 import {getStrapiClient} from "@/services/Strapi";
 import {DocumentTypes} from "@/features/document-types/DocumentTypes";
 import {notFound} from "next/navigation";
-import {setPage} from "@/context/server";
+import {setCategories, setHeader, setLanguage, setPage, setPublics} from "@/context/server";
 import {languages} from "@/helpers";
 
 export type CmsPageProps = {
@@ -24,12 +24,32 @@ const getPage = cache(async function getPage(locale: string, url: string) {
     return await client.getPage({locale: locale, filters: filters});
 });
 
-export default function CmsPage({params: {language, p}}: CmsPageProps) {
+const getCategories = cache(async function getCategories(lang: string) {
+    const client = getStrapiClient();
+    return await client.getCategories({locale: lang});
+});
+
+const getPublics = cache(async function getPublics(lang: string) {
+    const client = getStrapiClient();
+    return await client.getPublics({locale: lang});
+});
+
+const getHeader = cache(async function getHeader(language: string) {
+    const client = getStrapiClient();
+    return await client.getHeader({locale: language});
+});
+
+export default async function CmsPage({params: {language, p}}: CmsPageProps) {
     const cmsP = p?.map(item => item);
-    const {pages} = use(getPage(language, '/' + (cmsP ? cmsP : '')));
+    const {pages} = await getPage(language, '/' + (cmsP ? cmsP : ''));
+    const header = await getHeader(language);
 
     if(!pages?.data[0]) notFound();
     setPage(pages);
+    setCategories(await getCategories(language));
+    setPublics(await getPublics(language));
+    setHeader(header);
+    setLanguage(language);
 
 
     return (

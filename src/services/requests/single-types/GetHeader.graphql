@@ -1,0 +1,19 @@
+query getHeader($locale: I18NLocaleCode){
+    header(locale: $locale){
+        data{
+            attributes{
+                Header{
+                    Titre
+                    pages{
+                        data{
+                            attributes{
+                                Titre
+                                Url
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

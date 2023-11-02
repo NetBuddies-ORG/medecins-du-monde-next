@@ -1,0 +1,9 @@
+query getHome($locale: I18NLocaleCode){
+    home(locale: $locale){
+        data{
+            attributes{
+                UrgencesLink
+            }
+        }
+    }
+}

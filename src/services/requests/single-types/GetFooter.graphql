@@ -1,0 +1,11 @@
+query getFooter($locale: I18NLocaleCode){
+    footer(locale: $locale){
+        data{
+            attributes{
+                Footer{
+                    Copyright
+                }
+            }
+        }
+    }
+}

@@ -1,31 +1,26 @@
 import {FaAngleDown, FaCircleInfo, FaHeadphones} from "react-icons/fa6";
 import {FaSearch, FaTimes} from "react-icons/fa";
-import {getLanguage, getPage} from "@/context/server";
+import {getCategories, getLanguage, getPage, getPublics} from "@/context/server";
 import {cache} from "react";
 import {getStrapiClient} from "@/services/Strapi";
 import i18next from "i18next";
 import {useTranslation} from "@/app/i18n";
 import {IconComponent} from "@/features/common/react-icons/IconComponent";
+import Link from "next/link";
+import {GetHomeQuery} from "@/services/GraphQL";
 
-const getCategories = cache(async function getCategories(lang: string) {
-    const client = getStrapiClient();
-    return await client.getCategories({locale: lang});
-});
+interface HomePageProps {
+    extraData: GetHomeQuery
+}
 
-const getPublics = cache(async function getPublics(lang: string) {
-    const client = getStrapiClient();
-    return await client.getPublics({locale: lang});
-});
-
-export async function HomePage() {
+export async function HomePage({extraData}: HomePageProps) {
     const language = getLanguage();
-    const page = getPage();
-    const {categories} = await getCategories(language);
-    const {publicSpecifiques} = await getPublics(language);
+    const {categories} = getCategories();
+    const {publicSpecifiques} = getPublics();
     const {t, i18n} = await useTranslation(language)
 
     return (
-        <>
+        extraData && <>
             <div className="page-container">
                 <div className="searchbar">
                     <div className="info">
@@ -49,12 +44,12 @@ export async function HomePage() {
                 </div>
 
                 <div className="card-container">
-                    <a href="urgences">
+                    <Link href={extraData?.home?.data?.attributes?.UrgencesLink}>
                         <div className="card danger">
                             <FaHeadphones />
                             <div className="card__title"><span>{t('HOME_URGENCES')}</span></div>
                         </div>
-                    </a>
+                    </Link>
                     {
                         categories.data.map(category => {
                             return <div key={category.id} className="card">
@@ -67,9 +62,9 @@ export async function HomePage() {
                 </div>
                 <div className="footer-search isHidden">
                     <button className="btn btn-primary">
-                        <a href="results_list.html">
+                        <Link href="organismes">
                             Rechercher un organisme
-                        </a>
+                        </Link>
                     </button>
                 </div>
             </div>

@@ -266,7 +266,7 @@ export type FooterRelationResponseCollection = {
   data: Array<FooterEntity>;
 };
 
-export type GenericMorph = Categorie | ComponentGeneraleFooter | ComponentGeneraleHeader | ComponentGeneraleSeo | Footer | Header | I18NLocale | Langue | Organisme | Page | PublicSpecifique | ReactIconsIconlibrary | Service | SousCategorie | Traduction | UploadFile | UploadFolder | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = Categorie | ComponentGeneraleFooter | ComponentGeneraleHeader | ComponentGeneraleSeo | Footer | Header | Home | I18NLocale | Langue | Organisme | Page | PublicSpecifique | ReactIconsIconlibrary | Service | SousCategorie | Traduction | UploadFile | UploadFolder | Urgence | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type Header = {
   __typename?: 'Header';
@@ -302,6 +302,42 @@ export type HeaderInput = {
 export type HeaderRelationResponseCollection = {
   __typename?: 'HeaderRelationResponseCollection';
   data: Array<HeaderEntity>;
+};
+
+export type Home = {
+  __typename?: 'Home';
+  UrgencesLink: Maybe<Scalars['String']['output']>;
+  createdAt: Maybe<Scalars['DateTime']['output']>;
+  locale: Maybe<Scalars['String']['output']>;
+  localizations: Maybe<HomeRelationResponseCollection>;
+  publishedAt: Maybe<Scalars['DateTime']['output']>;
+  updatedAt: Maybe<Scalars['DateTime']['output']>;
+};
+
+
+export type HomeLocalizationsArgs = {
+  publicationState?: InputMaybe<PublicationState>;
+};
+
+export type HomeEntity = {
+  __typename?: 'HomeEntity';
+  attributes: Maybe<Home>;
+  id: Maybe<Scalars['ID']['output']>;
+};
+
+export type HomeEntityResponse = {
+  __typename?: 'HomeEntityResponse';
+  data: Maybe<HomeEntity>;
+};
+
+export type HomeInput = {
+  UrgencesLink: InputMaybe<Scalars['String']['input']>;
+  publishedAt: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type HomeRelationResponseCollection = {
+  __typename?: 'HomeRelationResponseCollection';
+  data: Array<HomeEntity>;
 };
 
 export type I18NLocale = {
@@ -483,6 +519,7 @@ export type Mutation = {
   createCategorieLocalization: Maybe<CategorieEntityResponse>;
   createFooterLocalization: Maybe<FooterEntityResponse>;
   createHeaderLocalization: Maybe<HeaderEntityResponse>;
+  createHomeLocalization: Maybe<HomeEntityResponse>;
   createLangue: Maybe<LangueEntityResponse>;
   createLangueLocalization: Maybe<LangueEntityResponse>;
   createOrganisme: Maybe<OrganismeEntityResponse>;
@@ -500,6 +537,7 @@ export type Mutation = {
   createTraductionLocalization: Maybe<TraductionEntityResponse>;
   createUploadFile: Maybe<UploadFileEntityResponse>;
   createUploadFolder: Maybe<UploadFolderEntityResponse>;
+  createUrgenceLocalization: Maybe<UrgenceEntityResponse>;
   /** Create a new role */
   createUsersPermissionsRole: Maybe<UsersPermissionsCreateRolePayload>;
   /** Create a new user */
@@ -507,6 +545,7 @@ export type Mutation = {
   deleteCategorie: Maybe<CategorieEntityResponse>;
   deleteFooter: Maybe<FooterEntityResponse>;
   deleteHeader: Maybe<HeaderEntityResponse>;
+  deleteHome: Maybe<HomeEntityResponse>;
   deleteLangue: Maybe<LangueEntityResponse>;
   deleteOrganisme: Maybe<OrganismeEntityResponse>;
   deletePage: Maybe<PageEntityResponse>;
@@ -517,6 +556,7 @@ export type Mutation = {
   deleteTraduction: Maybe<TraductionEntityResponse>;
   deleteUploadFile: Maybe<UploadFileEntityResponse>;
   deleteUploadFolder: Maybe<UploadFolderEntityResponse>;
+  deleteUrgence: Maybe<UrgenceEntityResponse>;
   /** Delete an existing role */
   deleteUsersPermissionsRole: Maybe<UsersPermissionsDeleteRolePayload>;
   /** Delete an existing user */
@@ -536,6 +576,7 @@ export type Mutation = {
   updateFileInfo: UploadFileEntityResponse;
   updateFooter: Maybe<FooterEntityResponse>;
   updateHeader: Maybe<HeaderEntityResponse>;
+  updateHome: Maybe<HomeEntityResponse>;
   updateLangue: Maybe<LangueEntityResponse>;
   updateOrganisme: Maybe<OrganismeEntityResponse>;
   updatePage: Maybe<PageEntityResponse>;
@@ -546,6 +587,7 @@ export type Mutation = {
   updateTraduction: Maybe<TraductionEntityResponse>;
   updateUploadFile: Maybe<UploadFileEntityResponse>;
   updateUploadFolder: Maybe<UploadFolderEntityResponse>;
+  updateUrgence: Maybe<UrgenceEntityResponse>;
   /** Update an existing role */
   updateUsersPermissionsRole: Maybe<UsersPermissionsUpdateRolePayload>;
   /** Update an existing user */
@@ -583,6 +625,13 @@ export type MutationCreateFooterLocalizationArgs = {
 
 export type MutationCreateHeaderLocalizationArgs = {
   data: InputMaybe<HeaderInput>;
+  id: InputMaybe<Scalars['ID']['input']>;
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+};
+
+
+export type MutationCreateHomeLocalizationArgs = {
+  data: InputMaybe<HomeInput>;
   id: InputMaybe<Scalars['ID']['input']>;
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 };
@@ -694,6 +743,13 @@ export type MutationCreateUploadFolderArgs = {
 };
 
 
+export type MutationCreateUrgenceLocalizationArgs = {
+  data: InputMaybe<UrgenceInput>;
+  id: InputMaybe<Scalars['ID']['input']>;
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+};
+
+
 export type MutationCreateUsersPermissionsRoleArgs = {
   data: UsersPermissionsRoleInput;
 };
@@ -716,6 +772,11 @@ export type MutationDeleteFooterArgs = {
 
 
 export type MutationDeleteHeaderArgs = {
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+};
+
+
+export type MutationDeleteHomeArgs = {
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 };
 
@@ -774,6 +835,11 @@ export type MutationDeleteUploadFileArgs = {
 
 export type MutationDeleteUploadFolderArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteUrgenceArgs = {
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 };
 
 
@@ -852,6 +918,12 @@ export type MutationUpdateHeaderArgs = {
 };
 
 
+export type MutationUpdateHomeArgs = {
+  data: HomeInput;
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+};
+
+
 export type MutationUpdateLangueArgs = {
   data: LangueInput;
   id: Scalars['ID']['input'];
@@ -916,6 +988,12 @@ export type MutationUpdateUploadFileArgs = {
 export type MutationUpdateUploadFolderArgs = {
   data: UploadFolderInput;
   id: Scalars['ID']['input'];
+};
+
+
+export type MutationUpdateUrgenceArgs = {
+  data: UrgenceInput;
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 };
 
 
@@ -1218,6 +1296,7 @@ export type Query = {
   categories: Maybe<CategorieEntityResponseCollection>;
   footer: Maybe<FooterEntityResponse>;
   header: Maybe<HeaderEntityResponse>;
+  home: Maybe<HomeEntityResponse>;
   i18NLocale: Maybe<I18NLocaleEntityResponse>;
   i18NLocales: Maybe<I18NLocaleEntityResponseCollection>;
   langue: Maybe<LangueEntityResponse>;
@@ -1241,6 +1320,7 @@ export type Query = {
   uploadFiles: Maybe<UploadFileEntityResponseCollection>;
   uploadFolder: Maybe<UploadFolderEntityResponse>;
   uploadFolders: Maybe<UploadFolderEntityResponseCollection>;
+  urgence: Maybe<UrgenceEntityResponse>;
   usersPermissionsRole: Maybe<UsersPermissionsRoleEntityResponse>;
   usersPermissionsRoles: Maybe<UsersPermissionsRoleEntityResponseCollection>;
   usersPermissionsUser: Maybe<UsersPermissionsUserEntityResponse>;
@@ -1270,6 +1350,12 @@ export type QueryFooterArgs = {
 
 
 export type QueryHeaderArgs = {
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+  publicationState?: InputMaybe<PublicationState>;
+};
+
+
+export type QueryHomeArgs = {
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
   publicationState?: InputMaybe<PublicationState>;
 };
@@ -1425,6 +1511,12 @@ export type QueryUploadFoldersArgs = {
   filters: InputMaybe<UploadFolderFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+
+export type QueryUrgenceArgs = {
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+  publicationState?: InputMaybe<PublicationState>;
 };
 
 
@@ -1872,6 +1964,42 @@ export type UploadFolderRelationResponseCollection = {
   data: Array<UploadFolderEntity>;
 };
 
+export type Urgence = {
+  __typename?: 'Urgence';
+  ContentType: Maybe<Scalars['String']['output']>;
+  createdAt: Maybe<Scalars['DateTime']['output']>;
+  locale: Maybe<Scalars['String']['output']>;
+  localizations: Maybe<UrgenceRelationResponseCollection>;
+  publishedAt: Maybe<Scalars['DateTime']['output']>;
+  updatedAt: Maybe<Scalars['DateTime']['output']>;
+};
+
+
+export type UrgenceLocalizationsArgs = {
+  publicationState?: InputMaybe<PublicationState>;
+};
+
+export type UrgenceEntity = {
+  __typename?: 'UrgenceEntity';
+  attributes: Maybe<Urgence>;
+  id: Maybe<Scalars['ID']['output']>;
+};
+
+export type UrgenceEntityResponse = {
+  __typename?: 'UrgenceEntityResponse';
+  data: Maybe<UrgenceEntity>;
+};
+
+export type UrgenceInput = {
+  ContentType: InputMaybe<Scalars['String']['input']>;
+  publishedAt: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type UrgenceRelationResponseCollection = {
+  __typename?: 'UrgenceRelationResponseCollection';
+  data: Array<UrgenceEntity>;
+};
+
 export type UsersPermissionsCreateRolePayload = {
   __typename?: 'UsersPermissionsCreateRolePayload';
   ok: Scalars['Boolean']['output'];
@@ -2127,6 +2255,27 @@ export type GetTranslationsQueryVariables = Exact<{
 
 export type GetTranslationsQuery = { __typename?: 'Query', traductions: { __typename?: 'TraductionEntityResponseCollection', data: Array<{ __typename?: 'TraductionEntity', attributes: { __typename?: 'Traduction', Traduction: string, Key: string } }> } };
 
+export type GetFooterQueryVariables = Exact<{
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+}>;
+
+
+export type GetFooterQuery = { __typename?: 'Query', footer: { __typename?: 'FooterEntityResponse', data: { __typename?: 'FooterEntity', attributes: { __typename?: 'Footer', Footer: { __typename?: 'ComponentGeneraleFooter', Copyright: string } } } } };
+
+export type GetHeaderQueryVariables = Exact<{
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+}>;
+
+
+export type GetHeaderQuery = { __typename?: 'Query', header: { __typename?: 'HeaderEntityResponse', data: { __typename?: 'HeaderEntity', attributes: { __typename?: 'Header', Header: { __typename?: 'ComponentGeneraleHeader', Titre: string, pages: { __typename?: 'PageRelationResponseCollection', data: Array<{ __typename?: 'PageEntity', attributes: { __typename?: 'Page', Titre: string, Url: string } }> } } } } } };
+
+export type GetHomeQueryVariables = Exact<{
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+}>;
+
+
+export type GetHomeQuery = { __typename?: 'Query', home: { __typename?: 'HomeEntityResponse', data: { __typename?: 'HomeEntity', attributes: { __typename?: 'Home', UrgencesLink: string } } } };
+
 
 export const GetCategoriesDocument = gql`
     query getCategories($locale: I18NLocaleCode) {
@@ -2245,6 +2394,51 @@ export const GetTranslationsDocument = gql`
   }
 }
     `;
+export const GetFooterDocument = gql`
+    query getFooter($locale: I18NLocaleCode) {
+  footer(locale: $locale) {
+    data {
+      attributes {
+        Footer {
+          Copyright
+        }
+      }
+    }
+  }
+}
+    `;
+export const GetHeaderDocument = gql`
+    query getHeader($locale: I18NLocaleCode) {
+  header(locale: $locale) {
+    data {
+      attributes {
+        Header {
+          Titre
+          pages {
+            data {
+              attributes {
+                Titre
+                Url
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export const GetHomeDocument = gql`
+    query getHome($locale: I18NLocaleCode) {
+  home(locale: $locale) {
+    data {
+      attributes {
+        UrgencesLink
+      }
+    }
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
@@ -2270,6 +2464,15 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getTranslations(variables?: GetTranslationsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetTranslationsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetTranslationsQuery>(GetTranslationsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getTranslations', 'query');
+    },
+    getFooter(variables?: GetFooterQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetFooterQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetFooterQuery>(GetFooterDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getFooter', 'query');
+    },
+    getHeader(variables?: GetHeaderQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetHeaderQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetHeaderQuery>(GetHeaderDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getHeader', 'query');
+    },
+    getHome(variables?: GetHomeQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetHomeQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetHomeQuery>(GetHomeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getHome', 'query');
     }
   };
 }

@@ -1,28 +1,45 @@
-import {getPage} from "@/context/server";
+import {getLanguage, getPage} from "@/context/server";
 import {CustomHeader} from "@/features/common/header/Header";
 import {CustomFooter} from "@/features/common/footer/footer";
 import {HomePage} from "@/features/document-types/home-page/HomePage";
+import {cache} from "react";
+import {getStrapiClient} from "@/services/Strapi";
+import {GetPageQuery} from "@/services/GraphQL";
 
-export function DocumentTypes() {
+export async function DocumentTypes() {
     const pages = getPage();
-    const page = pages.data[0];
+    const language = getLanguage();
 
-    switch (page.attributes.ContentType) {
+    return <>
+        <CustomHeader/>
+        <main>
+            {
+                await displayContent(pages, language)
+            }
+        </main>
+        <CustomFooter/>
+    </>
+
+}
+
+async function displayContent(page: GetPageQuery["pages"], language: string) {
+    switch (page.data[0].attributes.ContentType) {
         case 'Home':
             return (<>
-                <CustomHeader />
-                <main>
-                    <HomePage></HomePage>
-                </main>
-                <CustomFooter />
+                <HomePage extraData={await getHome(language)}></HomePage>
             </>)
-        case 'Organization':
+        case 'Organizations':
             return <>
-                    Orga
+                Orga
             </>
         case 'About':
             return <>
-                    About
+                About
+            </>
+        case 'Urgences':
+
+            return <>
+                Urgences
             </>
         default:
             return (
@@ -31,3 +48,8 @@ export function DocumentTypes() {
             );
     }
 }
+
+const getHome = cache(async function getHome(language: string) {
+    const client = getStrapiClient();
+    return await client.getHome({locale: language});
+});
