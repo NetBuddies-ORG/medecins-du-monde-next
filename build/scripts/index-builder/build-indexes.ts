@@ -16,6 +16,7 @@ async function buildIndex()
         this.use(removeDiacriticsSpelling);
         this.ref('id');
         this.field('name_organismes', {extractor: (p: OrganismeEntity)  => p.attributes.Nom});
+        this.field('address_organismes', {extractor: (p: OrganismeEntity)  => p.attributes.Adresse});
         organismes.forEach(p => this.add(p));
     });
 

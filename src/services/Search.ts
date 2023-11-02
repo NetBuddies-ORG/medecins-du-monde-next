@@ -33,7 +33,7 @@ interface MdmDB extends DBSchema {
 
 let indexLanguage: string;
 let db: Promise<IDBPDatabase<MdmDB>>;
-let index: Index;
+let indexOrganism: Index;
 
 let publicsStoreName: 'publics' = 'publics';
 let organismesStoreName: 'organismes' = 'organismes';
@@ -133,13 +133,29 @@ async function initialize(language: string = 'fr') {
 
     const {default: fr} = await import('lunr-languages/lunr.fr');
     fr(lunr);
-    index = lunr.Index.load(await import('../../build/static/index.json'));
+    indexOrganism = lunr.Index.load(await import('../../build/static/index.json'));
 
     deferred.resolve();
 }
 
 async function search(params: SearchParams): Promise<string[]> {
     return [];
+}
+
+async function searchOrganismes(params: SearchParams): Promise<string[]> {
+    let newKeyword = params.keyword;
+    let terms = newKeyword.normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^\w\s*]/g, "")
+        .split(' ');
+    let finalQuery = '';
+    terms.forEach((t, i) => {
+        if (t !== '') {
+            finalQuery += `${t}^${100 - i} ${t}* `;
+        }
+    });
+    let results: Set<string> = new Set(indexOrganism.search(finalQuery).map(({ref}) => ref));
+    return Array.from(results);
 }
 
 export interface SearchParams {
@@ -150,7 +166,7 @@ interface SearchInterface {
     isReady: boolean;
     search(params: SearchParams): Promise<string[]>;
     getOrganisme(id: string): Promise<OrganismeEntity>;
-    getOrganismes(): Promise<OrganismeEntity[]>;
+    getOrganismes(params: SearchParams): Promise<string[]>;
     getPublics(): Promise<PublicSpecifiqueEntity[]>;
     getCategories(): Promise<CategorieEntity[]>;
 }
@@ -161,10 +177,8 @@ export function useDBIndex(language: string): SearchInterface {
     return <SearchInterface>{
         isReady: !loading,
         search: !loading ? search : () => Promise.reject(new Error('Search engine is not ready')),
-        getOrganisme: !loading ? getOrganisme : () => Promise.reject(new Error('DB is not ready')),
-        getOrganismes(): Promise<any[]> {
-            return db.then(data => data.getAll(organismesStoreName));
-        },
+        getOrganisme: !loading ? getOrganismes : () => Promise.reject(new Error('DB is not ready')),
+        getOrganismes: !loading ? searchOrganismes : () => Promise.reject(new Error('Search engine is not ready')),
         getPublics(): Promise<any[]> {
             return db.then(data => data.getAll(publicsStoreName));
         },

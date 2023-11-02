@@ -1,5 +1,5 @@
-query getOrganismes {
-  organismes{
+query getOrganismes($locale: I18NLocaleCode) {
+  organismes(locale: $locale){
     data{
       id
       attributes{

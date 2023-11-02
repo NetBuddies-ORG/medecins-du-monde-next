@@ -5,6 +5,7 @@ import {HomePage} from "@/features/document-types/home-page/HomePage";
 import {cache} from "react";
 import {getStrapiClient} from "@/services/Strapi";
 import {GetPageQuery} from "@/services/GraphQL";
+import {Organizations} from "@/features/document-types/organizations/Organizations";
 
 export async function DocumentTypes() {
     const pages = getPage();
@@ -26,11 +27,11 @@ async function displayContent(page: GetPageQuery["pages"], language: string) {
     switch (page.data[0].attributes.ContentType) {
         case 'Home':
             return (<>
-                <HomePage extraData={await getHome(language)}></HomePage>
+                <HomePage extraData={await getHomePage(language)}></HomePage>
             </>)
         case 'Organizations':
             return <>
-                Orga
+                <Organizations extraData={await getOrganizationsPage(language)} />
             </>
         case 'About':
             return <>
@@ -49,7 +50,12 @@ async function displayContent(page: GetPageQuery["pages"], language: string) {
     }
 }
 
-const getHome = cache(async function getHome(language: string) {
+const getHomePage = cache(async function getHomePage(language: string) {
     const client = getStrapiClient();
     return await client.getHome({locale: language});
+});
+
+const getOrganizationsPage = cache(async function getOrganizationsPage(language: string) {
+    const client = getStrapiClient();
+    return await client.getOrganismes({locale: language});
 });

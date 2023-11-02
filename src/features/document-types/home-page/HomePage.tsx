@@ -20,7 +20,7 @@ export async function HomePage({extraData}: HomePageProps) {
     const {t, i18n} = await useTranslation(language)
 
     return (
-        extraData && <>
+        <>
             <div className="page-container">
                 <div className="searchbar">
                     <div className="info">
