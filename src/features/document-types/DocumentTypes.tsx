@@ -31,7 +31,7 @@ async function displayContent(page: GetPageQuery["pages"], language: string) {
             </>)
         case 'Organizations':
             return <>
-                <Organizations extraData={await getOrganizationsPage(language)} />
+                <Organizations extraData={await getOrganizationsPage(language)} languague={language} />
             </>
         case 'About':
             return <>

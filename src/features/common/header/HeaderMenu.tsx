@@ -4,7 +4,6 @@ import {languages} from "@/helpers";
 import {FaAngleDown} from "react-icons/fa6";
 import {usePathname} from "next/navigation";
 import {GetHeaderQuery} from "@/services/GraphQL";
-import {useTranslation} from "react-i18next";
 
 interface HeaderMenuProps {
     listItem: GetHeaderQuery["header"],

@@ -1,3 +1,11 @@
+.no-results{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
 .card-container-organisme{
   margin: 1rem 0;
   display: grid;
