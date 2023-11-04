@@ -29,7 +29,6 @@ type OrganizationDetailsLayoutProps = PropsWithChildren<{
     }
 }>;
 export default async function OrganizationDetailsLayout({children, params: {language, segment}}: OrganizationDetailsLayoutProps) {
-    console.log(segment)
     const {pages} = await getPage(language, '/' + segment);
     const header = await getHeader(language);
 
