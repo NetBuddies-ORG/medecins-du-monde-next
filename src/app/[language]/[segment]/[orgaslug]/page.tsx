@@ -19,7 +19,7 @@ export default async function OrgaDetailsPage({params: {language, segment, orgas
                                          orgaslug={orgaslug} />);
 }
 
-export async function generateStaticParams(): Promise<OrgaDetailsPageProps["params"][]> {
+export async function generateStaticParams() {
     const client = getStrapiClient();
     const catalogues: string[] = [];
     const getPagesList = async (language: string) => (await client.getPages({locale: language})).pages.data;
@@ -27,8 +27,9 @@ export async function generateStaticParams(): Promise<OrgaDetailsPageProps["para
     for (const language of languages) {
         try {
             for (let page of (await getPagesList(language))) {
+                console.log(page.attributes.ContentType)
                 if (page.attributes.ContentType === "Organizations") {
-                    catalogues.push(page.attributes.Url);
+                    catalogues.push('/' + language + page.attributes.Url);
                 }
             }
         } catch (missingLanguage) {
@@ -38,23 +39,10 @@ export async function generateStaticParams(): Promise<OrgaDetailsPageProps["para
 
     const res: OrgaDetailsPageProps["params"][] = [];
 
-    // TODO: quid translations
-    function getSlugFromLang(partner: any, lang: string): string {
-        switch (lang) {
-            case 'en':
-                return partner.name.english
-            case 'nl':
-                return partner.name.dutch
-            case 'de':
-                return partner.name.german
-            case 'fr':
-            default :
-                return partner.name.french
-        }
-    }
 
     for (let organization of organizations) {
         for (let catalogue of catalogues) {
+            console.log(catalogue)
             const [_, language, segment] = catalogue.split('/');
             if (language && segment && organization) {
                 res.push({
@@ -65,6 +53,7 @@ export async function generateStaticParams(): Promise<OrgaDetailsPageProps["para
             }
         }
     }
+
 
     return res;
 }

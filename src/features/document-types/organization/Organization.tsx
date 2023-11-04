@@ -45,8 +45,10 @@ export default function OrganizationDetails({ language, segment, orgaslug }: Org
                     <div className="details-container__header">
                         <div className='image-container'>
                             {
-                                organization?.Logo?.data?.attributes?.url &&
-                                <img src={organization?.Logo?.data?.attributes?.url} />
+                                organization?.Logo?.data ?
+                                <img alt="Logo" src={organization?.Logo?.data?.attributes?.url} />
+                                    :
+                                    <></>
                             }
                         </div>
                         <h2>{organization?.Nom}</h2>
@@ -95,7 +97,7 @@ export default function OrganizationDetails({ language, segment, orgaslug }: Org
 
                         </div>
                         <div className='access-conditions'>
-                            <h3>Conditions d'accès</h3>
+                            <h3>{"Conditions d'accès"}</h3>
                             {
                                 organization?.Conditions
                             }
@@ -116,7 +118,7 @@ export default function OrganizationDetails({ language, segment, orgaslug }: Org
                             <ul className='social-functions'>
                                 <li>
                                     <i className='fa-regular fa-notes-medical'></i>
-                                    <span>Assistance médicale d'urgence</span>
+                                    <span>{"Assistance médicale d'urgence"}</span>
                                 </li>
                                 <li>
                                     <i className='fa-regular fa-notes-medical'></i>
@@ -136,7 +138,7 @@ export default function OrganizationDetails({ language, segment, orgaslug }: Org
                                 </li>
                                 <li>
                                     <i className='fa-regular fa-notes-medical'></i>
-                                    <span>Droits de l'homme et plaidoyer</span>
+                                    <span>{"Droits de l'homme et plaidoyer"}</span>
                                 </li>
                                 <li>
                                     <i className='fa-regular fa-notes-medical'></i>

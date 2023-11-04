@@ -54,10 +54,12 @@ function build(phase)
         headers: !isExport ? config.headers : undefined,
         output: isExport ? 'export' : undefined,
         distDir: isExport ? 'dist' : undefined,
+        staticPageGenerationTimeout: 300,
         images:{
             ...config.images,
             loader: isExport ? 'custom' : 'default',
             loaderFile: isExport ? './src/images/loader.ts' : undefined,
+            domains: ['ik.imagekit.io']
         },
         webpack(config, options)
         {
