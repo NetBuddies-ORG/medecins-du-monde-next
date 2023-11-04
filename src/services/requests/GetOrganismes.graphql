@@ -4,6 +4,7 @@ query getOrganismes($locale: I18NLocaleCode) {
       id
       attributes{
         Nom
+        slug
         Departement
         Logo{
           data{

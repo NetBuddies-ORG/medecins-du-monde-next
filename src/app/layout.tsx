@@ -19,7 +19,7 @@ export default function RootLayout({children}: {
 }) {
 
     return (
-        <html lang="en">
+        <html lang="fr">
         <head>
             <meta name="robots" content="noindex"/>
             <meta name="theme-color"
