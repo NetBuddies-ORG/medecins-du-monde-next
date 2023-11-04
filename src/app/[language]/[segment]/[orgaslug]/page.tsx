@@ -2,6 +2,8 @@ import OrganizationDetails from "@/features/document-types/organization/Organiza
 import {getStrapiClient} from "@/services/Strapi";
 import {languages, removeDiacritics} from "@/helpers";
 import organizations from "@/../build/static/organismes.json";
+import {CustomHeader} from "@/features/common/header/Header";
+import {CustomFooter} from "@/features/common/footer/footer";
 
 type OrgaDetailsPageProps = {
     params: {
@@ -11,12 +13,10 @@ type OrgaDetailsPageProps = {
     }
 }
 
-export default function OrgaDetailsPage({params: {language, segment, orgaslug}}: OrgaDetailsPageProps) {
-    return (
-        <OrganizationDetails language={language}
-                             segment={segment}
-                             orgaslug={orgaslug} />
-    );
+export default async function OrgaDetailsPage({params: {language, segment, orgaslug}}: OrgaDetailsPageProps) {
+    return ( <OrganizationDetails language={language}
+                                         segment={segment}
+                                         orgaslug={orgaslug} />);
 }
 
 export async function generateStaticParams(): Promise<OrgaDetailsPageProps["params"][]> {
@@ -60,7 +60,7 @@ export async function generateStaticParams(): Promise<OrgaDetailsPageProps["para
                 res.push({
                     language,
                     segment,
-                    orgaslug: removeDiacritics(organization.attributes.Nom),
+                    orgaslug: removeDiacritics(organization.Nom),
                 });
             }
         }

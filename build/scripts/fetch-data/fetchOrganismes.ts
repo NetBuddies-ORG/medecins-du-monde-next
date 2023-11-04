@@ -7,14 +7,14 @@ import {join} from "path";
 export async function fetchOrganismes() {
     console.info('Fetching Organismes...');
     await buildCmsPageByCulture();
-
 }
 
 async function buildCmsPageByCulture() {
     const client = getStrapiClient();
 
-    const pages = (await client.getOrganismes()).organismes.data;
+    const organismes = (await client.getOrganismes()).organismes.data
+        .map(item => ({ id: item.id, ...item.attributes}));
 
-    writeFile(join(__dirname, `../../static/organismes.json`), JSON.stringify(pages), { encoding: 'utf8' });
+    writeFile(join(__dirname, `../../static/organismes.json`), JSON.stringify(organismes), { encoding: 'utf8' });
 
 }

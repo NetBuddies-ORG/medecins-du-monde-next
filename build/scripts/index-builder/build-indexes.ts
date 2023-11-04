@@ -2,7 +2,7 @@ import {writeFile} from "fs/promises";
 import {join} from "path";
 import lunr from 'lunr';
 import {removeDiacriticsSpelling} from "./removeDiacriticsSpelling";
-import {OrganismeEntity} from "@/services/GraphQL";
+import {Organisme, OrganismeEntity} from "@/services/GraphQL";
 require('lunr-languages/lunr.stemmer.support')(lunr);
 require('lunr-languages/lunr.fr')(lunr);
 require('lunr-languages/lunr.nl')(lunr);
@@ -15,8 +15,8 @@ async function buildIndex()
     {
         this.use(removeDiacriticsSpelling);
         this.ref('id');
-        this.field('name_organismes', {extractor: (p: OrganismeEntity)  => p.attributes.Nom});
-        this.field('address_organismes', {extractor: (p: OrganismeEntity)  => p.attributes.Adresse});
+        this.field('name_organismes', {extractor: (p: Organisme)  => p.Nom});
+        this.field('address_organismes', {extractor: (p: Organisme)  => p.Adresse});
         organismes.forEach(p => this.add(p));
     });
 

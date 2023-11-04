@@ -11,19 +11,22 @@ import {
 } from "@/services/GraphQL";
 import {useAsync} from "react-use";
 
+interface OrganizationSchema {
+    value: any;
+    key: string;
+    indexes: { slug: string; };
+}
+
 interface IndexDBchema {
     value: any;
     key: string;
-    indexes:
-        {
-            name: string;
-        };
+    indexes: { Nom: string; };
 }
 
 interface MdmDB extends DBSchema {
-    'organismes': IndexDBchema,
-    'publics': IndexDBchema,
-    'categories': IndexDBchema,
+    organismes: OrganizationSchema,
+    publics: IndexDBchema,
+    categories: IndexDBchema,
     revision:
         {
             value: string;
@@ -44,7 +47,9 @@ const NEXT_PUBLIC_REVISION_ORGANISME = process.env.NEXT_PUBLIC_REVISION_ORGANISM
 const NEXT_PUBLIC_REVISION_PUBLICS = process.env.NEXT_PUBLIC_REVISION_PUBLICS;
 const NEXT_PUBLIC_REVISION_CATEGORIES = process.env.NEXT_PUBLIC_REVISION_CATEGORIES;
 
-const getOrganisme = (id: string) => db.then(data => data.get(organismesStoreName, id));
+const getOrganisme = (slug: string) => {
+    return db.then(data => data.transaction("organismes").store.index('slug').get(slug))
+};
 const getOrganismes = () => import(`../../build/static/organismes.json`).then(({default: p}) => p);
 const getPublics = () => import('../../build/static/publics.json').then(({default: p}) => p)
 const getCategories = () => import('../../build/static/categories.json').then(({default: p}) => p)
@@ -58,6 +63,9 @@ async function setupDB(language: string): Promise<IDBPDatabase<MdmDB>> {
                 db.createObjectStore(publicsStoreName, {keyPath: 'id'});
                 db.createObjectStore(categoriesStoreName, {keyPath: 'id'});
                 db.createObjectStore(organismesStoreName, {keyPath: 'id'});
+
+                const organismesStore = transaction.objectStore(organismesStoreName);
+                organismesStore.createIndex("slug", "slug", {multiEntry: true, unique: true});
             }
         }
     }));
@@ -70,7 +78,6 @@ async function setupDB(language: string): Promise<IDBPDatabase<MdmDB>> {
         const transaction = data.transaction([revisionStoreName, organismesStoreName], 'readwrite');
         const revisionStore = transaction.objectStore(revisionStoreName);
         const organismesStore = transaction.objectStore(organismesStoreName);
-
 
         await revisionStore.put(organismesRevisionBuilt!, 'REVISION_ORGANISME');
         await organismesStore.clear();
@@ -165,10 +172,10 @@ export interface SearchParams {
 interface SearchInterface {
     isReady: boolean;
     search(params: SearchParams): Promise<string[]>;
-    getOrganisme(id: string): Promise<OrganismeEntity>;
+    getOrganisme(id: string): Promise<Organisme>;
     getOrganismes(params: SearchParams): Promise<string[]>;
-    getPublics(): Promise<PublicSpecifiqueEntity[]>;
-    getCategories(): Promise<CategorieEntity[]>;
+    getPublics(): Promise<PublicSpecifique[]>;
+    getCategories(): Promise<Categorie[]>;
 }
 
 export function useDBIndex(language: string): SearchInterface {
@@ -177,7 +184,7 @@ export function useDBIndex(language: string): SearchInterface {
     return <SearchInterface>{
         isReady: !loading,
         search: !loading ? search : () => Promise.reject(new Error('Search engine is not ready')),
-        getOrganisme: !loading ? getOrganismes : () => Promise.reject(new Error('DB is not ready')),
+        getOrganisme: !loading ? getOrganisme : () => Promise.reject(new Error('DB is not ready')),
         getOrganismes: !loading ? searchOrganismes : () => Promise.reject(new Error('Search engine is not ready')),
         getPublics(): Promise<any[]> {
             return db.then(data => data.getAll(publicsStoreName));

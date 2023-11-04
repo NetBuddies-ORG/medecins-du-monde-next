@@ -1,11 +1,11 @@
 'use client'
-import {useAsync} from "react-use";
-import {getOrganizationBySlug, useDBIndex} from "@/services/Search";
-import {removeDiacritics} from "@/helpers";
-import {Organisme} from "@/services/GraphQL";
-import {useEffect} from "react";
+import {useDBIndex} from "@/services/Search";
 import {useAsyncEffect} from "@/hooks";
-
+import {useEffect, useState} from "react";
+import {Organisme} from "@/services/GraphQL";
+import {LeafletMap} from "@/features/common/leaflet";
+import L, {LatLng} from 'leaflet';
+import {Coordinates} from "@/features/common/leaflet/LeafletMap";
 
 type OrganizationDetailsProps = {
     language: string;
@@ -13,93 +13,103 @@ type OrganizationDetailsProps = {
     orgaslug: string;
 }
 export default function OrganizationDetails({ language, segment, orgaslug }: OrganizationDetailsProps) {
+
+    const startingLatitude = 50.4520460341461;
+    const startingLongitude = 3.9022238531303;
     const {isReady, getOrganisme} = useDBIndex(language);
+    const [organization, setOrganization] = useState<Organisme>();
+    const [boundsCoords, setBoundsCoords] = useState<L.LatLngBounds>();
+    const [centerCoordinates, setCenterCoordinates] = useState<LatLng>();
+    const [zoom, setZoom] = useState<number>(9);
+    const [canRecenter, setCanRecenter] = useState<boolean>(true);
+    const [currentLocation, setCurrentLocation] = useState<Coordinates | undefined>();
+
+    useEffect( () => {
+        setCenterCoordinates({lat: startingLatitude, lng: startingLongitude} as LatLng);
+    }, [])
 
     useAsyncEffect(async () => {
         if(isReady){
-
-            getOrganisme(orgaslug).then((orgRef) => {
-                console.log(orgRef);
+            getOrganisme(orgaslug).then((orga) => {
+                setOrganization(orga);
             }).catch(error => {
                 console.error("Erreur lors de la récupération de l'organisme :", error);
             });
         }
     }, [isReady])
+
     return (
         <>
             <div className='page-container'>
                 <div className="details-container">
                     <div className="details-container__header">
                         <div className='image-container'>
-                            <img src='styles/assets/images/mdm-logo.svg' />
+                            {
+                                organization?.Logo?.data?.attributes?.url &&
+                                <img src={organization?.Logo?.data?.attributes?.url} />
+                            }
                         </div>
-                        <h2>Relais Social Urbain de Mons-Borinage</h2>
-                        <h3>Département Soréal</h3>
+                        <h2>{organization?.Nom}</h2>
+                        {organization?.Departement && <h3>{organization?.Departement}</h3>}
                     </div>
                     <div className="details-container__body">
                         <div className='intro'>
-                            Médecins du Monde (MdM) est une organisation non gouvernementale (ONG) qui se consacre à fournir des soins médicaux et un soutien aux populations vulnérables dans le monde entier, en mettant un accent particulier sur les zones en crise et les contextes humanitaires.
+                            {organization?.Description}
                         </div>
                         <div className='contact'>
                             <h3>Contactez-nous</h3>
                             <ul>
                                 <li>
                                     <i className='fa-regular fa-phone'></i>
-                                    <span>+32 (0) 2 225 43 00</span>
+                                    <span>{organization?.Telephone}</span>
                                 </li>
                                 <li>
                                     <i className='fa-regular fa-map-marker-alt'></i>
-                                    <span>Rue Botanique 75, 1210 Bruxelles</span>
+                                    <span>{organization?.Adresse}</span>
                                 </li>
                                 <li>
                                     <i className='fa-regular fa-envelope'></i>
-                                    <span>info@pcs-quaregnon.be</span>
+                                    <span>{organization?.Email}</span>
                                 </li>
                                 <li>
                                     <i className='fa-regular fa-globe'></i>
-                                    <span><a href='https://www.pcs-quaregnon.be'>https://www.pcs-quaregnon.be</a></span>
+                                    <span><a href='https://www.pcs-quaregnon.be'>{organization?.Website}</a></span>
                                 </li>
                             </ul>
                         </div>
                         <div className='schedules'>
                             <h3>Horaires</h3>
-                            <ul>
-                                <li>
-                                    Lundi à jeudi: de 8h30 à 16h15
-                                </li>
-                                <li>
-                                    Vendredi: de 8h30 à 12h
-                                </li>
-                            </ul>
+                            {
+                                organization?.Horaires
+                            }
                         </div>
                         <div className='languages'>
                             <h3>Langues</h3>
-                            <ul>
-                                <li>
-                                    <span>Français</span>
-                                </li>
-                                <li>
-                                    <span>Anglais</span>
-                                </li>
-                                <li>
-                                    <span>Néerlandais</span>
-                                </li>
-                            </ul>
+
+                                <ul>
+
+                                    {organization?.langues.data.map(item =>
+                                        <li key={item.id}><span>{item.attributes.Nom}</span></li>)}
+                                </ul>
+
+
                         </div>
                         <div className='access-conditions'>
                             <h3>Conditions d'accès</h3>
-                            <ul>
-                                <li>
-                                    <span>- Être domicilié dans la commune de Quaregnon</span>
-                                </li>
-                                <li>
-                                    <span>- Être sous le statut étudiant</span>
-                                </li>
-                            </ul>
+                            {
+                                organization?.Conditions
+                            }
                         </div>
                         <div className='map'>
                             <h3>Carte</h3>
-                            <img src='./styles/assets/images/maps.jpg' width='400' />
+                            <LeafletMap  boundsCoords={boundsCoords}
+                                         currentLocation={currentLocation}
+                                         centerCoordinates={centerCoordinates}
+                                         setCenterCoordinates={setCenterCoordinates}
+                                         zoom={zoom}
+                                         setZoom={setZoom}
+                                         canRecenter={canRecenter}
+                                         setCanRecenter={setCanRecenter}/>
                         </div>
                         <div className='services'>
                             <h3>Services</h3>

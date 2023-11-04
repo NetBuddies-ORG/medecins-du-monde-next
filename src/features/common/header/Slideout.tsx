@@ -16,8 +16,6 @@ export function Slideout({title, menuItem, lang}: SlideoutProps){
     const pathname = usePathname();
     const toggleSlideout = () => {
         setVisibility(!visibility);
-        // Prevent the scroll behind the slideout menu
-        !visibility ? document.body.style.overflow = 'hidden' : document.body.style.overflow = 'unset';
     }
 
     return <>

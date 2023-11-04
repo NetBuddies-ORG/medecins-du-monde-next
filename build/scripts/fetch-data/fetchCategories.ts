@@ -11,6 +11,7 @@ export async function fetchCategories() {
 
 async function buildCmsPageByCulture() {
     const client = getStrapiClient();
-    const pages = (await client.getCategories()).categories.data;
-    writeFile(join(__dirname, `../../static/categories.json`), JSON.stringify(pages), { encoding: 'utf8' });
+    const categories = (await client.getCategories()).categories.data
+        .map(item => ({id: item.id, ...item.attributes}));
+    writeFile(join(__dirname, `../../static/categories.json`), JSON.stringify(categories), { encoding: 'utf8' });
 }

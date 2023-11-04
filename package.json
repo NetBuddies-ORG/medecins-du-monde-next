@@ -14,6 +14,7 @@
     "env": "yarn env-cmd --no-override yarn run"
   },
   "dependencies": {
+    "@christopherpickering/react-leaflet-markercluster": "^1.1.0",
     "classnames": "^2.3.2",
     "i18next": "^23.6.0",
     "i18next-http-backend": "^2.3.1",
@@ -27,6 +28,7 @@
     "react-i18next": "^13.3.1",
     "react-icons": "^4.11.0",
     "react-leaflet": "^4.2.1",
+    "leaflet": "^1.9.3",
     "react-slick": "^0.29.0",
     "react-use": "^17.4.0"
   },
@@ -36,6 +38,7 @@
     "@graphql-codegen/typescript-graphql-request": "^6.0.1",
     "@graphql-codegen/typescript-operations": "^4.0.1",
     "@types/jsonwebtoken": "^9.0.2",
+    "@types/leaflet": "^1.9.3",
     "@types/lunr": "^2.3.4",
     "@types/node": "18.18.7",
     "@types/node-fetch": "^3.0.3",

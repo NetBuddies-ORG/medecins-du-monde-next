@@ -21,7 +21,14 @@ const config = {
                     " script-src 'self' 'unsafe-eval' 'unsafe-inline';" +
                     " font-src 'self' fonts.gstatic.com;" +
                     " manifest-src 'self';" +
-                    " img-src 'self';" +
+                    " img-src 'self'" +
+                    " https://openlayers.org" +
+                    " https://tile.openstreetmap.org" +
+                    " http://a.tile.openstreetmap.org" +
+                    " http://b.tile.openstreetmap.org" +
+                    " data:" +
+                    " https://ik.imagekit.io" +
+                    " http://c.tile.openstreetmap.org;" +
                     " connect-src 'self';"
             }]
         }]

@@ -14,8 +14,9 @@ export async function fetchPublics() {
 async function buildCmsPageByCulture() {
     const client = getStrapiClient();
 
-    const pages = (await client.getPublics()).publicSpecifiques.data.map(item => item as unknown as PublicSpecifique);
+    const publics = (await client.getPublics()).publicSpecifiques.data
+        .flatMap(item => ({id: item.id, ...item.attributes}))
 
-    writeFile(join(__dirname, `../../static/publics.json`), JSON.stringify(pages), { encoding: 'utf8' });
+    writeFile(join(__dirname, `../../static/publics.json`), JSON.stringify(publics), { encoding: 'utf8' });
 
 }

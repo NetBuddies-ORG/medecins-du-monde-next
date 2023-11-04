@@ -35,9 +35,9 @@ export default async function LanguageLayout({children, params: {language}}: Lan
 
     return (
         <html lang={language}>
-        <body>
-            {children}
-        </body>
+            <body>
+                {children}
+            </body>
         </html>
     )
 }
