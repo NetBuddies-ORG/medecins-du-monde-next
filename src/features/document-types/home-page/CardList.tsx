@@ -46,7 +46,7 @@ export function CardList({extraData, categoriesContainer: {categories}}: CardLis
         </div>
         <div className={"footer-search" + (selectedCategories.length <= 0 ? ' isHidden' : '')}>
             <button className="btn btn-primary">
-                <Link href={"rechercher-un-organisme" + ('?categories=' + selectedCategories)}>
+                <Link href={{ pathname: 'rechercher-un-organisme', query: { categories: selectedCategories } }}>
                     Rechercher un organisme
                 </Link>
             </button>

@@ -5,6 +5,14 @@ query getCategories($locale: I18NLocaleCode) {
             attributes{
                 Nom
                 Icone
+                sous_categories{
+                    data{
+                        id
+                        attributes{
+                            Nom
+                        }
+                    }
+                }
             }
         }
     }

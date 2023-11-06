@@ -2,9 +2,13 @@
 import {FaAngleDown, FaHouse, FaList, FaMapLocationDot, FaXmark} from "react-icons/fa6";
 import {useEffect, useState} from "react";
 import {useDBIndex} from "@/services/Search";
-import {Organisme} from "@/services/GraphQL";
+import {Categorie, Organisme} from "@/services/GraphQL";
 import Link from "next/link";
 import {FaMapMarkerAlt} from "react-icons/fa";
+import {useSearchParams} from "next/navigation";
+import categories from '@/../build/static/categories.json'
+import {IconComponent} from "@/features/common/react-icons/IconComponent";
+import {LeafletMap} from "@/features/common/leaflet";
 
 interface SearchOrganizationProps {
     language: string
@@ -15,28 +19,34 @@ export function SearchOrganization({language}: SearchOrganizationProps) {
     const [isSlideOutOpen, setIsSlideOutOpen] = useState<boolean>(false);
     const [organismes, setOrganismes] = useState<Organisme[]>([]);
     const [selectedPublic, setSelectedPublic] = useState<string>('');
-    const [categories, setCategories] = useState<string[]>([]);
+    const [selectedSubCategories, setSubSelectedCategories] = useState<string[]>([]);
+    const [categoriesForFilterDisplay, setCategoriesForFilterDisplay] = useState<(Categorie & {id: string})[]>([]);
+    const [selectedOpenCategories, setSelectedOpenCategories] = useState<string[]>([]);
 
+    const searchParams = useSearchParams()
     const {search, isReady} = useDBIndex(language);
 
-    useEffect(() => {
-        if(isReady){
-            search({}).then((res) => {
-                setOrganismes(res);
-            });
-        }
-    }, [isReady])
 
     useEffect(() => {
-        if(isReady){
-            search({}).then((res) => {
-                setOrganismes(res);
+        if(isReady && searchParams.getAll('categories').length > 0){
+            // @ts-ignore
+            setCategoriesForFilterDisplay(categories.filter(item => searchParams.getAll('categories').includes(item.id)))
+            search({categoriesIds: searchParams.getAll('categories') as string[]}).then((organismes) => {
+                setOrganismes(organismes);
             });
         }
-    }, [selectedPublic, categories])
+    }, [isReady, searchParams, selectedPublic, selectedSubCategories])
 
     function handlePublicsChange() {
 
+    }
+
+    function toggleAccordions(id: string) {
+        if(selectedOpenCategories.includes(id)){
+            setSelectedOpenCategories(selectedOpenCategories.filter(item => item !== id))
+        } else {
+            setSelectedOpenCategories([...selectedOpenCategories, id])
+        }
     }
 
     return <>
@@ -69,126 +79,28 @@ export function SearchOrganization({language}: SearchOrganizationProps) {
                     </div>
                     <div className='so-body'>
                         <h3><span>Catégories</span></h3>
-                        <div className='accordion-tab'>
-                            <div className='sub-title'>
-                                <FaHouse/>
-                                <span>Logement (3)</span>
-                            </div>
-                            <ul>
-                                <li>
-                                    <div className="checkmark isChecked"></div>
-                                    <span>Loisirs et culture à petits prix</span>
-                                </li>
-                                <li>
-                                    <div className="checkmark isChecked"></div>
-                                    <span>Activités physiques et sportives</span>
-                                </li>
-                                <li>
-                                    <div className="checkmark"></div>
-                                    <span>Initiation aux logiciels bureautiques et/ou à internet</span>
-                                </li>
-                                <li>
-                                    <div className="checkmark"></div>
-                                    <span>Activités et groupes santé réservés aux femmes</span>
-                                </li>
-                                <li>
-                                    <div className="checkmark isChecked"></div>
-                                    <span>Loisirs et culture à petits prix</span>
-                                </li>
-                                <li>
-                                    <div className="checkmark"></div>
-                                    <span>Activités physiques et sportives</span>
-                                </li>
-                                <li>
-                                    <div className="checkmark"></div>
-                                    <span>Bureautique</span>
-                                </li>
-                                <li>
-                                    <div className="checkmark"></div>
-                                    <span>Groupes de santé</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div className='accordion-tab'>
-                            <div className='sub-title'>
-                                <i className='fa-regular fa-masks-theater'></i>
-                                <span>Culture et loisirs</span>
-                            </div>
-                            <ul>
-                                <li>
-                                    <div className="checkmark"></div>
-                                    <span>Loisirs et culture à petits prix</span>
-                                </li>
-                                <li>
-                                    <div className="checkmark"></div>
-                                    <span>Activités physiques et sportives</span>
-                                </li>
-                                <li>
-                                    <div className="checkmark"></div>
-                                    <span>Initiation aux logiciels bureautiques et/ou à internet</span>
-                                </li>
-                                <li>
-                                    <div className="checkmark"></div>
-                                    <span>Activités et groupes santé réservés aux femmes</span>
-                                </li>
-                                <li>
-                                    <div className="checkmark"></div>
-                                    <span>Loisirs et culture à petits prix</span>
-                                </li>
-                                <li>
-                                    <div className="checkmark"></div>
-                                    <span>Activités physiques et sportives</span>
-                                </li>
-                                <li>
-                                    <div className="checkmark"></div>
-                                    <span>Bureautique</span>
-                                </li>
-                                <li>
-                                    <div className="checkmark"></div>
-                                    <span>Groupes de santé</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div className='accordion-tab'>
-                            <div className='sub-title'>
-                                <i className='fa-regular fa-notes-medical'></i>
-                                <span>Santé</span>
-                            </div>
-                            <ul>
-                                <li>
-                                    <div className="checkmark"></div>
-                                    <span>Loisirs et culture à petits prix</span>
-                                </li>
-                                <li>
-                                    <div className="checkmark"></div>
-                                    <span>Activités physiques et sportives</span>
-                                </li>
-                                <li>
-                                    <div className="checkmark"></div>
-                                    <span>Initiation aux logiciels bureautiques et/ou à internet</span>
-                                </li>
-                                <li>
-                                    <div className="checkmark"></div>
-                                    <span>Activités et groupes santé réservés aux femmes</span>
-                                </li>
-                                <li>
-                                    <div className="checkmark"></div>
-                                    <span>Loisirs et culture à petits prix</span>
-                                </li>
-                                <li>
-                                    <div className="checkmark"></div>
-                                    <span>Activités physiques et sportives</span>
-                                </li>
-                                <li>
-                                    <div className="checkmark"></div>
-                                    <span>Bureautique</span>
-                                </li>
-                                <li>
-                                    <div className="checkmark"></div>
-                                    <span>Groupes de santé</span>
-                                </li>
-                            </ul>
-                        </div>
+                        {
+                            categoriesForFilterDisplay.map((category) => {return <>
+                                <div className={'accordion-tab' +  ( selectedOpenCategories.includes(category.id) ? ' isOpen' : '')}
+                                     onClick={() => toggleAccordions(category.id)}>
+                                    <div className='sub-title'>
+                                        <IconComponent icon={category.Icone} />
+                                        <span>{category.Nom} (3)</span>
+                                    </div>
+                                    <ul>
+                                        {
+                                            category.sous_categories.data.map((subCategory) => {
+                                                return <li key={subCategory.id}>
+                                                    <div className="checkmark isChecked"></div>
+                                                    <span>{subCategory.attributes.Nom}</span>
+                                                </li>
+
+                                            })
+                                        }
+                                    </ul>
+                                </div>
+                            </>})
+                        }
                         <div className='footer-search'>
                             <button className='btn btn-primary'><a href='results_list.html'>Afficher les 3 résultats</a>
                             </button>
@@ -219,7 +131,7 @@ export function SearchOrganization({language}: SearchOrganizationProps) {
             {
                 isMapViewSelect ?
                     <div className='map-container'>
-                        <img alt='maps' src='styles/assets/images/maps.jpg'/>
+                        <LeafletMap coordinates={{longitude: 50, latitude: 45}} />
                     </div> :
                     <div className='card-container-organisme'>
                         {

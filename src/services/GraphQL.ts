@@ -2307,7 +2307,7 @@ export type GetCategoriesQueryVariables = Exact<{
 }>;
 
 
-export type GetCategoriesQuery = { __typename?: 'Query', categories: { __typename?: 'CategorieEntityResponseCollection', data: Array<{ __typename?: 'CategorieEntity', id: string, attributes: { __typename?: 'Categorie', Nom: string, Icone: string } }> } };
+export type GetCategoriesQuery = { __typename?: 'Query', categories: { __typename?: 'CategorieEntityResponseCollection', data: Array<{ __typename?: 'CategorieEntity', id: string, attributes: { __typename?: 'Categorie', Nom: string, Icone: string, sous_categories: { __typename?: 'SousCategorieRelationResponseCollection', data: Array<{ __typename?: 'SousCategorieEntity', id: string, attributes: { __typename?: 'SousCategorie', Nom: string } }> } } }> } };
 
 export type GetOrganismesQueryVariables = Exact<{
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
@@ -2376,6 +2376,14 @@ export const GetCategoriesDocument = gql`
       attributes {
         Nom
         Icone
+        sous_categories {
+          data {
+            id
+            attributes {
+              Nom
+            }
+          }
+        }
       }
     }
   }
