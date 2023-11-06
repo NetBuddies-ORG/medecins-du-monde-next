@@ -14,7 +14,7 @@ const config = {
             headers:[{
                 key:"content-security-policy",
                 value:"" +
-                    "default-src 'self';" +
+                    "default-src 'self' data: ;" +
                     " style-src 'self' 'unsafe-inline' fonts.googleapis.com;" +
                     " base-uri 'none';" +
                     " form-action 'self';" +

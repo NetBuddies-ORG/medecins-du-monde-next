@@ -42,7 +42,7 @@ export function Organizations({extraData, languague}: OrganizationsProps) {
                 {organismes.length > 0 ?
                     <div className='card-container-organisme'>
                         {
-                            organismes.map(item => <Link key={item.id} href={removeDiacritics(item.attributes.Nom)}>
+                            organismes.map(item => <Link key={item.id} href={item.attributes.generatedUrl}>
                                 <div className='card organisme'>
                                     <div className='up'>
                                         {item.attributes.Nom}

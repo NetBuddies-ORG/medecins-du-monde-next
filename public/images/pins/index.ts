@@ -11,7 +11,7 @@ export function createMarkerFromSrc(pinSrc) {
     return L.icon({
         iconUrl: pinSrc.src,
         shadowUrl: iconShadow.src,
-        iconSize: [25, 41],
-        iconAnchor: [12, 41]
+        iconSize: [30, 41],
+        iconAnchor: [15, 41]
     });
 }

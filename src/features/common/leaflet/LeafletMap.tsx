@@ -1,6 +1,6 @@
 'use client'
-import {MapContainer, Marker, TileLayer, useMap} from "react-leaflet";
-import {LatLng, LatLngBounds} from 'leaflet';
+import {MapContainer, Marker, TileLayer, useMap, ZoomControl} from "react-leaflet";
+import {LatLng} from 'leaflet';
 import React, {useEffect, useState} from "react";
 import 'leaflet/dist/leaflet.css';
 import '@christopherpickering/react-leaflet-markercluster/dist/styles.min.css';
@@ -18,19 +18,19 @@ export interface Coordinates {
 }
 
 export interface LeafletMapProps {
-    centerCoordinates?: LatLng;
-    setCenterCoordinates: Function;
-    boundsCoords?: LatLngBounds;
-    zoom: number;
-    setZoom: Function;
-    currentLocation?: Coordinates;
     children?: React.ReactNode;
-    canRecenter: boolean;
-    setCanRecenter: Function;
+    coordinates: Coordinates;
 }
 
-export function LeafletMap({children, boundsCoords, currentLocation, centerCoordinates, setCenterCoordinates, zoom, setZoom, canRecenter, setCanRecenter}: LeafletMapProps) {
+export function LeafletMap({children, coordinates}: LeafletMapProps) {
     const [ready, setReady] = useState<boolean>(false);
+    const [centerCoordinates, setCenterCoordinates] = useState<LatLng>();
+
+    useEffect(() => {
+        if(coordinates.latitude && coordinates.longitude){
+            setCenterCoordinates({lat: coordinates.latitude, lng: coordinates.longitude} as LatLng)
+        }
+    }, [])
 
     const RecenterTool = ({lat, long}: RecenterToolProps) => {
         const map = useMap();
@@ -38,12 +38,10 @@ export function LeafletMap({children, boundsCoords, currentLocation, centerCoord
 
         useEffect(() => {
             // if !canRecenter is needed to avoid being locked after geolocalize
-            if (currentLocation && lat && long && !canRecenter) {
-                setZoom(zoom);
-                map.setView([lat, long], zoom);
-                localStorage.setItem("zoomLevel", zoom.toString());
-                setCanRecenter(true);
-            }
+            // if (currentLocation && lat && long && !canRecenter) {
+            //     map.setView([lat, long], zoom);
+            //     localStorage.setItem("zoomLevel", zoom.toString());
+            // }
         }, []);
         return null;
     }
@@ -65,8 +63,6 @@ export function LeafletMap({children, boundsCoords, currentLocation, centerCoord
             const latitude = localStorage.getItem("latitude") || 0;
             const longitude = localStorage.getItem("longitude") || 0;
             setCenterCoordinates({lat: +latitude, lng: +longitude} as LatLng);
-            setZoom(localStorage.getItem("zoomLevel"));
-            setCanRecenter(true);
         })
         return null;
     }
@@ -76,12 +72,11 @@ export function LeafletMap({children, boundsCoords, currentLocation, centerCoord
             {
                 centerCoordinates &&
                 <MapContainer center={centerCoordinates}
-                              bounds={boundsCoords}
                               touchZoom="center"
                               zoomAnimation={true}
-                              zoom={zoom}
+                              zoom={13}
                               attributionControl={false}
-                              zoomControl={true}
+                              zoomControl={false}
                               zoomDelta={0.25}
                               zoomSnap={0.25}
                               whenReady={() => setReady(true)}
@@ -90,17 +85,18 @@ export function LeafletMap({children, boundsCoords, currentLocation, centerCoord
                     <InvalidateSize/>
                     <SaveZoomLatLng />
                     <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                    {/*<ZoomControl position="topright"/>*/}
+                    <ZoomControl position="bottomright"/>
                     <MarkerClusterGroup>
                         {children}
                     </MarkerClusterGroup>
-                    {currentLocation?.latitude && currentLocation?.longitude &&
+                    {coordinates?.latitude && coordinates?.longitude &&
                         <>
-                            <Marker key={currentLocation?.latitude!}
-                                    position={[currentLocation?.latitude!, currentLocation?.longitude!]}
+                            <Marker key={coordinates?.latitude!}
+                                    position={[coordinates?.latitude!, coordinates?.longitude!]}
+                                    icon={createMarkerFromSrc(pinFullRed)}
                                     >
                             </Marker>
-                            <RecenterTool lat={currentLocation?.latitude!} long={currentLocation?.longitude!} />
+                            <RecenterTool lat={coordinates?.latitude!} long={coordinates?.longitude!} />
                         </>
                     }
                 </MapContainer>

@@ -266,7 +266,7 @@ export type FooterRelationResponseCollection = {
   data: Array<FooterEntity>;
 };
 
-export type GenericMorph = Categorie | ComponentGeneraleFooter | ComponentGeneraleHeader | ComponentGeneraleSeo | Footer | Header | Home | I18NLocale | Langue | Organisme | Page | PublicSpecifique | ReactIconsIconlibrary | Service | SousCategorie | Traduction | UploadFile | UploadFolder | Urgence | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = Categorie | ComponentGeneraleFooter | ComponentGeneraleHeader | ComponentGeneraleSeo | Footer | Header | Home | I18NLocale | Langue | Organisme | Page | PublicSpecifique | ReactIconsIconlibrary | Service | SlugifySlug | SousCategorie | Traduction | UploadFile | UploadFolder | Urgence | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type Header = {
   __typename?: 'Header';
@@ -531,6 +531,7 @@ export type Mutation = {
   createReactIconsIconlibrary: Maybe<ReactIconsIconlibraryEntityResponse>;
   createService: Maybe<ServiceEntityResponse>;
   createServiceLocalization: Maybe<ServiceEntityResponse>;
+  createSlugifySlug: Maybe<SlugifySlugEntityResponse>;
   createSousCategorie: Maybe<SousCategorieEntityResponse>;
   createSousCategorieLocalization: Maybe<SousCategorieEntityResponse>;
   createTraduction: Maybe<TraductionEntityResponse>;
@@ -552,6 +553,7 @@ export type Mutation = {
   deletePublicSpecifique: Maybe<PublicSpecifiqueEntityResponse>;
   deleteReactIconsIconlibrary: Maybe<ReactIconsIconlibraryEntityResponse>;
   deleteService: Maybe<ServiceEntityResponse>;
+  deleteSlugifySlug: Maybe<SlugifySlugEntityResponse>;
   deleteSousCategorie: Maybe<SousCategorieEntityResponse>;
   deleteTraduction: Maybe<TraductionEntityResponse>;
   deleteUploadFile: Maybe<UploadFileEntityResponse>;
@@ -583,6 +585,7 @@ export type Mutation = {
   updatePublicSpecifique: Maybe<PublicSpecifiqueEntityResponse>;
   updateReactIconsIconlibrary: Maybe<ReactIconsIconlibraryEntityResponse>;
   updateService: Maybe<ServiceEntityResponse>;
+  updateSlugifySlug: Maybe<SlugifySlugEntityResponse>;
   updateSousCategorie: Maybe<SousCategorieEntityResponse>;
   updateTraduction: Maybe<TraductionEntityResponse>;
   updateUploadFile: Maybe<UploadFileEntityResponse>;
@@ -707,6 +710,11 @@ export type MutationCreateServiceLocalizationArgs = {
 };
 
 
+export type MutationCreateSlugifySlugArgs = {
+  data: SlugifySlugInput;
+};
+
+
 export type MutationCreateSousCategorieArgs = {
   data: SousCategorieInput;
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
@@ -813,6 +821,11 @@ export type MutationDeleteReactIconsIconlibraryArgs = {
 export type MutationDeleteServiceArgs = {
   id: Scalars['ID']['input'];
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+};
+
+
+export type MutationDeleteSlugifySlugArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -965,6 +978,12 @@ export type MutationUpdateServiceArgs = {
 };
 
 
+export type MutationUpdateSlugifySlugArgs = {
+  data: SlugifySlugInput;
+  id: Scalars['ID']['input'];
+};
+
+
 export type MutationUpdateSousCategorieArgs = {
   data: SousCategorieInput;
   id: Scalars['ID']['input'];
@@ -1025,11 +1044,14 @@ export type Organisme = {
   Description: Maybe<Scalars['String']['output']>;
   Email: Maybe<Scalars['String']['output']>;
   Horaires: Maybe<Scalars['String']['output']>;
+  Latitude: Maybe<Scalars['Float']['output']>;
   Logo: Maybe<UploadFileEntityResponse>;
+  Longitude: Maybe<Scalars['Float']['output']>;
   Nom: Maybe<Scalars['String']['output']>;
   Telephone: Maybe<Scalars['String']['output']>;
   Website: Maybe<Scalars['String']['output']>;
   createdAt: Maybe<Scalars['DateTime']['output']>;
+  generatedUrl: Scalars['String']['output'];
   langues: Maybe<LangueRelationResponseCollection>;
   locale: Maybe<Scalars['String']['output']>;
   localizations: Maybe<OrganismeRelationResponseCollection>;
@@ -1104,11 +1126,14 @@ export type OrganismeFiltersInput = {
   Description: InputMaybe<StringFilterInput>;
   Email: InputMaybe<StringFilterInput>;
   Horaires: InputMaybe<StringFilterInput>;
+  Latitude: InputMaybe<FloatFilterInput>;
+  Longitude: InputMaybe<FloatFilterInput>;
   Nom: InputMaybe<StringFilterInput>;
   Telephone: InputMaybe<StringFilterInput>;
   Website: InputMaybe<StringFilterInput>;
   and: InputMaybe<Array<InputMaybe<OrganismeFiltersInput>>>;
   createdAt: InputMaybe<DateTimeFilterInput>;
+  generatedUrl: InputMaybe<StringFilterInput>;
   id: InputMaybe<IdFilterInput>;
   langues: InputMaybe<LangueFiltersInput>;
   locale: InputMaybe<StringFilterInput>;
@@ -1129,10 +1154,13 @@ export type OrganismeInput = {
   Description: InputMaybe<Scalars['String']['input']>;
   Email: InputMaybe<Scalars['String']['input']>;
   Horaires: InputMaybe<Scalars['String']['input']>;
+  Latitude: InputMaybe<Scalars['Float']['input']>;
   Logo: InputMaybe<Scalars['ID']['input']>;
+  Longitude: InputMaybe<Scalars['Float']['input']>;
   Nom: InputMaybe<Scalars['String']['input']>;
   Telephone: InputMaybe<Scalars['String']['input']>;
   Website: InputMaybe<Scalars['String']['input']>;
+  generatedUrl: InputMaybe<Scalars['String']['input']>;
   langues: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   public_specifiques: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   publishedAt: InputMaybe<Scalars['DateTime']['input']>;
@@ -1312,6 +1340,8 @@ export type Query = {
   reactIconsIconlibrary: Maybe<ReactIconsIconlibraryEntityResponse>;
   service: Maybe<ServiceEntityResponse>;
   services: Maybe<ServiceEntityResponseCollection>;
+  slugifySlug: Maybe<SlugifySlugEntityResponse>;
+  slugifySlugs: Maybe<SlugifySlugEntityResponseCollection>;
   sousCategorie: Maybe<SousCategorieEntityResponse>;
   sousCategories: Maybe<SousCategorieEntityResponseCollection>;
   traduction: Maybe<TraductionEntityResponse>;
@@ -1456,6 +1486,18 @@ export type QueryServicesArgs = {
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
   pagination?: InputMaybe<PaginationArg>;
   publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+
+export type QuerySlugifySlugArgs = {
+  id: InputMaybe<Scalars['ID']['input']>;
+};
+
+
+export type QuerySlugifySlugsArgs = {
+  filters: InputMaybe<SlugifySlugFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
@@ -1659,6 +1701,47 @@ export type ServiceInput = {
 export type ServiceRelationResponseCollection = {
   __typename?: 'ServiceRelationResponseCollection';
   data: Array<ServiceEntity>;
+};
+
+export type SlugifySlug = {
+  __typename?: 'SlugifySlug';
+  count: Maybe<Scalars['Int']['output']>;
+  createdAt: Maybe<Scalars['DateTime']['output']>;
+  slug: Maybe<Scalars['String']['output']>;
+  updatedAt: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type SlugifySlugEntity = {
+  __typename?: 'SlugifySlugEntity';
+  attributes: Maybe<SlugifySlug>;
+  id: Maybe<Scalars['ID']['output']>;
+};
+
+export type SlugifySlugEntityResponse = {
+  __typename?: 'SlugifySlugEntityResponse';
+  data: Maybe<SlugifySlugEntity>;
+};
+
+export type SlugifySlugEntityResponseCollection = {
+  __typename?: 'SlugifySlugEntityResponseCollection';
+  data: Array<SlugifySlugEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type SlugifySlugFiltersInput = {
+  and: InputMaybe<Array<InputMaybe<SlugifySlugFiltersInput>>>;
+  count: InputMaybe<IntFilterInput>;
+  createdAt: InputMaybe<DateTimeFilterInput>;
+  id: InputMaybe<IdFilterInput>;
+  not: InputMaybe<SlugifySlugFiltersInput>;
+  or: InputMaybe<Array<InputMaybe<SlugifySlugFiltersInput>>>;
+  slug: InputMaybe<StringFilterInput>;
+  updatedAt: InputMaybe<DateTimeFilterInput>;
+};
+
+export type SlugifySlugInput = {
+  count: InputMaybe<Scalars['Int']['input']>;
+  slug: InputMaybe<Scalars['String']['input']>;
 };
 
 export type SousCategorie = {
@@ -2223,10 +2306,11 @@ export type GetCategoriesQuery = { __typename?: 'Query', categories: { __typenam
 
 export type GetOrganismesQueryVariables = Exact<{
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+  filters: InputMaybe<OrganismeFiltersInput>;
 }>;
 
 
-export type GetOrganismesQuery = { __typename?: 'Query', organismes: { __typename?: 'OrganismeEntityResponseCollection', data: Array<{ __typename?: 'OrganismeEntity', id: string, attributes: { __typename?: 'Organisme', Nom: string, Departement: string, Description: string, Telephone: string, Adresse: string, Email: string, Website: string, Horaires: string, Conditions: string, Logo: { __typename?: 'UploadFileEntityResponse', data: { __typename?: 'UploadFileEntity', attributes: { __typename?: 'UploadFile', url: string } } }, langues: { __typename?: 'LangueRelationResponseCollection', data: Array<{ __typename?: 'LangueEntity', attributes: { __typename?: 'Langue', Nom: string, Drapeau: { __typename?: 'UploadFileEntityResponse', data: { __typename?: 'UploadFileEntity', attributes: { __typename?: 'UploadFile', url: string } } } } }> }, services: { __typename?: 'ServiceRelationResponseCollection', data: Array<{ __typename?: 'ServiceEntity', attributes: { __typename?: 'Service', Nom: string } }> }, sous_categories: { __typename?: 'SousCategorieRelationResponseCollection', data: Array<{ __typename?: 'SousCategorieEntity', attributes: { __typename?: 'SousCategorie', Nom: string } }> } } }> } };
+export type GetOrganismesQuery = { __typename?: 'Query', organismes: { __typename?: 'OrganismeEntityResponseCollection', data: Array<{ __typename?: 'OrganismeEntity', id: string, attributes: { __typename?: 'Organisme', Nom: string, Departement: string, generatedUrl: string, Latitude: number, Longitude: number, Description: string, Telephone: string, Adresse: string, Email: string, Website: string, Horaires: string, Conditions: string, Logo: { __typename?: 'UploadFileEntityResponse', data: { __typename?: 'UploadFileEntity', attributes: { __typename?: 'UploadFile', url: string } } }, langues: { __typename?: 'LangueRelationResponseCollection', data: Array<{ __typename?: 'LangueEntity', attributes: { __typename?: 'Langue', Nom: string, Drapeau: { __typename?: 'UploadFileEntityResponse', data: { __typename?: 'UploadFileEntity', attributes: { __typename?: 'UploadFile', url: string } } } } }> }, services: { __typename?: 'ServiceRelationResponseCollection', data: Array<{ __typename?: 'ServiceEntity', attributes: { __typename?: 'Service', Nom: string } }> }, sous_categories: { __typename?: 'SousCategorieRelationResponseCollection', data: Array<{ __typename?: 'SousCategorieEntity', attributes: { __typename?: 'SousCategorie', Nom: string } }> } } }> } };
 
 export type GetPageQueryVariables = Exact<{
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
@@ -2293,13 +2377,16 @@ export const GetCategoriesDocument = gql`
 }
     `;
 export const GetOrganismesDocument = gql`
-    query getOrganismes($locale: I18NLocaleCode) {
-  organismes(locale: $locale) {
+    query getOrganismes($locale: I18NLocaleCode, $filters: OrganismeFiltersInput) {
+  organismes(locale: $locale, filters: $filters) {
     data {
       id
       attributes {
         Nom
         Departement
+        generatedUrl
+        Latitude
+        Longitude
         Logo {
           data {
             attributes {

@@ -57,5 +57,6 @@ const getHomePage = cache(async function getHomePage(language: string) {
 
 const getOrganizationsPage = cache(async function getOrganizationsPage(language: string) {
     const client = getStrapiClient();
-    return await client.getOrganismes({locale: language});
+    // @ts-ignore
+    return await client.getOrganismes({locale: language, filters: {}});
 });

@@ -1,10 +1,13 @@
-query getOrganismes($locale: I18NLocaleCode) {
-  organismes(locale: $locale){
+query getOrganismes($locale: I18NLocaleCode, $filters: OrganismeFiltersInput) {
+  organismes(locale: $locale, filters: $filters){
     data{
       id
       attributes{
         Nom
         Departement
+        generatedUrl
+        Latitude
+        Longitude
         Logo{
           data{
             attributes{
