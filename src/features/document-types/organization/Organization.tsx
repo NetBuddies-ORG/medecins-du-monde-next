@@ -1,9 +1,9 @@
 import {cache} from "react";
 import {getStrapiClient} from "@/services/Strapi";
 import {notFound} from "next/navigation";
-import {Organisme} from "@/services/GraphQL";
-import {LeafletMap} from "@/features/common/leaflet/LeafletMap";
 import {FaNotesMedical} from "react-icons/fa6";
+import {LeafletMap} from "@/features/common/leaflet/LeafletMap";
+import {OrganizationMap} from "@/features/document-types/organization/OrganizationMap";
 
 const getOrganization = cache(async function getCategories(lang: string, slug: string) {
     const client = getStrapiClient();
@@ -93,7 +93,7 @@ export default async function OrganizationDetails({language, segment, orgaslug}:
                         </div>
                         <div className='map'>
                             <h3>Carte</h3>
-                            <LeafletMap coordinates={{latitude: organization.Latitude, longitude: organization.Longitude}}/>
+                            <OrganizationMap latitude={organization.Latitude} longitude={organization.Longitude}/>
                         </div>
                         <div className='services'>
                             <h3>Services</h3>
