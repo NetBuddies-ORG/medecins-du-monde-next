@@ -77,21 +77,25 @@
 
   .view-picker {
     font-size: 1.2rem;
-    a{
-      text-decoration: none;
-      color: unset;
-    }
-    svg{
+    display: flex;
+
+    .icon-picker{
+      cursor: pointer;
+      display: inline-block;
       margin-left: 0.5rem;
       padding: 0.5rem;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       border: 1px solid $btnTextColor;
+      svg{
+        display: flex;
+        font-size: 1.25rem;
+      }
     }
-
-    svg.active{
+    .icon-picker.active{
       background-color: $primaryColor;
     }
-
   }
 }
 

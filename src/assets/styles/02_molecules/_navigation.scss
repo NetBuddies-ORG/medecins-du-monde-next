@@ -1,4 +1,7 @@
 .navigation{
+  >a{
+    display: none;
+  }
   >h1{
     display: none;
     color: #000000;
@@ -38,19 +41,21 @@
 }
 @media (min-width: 992px) {
   .navigation {
-    h1 {
+    >a{
+      text-decoration: none;
       display: inline;
       position: absolute;
       left: 1rem;
       top: 1rem;
       width: 250px;
-      font-weight: 500;
       color: #000000;
-      .title-1{
-
-      }
-      .title-2{
-        font-weight: 300;
+      h1 {
+        .title-1{
+          font-weight: 500;
+        }
+        .title-2{
+          font-weight: 300;
+        }
       }
     }
     display: flex;

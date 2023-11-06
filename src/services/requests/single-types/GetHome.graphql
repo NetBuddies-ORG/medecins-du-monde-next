@@ -3,6 +3,7 @@ query getHome($locale: I18NLocaleCode){
         data{
             attributes{
                 UrgencesLink
+                SearchLink
             }
         }
     }

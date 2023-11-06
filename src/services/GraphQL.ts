@@ -306,7 +306,8 @@ export type HeaderRelationResponseCollection = {
 
 export type Home = {
   __typename?: 'Home';
-  UrgencesLink: Maybe<Scalars['String']['output']>;
+  SearchLink: Scalars['String']['output'];
+  UrgencesLink: Scalars['String']['output'];
   createdAt: Maybe<Scalars['DateTime']['output']>;
   locale: Maybe<Scalars['String']['output']>;
   localizations: Maybe<HomeRelationResponseCollection>;
@@ -331,6 +332,7 @@ export type HomeEntityResponse = {
 };
 
 export type HomeInput = {
+  SearchLink: InputMaybe<Scalars['String']['input']>;
   UrgencesLink: InputMaybe<Scalars['String']['input']>;
   publishedAt: InputMaybe<Scalars['DateTime']['input']>;
 };
@@ -1636,6 +1638,7 @@ export type ResponseCollectionMeta = {
 
 export type Service = {
   __typename?: 'Service';
+  Icone: Maybe<Scalars['String']['output']>;
   Nom: Maybe<Scalars['String']['output']>;
   createdAt: Maybe<Scalars['DateTime']['output']>;
   locale: Maybe<Scalars['String']['output']>;
@@ -1679,6 +1682,7 @@ export type ServiceEntityResponseCollection = {
 };
 
 export type ServiceFiltersInput = {
+  Icone: InputMaybe<StringFilterInput>;
   Nom: InputMaybe<StringFilterInput>;
   and: InputMaybe<Array<InputMaybe<ServiceFiltersInput>>>;
   createdAt: InputMaybe<DateTimeFilterInput>;
@@ -1693,6 +1697,7 @@ export type ServiceFiltersInput = {
 };
 
 export type ServiceInput = {
+  Icone: InputMaybe<Scalars['String']['input']>;
   Nom: InputMaybe<Scalars['String']['input']>;
   organismes: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   publishedAt: InputMaybe<Scalars['DateTime']['input']>;
@@ -2310,7 +2315,7 @@ export type GetOrganismesQueryVariables = Exact<{
 }>;
 
 
-export type GetOrganismesQuery = { __typename?: 'Query', organismes: { __typename?: 'OrganismeEntityResponseCollection', data: Array<{ __typename?: 'OrganismeEntity', id: string, attributes: { __typename?: 'Organisme', Nom: string, Departement: string, generatedUrl: string, Latitude: number, Longitude: number, Description: string, Telephone: string, Adresse: string, Email: string, Website: string, Horaires: string, Conditions: string, Logo: { __typename?: 'UploadFileEntityResponse', data: { __typename?: 'UploadFileEntity', attributes: { __typename?: 'UploadFile', url: string } } }, langues: { __typename?: 'LangueRelationResponseCollection', data: Array<{ __typename?: 'LangueEntity', attributes: { __typename?: 'Langue', Nom: string, Drapeau: { __typename?: 'UploadFileEntityResponse', data: { __typename?: 'UploadFileEntity', attributes: { __typename?: 'UploadFile', url: string } } } } }> }, services: { __typename?: 'ServiceRelationResponseCollection', data: Array<{ __typename?: 'ServiceEntity', attributes: { __typename?: 'Service', Nom: string } }> }, sous_categories: { __typename?: 'SousCategorieRelationResponseCollection', data: Array<{ __typename?: 'SousCategorieEntity', attributes: { __typename?: 'SousCategorie', Nom: string } }> } } }> } };
+export type GetOrganismesQuery = { __typename?: 'Query', organismes: { __typename?: 'OrganismeEntityResponseCollection', data: Array<{ __typename?: 'OrganismeEntity', id: string, attributes: { __typename?: 'Organisme', Nom: string, Departement: string, generatedUrl: string, Latitude: number, Longitude: number, Description: string, Telephone: string, Adresse: string, Email: string, Website: string, Horaires: string, Conditions: string, Logo: { __typename?: 'UploadFileEntityResponse', data: { __typename?: 'UploadFileEntity', attributes: { __typename?: 'UploadFile', url: string } } }, langues: { __typename?: 'LangueRelationResponseCollection', data: Array<{ __typename?: 'LangueEntity', attributes: { __typename?: 'Langue', Nom: string, Drapeau: { __typename?: 'UploadFileEntityResponse', data: { __typename?: 'UploadFileEntity', attributes: { __typename?: 'UploadFile', url: string } } } } }> }, public_specifiques: { __typename?: 'PublicSpecifiqueRelationResponseCollection', data: Array<{ __typename?: 'PublicSpecifiqueEntity', id: string, attributes: { __typename?: 'PublicSpecifique', Nom: string } }> }, services: { __typename?: 'ServiceRelationResponseCollection', data: Array<{ __typename?: 'ServiceEntity', id: string, attributes: { __typename?: 'Service', Nom: string } }> }, sous_categories: { __typename?: 'SousCategorieRelationResponseCollection', data: Array<{ __typename?: 'SousCategorieEntity', id: string, attributes: { __typename?: 'SousCategorie', Nom: string } }> } } }> } };
 
 export type GetPageQueryVariables = Exact<{
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
@@ -2360,7 +2365,7 @@ export type GetHomeQueryVariables = Exact<{
 }>;
 
 
-export type GetHomeQuery = { __typename?: 'Query', home: { __typename?: 'HomeEntityResponse', data: { __typename?: 'HomeEntity', attributes: { __typename?: 'Home', UrgencesLink: string } } } };
+export type GetHomeQuery = { __typename?: 'Query', home: { __typename?: 'HomeEntityResponse', data: { __typename?: 'HomeEntity', attributes: { __typename?: 'Home', UrgencesLink: string, SearchLink: string } } } };
 
 
 export const GetCategoriesDocument = gql`
@@ -2414,8 +2419,17 @@ export const GetOrganismesDocument = gql`
             }
           }
         }
+        public_specifiques {
+          data {
+            id
+            attributes {
+              Nom
+            }
+          }
+        }
         services {
           data {
+            id
             attributes {
               Nom
             }
@@ -2424,6 +2438,7 @@ export const GetOrganismesDocument = gql`
         Conditions
         sous_categories {
           data {
+            id
             attributes {
               Nom
             }
@@ -2523,6 +2538,7 @@ export const GetHomeDocument = gql`
     data {
       attributes {
         UrgencesLink
+        SearchLink
       }
     }
   }

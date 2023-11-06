@@ -1,13 +1,9 @@
-import {FaAngleDown, FaCircleInfo, FaHeadphones} from "react-icons/fa6";
+import {FaAngleDown, FaCircleInfo} from "react-icons/fa6";
 import {FaSearch, FaTimes} from "react-icons/fa";
-import {getCategories, getLanguage, getPage, getPublics} from "@/context/server";
-import {cache} from "react";
-import {getStrapiClient} from "@/services/Strapi";
-import i18next from "i18next";
+import {getCategories, getLanguage, getPublics} from "@/context/server";
 import {useTranslation} from "@/app/i18n";
-import {IconComponent} from "@/features/common/react-icons/IconComponent";
-import Link from "next/link";
 import {GetHomeQuery} from "@/services/GraphQL";
+import {CardList} from "@/features/document-types/home-page/CardList";
 
 interface HomePageProps {
     extraData: GetHomeQuery
@@ -15,7 +11,7 @@ interface HomePageProps {
 
 export async function HomePage({extraData}: HomePageProps) {
     const language = getLanguage();
-    const {categories} = getCategories();
+    const categories = getCategories();
     const {publicSpecifiques} = getPublics();
     const {t, i18n} = await useTranslation(language)
 
@@ -42,31 +38,8 @@ export async function HomePage({extraData}: HomePageProps) {
                         <FaAngleDown/>
                     </div>
                 </div>
+                <CardList extraData={extraData} categoriesContainer={categories}/>
 
-                <div className="card-container">
-                    <Link href={extraData?.home?.data?.attributes?.UrgencesLink}>
-                        <div className="card danger">
-                            <FaHeadphones />
-                            <div className="card__title"><span>{t('HOME_URGENCES')}</span></div>
-                        </div>
-                    </Link>
-                    {
-                        categories.data.map(category => {
-                            return <div key={category.id} className="card">
-                                <i className="fa-solid fa-check"></i>
-                                <IconComponent icon={category?.attributes.Icone} />
-                                <div className="card__title"><span>{category?.attributes.Nom}</span></div>
-                            </div>
-                        })
-                    }
-                </div>
-                <div className="footer-search isHidden">
-                    <button className="btn btn-primary">
-                        <Link href="organismes">
-                            Rechercher un organisme
-                        </Link>
-                    </button>
-                </div>
             </div>
             <div className="custom-shape-divider-bottom-1694936473">
                 <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">

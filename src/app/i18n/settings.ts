@@ -1,11 +1,9 @@
 ﻿import {
   InitOptions,
-  LanguageDetectorModule,
 } from 'i18next';
 
 import {
   getConfiguration,
-  languages,
 } from '@/helpers';
 import translations from '../../../build/static/translations.json';
 

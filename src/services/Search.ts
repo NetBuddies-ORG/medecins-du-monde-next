@@ -145,11 +145,16 @@ async function initialize(language: string = 'fr') {
     deferred.resolve();
 }
 
-async function search(params: SearchParams): Promise<string[]> {
-    return [];
+async function search(params: SearchAccurateOrganizationParams): Promise<Organisme[]> {
+    const {subCategoriesIds, publicsId} = params;
+    const organismes: Organisme[] = await db.then(data => data.getAll(organismesStoreName));
+
+    console.log(organismes)
+
+    return organismes;
 }
 
-async function searchOrganismes(params: SearchParams): Promise<string[]> {
+async function searchOrganismes(params: SearchOrganizationsParams): Promise<string[]> {
     let newKeyword = params.keyword;
     let terms = newKeyword.normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
@@ -165,15 +170,20 @@ async function searchOrganismes(params: SearchParams): Promise<string[]> {
     return Array.from(results);
 }
 
-export interface SearchParams {
+export interface SearchOrganizationsParams {
     keyword: string;
+}
+
+export interface SearchAccurateOrganizationParams {
+    subCategoriesIds?: string[];
+    publicsId?: string;
 }
 
 interface SearchInterface {
     isReady: boolean;
-    search(params: SearchParams): Promise<string[]>;
+    search(params: SearchAccurateOrganizationParams): Promise<Organisme[]>;
     getOrganisme(id: string): Promise<Organisme>;
-    getOrganismes(params: SearchParams): Promise<string[]>;
+    getOrganismes(params: SearchOrganizationsParams): Promise<string[]>;
     getPublics(): Promise<PublicSpecifique[]>;
     getCategories(): Promise<Categorie[]>;
 }

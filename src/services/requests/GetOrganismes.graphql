@@ -35,8 +35,17 @@ query getOrganismes($locale: I18NLocaleCode, $filters: OrganismeFiltersInput) {
             }
           }
         }
+        public_specifiques{
+          data{
+            id
+            attributes{
+              Nom
+            }
+          }
+        }
         services{
           data{
+            id
             attributes{
               Nom
             }
@@ -45,6 +54,7 @@ query getOrganismes($locale: I18NLocaleCode, $filters: OrganismeFiltersInput) {
         Conditions
         sous_categories{
           data{
+            id
             attributes{
               Nom
             }

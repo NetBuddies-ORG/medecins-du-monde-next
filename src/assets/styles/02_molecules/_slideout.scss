@@ -70,7 +70,8 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
-    i{
+    svg{
+      cursor: pointer;
       font-size: 2rem;
     }
   }
@@ -165,7 +166,7 @@
           display: inline-block;
           float: left;
         }
-        i{
+        svg{
           margin-right: 0.5rem;
         }
         &::after{

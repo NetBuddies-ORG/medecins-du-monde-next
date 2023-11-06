@@ -6,6 +6,7 @@ import {cache} from "react";
 import {getStrapiClient} from "@/services/Strapi";
 import {GetPageQuery} from "@/services/GraphQL";
 import {Organizations} from "@/features/document-types/organizations/Organizations";
+import {SearchOrganization} from "@/features/document-types/search-organization/SearchOrganization";
 
 export async function DocumentTypes() {
     const pages = getPage();
@@ -37,6 +38,8 @@ async function displayContent(page: GetPageQuery["pages"], language: string) {
             return <>
                 About
             </>
+        case 'SearchOrganization':
+            return <SearchOrganization language={language} />
         case 'Urgences':
 
             return <>

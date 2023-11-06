@@ -1,4 +1,4 @@
-.no-results{
+.no-results {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -6,36 +6,40 @@
   text-align: center;
 }
 
-.card-container-organisme{
+.card-container-organisme {
   margin: 1rem 0;
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   grid-gap: 12px 12px;
 
-  a{
+  a {
     text-decoration: none;
     color: unset;
   }
-  .card.organisme{
+
+  .card.organisme {
     transition: all .2s ease-in-out;
     cursor: pointer;
     padding: 1rem;
     border: $cardBorder;
     background-color: $cardBackgroundColor;
     color: $cardTextColor;
-    box-shadow:  0 0 25px rgba(94, 94, 94, 0.3);
+    box-shadow: 0 0 25px rgba(94, 94, 94, 0.3);
     border-radius: $cardBorderRadius;
     display: flex;
     flex-direction: column;
-    .up{
+
+    .up {
 
     }
-    .down{
+
+    .down {
       .location {
         display: flex;
         align-items: center;
         gap: 5px;
         font-size: 0.7rem;
+
         i {
           color: $cardTextColor;
           font-weight: 300;
@@ -45,75 +49,83 @@
   }
 }
 
-.card-container{
+.card-container {
   margin: 1rem 0;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 12px 12px;
 
-  .card.isSelected{
+  .card.isSelected {
     transition: background-color .2s ease-in-out;
     background-color: $primaryColor;
     position: relative;
-    .fa-check{
-      display: inline;
-      background-color: $cardTextColor;
-      border-radius: 50%;
-      font-size: 1.3rem;
-      padding: 5px;
-      color: $primaryColor;
-      position: absolute;
-      top: 5px;
-      right: 5px;
+
+    .check {
+      svg {
+        display: inline;
+        background-color: $cardTextColor;
+        border-radius: 50%;
+        font-size: 1.5rem;
+        padding: 5px;
+        color: $primaryColor;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
     }
   }
 
-  .card.danger{
+  .card.danger {
     border: 2px solid $cardDangerBackgroundColor;
     color: $cardDangerBackgroundColor;
-    svg{
+
+    svg {
       color: $cardDangerBackgroundColor;
     }
   }
 
-  .card:hover{
+  .card:hover {
     transform: scale(1.025);
   }
 
-  a{
+  a {
     text-decoration: none;
     color: unset;
   }
 
-  .card{
-    .fa-check{
-      display: none;
+  .card {
+    .check {
+      svg {
+        display: none;
+      }
     }
+
     cursor: pointer;
     aspect-ratio: 1/1;
     padding: 1rem;
     border: $cardBorder;
     background-color: $cardBackgroundColor;
     color: $cardTextColor;
-    box-shadow:  0 0 25px rgba(94, 94, 94, 0.3);
+    box-shadow: 0 0 25px rgba(94, 94, 94, 0.3);
     border-radius: $cardBorderRadius;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
 
-    input{
+    input {
       position: relative;
       top: 0;
       right: 0;
     }
 
-    &__title{
+    &__title {
       font-size: 1rem;
       text-align: center;
       line-height: 1.2rem;
     }
-    svg, i{
+
+    svg, i {
       font-size: 3rem;
       color: $cardTextColor;
       font-weight: 300;
@@ -122,25 +134,28 @@
 }
 
 @media (min-width: 600px) {
-  .card-container{
+  .card-container {
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
 @media (min-width: 768px) {
-  .card-container{
+  .card-container {
     grid-template-columns: repeat(4, 1fr);
   }
 }
+
 @media (min-width: 992px) {
-  .card-container{
+  .card-container {
     grid-template-columns: repeat(6, 1fr);
   }
 }
+
 @media (min-width: 1224px) {
-  .card-container{
+  .card-container {
     grid-template-columns: repeat(7, 1fr);
   }
-  .card-container-organisme{
+  .card-container-organisme {
     grid-template-columns: repeat(2, 1fr);
   }
 }
