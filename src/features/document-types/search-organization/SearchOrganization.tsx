@@ -1,20 +1,34 @@
 'use client'
-import {FaAngleDown, FaHouse, FaList, FaMapLocationDot, FaXmark} from "react-icons/fa6";
+import {
+    FaAngleDown,
+    FaAngleUp,
+    FaList,
+    FaMapLocationDot,
+    FaXmark
+} from "react-icons/fa6";
 import {useEffect, useState} from "react";
 import {useDBIndex} from "@/services/Search";
-import {Categorie, Organisme} from "@/services/GraphQL";
+import {
+    Categorie,
+    GetSearchOrganizationQuery,
+    Organisme,
+    PublicSpecifique,
+    SousCategorieEntity
+} from "@/services/GraphQL";
 import Link from "next/link";
 import {FaMapMarkerAlt} from "react-icons/fa";
 import {useSearchParams} from "next/navigation";
 import categories from '@/../build/static/categories.json'
 import {IconComponent} from "@/features/common/react-icons/IconComponent";
 import {LeafletMap} from "@/features/common/leaflet";
+import publics from '@/../build/static/publics.json'
 
 interface SearchOrganizationProps {
-    language: string
+    extraData: GetSearchOrganizationQuery;
+    language: string;
 }
 
-export function SearchOrganization({language}: SearchOrganizationProps) {
+export function SearchOrganization({extraData, language}: SearchOrganizationProps) {
     const [isMapViewSelect, setIsMapViewSelect] = useState<boolean>(false);
     const [isSlideOutOpen, setIsSlideOutOpen] = useState<boolean>(false);
     const [organismes, setOrganismes] = useState<Organisme[]>([]);
@@ -49,6 +63,18 @@ export function SearchOrganization({language}: SearchOrganizationProps) {
         }
     }
 
+    function handleCheck(subCategoryId: string) {
+        if(selectedSubCategories.includes(subCategoryId)){
+            setSubSelectedCategories(selectedSubCategories.filter(item => item !== subCategoryId))
+        } else {
+            setSubSelectedCategories([...selectedSubCategories, subCategoryId])
+        }
+    }
+
+    function handleCategoryCheck(event: React.MouseEvent<HTMLSpanElement>, subCategoriesId: SousCategorieEntity[]) {
+        event.stopPropagation();
+    }
+
     return <>
         <div className='page-container'>
             {<div className={'slideout-results' + (isSlideOutOpen ? ' isOpen' : '')} id='slideout-results'>
@@ -63,15 +89,9 @@ export function SearchOrganization({language}: SearchOrganizationProps) {
                         <div className='searchbar'>
                             <div className="searchbar__input input">
                                 <select onChange={handlePublicsChange}>
-                                    <option selected hidden disabled>Public spécifique</option>
-                                    <option>Jeunes</option>
-                                    <option>LGBTQIA+</option>
-                                    <option>Personne en séjour irrégulier (sans-papiers)</option>
-                                    <option>Personne en situation de Handicap</option>
-                                    <option>Petite enfance</option>
-                                    <option>Sans-abris</option>
-                                    <option>Seniors</option>
-                                    <option>Travailleur/euse du sexe</option>
+                                    {
+                                        publics.map(item => <option key={item.id}>{item.Nom}</option>)
+                                    }
                                 </select>
                                 <FaAngleDown/>
                             </div>
@@ -81,17 +101,28 @@ export function SearchOrganization({language}: SearchOrganizationProps) {
                         <h3><span>Catégories</span></h3>
                         {
                             categoriesForFilterDisplay.map((category) => {return <>
-                                <div className={'accordion-tab' +  ( selectedOpenCategories.includes(category.id) ? ' isOpen' : '')}
-                                     onClick={() => toggleAccordions(category.id)}>
-                                    <div className='sub-title'>
-                                        <IconComponent icon={category.Icone} />
-                                        <span>{category.Nom} (3)</span>
+                                <div className={'accordion-tab' +  ( selectedOpenCategories.includes(category.id) ? ' isOpen' : '')}>
+                                    <div className='sub-title' onClick={() => toggleAccordions(category.id)}>
+                                        <span className={"custom-checkbox" + (category.sous_categories.data.every(item => selectedSubCategories.includes(item.id)) ? ' isChecked' : '')}
+                                              onClick={(event) => handleCategoryCheck(event, category.sous_categories.data)}></span>
+                                        <span className="custom-icon">
+                                            <IconComponent icon={category.Icone} />
+                                        </span>
+                                        <span>{category.Nom + ' (' + (category.sous_categories.data.filter(item => selectedSubCategories.includes(item.id)).length) + ')'}</span>
+                                            <span className="angle">
+                                                {
+                                                    selectedOpenCategories.includes(category.id) ?
+                                                        <FaAngleUp />
+                                                        :
+                                                        <FaAngleDown />
+                                                }
+                                            </span>
                                     </div>
                                     <ul>
                                         {
                                             category.sous_categories.data.map((subCategory) => {
-                                                return <li key={subCategory.id}>
-                                                    <div className="checkmark isChecked"></div>
+                                                return <li key={subCategory.id} onClick={() => handleCheck(subCategory.id)}>
+                                                    <div className={"checkmark" + (selectedSubCategories.includes(subCategory.id) ? " isChecked" : "")}></div>
                                                     <span>{subCategory.attributes.Nom}</span>
                                                 </li>
 
@@ -102,7 +133,7 @@ export function SearchOrganization({language}: SearchOrganizationProps) {
                             </>})
                         }
                         <div className='footer-search'>
-                            <button className='btn btn-primary'><a href='results_list.html'>Afficher les 3 résultats</a>
+                            <button className='btn btn-primary'>Afficher les {organismes.length} résultats
                             </button>
                         </div>
                     </div>
@@ -115,7 +146,7 @@ export function SearchOrganization({language}: SearchOrganizationProps) {
             </div>
             <div className='resultbar'>
                 <span className='count'>
-                  3 résultats
+                  {organismes.length} résultats
                 </span>
                 <div className={"view-picker"}>
                     <span className={"icon-picker" + (isMapViewSelect ? '' : ' active')}
@@ -136,7 +167,8 @@ export function SearchOrganization({language}: SearchOrganizationProps) {
                     <div className='card-container-organisme'>
                         {
                             organismes.length > 0 && organismes.map((organisme) => {
-                                return <Link key={organisme.Nom} href={organisme.Nom}>
+                                return <Link key={organisme.Nom}
+                                             href={'/' + language + '/' + extraData.searchOrganization.data.attributes.OrganismeUrl.page.data.attributes.Url + '/' + organisme.generatedUrl}>
                                     <div className='card organisme'>
                                         <div className='up'>
                                             {organisme.Nom}

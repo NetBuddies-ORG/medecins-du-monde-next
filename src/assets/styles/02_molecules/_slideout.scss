@@ -101,10 +101,13 @@
 
     .accordion-tab.isOpen{
       .sub-title{
-        &::after{
-          content: "\f077";
+        padding: 1rem;
+        background-color: white;
+        box-shadow:  0 0 25px rgba(94, 94, 94, 0.5);
+        cursor: pointer;
+        display:block;
+        .angle{
           float: right;
-          font-family: "Font Awesome 6 Free";
         }
       }
       ul{
@@ -151,7 +154,8 @@
         background-color: white;
         box-shadow:  0 0 25px rgba(94, 94, 94, 0.5);
         cursor: pointer;
-        &::before{
+        display:block;
+        .custom-checkbox{
           //custom checkbox
           content: '';
           margin-top: 5px;
@@ -166,17 +170,23 @@
           display: inline-block;
           float: left;
         }
-        svg{
+        .custom-checkbox.isChecked{
+          background-color: $primaryColor;
+          border: none;
+        }
+        .custom-icon{
+          font-size: 1.5rem;
           margin-right: 0.5rem;
         }
-        &::after{
-          content: "\f078";
+        .angle{
           float: right;
-          font-family: "Font Awesome 6 Free";
         }
       }
         ul{
           display: none;
+          li{
+            cursor:pointer;
+          }
         }
     }
   }

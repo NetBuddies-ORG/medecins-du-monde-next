@@ -39,7 +39,7 @@ async function displayContent(page: GetPageQuery["pages"], language: string) {
                 About
             </>
         case 'SearchOrganization':
-            return <SearchOrganization language={language} />
+            return <SearchOrganization extraData={await getSearchOrganizationsPage(language)} language={language} />
         case 'Urgences':
 
             return <>
@@ -62,4 +62,10 @@ const getOrganizationsPage = cache(async function getOrganizationsPage(language:
     const client = getStrapiClient();
     // @ts-ignore
     return await client.getOrganismes({locale: language, filters: {}});
+});
+
+const getSearchOrganizationsPage = cache(async function getSearchOrganizationsPage(language: string) {
+    const client = getStrapiClient();
+    // @ts-ignore
+    return await client.getSearchOrganization({locale: language});
 });

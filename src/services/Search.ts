@@ -151,31 +151,33 @@ async function search(params: SearchAccurateOrganizationParams): Promise<Organis
     const organismesFromIndexedDb: (Organisme & {id: string})[] = await db.then(data => data.getAll(organismesStoreName));
     const categoriesFromIndexedDb: (Categorie & {id: string})[] = await db.then(data => data.getAll(categoriesStoreName));
 
-    //Fetch the whole categories and its subcategories
-    const affectedCategories = categoriesFromIndexedDb
-        .flatMap((categorie) => ({categorieId: categorie.id, subCat: categorie.sous_categories.data}));
+    // //Fetch the whole categories and its subcategories
+    // const affectedCategories = categoriesFromIndexedDb
+    //    .flatMap((categorie) => ({categorieId: categorie.id, subCat: categorie.sous_categories.data}));
+    //
+    // //Exctrat all the subcategories ids from the categories && subcategories ids alread checked
+    // affectedCategories.forEach((categorie) => {
+    //     if(categoriesIds.includes(categorie.categorieId)){
+    //         categorie.subCat.forEach((subCat) => {
+    //             if(!subCategoriesIdsToSearch.includes(subCat.id)){
+    //                 subCategoriesIdsToSearch.push(subCat.id);
+    //             }
+    //         });
+    //     }
+    // });
+    //
+    // //Filter organismes by categories and subcategories ids
+    // const organismesFilteredByCategories = organismesFromIndexedDb.filter((organisme) => {
+    //     return organisme.sous_categories.data.some((categorie) => {
+    //         return categoriesIds.includes(categorie.id) || subCategoriesIdsToSearch.includes(categorie.id);
+    //     });
+    // });
 
-    //Exctrat all the subcategories ids from the categories && subcategories ids alread checked
-    affectedCategories.forEach((categorie) => {
-        if(categoriesIds.includes(categorie.categorieId)){
-            categorie.subCat.forEach((subCat) => {
-                if(!subCategoriesIdsToSearch.includes(subCat.id)){
-                    subCategoriesIdsToSearch.push(subCat.id);
-                }
-            });
-        }
-    });
+    // console.log(organismesFilteredByCategories);
 
-    //Filter organismes by categories and subcategories ids
-    const organismesFilteredByCategories = organismesFromIndexedDb.filter((organisme) => {
-        return organisme.sous_categories.data.some((categorie) => {
-            return categoriesIds.includes(categorie.id) || subCategoriesIdsToSearch.includes(categorie.id);
-        });
-    });
+    organismesFromIndexedDb.filter((organisme) => {});
 
-    console.log(organismesFilteredByCategories);
-
-    return organismesFilteredByCategories;
+    return organismesFromIndexedDb;
 }
 
 async function searchOrganismes(params: SearchOrganizationsParams): Promise<string[]> {

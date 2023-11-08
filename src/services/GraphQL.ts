@@ -174,6 +174,17 @@ export type ComponentGeneraleSeoInput = {
   id: InputMaybe<Scalars['ID']['input']>;
 };
 
+export type ComponentUtilsLink = {
+  __typename?: 'ComponentUtilsLink';
+  id: Scalars['ID']['output'];
+  page: Maybe<PageEntityResponse>;
+};
+
+export type ComponentUtilsLinkInput = {
+  id: InputMaybe<Scalars['ID']['input']>;
+  page: InputMaybe<Scalars['ID']['input']>;
+};
+
 export type DateTimeFilterInput = {
   and: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   between: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
@@ -266,7 +277,7 @@ export type FooterRelationResponseCollection = {
   data: Array<FooterEntity>;
 };
 
-export type GenericMorph = Categorie | ComponentGeneraleFooter | ComponentGeneraleHeader | ComponentGeneraleSeo | Footer | Header | Home | I18NLocale | Langue | Organisme | Page | PublicSpecifique | ReactIconsIconlibrary | Service | SlugifySlug | SousCategorie | Traduction | UploadFile | UploadFolder | Urgence | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = Categorie | ComponentGeneraleFooter | ComponentGeneraleHeader | ComponentGeneraleSeo | ComponentUtilsLink | Footer | Header | Home | I18NLocale | Langue | Organisme | Page | PublicSpecifique | ReactIconsIconlibrary | SearchOrganization | Service | SlugifySlug | SousCategorie | Traduction | UploadFile | UploadFolder | Urgence | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type Header = {
   __typename?: 'Header';
@@ -531,6 +542,7 @@ export type Mutation = {
   createPublicSpecifique: Maybe<PublicSpecifiqueEntityResponse>;
   createPublicSpecifiqueLocalization: Maybe<PublicSpecifiqueEntityResponse>;
   createReactIconsIconlibrary: Maybe<ReactIconsIconlibraryEntityResponse>;
+  createSearchOrganizationLocalization: Maybe<SearchOrganizationEntityResponse>;
   createService: Maybe<ServiceEntityResponse>;
   createServiceLocalization: Maybe<ServiceEntityResponse>;
   createSlugifySlug: Maybe<SlugifySlugEntityResponse>;
@@ -554,6 +566,7 @@ export type Mutation = {
   deletePage: Maybe<PageEntityResponse>;
   deletePublicSpecifique: Maybe<PublicSpecifiqueEntityResponse>;
   deleteReactIconsIconlibrary: Maybe<ReactIconsIconlibraryEntityResponse>;
+  deleteSearchOrganization: Maybe<SearchOrganizationEntityResponse>;
   deleteService: Maybe<ServiceEntityResponse>;
   deleteSlugifySlug: Maybe<SlugifySlugEntityResponse>;
   deleteSousCategorie: Maybe<SousCategorieEntityResponse>;
@@ -586,6 +599,7 @@ export type Mutation = {
   updatePage: Maybe<PageEntityResponse>;
   updatePublicSpecifique: Maybe<PublicSpecifiqueEntityResponse>;
   updateReactIconsIconlibrary: Maybe<ReactIconsIconlibraryEntityResponse>;
+  updateSearchOrganization: Maybe<SearchOrganizationEntityResponse>;
   updateService: Maybe<ServiceEntityResponse>;
   updateSlugifySlug: Maybe<SlugifySlugEntityResponse>;
   updateSousCategorie: Maybe<SousCategorieEntityResponse>;
@@ -696,6 +710,13 @@ export type MutationCreatePublicSpecifiqueLocalizationArgs = {
 
 export type MutationCreateReactIconsIconlibraryArgs = {
   data: ReactIconsIconlibraryInput;
+};
+
+
+export type MutationCreateSearchOrganizationLocalizationArgs = {
+  data: InputMaybe<SearchOrganizationInput>;
+  id: InputMaybe<Scalars['ID']['input']>;
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 };
 
 
@@ -817,6 +838,11 @@ export type MutationDeletePublicSpecifiqueArgs = {
 
 export type MutationDeleteReactIconsIconlibraryArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteSearchOrganizationArgs = {
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 };
 
 
@@ -970,6 +996,12 @@ export type MutationUpdatePublicSpecifiqueArgs = {
 export type MutationUpdateReactIconsIconlibraryArgs = {
   data: ReactIconsIconlibraryInput;
   id: Scalars['ID']['input'];
+};
+
+
+export type MutationUpdateSearchOrganizationArgs = {
+  data: SearchOrganizationInput;
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 };
 
 
@@ -1340,6 +1372,7 @@ export type Query = {
   publicSpecifiques: Maybe<PublicSpecifiqueEntityResponseCollection>;
   reactIconsIconlibraries: Maybe<ReactIconsIconlibraryEntityResponseCollection>;
   reactIconsIconlibrary: Maybe<ReactIconsIconlibraryEntityResponse>;
+  searchOrganization: Maybe<SearchOrganizationEntityResponse>;
   service: Maybe<ServiceEntityResponse>;
   services: Maybe<ServiceEntityResponseCollection>;
   slugifySlug: Maybe<SlugifySlugEntityResponse>;
@@ -1474,6 +1507,12 @@ export type QueryReactIconsIconlibrariesArgs = {
 
 export type QueryReactIconsIconlibraryArgs = {
   id: InputMaybe<Scalars['ID']['input']>;
+};
+
+
+export type QuerySearchOrganizationArgs = {
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+  publicationState?: InputMaybe<PublicationState>;
 };
 
 
@@ -1634,6 +1673,42 @@ export type ReactIconsIconlibraryInput = {
 export type ResponseCollectionMeta = {
   __typename?: 'ResponseCollectionMeta';
   pagination: Pagination;
+};
+
+export type SearchOrganization = {
+  __typename?: 'SearchOrganization';
+  OrganismeUrl: Maybe<ComponentUtilsLink>;
+  createdAt: Maybe<Scalars['DateTime']['output']>;
+  locale: Maybe<Scalars['String']['output']>;
+  localizations: Maybe<SearchOrganizationRelationResponseCollection>;
+  publishedAt: Maybe<Scalars['DateTime']['output']>;
+  updatedAt: Maybe<Scalars['DateTime']['output']>;
+};
+
+
+export type SearchOrganizationLocalizationsArgs = {
+  publicationState?: InputMaybe<PublicationState>;
+};
+
+export type SearchOrganizationEntity = {
+  __typename?: 'SearchOrganizationEntity';
+  attributes: Maybe<SearchOrganization>;
+  id: Maybe<Scalars['ID']['output']>;
+};
+
+export type SearchOrganizationEntityResponse = {
+  __typename?: 'SearchOrganizationEntityResponse';
+  data: Maybe<SearchOrganizationEntity>;
+};
+
+export type SearchOrganizationInput = {
+  OrganismeUrl: InputMaybe<ComponentUtilsLinkInput>;
+  publishedAt: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type SearchOrganizationRelationResponseCollection = {
+  __typename?: 'SearchOrganizationRelationResponseCollection';
+  data: Array<SearchOrganizationEntity>;
 };
 
 export type Service = {
@@ -2367,6 +2442,13 @@ export type GetHomeQueryVariables = Exact<{
 
 export type GetHomeQuery = { __typename?: 'Query', home: { __typename?: 'HomeEntityResponse', data: { __typename?: 'HomeEntity', attributes: { __typename?: 'Home', UrgencesLink: string, SearchLink: string } } } };
 
+export type GetSearchOrganizationQueryVariables = Exact<{
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+}>;
+
+
+export type GetSearchOrganizationQuery = { __typename?: 'Query', searchOrganization: { __typename?: 'SearchOrganizationEntityResponse', data: { __typename?: 'SearchOrganizationEntity', attributes: { __typename?: 'SearchOrganization', OrganismeUrl: { __typename?: 'ComponentUtilsLink', page: { __typename?: 'PageEntityResponse', data: { __typename?: 'PageEntity', attributes: { __typename?: 'Page', Url: string } } } } } } } };
+
 
 export const GetCategoriesDocument = gql`
     query getCategories($locale: I18NLocaleCode) {
@@ -2552,6 +2634,25 @@ export const GetHomeDocument = gql`
   }
 }
     `;
+export const GetSearchOrganizationDocument = gql`
+    query getSearchOrganization($locale: I18NLocaleCode) {
+  searchOrganization(locale: $locale) {
+    data {
+      attributes {
+        OrganismeUrl {
+          page {
+            data {
+              attributes {
+                Url
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
@@ -2586,6 +2687,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getHome(variables?: GetHomeQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetHomeQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetHomeQuery>(GetHomeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getHome', 'query');
+    },
+    getSearchOrganization(variables?: GetSearchOrganizationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetSearchOrganizationQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetSearchOrganizationQuery>(GetSearchOrganizationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getSearchOrganization', 'query');
     }
   };
 }

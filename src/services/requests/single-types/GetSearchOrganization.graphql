@@ -1,0 +1,17 @@
+query getSearchOrganization($locale: I18NLocaleCode) {
+    searchOrganization(locale: $locale){
+        data{
+            attributes{
+                OrganismeUrl{
+                    page{
+                        data{
+                            attributes{
+                                Url
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
