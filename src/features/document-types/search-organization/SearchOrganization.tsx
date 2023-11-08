@@ -17,9 +17,8 @@ import {
 import Link from "next/link";
 import {FaMapMarkerAlt} from "react-icons/fa";
 import {useSearchParams} from "next/navigation";
-import categories from '@/../build/static/categories.json'
-import {IconComponent} from "@/features/common/react-icons/IconComponent";
 import {LeafletMap} from "@/features/common/leaflet";
+import categories from '@/../build/static/categories.json'
 import publics from '@/../build/static/publics.json'
 
 interface SearchOrganizationProps {
@@ -33,7 +32,7 @@ export function SearchOrganization({extraData, language}: SearchOrganizationProp
     const [organismes, setOrganismes] = useState<Organisme[]>([]);
 
     const [selectedOpenCategories, setSelectedOpenCategories] = useState<string[]>([]);
-    const [selectedPublic, setSelectedPublic] = useState<string>('');
+    const [selectedPublic, setSelectedPublic] = useState<string>('0');
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [selectedSubCategories, setSubSelectedCategories] = useState<string[]>([]);
     const [categoriesForFilterDisplay, setCategoriesForFilterDisplay] = useState<(Categorie & {id: string})[]>([]);
@@ -50,11 +49,12 @@ export function SearchOrganization({extraData, language}: SearchOrganizationProp
                 subIdsInitToAdd.push(...item.sous_categories.data.map(item => item.id));
             });
             setSubSelectedCategories([...selectedSubCategories, ...subIdsInitToAdd])
+            setSelectedPublic(searchParams.get('publics') as string ?? '0')
             // @ts-ignore
             setCategoriesForFilterDisplay(categoriesInit)
             search({
                 categoriesIds: searchParams.getAll('categories') as string[],
-                publicsId: searchParams.get('publics') as string
+                publicsId: searchParams.get('publics') as string ?? '0'
             }).then((organismes) => {
                 setOrganismes(organismes);
             });
@@ -66,15 +66,15 @@ export function SearchOrganization({extraData, language}: SearchOrganizationProp
             search({
                 categoriesIds: selectedCategories,
                 subCategoriesIds: selectedSubCategories,
-                publicsId: selectedPublic as string
+                publicsId: selectedPublic as string ?? '0'
             }).then((organismes) => {
                 setOrganismes(organismes);
             });
         }
     }, [selectedPublic, selectedSubCategories])
 
-    function handlePublicsChange() {
-
+    function handlePublicsChange(event: React.ChangeEvent<HTMLSelectElement>) {
+        setSelectedPublic(event.target.value);
     }
 
     function toggleAccordions(id: string) {
@@ -115,9 +115,10 @@ export function SearchOrganization({extraData, language}: SearchOrganizationProp
                         <h3><span>Public spécifique</span></h3>
                         <div className='searchbar'>
                             <div className="searchbar__input input">
-                                <select onChange={handlePublicsChange}>
+                                <select value={selectedPublic} onChange={handlePublicsChange}>
+                                    <option value={0}>Aucun</option>
                                     {
-                                        publics.map(item => <option key={item.id}>{item.Nom}</option>)
+                                        publics.map(item => <option key={item.id} value={item.id}>{item.Nom}</option>)
                                     }
                                 </select>
                                 <FaAngleDown/>
@@ -167,7 +168,7 @@ export function SearchOrganization({extraData, language}: SearchOrganizationProp
                             </>})
                         }
                         <div className='footer-search'>
-                            <button className='btn btn-primary'>Afficher les {organismes.length} résultats
+                            <button className='btn btn-primary' onClick={() => setIsSlideOutOpen(false)}>Afficher les {organismes.length} résultats
                             </button>
                         </div>
                     </div>

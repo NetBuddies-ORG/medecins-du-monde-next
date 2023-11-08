@@ -4,7 +4,7 @@ import {FaCheck, FaHeadphones} from "react-icons/fa6";
 import {IconComponent} from "@/features/common/react-icons/IconComponent";
 import {GetCategoriesQuery, GetHomeQuery} from "@/services/GraphQL";
 import {useTranslation} from "@/app/i18n/client";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 interface CardListProps {
     extraData: GetHomeQuery

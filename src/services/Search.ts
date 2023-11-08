@@ -176,7 +176,12 @@ async function search(params: SearchAccurateOrganizationParams): Promise<Organis
         }
     });
 
-    console.log('organismesFromSubCategoriesIds', organismesFromSubCategoriesIds);
+    // Get All organismes from publicsId
+    if(publicsId != '0'){
+        return organismesFromIndexedDb.filter((organisme) => {
+            return organisme.public_specifiques.data.map((publics) => publics.id).includes(publicsId!);
+        });
+    }
 
 
     return organismesFromSubCategoriesIds;
