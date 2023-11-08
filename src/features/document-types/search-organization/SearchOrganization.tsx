@@ -1,7 +1,7 @@
 'use client'
 import {
     FaAngleDown,
-    FaAngleUp,
+    FaAngleUp, FaCheck,
     FaList,
     FaMapLocationDot,
     FaXmark
@@ -12,7 +12,6 @@ import {
     Categorie,
     GetSearchOrganizationQuery,
     Organisme,
-    PublicSpecifique,
     SousCategorieEntity
 } from "@/services/GraphQL";
 import Link from "next/link";
@@ -32,10 +31,12 @@ export function SearchOrganization({extraData, language}: SearchOrganizationProp
     const [isMapViewSelect, setIsMapViewSelect] = useState<boolean>(false);
     const [isSlideOutOpen, setIsSlideOutOpen] = useState<boolean>(false);
     const [organismes, setOrganismes] = useState<Organisme[]>([]);
+
+    const [selectedOpenCategories, setSelectedOpenCategories] = useState<string[]>([]);
     const [selectedPublic, setSelectedPublic] = useState<string>('');
+    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [selectedSubCategories, setSubSelectedCategories] = useState<string[]>([]);
     const [categoriesForFilterDisplay, setCategoriesForFilterDisplay] = useState<(Categorie & {id: string})[]>([]);
-    const [selectedOpenCategories, setSelectedOpenCategories] = useState<string[]>([]);
 
     const searchParams = useSearchParams()
     const {search, isReady} = useDBIndex(language);
@@ -43,13 +44,34 @@ export function SearchOrganization({extraData, language}: SearchOrganizationProp
 
     useEffect(() => {
         if(isReady && searchParams.getAll('categories').length > 0){
+            const categoriesInit = categories.filter(item => searchParams.getAll('categories').includes(item.id));
+            const subIdsInitToAdd: string[] = []
+            categoriesInit.forEach(item => {
+                subIdsInitToAdd.push(...item.sous_categories.data.map(item => item.id));
+            });
+            setSubSelectedCategories([...selectedSubCategories, ...subIdsInitToAdd])
             // @ts-ignore
-            setCategoriesForFilterDisplay(categories.filter(item => searchParams.getAll('categories').includes(item.id)))
-            search({categoriesIds: searchParams.getAll('categories') as string[]}).then((organismes) => {
+            setCategoriesForFilterDisplay(categoriesInit)
+            search({
+                categoriesIds: searchParams.getAll('categories') as string[],
+                publicsId: searchParams.get('publics') as string
+            }).then((organismes) => {
                 setOrganismes(organismes);
             });
         }
-    }, [isReady, searchParams, selectedPublic, selectedSubCategories])
+    }, [isReady])
+
+    useEffect(() => {
+        if(isReady && searchParams.getAll('categories').length > 0){
+            search({
+                categoriesIds: selectedCategories,
+                subCategoriesIds: selectedSubCategories,
+                publicsId: selectedPublic as string
+            }).then((organismes) => {
+                setOrganismes(organismes);
+            });
+        }
+    }, [selectedPublic, selectedSubCategories])
 
     function handlePublicsChange() {
 
@@ -73,6 +95,11 @@ export function SearchOrganization({extraData, language}: SearchOrganizationProp
 
     function handleCategoryCheck(event: React.MouseEvent<HTMLSpanElement>, subCategoriesId: SousCategorieEntity[]) {
         event.stopPropagation();
+        if(subCategoriesId.every(item => selectedSubCategories.includes(item.id))){
+            setSubSelectedCategories(selectedSubCategories.filter(item => !subCategoriesId.map(item => item.id).includes(item)))
+        } else {
+            setSubSelectedCategories([...selectedSubCategories, ...subCategoriesId.map(item => item.id)])
+        }
     }
 
     return <>
@@ -104,11 +131,14 @@ export function SearchOrganization({extraData, language}: SearchOrganizationProp
                                 <div className={'accordion-tab' +  ( selectedOpenCategories.includes(category.id) ? ' isOpen' : '')}>
                                     <div className='sub-title' onClick={() => toggleAccordions(category.id)}>
                                         <span className={"custom-checkbox" + (category.sous_categories.data.every(item => selectedSubCategories.includes(item.id)) ? ' isChecked' : '')}
-                                              onClick={(event) => handleCategoryCheck(event, category.sous_categories.data)}></span>
-                                        <span className="custom-icon">
-                                            <IconComponent icon={category.Icone} />
+                                              onClick={(event) => handleCategoryCheck(event, category.sous_categories.data)}>
+                                            {category.sous_categories.data.every(item => selectedSubCategories.includes(item.id)) && <FaCheck /> }
                                         </span>
-                                        <span>{category.Nom + ' (' + (category.sous_categories.data.filter(item => selectedSubCategories.includes(item.id)).length) + ')'}</span>
+                                        <span>
+                                            {/*<span className={'custom-icon'}>*/}
+                                            {/*    <IconComponent size={30} icon={category.Icone} />*/}
+                                            {/*</span>*/}
+                                            {category.Nom}
                                             <span className="angle">
                                                 {
                                                     selectedOpenCategories.includes(category.id) ?
@@ -117,12 +147,16 @@ export function SearchOrganization({extraData, language}: SearchOrganizationProp
                                                         <FaAngleDown />
                                                 }
                                             </span>
+                                        </span>
+
                                     </div>
                                     <ul>
                                         {
                                             category.sous_categories.data.map((subCategory) => {
                                                 return <li key={subCategory.id} onClick={() => handleCheck(subCategory.id)}>
-                                                    <div className={"checkmark" + (selectedSubCategories.includes(subCategory.id) ? " isChecked" : "")}></div>
+                                                    <div className={"checkmark" + (selectedSubCategories.includes(subCategory.id) ? " isChecked" : "")}>
+                                                        {selectedSubCategories.includes(subCategory.id) && <FaCheck/>}
+                                                    </div>
                                                     <span>{subCategory.attributes.Nom}</span>
                                                 </li>
 

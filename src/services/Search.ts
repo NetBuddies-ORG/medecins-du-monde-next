@@ -146,38 +146,40 @@ async function initialize(language: string = 'fr') {
 }
 
 async function search(params: SearchAccurateOrganizationParams): Promise<Organisme[]> {
+    // Get params
     const {categoriesIds, subCategoriesIds, publicsId} = params;
     const subCategoriesIdsToSearch = subCategoriesIds ?? [];
+    // Get IndexedDBData
     const organismesFromIndexedDb: (Organisme & {id: string})[] = await db.then(data => data.getAll(organismesStoreName));
     const categoriesFromIndexedDb: (Categorie & {id: string})[] = await db.then(data => data.getAll(categoriesStoreName));
 
-    // //Fetch the whole categories and its subcategories
-    // const affectedCategories = categoriesFromIndexedDb
-    //    .flatMap((categorie) => ({categorieId: categorie.id, subCat: categorie.sous_categories.data}));
-    //
-    // //Exctrat all the subcategories ids from the categories && subcategories ids alread checked
-    // affectedCategories.forEach((categorie) => {
-    //     if(categoriesIds.includes(categorie.categorieId)){
-    //         categorie.subCat.forEach((subCat) => {
-    //             if(!subCategoriesIdsToSearch.includes(subCat.id)){
-    //                 subCategoriesIdsToSearch.push(subCat.id);
-    //             }
-    //         });
-    //     }
-    // });
-    //
-    // //Filter organismes by categories and subcategories ids
-    // const organismesFilteredByCategories = organismesFromIndexedDb.filter((organisme) => {
-    //     return organisme.sous_categories.data.some((categorie) => {
-    //         return categoriesIds.includes(categorie.id) || subCategoriesIdsToSearch.includes(categorie.id);
-    //     });
-    // });
+    // Get All subCategories from params categoriesIds
+    const subCategoriesFromParamsCategoriesIds = categoriesFromIndexedDb.filter((categorie) => {
+        return categoriesIds.includes(categorie.id);
+    }).flatMap((categorie: Categorie) => {
+        return categorie.sous_categories.data;
+    });
 
-    // console.log(organismesFilteredByCategories);
+    //Add subCategoriesIdsToSearch to subCategoriesFromParamsCategoriesIds
+    for(let sub of subCategoriesFromParamsCategoriesIds){
+        if(!subCategoriesIdsToSearch.includes(sub.id)){
+            subCategoriesIdsToSearch.push(sub.id);
+        }
+    }
 
-    organismesFromIndexedDb.filter((organisme) => {});
+    // Get All organismes from subCategoriesIds
+    const organismesFromSubCategoriesIds = organismesFromIndexedDb.filter((organisme) => {
+        for(let sub of organisme.sous_categories.data){
+            if (subCategoriesIdsToSearch.includes(sub.id)) {
+                return true;
+            }
+        }
+    });
 
-    return organismesFromIndexedDb;
+    console.log('organismesFromSubCategoriesIds', organismesFromSubCategoriesIds);
+
+
+    return organismesFromSubCategoriesIds;
 }
 
 async function searchOrganismes(params: SearchOrganizationsParams): Promise<string[]> {
