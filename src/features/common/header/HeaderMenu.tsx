@@ -27,14 +27,14 @@ export function HeaderMenu({listItem, lang}: HeaderMenuProps) {
             }
         </ul>
         <div className='lang-picker input'>
-            <select>
-                {
-                    languages?.map(item => {
-                        return <option key={item}>{item}</option>
-                    })
-                }
-            </select>
-            <FaAngleDown/>
+            {/*<select>*/}
+            {/*    {*/}
+            {/*        languages?.map(item => {*/}
+            {/*            return <option key={item}>{item}</option>*/}
+            {/*        })*/}
+            {/*    }*/}
+            {/*</select>*/}
+            {/*<FaAngleDown/>*/}
         </div>
     </>)
 }

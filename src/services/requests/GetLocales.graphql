@@ -1,0 +1,9 @@
+query getLocales{
+    i18NLocales{
+        data{
+            attributes{
+                code
+            }
+        }
+    }
+}

@@ -16,6 +16,6 @@ async function buildCmsPageByCulture() {
     const organismes = (await client.getOrganismes()).organismes.data
         .map(item => ({ id: item.id, ...item.attributes}));
 
-    writeFile(join(__dirname, `../../static/organismes.json`), JSON.stringify(organismes), { encoding: 'utf8' });
+    await writeFile(join(__dirname, `../../static/organismes.json`), JSON.stringify(organismes), { encoding: 'utf8' });
 
 }

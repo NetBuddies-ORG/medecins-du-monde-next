@@ -41,14 +41,14 @@ export function Slideout({title, menuItem, lang}: SlideoutProps){
                 }
             </ul>
             <div className='lang-picker input'>
-                <select>
-                    {
-                        languages?.map(item => {
-                            return <option key={item}>{item}</option>
-                        })
-                    }
-                </select>
-                <i className="fa-regular fa-angle-down"></i>
+                {/*<select>*/}
+                {/*    {*/}
+                {/*        languages?.map(item => {*/}
+                {/*            return <option key={item}>{item}</option>*/}
+                {/*        })*/}
+                {/*    }*/}
+                {/*</select>*/}
+                {/*<i className="fa-regular fa-angle-down"></i>*/}
             </div>
         </div>
     </>

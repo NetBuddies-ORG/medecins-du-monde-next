@@ -28,5 +28,5 @@ async function buildCmsPageByCulture() {
         result[language] = {translation: languageTranslations};
     }
 
-    writeFile(join(__dirname, `../../static/translations.json`), JSON.stringify(result), { encoding: 'utf8' });
+    await writeFile(join(__dirname, `../../static/translations.json`), JSON.stringify(result), { encoding: 'utf8' });
 }

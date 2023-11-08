@@ -2384,6 +2384,11 @@ export type GetCategoriesQueryVariables = Exact<{
 
 export type GetCategoriesQuery = { __typename?: 'Query', categories: { __typename?: 'CategorieEntityResponseCollection', data: Array<{ __typename?: 'CategorieEntity', id: string, attributes: { __typename?: 'Categorie', Nom: string, Icone: string, sous_categories: { __typename?: 'SousCategorieRelationResponseCollection', data: Array<{ __typename?: 'SousCategorieEntity', id: string, attributes: { __typename?: 'SousCategorie', Nom: string } }> } } }> } };
 
+export type GetLocalesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetLocalesQuery = { __typename?: 'Query', i18NLocales: { __typename?: 'I18NLocaleEntityResponseCollection', data: Array<{ __typename?: 'I18NLocaleEntity', attributes: { __typename?: 'I18NLocale', code: string } }> } };
+
 export type GetOrganismesQueryVariables = Exact<{
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
   filters: InputMaybe<OrganismeFiltersInput>;
@@ -2466,6 +2471,17 @@ export const GetCategoriesDocument = gql`
             }
           }
         }
+      }
+    }
+  }
+}
+    `;
+export const GetLocalesDocument = gql`
+    query getLocales {
+  i18NLocales {
+    data {
+      attributes {
+        code
       }
     }
   }
@@ -2663,6 +2679,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
   return {
     getCategories(variables?: GetCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCategoriesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesQuery>(GetCategoriesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategories', 'query');
+    },
+    getLocales(variables?: GetLocalesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetLocalesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetLocalesQuery>(GetLocalesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getLocales', 'query');
     },
     getOrganismes(variables?: GetOrganismesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetOrganismesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetOrganismesQuery>(GetOrganismesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getOrganismes', 'query');

@@ -1,4 +1,5 @@
 import getConfig from 'next/config';
+import locales from '../../build/static/locales.json';
 
 export interface Configuration
 {
@@ -17,7 +18,7 @@ export interface Configuration
 }
 
 // TODO add other languages
-export const languages: readonly string[] = ['fr','en'];
+export const languages: readonly string[] = locales;
 
 export function getConfiguration(): Configuration
 {

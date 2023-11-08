@@ -17,6 +17,6 @@ async function buildCmsPageByCulture() {
     const publics = (await client.getPublics()).publicSpecifiques.data
         .flatMap(item => ({id: item.id, ...item.attributes}))
 
-    writeFile(join(__dirname, `../../static/publics.json`), JSON.stringify(publics), { encoding: 'utf8' });
+    await writeFile(join(__dirname, `../../static/publics.json`), JSON.stringify(publics), { encoding: 'utf8' });
 
 }
