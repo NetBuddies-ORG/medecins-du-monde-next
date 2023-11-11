@@ -34,10 +34,8 @@ export default function RootLayout({children}: {
             <meta name="theme-color"
                   content="#ffffff" />
             <link rel="icon" type="image/ico" href="/images/favicon/favicon.ico" />
-            <!-- Matomo -->
             <script>
               var _paq = window._paq = window._paq || [];
-              /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
               _paq.push(['trackPageView']);
               _paq.push(['enableLinkTracking']);
               (function() {
@@ -48,7 +46,6 @@ export default function RootLayout({children}: {
                 g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
               })();
             </script>
-        <!-- End Matomo Code -->
         </head>
         <body>
             {children}
