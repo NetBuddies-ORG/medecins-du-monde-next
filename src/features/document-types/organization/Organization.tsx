@@ -1,9 +1,11 @@
 import {cache} from "react";
 import {getStrapiClient} from "@/services/Strapi";
 import {notFound} from "next/navigation";
-import {FaNotesMedical} from "react-icons/fa6";
+import {FaEnvelope, FaGlobe, FaNotesMedical, FaPhone} from "react-icons/fa6";
 import {LeafletMap} from "@/features/common/leaflet/LeafletMap";
 import {OrganizationMap} from "@/features/document-types/organization/OrganizationMap";
+import {IconComponent} from "@/features/common/react-icons/IconComponent";
+import {FaMapMarkerAlt} from "react-icons/fa";
 
 const getOrganization = cache(async function getCategories(lang: string, slug: string) {
     const client = getStrapiClient();
@@ -37,76 +39,78 @@ export default async function OrganizationDetails({language, segment, orgaslug}:
                                 organization?.Logo?.data ?
                                     <img alt="Logo" src={organization?.Logo?.data?.attributes?.url}/>
                                     :
-                                    <></>
+                                    <>
+                                        <br/>
+                                    </>
                             }
                         </div>
                         <h2>{organization?.Nom}</h2>
                         {organization?.Departement && <h3>{organization?.Departement}</h3>}
                     </div>
                     <div className="details-container__body">
-                        <div className='intro'>
+                        <div className='intro__card'>
                             {organization?.Description}
                         </div>
-                        <div className='contact'>
+                        <div className='contact__card'>
                             <h3>Contactez-nous</h3>
                             <ul>
                                 <li>
-                                    <i className='fa-regular fa-phone'></i>
-                                    <span>{organization?.Telephone}</span>
+                                    <FaPhone />
+                                    <span><a href={'tel:' + organization?.Telephone}>{organization?.Telephone}</a></span>
                                 </li>
                                 <li>
-                                    <i className='fa-regular fa-map-marker-alt'></i>
-                                    <span>{organization?.Adresse}</span>
+                                    <FaMapMarkerAlt />
+                                    <span><a target={'_blank'} href={'https://www.google.com/maps/place/' + organization?.Adresse}>{organization?.Adresse}</a></span>
                                 </li>
                                 <li>
-                                    <i className='fa-regular fa-envelope'></i>
-                                    <span>{organization?.Email}</span>
+                                    <FaEnvelope />
+                                    <span><a href={'mailto:' + organization?.Email}>{organization?.Email}</a></span>
                                 </li>
                                 <li>
-                                    <i className='fa-regular fa-globe'></i>
-                                    <span><a href={organization?.Website}>{organization?.Website}</a></span>
+                                    <FaGlobe />
+                                    <span><a target={'_blank'} href={organization?.Website}>{organization?.Website}</a></span>
                                 </li>
                             </ul>
                         </div>
-                        <div className='schedules'>
+                        <div className='schedules__card'>
                             <h3>Horaires</h3>
                             {
-                                organization?.Horaires
+                                organization?.Horaires &&
+                                <div dangerouslySetInnerHTML={{__html: organization?.Horaires}}></div>
                             }
                         </div>
-                        <div className='languages'>
-                            <h3>Langues</h3>
-
-                            <ul>
-
-                                {organization?.langues.data.map(item =>
-                                    <li key={item.attributes.Nom}><span>{item.attributes.Nom}</span></li>)}
-                            </ul>
-
-
-                        </div>
-                        <div className='access-conditions'>
-                            <h3>{"Conditions d'accès"}</h3>
-                            {
-                                organization?.Conditions
-                            }
-                        </div>
-                        <div className='map'>
-                            <h3>Carte</h3>
-                            <OrganizationMap latitude={organization.Latitude} longitude={organization.Longitude}/>
-                        </div>
-                        <div className='services'>
+                        <div className='services__card'>
                             <h3>Services</h3>
                             <ul className='social-functions'>
                                 {
                                     organization?.services?.data?.map(item => {
                                         return <li key={item.attributes.Nom}>
-                                            <FaNotesMedical></FaNotesMedical>
+                                            <IconComponent icon={item.attributes.Icone} />
                                             <span>{item.attributes.Nom}</span>
                                         </li>
                                     })
                                 }
                             </ul>
+                        </div>
+                        <div className='languages__card'>
+                            <h3>Langues</h3>
+                            <ul>
+
+                                {organization?.langues.data.map(item =>
+                                    <li key={item.attributes.Nom}><span>{item.attributes.Nom}</span></li>)}
+                            </ul>
+                        </div>
+                        <div className='access-conditions__card'>
+                            <h3>{"Conditions d'accès"}</h3>
+                            {
+                                organization?.Conditions &&
+                                <div dangerouslySetInnerHTML={{__html: organization?.Conditions}}></div>
+                            }
+                        </div>
+                        <div className='map'>
+                            <h3>Carte</h3>
+                            <OrganizationMap latitude={organization.Latitude}
+                                             longitude={organization.Longitude}/>
                         </div>
                     </div>
                 </div>

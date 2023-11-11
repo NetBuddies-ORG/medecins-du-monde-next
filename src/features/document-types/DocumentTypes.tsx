@@ -1,4 +1,4 @@
-import {getLanguage, getPage} from "@/context/server";
+import {getCategories, getLanguage, getPage, getPublics} from "@/context/server";
 import {CustomHeader} from "@/features/common/header/Header";
 import {CustomFooter} from "@/features/common/footer/footer";
 import {HomePage} from "@/features/document-types/home-page/HomePage";
@@ -39,7 +39,10 @@ async function displayContent(page: GetPageQuery["pages"], language: string) {
                 About
             </>
         case 'SearchOrganization':
-            return <SearchOrganization extraData={await getSearchOrganizationsPage(language)} language={language} />
+            return <SearchOrganization publics={getPublics()}
+                                       categories={getCategories()}
+                                       extraData={await getSearchOrganizationsPage(language)}
+                                       language={language} />
         case 'Urgences':
 
             return <>

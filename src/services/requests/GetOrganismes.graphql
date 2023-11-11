@@ -48,6 +48,7 @@ query getOrganismes($locale: I18NLocaleCode, $filters: OrganismeFiltersInput) {
             id
             attributes{
               Nom
+              Icone
             }
           }
         }

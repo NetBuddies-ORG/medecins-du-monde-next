@@ -146,9 +146,11 @@ async function initialize(language: string = 'fr') {
 }
 
 async function search(params: SearchAccurateOrganizationParams): Promise<Organisme[]> {
+
     // Get params
     const {categoriesIds, subCategoriesIds, publicsId} = params;
     const subCategoriesIdsToSearch = subCategoriesIds ?? [];
+
     // Get IndexedDBData
     const organismesFromIndexedDb: (Organisme & {id: string})[] = await db.then(data => data.getAll(organismesStoreName));
     const categoriesFromIndexedDb: (Categorie & {id: string})[] = await db.then(data => data.getAll(categoriesStoreName));

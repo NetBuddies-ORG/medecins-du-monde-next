@@ -55,7 +55,6 @@ export type Categorie = {
   localizations: Maybe<CategorieRelationResponseCollection>;
   publishedAt: Maybe<Scalars['DateTime']['output']>;
   sous_categories: Maybe<SousCategorieRelationResponseCollection>;
-  specificUrl: Maybe<Scalars['String']['output']>;
   updatedAt: Maybe<Scalars['DateTime']['output']>;
 };
 
@@ -104,7 +103,6 @@ export type CategorieFiltersInput = {
   or: InputMaybe<Array<InputMaybe<CategorieFiltersInput>>>;
   publishedAt: InputMaybe<DateTimeFilterInput>;
   sous_categories: InputMaybe<SousCategorieFiltersInput>;
-  specificUrl: InputMaybe<StringFilterInput>;
   updatedAt: InputMaybe<DateTimeFilterInput>;
 };
 
@@ -113,7 +111,6 @@ export type CategorieInput = {
   Nom: InputMaybe<Scalars['String']['input']>;
   publishedAt: InputMaybe<Scalars['DateTime']['input']>;
   sous_categories: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
-  specificUrl: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CategorieRelationResponseCollection = {
@@ -156,12 +153,14 @@ export type ComponentGeneraleHeaderInput = {
 export type ComponentGeneraleSeo = {
   __typename?: 'ComponentGeneraleSeo';
   Description: Maybe<Scalars['String']['output']>;
+  Enabled: Maybe<Scalars['Boolean']['output']>;
   Title: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
 };
 
 export type ComponentGeneraleSeoFiltersInput = {
   Description: InputMaybe<StringFilterInput>;
+  Enabled: InputMaybe<BooleanFilterInput>;
   Title: InputMaybe<StringFilterInput>;
   and: InputMaybe<Array<InputMaybe<ComponentGeneraleSeoFiltersInput>>>;
   not: InputMaybe<ComponentGeneraleSeoFiltersInput>;
@@ -170,6 +169,7 @@ export type ComponentGeneraleSeoFiltersInput = {
 
 export type ComponentGeneraleSeoInput = {
   Description: InputMaybe<Scalars['String']['input']>;
+  Enabled: InputMaybe<Scalars['Boolean']['input']>;
   Title: InputMaybe<Scalars['String']['input']>;
   id: InputMaybe<Scalars['ID']['input']>;
 };
@@ -1075,13 +1075,13 @@ export type Organisme = {
   Adresse: Maybe<Scalars['String']['output']>;
   Conditions: Maybe<Scalars['String']['output']>;
   Departement: Maybe<Scalars['String']['output']>;
-  Description: Maybe<Scalars['String']['output']>;
+  Description: Scalars['String']['output'];
   Email: Maybe<Scalars['String']['output']>;
   Horaires: Maybe<Scalars['String']['output']>;
   Latitude: Maybe<Scalars['Float']['output']>;
   Logo: Maybe<UploadFileEntityResponse>;
   Longitude: Maybe<Scalars['Float']['output']>;
-  Nom: Maybe<Scalars['String']['output']>;
+  Nom: Scalars['String']['output'];
   Telephone: Maybe<Scalars['String']['output']>;
   Website: Maybe<Scalars['String']['output']>;
   createdAt: Maybe<Scalars['DateTime']['output']>;
@@ -1211,7 +1211,7 @@ export type Page = {
   __typename?: 'Page';
   ContentType: Scalars['String']['output'];
   SEO: ComponentGeneraleSeo;
-  Titre: Maybe<Scalars['String']['output']>;
+  Titre: Scalars['String']['output'];
   Url: Scalars['String']['output'];
   createdAt: Maybe<Scalars['DateTime']['output']>;
   locale: Maybe<Scalars['String']['output']>;
@@ -1291,7 +1291,7 @@ export type PaginationArg = {
 
 export type PublicSpecifique = {
   __typename?: 'PublicSpecifique';
-  Nom: Maybe<Scalars['String']['output']>;
+  Nom: Scalars['String']['output'];
   createdAt: Maybe<Scalars['DateTime']['output']>;
   locale: Maybe<Scalars['String']['output']>;
   localizations: Maybe<PublicSpecifiqueRelationResponseCollection>;
@@ -1714,7 +1714,7 @@ export type SearchOrganizationRelationResponseCollection = {
 export type Service = {
   __typename?: 'Service';
   Icone: Maybe<Scalars['String']['output']>;
-  Nom: Maybe<Scalars['String']['output']>;
+  Nom: Scalars['String']['output'];
   createdAt: Maybe<Scalars['DateTime']['output']>;
   locale: Maybe<Scalars['String']['output']>;
   localizations: Maybe<ServiceRelationResponseCollection>;
@@ -1826,7 +1826,8 @@ export type SlugifySlugInput = {
 
 export type SousCategorie = {
   __typename?: 'SousCategorie';
-  Nom: Maybe<Scalars['String']['output']>;
+  Nom: Scalars['String']['output'];
+  category: Maybe<CategorieEntityResponse>;
   createdAt: Maybe<Scalars['DateTime']['output']>;
   locale: Maybe<Scalars['String']['output']>;
   localizations: Maybe<SousCategorieRelationResponseCollection>;
@@ -1862,6 +1863,7 @@ export type SousCategorieEntityResponseCollection = {
 export type SousCategorieFiltersInput = {
   Nom: InputMaybe<StringFilterInput>;
   and: InputMaybe<Array<InputMaybe<SousCategorieFiltersInput>>>;
+  category: InputMaybe<CategorieFiltersInput>;
   createdAt: InputMaybe<DateTimeFilterInput>;
   id: InputMaybe<IdFilterInput>;
   locale: InputMaybe<StringFilterInput>;
@@ -1874,6 +1876,7 @@ export type SousCategorieFiltersInput = {
 
 export type SousCategorieInput = {
   Nom: InputMaybe<Scalars['String']['input']>;
+  category: InputMaybe<Scalars['ID']['input']>;
   publishedAt: InputMaybe<Scalars['DateTime']['input']>;
 };
 
@@ -2395,7 +2398,7 @@ export type GetOrganismesQueryVariables = Exact<{
 }>;
 
 
-export type GetOrganismesQuery = { __typename?: 'Query', organismes: { __typename?: 'OrganismeEntityResponseCollection', data: Array<{ __typename?: 'OrganismeEntity', id: string, attributes: { __typename?: 'Organisme', Nom: string, Departement: string, generatedUrl: string, Latitude: number, Longitude: number, Description: string, Telephone: string, Adresse: string, Email: string, Website: string, Horaires: string, Conditions: string, Logo: { __typename?: 'UploadFileEntityResponse', data: { __typename?: 'UploadFileEntity', attributes: { __typename?: 'UploadFile', url: string } } }, langues: { __typename?: 'LangueRelationResponseCollection', data: Array<{ __typename?: 'LangueEntity', attributes: { __typename?: 'Langue', Nom: string, Drapeau: { __typename?: 'UploadFileEntityResponse', data: { __typename?: 'UploadFileEntity', attributes: { __typename?: 'UploadFile', url: string } } } } }> }, public_specifiques: { __typename?: 'PublicSpecifiqueRelationResponseCollection', data: Array<{ __typename?: 'PublicSpecifiqueEntity', id: string, attributes: { __typename?: 'PublicSpecifique', Nom: string } }> }, services: { __typename?: 'ServiceRelationResponseCollection', data: Array<{ __typename?: 'ServiceEntity', id: string, attributes: { __typename?: 'Service', Nom: string } }> }, sous_categories: { __typename?: 'SousCategorieRelationResponseCollection', data: Array<{ __typename?: 'SousCategorieEntity', id: string, attributes: { __typename?: 'SousCategorie', Nom: string } }> } } }> } };
+export type GetOrganismesQuery = { __typename?: 'Query', organismes: { __typename?: 'OrganismeEntityResponseCollection', data: Array<{ __typename?: 'OrganismeEntity', id: string, attributes: { __typename?: 'Organisme', Nom: string, Departement: string, generatedUrl: string, Latitude: number, Longitude: number, Description: string, Telephone: string, Adresse: string, Email: string, Website: string, Horaires: string, Conditions: string, Logo: { __typename?: 'UploadFileEntityResponse', data: { __typename?: 'UploadFileEntity', attributes: { __typename?: 'UploadFile', url: string } } }, langues: { __typename?: 'LangueRelationResponseCollection', data: Array<{ __typename?: 'LangueEntity', attributes: { __typename?: 'Langue', Nom: string, Drapeau: { __typename?: 'UploadFileEntityResponse', data: { __typename?: 'UploadFileEntity', attributes: { __typename?: 'UploadFile', url: string } } } } }> }, public_specifiques: { __typename?: 'PublicSpecifiqueRelationResponseCollection', data: Array<{ __typename?: 'PublicSpecifiqueEntity', id: string, attributes: { __typename?: 'PublicSpecifique', Nom: string } }> }, services: { __typename?: 'ServiceRelationResponseCollection', data: Array<{ __typename?: 'ServiceEntity', id: string, attributes: { __typename?: 'Service', Nom: string, Icone: string } }> }, sous_categories: { __typename?: 'SousCategorieRelationResponseCollection', data: Array<{ __typename?: 'SousCategorieEntity', id: string, attributes: { __typename?: 'SousCategorie', Nom: string } }> } } }> } };
 
 export type GetPageQueryVariables = Exact<{
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
@@ -2538,6 +2541,7 @@ export const GetOrganismesDocument = gql`
             id
             attributes {
               Nom
+              Icone
             }
           }
         }

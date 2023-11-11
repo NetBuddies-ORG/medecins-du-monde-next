@@ -33,6 +33,7 @@ export default function RootLayout({children}: {
                   content="##007bff" />
             <meta name="theme-color"
                   content="#ffffff" />
+            <link rel="icon" type="image/ico" href="/images/favicon/favicon.ico" />
         </head>
         <body>
             {children}

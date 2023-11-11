@@ -12,9 +12,9 @@ type OrgaDetailsPageProps = {
 }
 
 export default async function OrgaDetailsPage({params: {language, segment, orgaslug}}: OrgaDetailsPageProps) {
-    return ( <OrganizationDetails language={language}
-                                         segment={segment}
-                                         orgaslug={orgaslug} />);
+    return <OrganizationDetails language={language}
+                                segment={segment}
+                                orgaslug={orgaslug} />;
 }
 
 export async function generateStaticParams() {
