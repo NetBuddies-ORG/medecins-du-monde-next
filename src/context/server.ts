@@ -2,7 +2,7 @@ import context from 'server-only-context';
 import {
     Categorie,
     CategorieEntity,
-    GetCategoriesQuery,
+    GetCategoriesQuery, GetFooterQuery,
     GetHeaderQuery,
     GetPageQuery,
     GetPublicsQuery
@@ -14,4 +14,5 @@ export const [getCategories, setCategories] = context<GetCategoriesQuery>(null!)
 export const [getPublics, setPublics] = context<GetPublicsQuery>(null!)
 export const [getLanguage, setLanguage] = context<string>(null!)
 export const [getHeader, setHeader] = context<GetHeaderQuery>(null!)
+export const [getFooter, setFooter] = context<GetFooterQuery>(null!)
 

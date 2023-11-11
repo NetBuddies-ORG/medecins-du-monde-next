@@ -1,16 +1,11 @@
 'use client'
 import {MapContainer, Marker, TileLayer, useMap, ZoomControl} from "react-leaflet";
-import {LatLng} from 'leaflet';
+import {LatLng, LatLngBounds} from 'leaflet';
 import React, {useEffect, useState} from "react";
 import 'leaflet/dist/leaflet.css';
 import '@christopherpickering/react-leaflet-markercluster/dist/styles.min.css';
 import MarkerClusterGroup from "@christopherpickering/react-leaflet-markercluster";
 import {createMarkerFromSrc, pinFullRed} from "../../../../public/images/pins";
-
-export interface RecenterToolProps {
-    lat: number
-    long: number
-}
 
 export interface Coordinates {
     latitude: number;
@@ -20,9 +15,11 @@ export interface Coordinates {
 export interface LeafletMapProps {
     children?: React.ReactNode;
     coordinates: Coordinates;
+    boundsCoords?: LatLngBounds;
+    zoom?: number;
 }
 
-export function LeafletMap({children, coordinates}: LeafletMapProps) {
+export function LeafletMap({children, coordinates, boundsCoords, zoom = 13}: LeafletMapProps) {
     const [ready, setReady] = useState<boolean>(false);
     const [centerCoordinates, setCenterCoordinates] = useState<LatLng>();
 
@@ -31,20 +28,6 @@ export function LeafletMap({children, coordinates}: LeafletMapProps) {
             setCenterCoordinates({lat: coordinates.latitude, lng: coordinates.longitude} as LatLng)
         }
     }, [])
-
-    const RecenterTool = ({lat, long}: RecenterToolProps) => {
-        const map = useMap();
-        const zoom = 10;
-
-        useEffect(() => {
-            // if !canRecenter is needed to avoid being locked after geolocalize
-            // if (currentLocation && lat && long && !canRecenter) {
-            //     map.setView([lat, long], zoom);
-            //     localStorage.setItem("zoomLevel", zoom.toString());
-            // }
-        }, []);
-        return null;
-    }
 
     const InvalidateSize = () => {
         const map = useMap();
@@ -74,7 +57,7 @@ export function LeafletMap({children, coordinates}: LeafletMapProps) {
                 <MapContainer center={centerCoordinates}
                               touchZoom="center"
                               zoomAnimation={true}
-                              zoom={13}
+                              zoom={zoom}
                               attributionControl={false}
                               zoomControl={false}
                               zoomDelta={0.25}
@@ -86,17 +69,14 @@ export function LeafletMap({children, coordinates}: LeafletMapProps) {
                     <SaveZoomLatLng />
                     <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                     <ZoomControl position="bottomright"/>
-                    <MarkerClusterGroup>
-                        {children}
-                    </MarkerClusterGroup>
-                    {coordinates?.latitude && coordinates?.longitude &&
+                    <MarkerClusterGroup>{children}</MarkerClusterGroup>
+                    {!children && coordinates?.latitude && coordinates?.longitude &&
                         <>
                             <Marker key={coordinates?.latitude!}
                                     position={[coordinates?.latitude!, coordinates?.longitude!]}
                                     icon={createMarkerFromSrc(pinFullRed)}
                                     >
                             </Marker>
-                            <RecenterTool lat={coordinates?.latitude!} long={coordinates?.longitude!} />
                         </>
                     }
                 </MapContainer>

@@ -1,4 +1,9 @@
+import {getFooter, getLanguage} from "@/context/server";
+import {IconComponent} from "@/features/common/react-icons/IconComponent";
+
 export async function CustomFooter() {
+    const lang = getLanguage();
+    const {footer} = getFooter();
     return (
         <>
             <div className='footer'>
@@ -8,53 +13,39 @@ export async function CustomFooter() {
                             <div className="content">
                                 <div className="services">
                                     <h4>Services</h4>
-                                    <p><a href="#">App development</a></p>
-                                    <p><a href="#">Web development</a></p>
-                                    <p><a href="#">DevOps</a></p>
-                                    <p><a href="#">Web designing</a></p>
+                                    {footer.data.attributes.Services.map((service, index) => <><p><a href={service.Url}>{service.Nom}</a></p></>)}
                                 </div>
                                 <div className="social-media">
                                     <h4>Social</h4>
-                                    <p>
-                                        <a href="#"
-                                        ><i className="fab fa-linkedin"></i> Linkedin</a
-                                        >
-                                    </p>
-                                    <p>
-                                        <a href="#"
-                                        ><i className="fab fa-twitter"></i> Twitter</a
-                                        >
-                                    </p>
-                                    <p>
-                                        <a href="https://github.com/farazc60"
-                                        ><i className="fab fa-github"></i> Github</a
-                                        >
-                                    </p>
-                                    <p>
-                                        <a href="https://www.facebook.com/codewithfaraz"
-                                        ><i className="fab fa-facebook"></i> Facebook</a
-                                        >
-                                    </p>
-                                    <p>
-                                        <a href="https://www.instagram.com/codewithfaraz"
-                                        ><i className="fab fa-instagram"></i> Instagram</a
-                                        >
-                                    </p>
+                                    {
+                                        footer.data.attributes.Social.map(item => <>
+                                            <p>
+                                                <a href={item.Url}>
+                                                    <IconComponent icon={item.Icone} /> {item.Nom}
+                                                </a>
+                                            </p>
+                                        </>)
+                                    }
                                 </div>
                                 <div className="links">
                                     <h4>Quick links</h4>
-                                    <p><a href="#">Home</a></p>
-                                    <p><a href="#">About</a></p>
-                                    <p><a href="#">Blogs</a></p>
-                                    <p><a href="#">Contact</a></p>
+                                    {
+                                        footer.data.attributes.LiensRapides.map(item => <>
+                                            <p>
+                                                <a href={item.Url}>
+                                                    {item.Nom}
+                                                </a>
+                                            </p>
+                                        </>)
+                                    }
                                 </div>
                                 <div className="details">
                                     <h4 className="address">Address</h4>
-                                    <p>Rue Botanique 75, 1210 Bruxelles</p>
+                                    <p><a href={'https://www.google.com/maps/place/' + footer.data.attributes.Adresse}>{footer.data.attributes.Adresse}</a></p>
                                     <h4 className="mobile">Mobile</h4>
-                                    <p><a href="#">+32 (0) 2 225 43 00</a></p>
+                                    <p><a href={'tel:' + footer.data.attributes.Telephone}>{footer.data.attributes.Telephone}</a></p>
                                     <h4 className="mail">Email</h4>
-                                    <p><a href="#">info@medecinsdumonde.be</a></p>
+                                    <p><a href={'mailto:' + footer.data.attributes.Email}>{footer.data.attributes.Email}</a></p>
                                 </div>
                             </div>
                             <footer>

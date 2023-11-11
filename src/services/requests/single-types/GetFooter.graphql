@@ -5,6 +5,22 @@ query getFooter($locale: I18NLocaleCode){
                 Footer{
                     Copyright
                 }
+                Services{
+                    Nom
+                    Url
+                }
+                Social{
+                    Nom
+                    Url
+                    Icone
+                }
+                LiensRapides{
+                    Nom
+                    Url
+                }
+                Adresse
+                Telephone
+                Email
             }
         }
     }

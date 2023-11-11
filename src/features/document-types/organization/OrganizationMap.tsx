@@ -7,6 +7,6 @@ interface OrganizationMapProps {
 }
 
 export function OrganizationMap({latitude, longitude}: OrganizationMapProps) {
-    return <LeafletMap coordinates={{latitude: latitude, longitude: longitude}}/>;
+    return <LeafletMap coordinates={{latitude: latitude, longitude: longitude}} />;
 }
 

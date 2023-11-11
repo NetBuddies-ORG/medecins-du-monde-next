@@ -1,0 +1,60 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  .card {
+    z-index: 999;
+    position: relative;
+    background: white;
+    max-height: calc(100% - 2.5rem);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+
+    a {
+      font-style: normal;
+      text-decoration: none;
+      border: none;
+    }
+
+    &__text {
+      padding-inline: 1rem;
+      padding-block-end: 2rem;
+
+      p {
+        font-size: 1rem;
+        line-height: 1.8rem;
+      }
+    }
+
+    &__location {
+      display: flex;
+      align-items: center;
+
+      span {
+        font-size: 1rem;
+        line-height: 1.5rem;
+        padding-inline-start: 0.5rem;
+      }
+    }
+
+    &__arrow {
+      position: absolute;
+      right: 2rem;
+      bottom: 2rem;
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    .card{
+      a {
+        img{
+        }
+      }
+    }
+  }
+}

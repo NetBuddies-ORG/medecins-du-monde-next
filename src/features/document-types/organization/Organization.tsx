@@ -2,7 +2,6 @@ import {cache} from "react";
 import {getStrapiClient} from "@/services/Strapi";
 import {notFound} from "next/navigation";
 import {FaEnvelope, FaGlobe, FaNotesMedical, FaPhone} from "react-icons/fa6";
-import {LeafletMap} from "@/features/common/leaflet/LeafletMap";
 import {OrganizationMap} from "@/features/document-types/organization/OrganizationMap";
 import {IconComponent} from "@/features/common/react-icons/IconComponent";
 import {FaMapMarkerAlt} from "react-icons/fa";

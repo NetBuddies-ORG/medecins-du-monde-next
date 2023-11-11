@@ -118,6 +118,72 @@ export type CategorieRelationResponseCollection = {
   data: Array<CategorieEntity>;
 };
 
+export type ComponentFooterLiensRapides = {
+  __typename?: 'ComponentFooterLiensRapides';
+  Nom: Maybe<Scalars['String']['output']>;
+  Url: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+};
+
+export type ComponentFooterLiensRapidesFiltersInput = {
+  Nom: InputMaybe<StringFilterInput>;
+  Url: InputMaybe<StringFilterInput>;
+  and: InputMaybe<Array<InputMaybe<ComponentFooterLiensRapidesFiltersInput>>>;
+  not: InputMaybe<ComponentFooterLiensRapidesFiltersInput>;
+  or: InputMaybe<Array<InputMaybe<ComponentFooterLiensRapidesFiltersInput>>>;
+};
+
+export type ComponentFooterLiensRapidesInput = {
+  Nom: InputMaybe<Scalars['String']['input']>;
+  Url: InputMaybe<Scalars['String']['input']>;
+  id: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type ComponentFooterServices = {
+  __typename?: 'ComponentFooterServices';
+  Nom: Maybe<Scalars['String']['output']>;
+  Url: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+};
+
+export type ComponentFooterServicesFiltersInput = {
+  Nom: InputMaybe<StringFilterInput>;
+  Url: InputMaybe<StringFilterInput>;
+  and: InputMaybe<Array<InputMaybe<ComponentFooterServicesFiltersInput>>>;
+  not: InputMaybe<ComponentFooterServicesFiltersInput>;
+  or: InputMaybe<Array<InputMaybe<ComponentFooterServicesFiltersInput>>>;
+};
+
+export type ComponentFooterServicesInput = {
+  Nom: InputMaybe<Scalars['String']['input']>;
+  Url: InputMaybe<Scalars['String']['input']>;
+  id: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type ComponentFooterSocial = {
+  __typename?: 'ComponentFooterSocial';
+  Icone: Maybe<Scalars['String']['output']>;
+  Nom: Maybe<Scalars['String']['output']>;
+  Url: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+};
+
+export type ComponentFooterSocialFiltersInput = {
+  Icone: InputMaybe<StringFilterInput>;
+  Nom: InputMaybe<StringFilterInput>;
+  Url: InputMaybe<StringFilterInput>;
+  and: InputMaybe<Array<InputMaybe<ComponentFooterSocialFiltersInput>>>;
+  not: InputMaybe<ComponentFooterSocialFiltersInput>;
+  or: InputMaybe<Array<InputMaybe<ComponentFooterSocialFiltersInput>>>;
+};
+
+export type ComponentFooterSocialInput = {
+  Icone: InputMaybe<Scalars['String']['input']>;
+  Nom: InputMaybe<Scalars['String']['input']>;
+  Url: InputMaybe<Scalars['String']['input']>;
+  id: InputMaybe<Scalars['ID']['input']>;
+};
+
 export type ComponentGeneraleFooter = {
   __typename?: 'ComponentGeneraleFooter';
   Copyright: Maybe<Scalars['String']['output']>;
@@ -243,12 +309,39 @@ export type FloatFilterInput = {
 
 export type Footer = {
   __typename?: 'Footer';
+  Adresse: Maybe<Scalars['String']['output']>;
+  Email: Maybe<Scalars['String']['output']>;
   Footer: Maybe<ComponentGeneraleFooter>;
+  LiensRapides: Maybe<Array<Maybe<ComponentFooterLiensRapides>>>;
+  Services: Maybe<Array<Maybe<ComponentFooterServices>>>;
+  Social: Maybe<Array<Maybe<ComponentFooterSocial>>>;
+  Telephone: Maybe<Scalars['String']['output']>;
   createdAt: Maybe<Scalars['DateTime']['output']>;
   locale: Maybe<Scalars['String']['output']>;
   localizations: Maybe<FooterRelationResponseCollection>;
   publishedAt: Maybe<Scalars['DateTime']['output']>;
   updatedAt: Maybe<Scalars['DateTime']['output']>;
+};
+
+
+export type FooterLiensRapidesArgs = {
+  filters: InputMaybe<ComponentFooterLiensRapidesFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+
+export type FooterServicesArgs = {
+  filters: InputMaybe<ComponentFooterServicesFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+
+export type FooterSocialArgs = {
+  filters: InputMaybe<ComponentFooterSocialFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
@@ -268,7 +361,13 @@ export type FooterEntityResponse = {
 };
 
 export type FooterInput = {
+  Adresse: InputMaybe<Scalars['String']['input']>;
+  Email: InputMaybe<Scalars['String']['input']>;
   Footer: InputMaybe<ComponentGeneraleFooterInput>;
+  LiensRapides: InputMaybe<Array<InputMaybe<ComponentFooterLiensRapidesInput>>>;
+  Services: InputMaybe<Array<InputMaybe<ComponentFooterServicesInput>>>;
+  Social: InputMaybe<Array<InputMaybe<ComponentFooterSocialInput>>>;
+  Telephone: InputMaybe<Scalars['String']['input']>;
   publishedAt: InputMaybe<Scalars['DateTime']['input']>;
 };
 
@@ -277,7 +376,7 @@ export type FooterRelationResponseCollection = {
   data: Array<FooterEntity>;
 };
 
-export type GenericMorph = Categorie | ComponentGeneraleFooter | ComponentGeneraleHeader | ComponentGeneraleSeo | ComponentUtilsLink | Footer | Header | Home | I18NLocale | Langue | Organisme | Page | PublicSpecifique | ReactIconsIconlibrary | SearchOrganization | Service | SlugifySlug | SousCategorie | Traduction | UploadFile | UploadFolder | Urgence | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = Categorie | ComponentFooterLiensRapides | ComponentFooterServices | ComponentFooterSocial | ComponentGeneraleFooter | ComponentGeneraleHeader | ComponentGeneraleSeo | ComponentUtilsLink | Footer | Header | Home | I18NLocale | Langue | Organisme | Page | PublicSpecifique | ReactIconsIconlibrary | SearchOrganization | Service | SlugifySlug | SousCategorie | Traduction | UploadFile | UploadFolder | Urgence | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type Header = {
   __typename?: 'Header';
@@ -2434,7 +2533,7 @@ export type GetFooterQueryVariables = Exact<{
 }>;
 
 
-export type GetFooterQuery = { __typename?: 'Query', footer: { __typename?: 'FooterEntityResponse', data: { __typename?: 'FooterEntity', attributes: { __typename?: 'Footer', Footer: { __typename?: 'ComponentGeneraleFooter', Copyright: string } } } } };
+export type GetFooterQuery = { __typename?: 'Query', footer: { __typename?: 'FooterEntityResponse', data: { __typename?: 'FooterEntity', attributes: { __typename?: 'Footer', Adresse: string, Telephone: string, Email: string, Footer: { __typename?: 'ComponentGeneraleFooter', Copyright: string }, Services: Array<{ __typename?: 'ComponentFooterServices', Nom: string, Url: string }>, Social: Array<{ __typename?: 'ComponentFooterSocial', Nom: string, Url: string, Icone: string }>, LiensRapides: Array<{ __typename?: 'ComponentFooterLiensRapides', Nom: string, Url: string }> } } } };
 
 export type GetHeaderQueryVariables = Exact<{
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
@@ -2616,6 +2715,22 @@ export const GetFooterDocument = gql`
         Footer {
           Copyright
         }
+        Services {
+          Nom
+          Url
+        }
+        Social {
+          Nom
+          Url
+          Icone
+        }
+        LiensRapides {
+          Nom
+          Url
+        }
+        Adresse
+        Telephone
+        Email
       }
     }
   }

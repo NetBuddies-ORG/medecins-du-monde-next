@@ -1,5 +1,5 @@
 import {notFound} from "next/navigation";
-import {setHeader, setLanguage, setPage} from "@/context/server";
+import {setFooter, setHeader, setLanguage, setPage} from "@/context/server";
 import {cache, PropsWithChildren} from "react";
 import {getStrapiClient} from "@/services/Strapi";
 import {PageFiltersInput} from "@/services/GraphQL";
@@ -22,6 +22,11 @@ const getHeader = cache(async function getHeader(language: string) {
     return await client.getHeader({locale: language});
 });
 
+const getFooter = cache(async function getFooter(language: string) {
+    const client = getStrapiClient();
+    return await client.getFooter({locale: language});
+});
+
 type OrganizationDetailsLayoutProps = PropsWithChildren<{
     params: {
         language: string;
@@ -31,10 +36,12 @@ type OrganizationDetailsLayoutProps = PropsWithChildren<{
 export default async function OrganizationDetailsLayout({children, params: {language, segment}}: OrganizationDetailsLayoutProps) {
     const {pages} = await getPage(language, '/' + segment);
     const header = await getHeader(language);
+    const footer = await getFooter(language);
 
     if(!pages?.data[0]) notFound();
     setPage(pages);
     setHeader(header);
+    setFooter(footer);
     setLanguage(language);
 
     return (

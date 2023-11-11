@@ -1,15 +1,11 @@
 'use client'
-import {
-    FaAngleDown,
-    FaAngleUp, FaCheck,
-    FaList,
-    FaMapLocationDot,
-    FaXmark
-} from "react-icons/fa6";
+import {FaAngleDown, FaAngleUp, FaCheck, FaList, FaMapLocationDot, FaXmark} from "react-icons/fa6";
 import {useEffect, useState} from "react";
 import {useDBIndex} from "@/services/Search";
 import {
-    Categorie, CategorieEntity, GetCategoriesQuery, GetPublicsQuery,
+    CategorieEntity,
+    GetCategoriesQuery,
+    GetPublicsQuery,
     GetSearchOrganizationQuery,
     Organisme,
     SousCategorieEntity
@@ -18,6 +14,8 @@ import Link from "next/link";
 import {FaMapMarkerAlt} from "react-icons/fa";
 import {useSearchParams} from "next/navigation";
 import {LeafletMap} from "@/features/common/leaflet";
+import {Coordinates} from "@/features/common/leaflet/LeafletMap";
+import {OrganizationMarker} from "@/features/document-types/search-organization/OrganizationMarker";
 
 interface SearchOrganizationProps {
     extraData: GetSearchOrganizationQuery;
@@ -29,20 +27,24 @@ interface SearchOrganizationProps {
 export function SearchOrganization({extraData, language, publics, categories}: SearchOrganizationProps) {
     const [isMapViewSelect, setIsMapViewSelect] = useState<boolean>(false);
     const [isSlideOutOpen, setIsSlideOutOpen] = useState<boolean>(false);
-    const [organismes, setOrganismes] = useState<Organisme[]>([]);
+    const [organismes, setOrganismes] = useState<(Organisme & { id?: string })[]>([]);
 
     const [selectedOpenCategories, setSelectedOpenCategories] = useState<string[]>([]);
     const [selectedPublic, setSelectedPublic] = useState<string>('0');
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [selectedSubCategories, setSubSelectedCategories] = useState<string[]>([]);
-    const [categoriesForFilterDisplay, setCategoriesForFilterDisplay] = useState<(CategorieEntity & {id: string})[]>([]);
+    const [currentVisibleItemId, setCurrentVisibleItemId] = useState<string>();
+    const [categoriesForFilterDisplay, setCategoriesForFilterDisplay] = useState<(CategorieEntity & {
+        id: string
+    })[]>([]);
+    const [centerCoordinates, setCenterCoordinates] = useState<Coordinates>();
 
     const searchParams = useSearchParams()
     const {search, isReady} = useDBIndex(language);
 
 
     useEffect(() => {
-        if(isReady && searchParams.getAll('categories').length > 0){
+        if (isReady && searchParams.getAll('categories').length > 0) {
             const categoriesInit = categories.categories.data.filter(item => searchParams.getAll('categories').includes(item.id));
             const subIdsInitToAdd: string[] = []
             categoriesInit.forEach(item => {
@@ -50,7 +52,6 @@ export function SearchOrganization({extraData, language, publics, categories}: S
             });
             setSubSelectedCategories([...selectedSubCategories, ...subIdsInitToAdd])
             setSelectedPublic(searchParams.get('publics') as string ?? '0')
-            console.log(categoriesInit)
             // @ts-ignore
             setCategoriesForFilterDisplay(categoriesInit)
             search({
@@ -58,18 +59,20 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                 publicsId: searchParams.get('publics') as string ?? '0'
             }).then((organismes) => {
                 setOrganismes(organismes);
+                positionCenter(organismes);
             });
         }
     }, [isReady])
 
     useEffect(() => {
-        if(isReady && searchParams.getAll('categories').length > 0){
+        if (isReady && searchParams.getAll('categories').length > 0) {
             search({
                 categoriesIds: selectedCategories,
                 subCategoriesIds: selectedSubCategories,
                 publicsId: selectedPublic as string ?? '0'
             }).then((organismes) => {
                 setOrganismes(organismes);
+                positionCenter(organismes);
             });
         }
     }, [selectedPublic, selectedSubCategories])
@@ -79,7 +82,7 @@ export function SearchOrganization({extraData, language, publics, categories}: S
     }
 
     function toggleAccordions(id: string) {
-        if(selectedOpenCategories.includes(id)){
+        if (selectedOpenCategories.includes(id)) {
             setSelectedOpenCategories(selectedOpenCategories.filter(item => item !== id))
         } else {
             setSelectedOpenCategories([...selectedOpenCategories, id])
@@ -87,7 +90,7 @@ export function SearchOrganization({extraData, language, publics, categories}: S
     }
 
     function handleCheck(subCategoryId: string) {
-        if(selectedSubCategories.includes(subCategoryId)){
+        if (selectedSubCategories.includes(subCategoryId)) {
             setSubSelectedCategories(selectedSubCategories.filter(item => item !== subCategoryId))
         } else {
             setSubSelectedCategories([...selectedSubCategories, subCategoryId])
@@ -96,10 +99,33 @@ export function SearchOrganization({extraData, language, publics, categories}: S
 
     function handleCategoryCheck(event: React.MouseEvent<HTMLSpanElement>, subCategoriesId: SousCategorieEntity[]) {
         event.stopPropagation();
-        if(subCategoriesId.every(item => selectedSubCategories.includes(item.id))){
+        if (subCategoriesId.every(item => selectedSubCategories.includes(item.id))) {
             setSubSelectedCategories(selectedSubCategories.filter(item => !subCategoriesId.map(item => item.id).includes(item)))
         } else {
             setSubSelectedCategories([...selectedSubCategories, ...subCategoriesId.map(item => item.id)])
+        }
+    }
+
+    const handleCloseCard = () => setCurrentVisibleItemId(undefined);
+
+    const toggleViewItem = (currentId: string) => {
+        setCurrentVisibleItemId(currentId)
+    };
+
+    const positionCenter = (organismes: any) => {
+
+        let latCenter: number = 0;
+        let longCenter: number = 0;
+        let count: number = 0;
+
+        organismes?.map((item) => {
+            latCenter += item.Latitude!;
+            longCenter += item.Longitude!;
+            ++count;
+        })
+
+        if (latCenter && longCenter) {
+            setCenterCoordinates({latitude: latCenter / count, longitude: longCenter / count});
         }
     }
 
@@ -119,7 +145,8 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                                 <select value={selectedPublic} onChange={handlePublicsChange}>
                                     <option value={0}>Aucun</option>
                                     {
-                                        publics.publicSpecifiques.data.map(item => <option key={item.id} value={item.id}>{item.attributes.Nom}</option>)
+                                        publics.publicSpecifiques.data.map(item => <option key={item.id}
+                                                                                           value={item.id}>{item.attributes.Nom}</option>)
                                     }
                                 </select>
                                 <FaAngleDown/>
@@ -130,47 +157,56 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                         <h3><span>Catégories</span></h3>
                         {
                             categoriesForFilterDisplay.length > 0 &&
-                            categoriesForFilterDisplay.map((category) => {return <>
-                                <div className={'accordion-tab' +  ( selectedOpenCategories.includes(category.id) ? ' isOpen' : '')}>
-                                    <div className='sub-title' onClick={() => toggleAccordions(category.id)}>
-                                        <span className={"custom-checkbox" + (category?.attributes.sous_categories?.data?.every(item => selectedSubCategories.includes(item.id)) ? ' isChecked' : '')}
-                                              onClick={(event) => handleCategoryCheck(event, category?.attributes.sous_categories?.data)}>
-                                            {category?.attributes.sous_categories?.data.every(item => selectedSubCategories.includes(item.id)) && <FaCheck /> }
+                            categoriesForFilterDisplay.map((category) => {
+                                return <>
+                                    <div
+                                        className={'accordion-tab' + (selectedOpenCategories.includes(category.id) ? ' isOpen' : '')}>
+                                        <div className='sub-title' onClick={() => toggleAccordions(category.id)}>
+                                        <span
+                                            className={"custom-checkbox" + (category?.attributes.sous_categories?.data?.every(item => selectedSubCategories.includes(item.id)) ? ' isChecked' : '')}
+                                            onClick={(event) => handleCategoryCheck(event, category?.attributes.sous_categories?.data)}>
+                                            {category?.attributes.sous_categories?.data.every(item => selectedSubCategories.includes(item.id)) &&
+                                                <FaCheck/>}
                                         </span>
-                                        <span>
+                                            <span>
                                             {/*<span className={'custom-icon'}>*/}
-                                            {/*    <IconComponent size={30} icon={category.Icone} />*/}
-                                            {/*</span>*/}
-                                            {category.attributes.Nom}
-                                            <span className="angle">
+                                                {/*    <IconComponent size={30} icon={category.Icone} />*/}
+                                                {/*</span>*/}
+                                                {category.attributes.Nom}
+                                                <span className="angle">
                                                 {
                                                     selectedOpenCategories.includes(category.id) ?
-                                                        <FaAngleUp />
+                                                        <FaAngleUp/>
                                                         :
-                                                        <FaAngleDown />
+                                                        <FaAngleDown/>
                                                 }
                                             </span>
                                         </span>
 
-                                    </div>
-                                    <ul>
-                                        {
-                                            category.attributes.sous_categories.data.map((subCategory) => {
-                                                return <li key={subCategory.id} onClick={() => handleCheck(subCategory.id)}>
-                                                    <div className={"checkmark" + (selectedSubCategories.includes(subCategory.id) ? " isChecked" : "")}>
-                                                        {selectedSubCategories.includes(subCategory.id) && <FaCheck/>}
-                                                    </div>
-                                                    <span>{subCategory.attributes.Nom}</span>
-                                                </li>
+                                        </div>
+                                        <ul>
+                                            {
+                                                category.attributes.sous_categories.data.map((subCategory) => {
+                                                    return <li key={subCategory.id}
+                                                               onClick={() => handleCheck(subCategory.id)}>
+                                                        <div
+                                                            className={"checkmark" + (selectedSubCategories.includes(subCategory.id) ? " isChecked" : "")}>
+                                                            {selectedSubCategories.includes(subCategory.id) &&
+                                                                <FaCheck/>}
+                                                        </div>
+                                                        <span>{subCategory.attributes.Nom}</span>
+                                                    </li>
 
-                                            })
-                                        }
-                                    </ul>
-                                </div>
-                            </>})
+                                                })
+                                            }
+                                        </ul>
+                                    </div>
+                                </>
+                            })
                         }
                         <div className='footer-search'>
-                            <button className='btn btn-primary' onClick={() => setIsSlideOutOpen(false)}>Afficher les {organismes.length} résultats
+                            <button className='btn btn-primary' onClick={() => setIsSlideOutOpen(false)}>Afficher
+                                les {organismes.length} résultats
                             </button>
                         </div>
                     </div>
@@ -199,7 +235,21 @@ export function SearchOrganization({extraData, language, publics, categories}: S
             {
                 isMapViewSelect ?
                     <div className='map-container'>
-                        <LeafletMap coordinates={{longitude: 50, latitude: 45}} />
+                        {centerCoordinates &&
+                            <LeafletMap coordinates={centerCoordinates}
+                                        zoom={10}>
+                                {
+                                    organismes.length > 0 && organismes.map((organisme) => {
+                                        return organisme.Longitude && organisme.Latitude &&
+                                            <OrganizationMarker organisme={organisme}
+                                                                language={language}
+                                                                currentVisibleItemId={currentVisibleItemId}
+                                                                handleCloseCard={handleCloseCard}
+                                                                toggleViewItem={toggleViewItem}>
+                                            </OrganizationMarker>
+                                    })
+                                }
+                            </LeafletMap>}
                     </div> :
                     <div className='card-container-organisme'>
                         {
