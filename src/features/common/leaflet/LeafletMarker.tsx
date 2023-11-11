@@ -1,5 +1,4 @@
 'use client'
-
 import {Marker} from "react-leaflet";
 import {createMarkerFromSrc, pinFullRed} from "../../../../public/images/pins";
 
