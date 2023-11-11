@@ -1,6 +1,6 @@
 import '@/assets/styles/main.scss';
 import {Metadata} from "next";
-import React from "react";
+import React, { useEffect } from "react";
 
 export const metadata: Metadata = {
     applicationName: 'Monbo Réseau',
@@ -18,6 +18,22 @@ export default function RootLayout({children}: {
     children: React.ReactNode
 }) {
 
+    useEffect(() => {
+            // @ts-ignore
+            const _paq = window._paq = window._paq || [];
+            _paq.push(['trackPageView']);
+            _paq.push(['enableLinkTracking']);
+            (function() {
+                const u="//matomo.alexianmoins.be/";
+                _paq.push(['setTrackerUrl', u+'matomo.php']);
+                _paq.push(['setSiteId', '1']);
+                const d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+                // @ts-ignore
+                g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+            })();
+            console.info('Matomo is loaded');
+    }, []);
+
     return (
         <html lang="fr">
         <head>
@@ -34,18 +50,6 @@ export default function RootLayout({children}: {
             <meta name="theme-color"
                   content="#ffffff" />
             <link rel="icon" type="image/ico" href="/images/favicon/favicon.ico" />
-            <script>
-              var _paq = window._paq = window._paq || [];
-              _paq.push(['trackPageView']);
-              _paq.push(['enableLinkTracking']);
-              (function() {
-                var u="//matomo.alexianmoins.be/";
-                _paq.push(['setTrackerUrl', u+'matomo.php']);
-                _paq.push(['setSiteId', '1']);
-                var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-                g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
-              })();
-            </script>
         </head>
         <body>
             {children}
