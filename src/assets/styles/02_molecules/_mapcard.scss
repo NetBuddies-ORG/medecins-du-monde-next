@@ -9,11 +9,51 @@
     position: relative;
     background: white;
     max-height: calc(100% - 2.5rem);
+    min-width: 200px;
     margin: 0;
     display: flex;
     flex-direction: column;
+    box-shadow: 0 0 25px rgba(94, 94, 94, 0.75);
+    max-width: 300px;
+    border-radius: 0 0 5px 5px;
+
+    .image-container{
+      .no-image{
+        height: 25px;
+      }
+    }
+
+    &__close{
+      position: absolute;
+      top: .25rem;
+      right: .5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: white;
+      background: $textColor;
+      border-radius: 2.5px;
+      svg{
+        padding-top: .15rem;
+        font-size: 1.5rem;
+      }
+    }
+
+    &__next{
+      width: 100%;
+      color: white;
+      background: $textColor;
+      border: none;
+      cursor: pointer;
+      padding: 5px 0 5px 0;
+      border-radius: 0 0 5px 5px;
+      svg{
+        font-size: 2rem;
+      }
+    }
 
     a {
+      color: $textColor;
       font-style: normal;
       text-decoration: none;
       border: none;
@@ -21,7 +61,14 @@
 
     &__text {
       padding-inline: 1rem;
-      padding-block-end: 2rem;
+      padding-block-start: .75rem;
+      padding-block-end: .75rem;
+
+      .description{
+        font-size: .75rem;
+        padding-block-start: .75rem;
+        padding-block-end: .75rem;
+      }
 
       p {
         font-size: 1rem;
@@ -34,16 +81,10 @@
       align-items: center;
 
       span {
-        font-size: 1rem;
+        font-size: .75rem;
         line-height: 1.5rem;
-        padding-inline-start: 0.5rem;
+        padding-inline-start: 0.25rem;
       }
-    }
-
-    &__arrow {
-      position: absolute;
-      right: 2rem;
-      bottom: 2rem;
     }
   }
 }

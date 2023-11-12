@@ -1,0 +1,9 @@
+query getUrgences($locale: I18NLocaleCode){
+    urgence(locale: $locale){
+        data{
+            attributes{
+                ContentType
+            }
+        }
+    }
+}

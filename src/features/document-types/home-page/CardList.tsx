@@ -1,19 +1,24 @@
 'use client'
 import Link from "next/link";
-import {FaCheck, FaHeadphones} from "react-icons/fa6";
+import {FaAngleDown, FaCheck, FaCircleInfo, FaHeadphones} from "react-icons/fa6";
 import {IconComponent} from "@/features/common/react-icons/IconComponent";
-import {GetCategoriesQuery, GetHomeQuery} from "@/services/GraphQL";
+import {GetCategoriesQuery, GetHomeQuery, GetPublicsQuery} from "@/services/GraphQL";
 import {useTranslation} from "@/app/i18n/client";
 import {useEffect, useState} from "react";
+import {FaSearch, FaTimes} from "react-icons/fa";
+import {HomeSearchBar} from "@/features/document-types/home-page/HomeSearchBar";
 
 interface CardListProps {
     extraData: GetHomeQuery
     categoriesContainer: GetCategoriesQuery
+    publics: GetPublicsQuery["publicSpecifiques"]
 }
 
-export function CardList({extraData, categoriesContainer: {categories}}: CardListProps){
+export function CardList({extraData, categoriesContainer: {categories}, publics}: CardListProps){
 
     const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+    const [selectedPublics, setSelectedPublics] = useState<string>();
+
     const {t} = useTranslation()
 
     function handleSelectedCategories(id: string){
@@ -24,7 +29,32 @@ export function CardList({extraData, categoriesContainer: {categories}}: CardLis
         }
     }
 
+    function handlePublicsChange(event: React.ChangeEvent<HTMLSelectElement>) {
+        setSelectedPublics(event.target.value);
+    }
+
     return <>
+        <div className="searchbar">
+            <div className="info">
+                <FaCircleInfo/>
+                <FaTimes className={'cancel'}/>
+                <h2> {t('HOME_HELP_WITH_TOOLS')} <a>{t('HOME_CLICK_HERE')}</a></h2>
+            </div>
+            <div className='searchbar input'>
+                <FaSearch />
+                <input type='text' placeholder={t('HOME_ENTER_KEYWORD')} />
+            </div>
+            <div className="searchbar__input input">
+                <select id={'publics'} value={selectedPublics} onChange={handlePublicsChange}>
+                    <option value="0" selected disabled>Public spécifique ..</option>
+                    {
+                        publics.data.map(item =>
+                            <option key={item.id} value={item.id}>{item.attributes.Nom}</option>)
+                    }
+                </select>
+                <FaAngleDown/>
+            </div>
+        </div>
         <div className="card-container">
             <Link href={extraData?.home?.data?.attributes?.UrgencesLink}>
                 <div className="card danger">
@@ -46,7 +76,7 @@ export function CardList({extraData, categoriesContainer: {categories}}: CardLis
         </div>
         <div className={"footer-search" + (selectedCategories.length <= 0 ? ' isHidden' : '')}>
             <button className="btn btn-primary">
-                <Link href={{ pathname: 'rechercher-un-organisme', query: { categories: selectedCategories, publics: 1 } }}>
+                <Link href={{ pathname: 'rechercher-un-organisme', query: { categories: selectedCategories, publics: selectedPublics} }}>
                     Rechercher un organisme
                 </Link>
             </button>

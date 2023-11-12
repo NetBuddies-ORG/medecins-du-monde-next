@@ -19,16 +19,7 @@ export async function HomePage({extraData}: HomePageProps) {
     return (
         <>
             <div className="page-container">
-                <div className="searchbar">
-                    <div className="info">
-                        <FaCircleInfo/>
-                        <FaTimes className={'cancel'}/>
-                        <h2> {t('HOME_HELP_WITH_TOOLS')} <a>{t('HOME_CLICK_HERE')}</a></h2>
-                    </div>
-                    <HomeSearchBar publicSpecifiques={publicSpecifiques}/>
-                </div>
-                <CardList extraData={extraData} categoriesContainer={categories}/>
-
+                <CardList publics={publicSpecifiques} extraData={extraData} categoriesContainer={categories}/>
             </div>
             <div className="custom-shape-divider-bottom-1694936473">
                 <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"

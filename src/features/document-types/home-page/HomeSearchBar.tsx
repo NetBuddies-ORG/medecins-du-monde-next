@@ -17,19 +17,6 @@ interface HomeSearchBarProps {
      }
 
      return <>
-        <div className='searchbar input'>
-            <FaSearch />
-            <input type='text' placeholder={t('HOME_ENTER_KEYWORD')} />
-        </div>
-        <div className="searchbar__input input">
-            <select id={'publics'} value={publics} onChange={handlePublicsChange}>
-                <option value="0" selected disabled>Public spécifique ..</option>
-                {
-                    publicSpecifiques.data.map(item =>
-                        <option key={item.id} value={item.id}>{item.attributes.Nom}</option>)
-                }
-            </select>
-            <FaAngleDown/>
-        </div>
+
     </>
 }

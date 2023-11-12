@@ -7,6 +7,8 @@ import {getStrapiClient} from "@/services/Strapi";
 import {GetPageQuery} from "@/services/GraphQL";
 import {Organizations} from "@/features/document-types/organizations/Organizations";
 import {SearchOrganization} from "@/features/document-types/search-organization/SearchOrganization";
+import {notFound} from "next/navigation";
+import {Urgences} from "@/features/document-types/urgences/Urgences";
 
 export async function DocumentTypes() {
     const pages = getPage();
@@ -43,16 +45,16 @@ async function displayContent(page: GetPageQuery["pages"], language: string) {
                                        categories={getCategories()}
                                        extraData={await getSearchOrganizationsPage(language)}
                                        language={language} />
-        case 'Urgences':
-
+        case 'Services':
             return <>
-                Urgences
+                Services
+            </>
+        case 'Urgences':
+            return <>
+                <Urgences extraData={await getUrgencesPage(language)} />
             </>
         default:
-            return (
-                <>
-                </>
-            );
+            notFound();
     }
 }
 
@@ -71,4 +73,10 @@ const getSearchOrganizationsPage = cache(async function getSearchOrganizationsPa
     const client = getStrapiClient();
     // @ts-ignore
     return await client.getSearchOrganization({locale: language});
+});
+
+const getUrgencesPage = cache(async function getUrgencesPage(language: string) {
+    const client = getStrapiClient();
+    // @ts-ignore
+    return await client.getUrgences({locale: language});
 });

@@ -2556,6 +2556,13 @@ export type GetSearchOrganizationQueryVariables = Exact<{
 
 export type GetSearchOrganizationQuery = { __typename?: 'Query', searchOrganization: { __typename?: 'SearchOrganizationEntityResponse', data: { __typename?: 'SearchOrganizationEntity', attributes: { __typename?: 'SearchOrganization', OrganismeUrl: { __typename?: 'ComponentUtilsLink', page: { __typename?: 'PageEntityResponse', data: { __typename?: 'PageEntity', attributes: { __typename?: 'Page', Url: string } } } } } } } };
 
+export type GetUrgencesQueryVariables = Exact<{
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+}>;
+
+
+export type GetUrgencesQuery = { __typename?: 'Query', urgence: { __typename?: 'UrgenceEntityResponse', data: { __typename?: 'UrgenceEntity', attributes: { __typename?: 'Urgence', ContentType: string } } } };
+
 
 export const GetCategoriesDocument = gql`
     query getCategories($locale: I18NLocaleCode) {
@@ -2788,6 +2795,17 @@ export const GetSearchOrganizationDocument = gql`
   }
 }
     `;
+export const GetUrgencesDocument = gql`
+    query getUrgences($locale: I18NLocaleCode) {
+  urgence(locale: $locale) {
+    data {
+      attributes {
+        ContentType
+      }
+    }
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
@@ -2828,6 +2846,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getSearchOrganization(variables?: GetSearchOrganizationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetSearchOrganizationQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetSearchOrganizationQuery>(GetSearchOrganizationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getSearchOrganization', 'query');
+    },
+    getUrgences(variables?: GetUrgencesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetUrgencesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetUrgencesQuery>(GetUrgencesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUrgences', 'query');
     }
   };
 }

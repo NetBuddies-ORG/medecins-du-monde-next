@@ -1,5 +1,5 @@
 import {Organisme} from "@/services/GraphQL";
-import {FaTimes} from "react-icons/fa";
+import {FaMapMarkerAlt, FaTimes} from "react-icons/fa";
 import {useState} from "react";
 import { Image } from '@/features/components/image';
 import {FaArrowRightLong} from "react-icons/fa6";
@@ -35,20 +35,24 @@ export function OrganismeCard({organisme, isClosable = false, handleCloseCard, l
         <article className="card">
             { isClosable && <button type="button" className="card__close" onClick={handleCloseCard}><FaTimes /></button>}
             <a href={`/${lang}/organismes/${organisme?.generatedUrl}`}>
-                <div className="region copyrightImage card__blurredImage">
+                <div className="image-container">
                     {
-                        partnerImage &&
-                        <Image src={partnerImage} onError={fixImage} alt={organisme?.Nom!} width={600} height={80} />
+                        partnerImage ?
+                        <Image src={partnerImage} onError={fixImage} alt={organisme?.Nom!} width={600} height={80} /> : <div className="no-image"></div>
                     }
                 </div>
                 <div className="card__text">
                     <h2>{organisme?.Nom}</h2>
+                    <div className="description">
+                        {truncate(organisme?.Description ?? '', 80)}
+                    </div>
                     <div className="card__location">
-                        <i className="icon-pin-dot"></i><span>{organisme?.Adresse}</span>
+                        <FaMapMarkerAlt />
+                        <span>{organisme?.Adresse}</span>
                     </div>
                 </div>
+                <button className="card__next"><FaArrowRightLong /></button>
             </a>
-            <button className="card__close"><FaArrowRightLong /></button>
         </article>
     </>
 }
