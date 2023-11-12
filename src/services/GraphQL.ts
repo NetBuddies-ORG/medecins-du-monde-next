@@ -240,6 +240,30 @@ export type ComponentGeneraleSeoInput = {
   id: InputMaybe<Scalars['ID']['input']>;
 };
 
+export type ComponentUrgencesUrgences = {
+  __typename?: 'ComponentUrgencesUrgences';
+  Adresse: Maybe<Scalars['String']['output']>;
+  Nom: Maybe<Scalars['String']['output']>;
+  Telephone: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+};
+
+export type ComponentUrgencesUrgencesFiltersInput = {
+  Adresse: InputMaybe<StringFilterInput>;
+  Nom: InputMaybe<StringFilterInput>;
+  Telephone: InputMaybe<StringFilterInput>;
+  and: InputMaybe<Array<InputMaybe<ComponentUrgencesUrgencesFiltersInput>>>;
+  not: InputMaybe<ComponentUrgencesUrgencesFiltersInput>;
+  or: InputMaybe<Array<InputMaybe<ComponentUrgencesUrgencesFiltersInput>>>;
+};
+
+export type ComponentUrgencesUrgencesInput = {
+  Adresse: InputMaybe<Scalars['String']['input']>;
+  Nom: InputMaybe<Scalars['String']['input']>;
+  Telephone: InputMaybe<Scalars['String']['input']>;
+  id: InputMaybe<Scalars['ID']['input']>;
+};
+
 export type ComponentUtilsLink = {
   __typename?: 'ComponentUtilsLink';
   id: Scalars['ID']['output'];
@@ -376,7 +400,7 @@ export type FooterRelationResponseCollection = {
   data: Array<FooterEntity>;
 };
 
-export type GenericMorph = Categorie | ComponentFooterLiensRapides | ComponentFooterServices | ComponentFooterSocial | ComponentGeneraleFooter | ComponentGeneraleHeader | ComponentGeneraleSeo | ComponentUtilsLink | Footer | Header | Home | I18NLocale | Langue | Organisme | Page | PublicSpecifique | ReactIconsIconlibrary | SearchOrganization | Service | SlugifySlug | SousCategorie | Traduction | UploadFile | UploadFolder | Urgence | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = Categorie | ComponentFooterLiensRapides | ComponentFooterServices | ComponentFooterSocial | ComponentGeneraleFooter | ComponentGeneraleHeader | ComponentGeneraleSeo | ComponentUrgencesUrgences | ComponentUtilsLink | Footer | Header | Home | I18NLocale | Langue | Organisme | Page | PublicSpecifique | ReactIconsIconlibrary | SearchOrganization | Service | SlugifySlug | SousCategorie | Traduction | UploadFile | UploadFolder | Urgence | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type Header = {
   __typename?: 'Header';
@@ -2231,12 +2255,19 @@ export type UploadFolderRelationResponseCollection = {
 
 export type Urgence = {
   __typename?: 'Urgence';
-  ContentType: Maybe<Scalars['String']['output']>;
+  Element: Maybe<Array<Maybe<ComponentUrgencesUrgences>>>;
   createdAt: Maybe<Scalars['DateTime']['output']>;
   locale: Maybe<Scalars['String']['output']>;
   localizations: Maybe<UrgenceRelationResponseCollection>;
   publishedAt: Maybe<Scalars['DateTime']['output']>;
   updatedAt: Maybe<Scalars['DateTime']['output']>;
+};
+
+
+export type UrgenceElementArgs = {
+  filters: InputMaybe<ComponentUrgencesUrgencesFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
@@ -2256,7 +2287,7 @@ export type UrgenceEntityResponse = {
 };
 
 export type UrgenceInput = {
-  ContentType: InputMaybe<Scalars['String']['input']>;
+  Element: InputMaybe<Array<InputMaybe<ComponentUrgencesUrgencesInput>>>;
   publishedAt: InputMaybe<Scalars['DateTime']['input']>;
 };
 
@@ -2561,7 +2592,7 @@ export type GetUrgencesQueryVariables = Exact<{
 }>;
 
 
-export type GetUrgencesQuery = { __typename?: 'Query', urgence: { __typename?: 'UrgenceEntityResponse', data: { __typename?: 'UrgenceEntity', attributes: { __typename?: 'Urgence', ContentType: string } } } };
+export type GetUrgencesQuery = { __typename?: 'Query', urgence: { __typename?: 'UrgenceEntityResponse', data: { __typename?: 'UrgenceEntity', attributes: { __typename?: 'Urgence', Element: Array<{ __typename?: 'ComponentUrgencesUrgences', id: string, Nom: string, Telephone: string, Adresse: string }> } } } };
 
 
 export const GetCategoriesDocument = gql`
@@ -2800,7 +2831,12 @@ export const GetUrgencesDocument = gql`
   urgence(locale: $locale) {
     data {
       attributes {
-        ContentType
+        Element {
+          id
+          Nom
+          Telephone
+          Adresse
+        }
       }
     }
   }

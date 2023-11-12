@@ -7,6 +7,7 @@ import {useTranslation} from "@/app/i18n/client";
 import {useEffect, useState} from "react";
 import {FaSearch, FaTimes} from "react-icons/fa";
 import {HomeSearchBar} from "@/features/document-types/home-page/HomeSearchBar";
+import {HelpModal} from "@/features/common/help-modal/HelpModal";
 
 interface CardListProps {
     extraData: GetHomeQuery
@@ -18,6 +19,7 @@ export function CardList({extraData, categoriesContainer: {categories}, publics}
 
     const [selectedCategories, setSelectedCategories] = useState<string[]>([])
     const [selectedPublics, setSelectedPublics] = useState<string>();
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
     const {t} = useTranslation()
 
@@ -33,12 +35,20 @@ export function CardList({extraData, categoriesContainer: {categories}, publics}
         setSelectedPublics(event.target.value);
     }
 
+    function showModal(isOpen: boolean) {
+        setIsModalOpen(isOpen);
+    }
+
     return <>
+        {
+            isModalOpen &&
+            <HelpModal closeModal={() => setIsModalOpen(false)} />
+        }
         <div className="searchbar">
             <div className="info">
                 <FaCircleInfo/>
                 <FaTimes className={'cancel'}/>
-                <h2> {t('HOME_HELP_WITH_TOOLS')} <a>{t('HOME_CLICK_HERE')}</a></h2>
+                <h2> {t('HOME_HELP_WITH_TOOLS')} <a onClick={() => showModal(true)}>{t('HOME_CLICK_HERE')}</a></h2>
             </div>
             <div className='searchbar input'>
                 <FaSearch />
