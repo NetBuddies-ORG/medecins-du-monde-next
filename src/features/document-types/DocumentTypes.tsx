@@ -38,7 +38,8 @@ async function displayContent(page: GetPageQuery["pages"], language: string) {
             </>
         case 'About':
             return <>
-                <About extraData={await getAboutPage(language)} language={language}/>
+                About
+                {/* <About extraData={await getAboutPage(language)} language={language}/> */}
             </>
         case 'SearchOrganization':
             return <SearchOrganization publics={getPublics()}
