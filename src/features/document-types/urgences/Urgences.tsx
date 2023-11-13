@@ -32,7 +32,7 @@ export function Urgences({extraData}: UrgencesProps) {
                                         <a href={"tel:" + item.Telephone}><FaPhone/></a>
                                     </button>
                                     <button className="fa-location-arrow">
-                                        <a href={"tel:" + item.Adresse}><FaLocationArrow/></a>
+                                        <a href={"http://maps.google.com/?q=" + item.Adresse} target="_blank"><FaLocationArrow/></a>
                                     </button>
                                 </div>
                             </li>
