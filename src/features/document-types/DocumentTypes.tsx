@@ -9,6 +9,7 @@ import {Organizations} from "@/features/document-types/organizations/Organizatio
 import {SearchOrganization} from "@/features/document-types/search-organization/SearchOrganization";
 import {notFound} from "next/navigation";
 import {Urgences} from "@/features/document-types/urgences/Urgences";
+import {AboutPage} from "@/features/document-types/about-page/AboutPage";
 
 export async function DocumentTypes() {
     const pages = getPage();
@@ -38,8 +39,7 @@ async function displayContent(page: GetPageQuery["pages"], language: string) {
             </>
         case 'About':
             return <>
-                About
-                {/* <About extraData={await getAboutPage(language)} language={language}/> */}
+                <AboutPage extraData={await getAboutPage(language)}/>
             </>
         case 'SearchOrganization':
             return <SearchOrganization publics={getPublics()}

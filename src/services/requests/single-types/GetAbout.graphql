@@ -1,0 +1,9 @@
+query getAbout($locale: I18NLocaleCode){
+    about(locale: $locale){
+        data {
+          attributes {
+            Description
+          }
+        }
+    }
+}

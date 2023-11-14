@@ -21,11 +21,12 @@ const config = {
                     " script-src 'self' 'unsafe-eval' 'unsafe-inline';" +
                     " font-src 'self' fonts.gstatic.com;" +
                     " manifest-src 'self';" +
-                    " img-src 'self'" +
+                    " img-src 'self' blob: " +
                     " https://openlayers.org" +
                     " https://tile.openstreetmap.org" +
                     " http://a.tile.openstreetmap.org" +
                     " http://b.tile.openstreetmap.org" +
+                    " https://strapi-mdm.alexianmoins.be" +
                     " data:" +
                     " https://ik.imagekit.io" +
                     " http://c.tile.openstreetmap.org;" +

@@ -21,6 +21,42 @@ export type Scalars = {
   Upload: { input: any; output: any; }
 };
 
+export type About = {
+  __typename?: 'About';
+  Description: Scalars['String']['output'];
+  createdAt: Maybe<Scalars['DateTime']['output']>;
+  locale: Maybe<Scalars['String']['output']>;
+  localizations: Maybe<AboutRelationResponseCollection>;
+  publishedAt: Maybe<Scalars['DateTime']['output']>;
+  updatedAt: Maybe<Scalars['DateTime']['output']>;
+};
+
+
+export type AboutLocalizationsArgs = {
+  publicationState?: InputMaybe<PublicationState>;
+};
+
+export type AboutEntity = {
+  __typename?: 'AboutEntity';
+  attributes: Maybe<About>;
+  id: Maybe<Scalars['ID']['output']>;
+};
+
+export type AboutEntityResponse = {
+  __typename?: 'AboutEntityResponse';
+  data: Maybe<AboutEntity>;
+};
+
+export type AboutInput = {
+  Description: InputMaybe<Scalars['String']['input']>;
+  publishedAt: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type AboutRelationResponseCollection = {
+  __typename?: 'AboutRelationResponseCollection';
+  data: Array<AboutEntity>;
+};
+
 export type BooleanFilterInput = {
   and: InputMaybe<Array<InputMaybe<Scalars['Boolean']['input']>>>;
   between: InputMaybe<Array<InputMaybe<Scalars['Boolean']['input']>>>;
@@ -400,7 +436,7 @@ export type FooterRelationResponseCollection = {
   data: Array<FooterEntity>;
 };
 
-export type GenericMorph = Categorie | ComponentFooterLiensRapides | ComponentFooterServices | ComponentFooterSocial | ComponentGeneraleFooter | ComponentGeneraleHeader | ComponentGeneraleSeo | ComponentUrgencesUrgences | ComponentUtilsLink | Footer | Header | Home | I18NLocale | Langue | Organisme | Page | PublicSpecifique | ReactIconsIconlibrary | SearchOrganization | Service | SlugifySlug | SousCategorie | Traduction | UploadFile | UploadFolder | Urgence | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = About | Categorie | ComponentFooterLiensRapides | ComponentFooterServices | ComponentFooterSocial | ComponentGeneraleFooter | ComponentGeneraleHeader | ComponentGeneraleSeo | ComponentUrgencesUrgences | ComponentUtilsLink | Footer | Header | Home | I18NLocale | Langue | Organisme | Page | PublicSpecifique | ReactIconsIconlibrary | SearchOrganization | Service | SlugifySlug | SousCategorie | Traduction | UploadFile | UploadFolder | Urgence | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type Header = {
   __typename?: 'Header';
@@ -651,6 +687,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   /** Change user password. Confirm with the current password. */
   changePassword: Maybe<UsersPermissionsLoginPayload>;
+  createAboutLocalization: Maybe<AboutEntityResponse>;
   createCategorie: Maybe<CategorieEntityResponse>;
   createCategorieLocalization: Maybe<CategorieEntityResponse>;
   createFooterLocalization: Maybe<FooterEntityResponse>;
@@ -680,6 +717,7 @@ export type Mutation = {
   createUsersPermissionsRole: Maybe<UsersPermissionsCreateRolePayload>;
   /** Create a new user */
   createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
+  deleteAbout: Maybe<AboutEntityResponse>;
   deleteCategorie: Maybe<CategorieEntityResponse>;
   deleteFooter: Maybe<FooterEntityResponse>;
   deleteHeader: Maybe<HeaderEntityResponse>;
@@ -712,6 +750,7 @@ export type Mutation = {
   removeFile: Maybe<UploadFileEntityResponse>;
   /** Reset user password. Confirm with a code (resetToken from forgotPassword) */
   resetPassword: Maybe<UsersPermissionsLoginPayload>;
+  updateAbout: Maybe<AboutEntityResponse>;
   updateCategorie: Maybe<CategorieEntityResponse>;
   updateFileInfo: UploadFileEntityResponse;
   updateFooter: Maybe<FooterEntityResponse>;
@@ -742,6 +781,13 @@ export type MutationChangePasswordArgs = {
   currentPassword: Scalars['String']['input'];
   password: Scalars['String']['input'];
   passwordConfirmation: Scalars['String']['input'];
+};
+
+
+export type MutationCreateAboutLocalizationArgs = {
+  data: InputMaybe<AboutInput>;
+  id: InputMaybe<Scalars['ID']['input']>;
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 };
 
 
@@ -914,6 +960,11 @@ export type MutationCreateUsersPermissionsUserArgs = {
 };
 
 
+export type MutationDeleteAboutArgs = {
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+};
+
+
 export type MutationDeleteCategorieArgs = {
   id: Scalars['ID']['input'];
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
@@ -1054,6 +1105,12 @@ export type MutationResetPasswordArgs = {
   code: Scalars['String']['input'];
   password: Scalars['String']['input'];
   passwordConfirmation: Scalars['String']['input'];
+};
+
+
+export type MutationUpdateAboutArgs = {
+  data: AboutInput;
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 };
 
 
@@ -1477,6 +1534,7 @@ export enum PublicationState {
 
 export type Query = {
   __typename?: 'Query';
+  about: Maybe<AboutEntityResponse>;
   categorie: Maybe<CategorieEntityResponse>;
   categories: Maybe<CategorieEntityResponseCollection>;
   footer: Maybe<FooterEntityResponse>;
@@ -1513,6 +1571,12 @@ export type Query = {
   usersPermissionsRoles: Maybe<UsersPermissionsRoleEntityResponseCollection>;
   usersPermissionsUser: Maybe<UsersPermissionsUserEntityResponse>;
   usersPermissionsUsers: Maybe<UsersPermissionsUserEntityResponseCollection>;
+};
+
+
+export type QueryAboutArgs = {
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+  publicationState?: InputMaybe<PublicationState>;
 };
 
 
@@ -2559,6 +2623,13 @@ export type GetTranslationsQueryVariables = Exact<{
 
 export type GetTranslationsQuery = { __typename?: 'Query', traductions: { __typename?: 'TraductionEntityResponseCollection', data: Array<{ __typename?: 'TraductionEntity', attributes: { __typename?: 'Traduction', Traduction: string, Key: string } }> } };
 
+export type GetAboutQueryVariables = Exact<{
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+}>;
+
+
+export type GetAboutQuery = { __typename?: 'Query', about: { __typename?: 'AboutEntityResponse', data: { __typename?: 'AboutEntity', attributes: { __typename?: 'About', Description: string } } } };
+
 export type GetFooterQueryVariables = Exact<{
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 }>;
@@ -2745,6 +2816,17 @@ export const GetTranslationsDocument = gql`
   }
 }
     `;
+export const GetAboutDocument = gql`
+    query getAbout($locale: I18NLocaleCode) {
+  about(locale: $locale) {
+    data {
+      attributes {
+        Description
+      }
+    }
+  }
+}
+    `;
 export const GetFooterDocument = gql`
     query getFooter($locale: I18NLocaleCode) {
   footer(locale: $locale) {
@@ -2870,6 +2952,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getTranslations(variables?: GetTranslationsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetTranslationsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetTranslationsQuery>(GetTranslationsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getTranslations', 'query');
+    },
+    getAbout(variables?: GetAboutQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetAboutQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAboutQuery>(GetAboutDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getAbout', 'query');
     },
     getFooter(variables?: GetFooterQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetFooterQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetFooterQuery>(GetFooterDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getFooter', 'query');
