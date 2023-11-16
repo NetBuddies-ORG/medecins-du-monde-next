@@ -10,6 +10,7 @@ import {SearchOrganization} from "@/features/document-types/search-organization/
 import {notFound} from "next/navigation";
 import {Urgences} from "@/features/document-types/urgences/Urgences";
 import {AboutPage} from "@/features/document-types/about-page/AboutPage";
+import { ServicesPage } from "./services-page/ServicesPage";
 
 export async function DocumentTypes() {
     const pages = getPage();
@@ -48,7 +49,7 @@ async function displayContent(page: GetPageQuery["pages"], language: string) {
                                        language={language} />
         case 'Services':
             return <>
-                Services
+                <ServicesPage language={language} extraData={await getServicesPage(language)}/>
             </>
         case 'Urgences':
             return <>
@@ -68,6 +69,12 @@ const getOrganizationsPage = cache(async function getOrganizationsPage(language:
     const client = getStrapiClient();
     // @ts-ignore
     return await client.getOrganismes({locale: language, filters: {}});
+});
+
+const getServicesPage = cache(async function getServicesPage(language: string) {
+    const client = getStrapiClient();
+    // @ts-ignore
+    return await client.getServices({locale: language});
 });
 
 const getAboutPage = cache(async function getAboutPage(language: string) {

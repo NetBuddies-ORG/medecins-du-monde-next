@@ -1,15 +1,12 @@
-import {DBSchema, IDBPDatabase, openDB} from "idb";
-import type {Index} from 'lunr';
-import {Deferred} from "@/helpers";
+import { Deferred } from "@/helpers";
 import {
     Categorie,
-    CategorieEntity,
     Organisme,
-    OrganismeEntity,
-    PublicSpecifique,
-    PublicSpecifiqueEntity
+    PublicSpecifique
 } from "@/services/GraphQL";
-import {useAsync} from "react-use";
+import { DBSchema, IDBPDatabase, openDB } from "idb";
+import type { Index } from 'lunr';
+import { useAsync } from "react-use";
 
 interface OrganizationSchema {
     value: any;

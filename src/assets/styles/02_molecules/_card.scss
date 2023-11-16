@@ -49,6 +49,31 @@
   }
 }
 
+.card-container-service {
+  margin: 1rem 0;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-gap: 12px 12px;
+
+  a {
+    text-decoration: none;
+    color: unset;
+  }
+
+  .card.service {
+    transition: all .2s ease-in-out;
+    cursor: auto;
+    padding: 1rem;
+    border: $cardBorder;
+    background-color: $cardBackgroundColor;
+    color: $cardTextColor;
+    box-shadow: 0 0 25px rgba(94, 94, 94, 0.3);
+    border-radius: $cardBorderRadius;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
 .card-container {
   margin: 1rem 0;
   display: grid;
@@ -156,6 +181,9 @@
     grid-template-columns: repeat(7, 1fr);
   }
   .card-container-organisme {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .card-container-service {
     grid-template-columns: repeat(2, 1fr);
   }
 }
