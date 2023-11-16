@@ -61,17 +61,20 @@ const getServices = () => import('../../build/static/services.json').then(({defa
 
 
 async function setupDB(language: string): Promise<IDBPDatabase<MdmDB>> {
-    let data = await (db ?? openDB<MdmDB>('Mdm', 1, {
+    let data = await (db ?? openDB<MdmDB>('Mdm', 2, {
         upgrade(db, oldVersion, _, transaction) {
             if (oldVersion < 1) {
                 db.createObjectStore(revisionStoreName);
                 db.createObjectStore(publicsStoreName, {keyPath: 'id'});
                 db.createObjectStore(categoriesStoreName, {keyPath: 'id'});
                 db.createObjectStore(organismesStoreName, {keyPath: 'id'});
-                db.createObjectStore(servicesStoreName, {keyPath: 'id'});
 
                 const organismesStore = transaction.objectStore(organismesStoreName);
                 organismesStore.createIndex("slug", "slug", {multiEntry: true, unique: true});
+            }
+
+            if (oldVersion < 2) {
+                db.createObjectStore(servicesStoreName, {keyPath: 'id'});
             }
         }
     }));
