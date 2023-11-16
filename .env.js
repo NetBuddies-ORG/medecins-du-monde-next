@@ -18,6 +18,7 @@ async function getVariables()
             NEXT_PUBLIC_REVISION_PUBLICS: await getHash('publics.json'),
             NEXT_PUBLIC_REVISION_CATEGORIES: await getHash('categories.json'),
             NEXT_PUBLIC_REVISION_TRANSLATIONS: await getHash('translations.json'),
+            NEXT_PUBLIC_REVISION_SERVICES: await getHash('services.json'),
         };
     } catch (e) {
         console.error(e);

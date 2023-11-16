@@ -2616,6 +2616,13 @@ export type GetPublicsQueryVariables = Exact<{
 
 export type GetPublicsQuery = { __typename?: 'Query', publicSpecifiques: { __typename?: 'PublicSpecifiqueEntityResponseCollection', data: Array<{ __typename?: 'PublicSpecifiqueEntity', id: string, attributes: { __typename?: 'PublicSpecifique', Nom: string } }> } };
 
+export type GetServicesQueryVariables = Exact<{
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+}>;
+
+
+export type GetServicesQuery = { __typename?: 'Query', services: { __typename?: 'ServiceEntityResponseCollection', data: Array<{ __typename?: 'ServiceEntity', id: string, attributes: { __typename?: 'Service', Nom: string, Icone: string, organismes: { __typename?: 'OrganismeRelationResponseCollection', data: Array<{ __typename?: 'OrganismeEntity', id: string }> } } }> } };
+
 export type GetTranslationsQueryVariables = Exact<{
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 }>;
@@ -2804,6 +2811,24 @@ export const GetPublicsDocument = gql`
   }
 }
     `;
+export const GetServicesDocument = gql`
+    query getServices($locale: I18NLocaleCode) {
+  services(locale: $locale) {
+    data {
+      id
+      attributes {
+        Nom
+        organismes {
+          data {
+            id
+          }
+        }
+        Icone
+      }
+    }
+  }
+}
+    `;
 export const GetTranslationsDocument = gql`
     query getTranslations($locale: I18NLocaleCode) {
   traductions(locale: $locale) {
@@ -2949,6 +2974,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getPublics(variables?: GetPublicsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetPublicsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetPublicsQuery>(GetPublicsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getPublics', 'query');
+    },
+    getServices(variables?: GetServicesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetServicesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetServicesQuery>(GetServicesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getServices', 'query');
     },
     getTranslations(variables?: GetTranslationsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetTranslationsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetTranslationsQuery>(GetTranslationsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getTranslations', 'query');

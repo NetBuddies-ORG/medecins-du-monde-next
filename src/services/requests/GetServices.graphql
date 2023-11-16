@@ -1,0 +1,16 @@
+query getServices($locale: I18NLocaleCode){
+    services(locale: $locale){
+        data {
+          id
+          attributes {
+            Nom
+            organismes {
+              data {
+                id
+              }
+            }
+            Icone
+          }
+        }
+    }
+}

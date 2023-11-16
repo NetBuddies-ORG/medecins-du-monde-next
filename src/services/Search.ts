@@ -27,32 +27,37 @@ interface MdmDB extends DBSchema {
     organismes: OrganizationSchema,
     publics: IndexDBchema,
     categories: IndexDBchema,
+    services: IndexDBchema,
     revision:
         {
             value: string;
-            key: 'REVISION_ORGANISME' | 'REVISION_PUBLICS' | 'REVISION_CATEGORIES';
+            key: 'REVISION_ORGANISME' | 'REVISION_PUBLICS' | 'REVISION_CATEGORIES' | 'REVISION_SERVICE';
         }
 }
 
 let indexLanguage: string;
 let db: Promise<IDBPDatabase<MdmDB>>;
 let indexOrganism: Index;
+let indexService: Index;
 
 let publicsStoreName: 'publics' = 'publics';
 let organismesStoreName: 'organismes' = 'organismes';
 let categoriesStoreName: 'categories' = 'categories';
+let servicesStoreName: 'services' = 'services';
 let revisionStoreName: 'revision' = 'revision';
 
 const NEXT_PUBLIC_REVISION_ORGANISME = process.env.NEXT_PUBLIC_REVISION_ORGANISME;
 const NEXT_PUBLIC_REVISION_PUBLICS = process.env.NEXT_PUBLIC_REVISION_PUBLICS;
+const NEXT_PUBLIC_REVISION_SERVICES = process.env.NEXT_PUBLIC_REVISION_SERVICES;
 const NEXT_PUBLIC_REVISION_CATEGORIES = process.env.NEXT_PUBLIC_REVISION_CATEGORIES;
 
 const getOrganisme = (slug: string) => {
     return db.then(data => data.transaction("organismes").store.index('slug').get(slug))
 };
 const getOrganismes = () => import(`../../build/static/organismes.json`).then(({default: p}) => p);
-const getPublics = () => import('../../build/static/publics.json').then(({default: p}) => p)
-const getCategories = () => import('../../build/static/categories.json').then(({default: p}) => p)
+const getPublics = () => import('../../build/static/publics.json').then(({default: p}) => p);
+const getCategories = () => import('../../build/static/categories.json').then(({default: p}) => p);
+const getServices = () => import('../../build/static/services.json').then(({default: p}) => p);
 
 
 async function setupDB(language: string): Promise<IDBPDatabase<MdmDB>> {
@@ -63,6 +68,7 @@ async function setupDB(language: string): Promise<IDBPDatabase<MdmDB>> {
                 db.createObjectStore(publicsStoreName, {keyPath: 'id'});
                 db.createObjectStore(categoriesStoreName, {keyPath: 'id'});
                 db.createObjectStore(organismesStoreName, {keyPath: 'id'});
+                db.createObjectStore(servicesStoreName, {keyPath: 'id'});
 
                 const organismesStore = transaction.objectStore(organismesStoreName);
                 organismesStore.createIndex("slug", "slug", {multiEntry: true, unique: true});
@@ -115,6 +121,21 @@ async function setupDB(language: string): Promise<IDBPDatabase<MdmDB>> {
         await transaction.done;
     }
 
+    const servicesRevisionIndexDb = await data.get('revision', 'REVISION_SERVICE');
+    const servicesRevisionBuilt = NEXT_PUBLIC_REVISION_SERVICES;
+
+    if (!servicesRevisionIndexDb || servicesRevisionBuilt !== servicesRevisionIndexDb) {
+        const services = await getServices();
+        const transaction = data.transaction([revisionStoreName, servicesStoreName], 'readwrite');
+        const revisionStore = transaction.objectStore(revisionStoreName);
+        const servicesStore = transaction.objectStore(servicesStoreName);
+
+        await revisionStore.put(servicesRevisionBuilt!, 'REVISION_SERVICE');
+        await servicesStore.clear();
+        await Promise.all(services.map(t => servicesStore.put(t)));
+        await transaction.done;
+    }
+
     return data;
 }
 
@@ -141,6 +162,7 @@ async function initialize(language: string = 'fr') {
     const {default: fr} = await import('lunr-languages/lunr.fr');
     fr(lunr);
     indexOrganism = lunr.Index.load(await import('../../build/static/index.json'));
+    indexService = lunr.Index.load(await import('../../build/static/indexService.json'));
 
     deferred.resolve();
 }
@@ -205,7 +227,27 @@ async function searchOrganismes(params: SearchOrganizationsParams): Promise<stri
     return Array.from(results);
 }
 
+async function searchServices(params: SearchServicesParams): Promise<string[]> {
+    let newKeyword = params.keyword;
+    let terms = newKeyword.normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^\w\s*]/g, "")
+        .split(' ');
+    let finalQuery = '';
+    terms.forEach((t, i) => {
+        if (t !== '') {
+            finalQuery += `${t}^${100 - i} ${t}* `;
+        }
+    });
+    let results: Set<string> = new Set(indexService.search(finalQuery).map(({ref}) => ref));
+    return Array.from(results);
+}
+
 export interface SearchOrganizationsParams {
+    keyword: string;
+}
+
+export interface SearchServicesParams {
     keyword: string;
 }
 
@@ -222,6 +264,7 @@ interface SearchInterface {
     getOrganismes(params: SearchOrganizationsParams): Promise<string[]>;
     getPublics(): Promise<PublicSpecifique[]>;
     getCategories(): Promise<Categorie[]>;
+    getServices(params: SearchServicesParams): Promise<string[]>;
 }
 
 export function useDBIndex(language: string): SearchInterface {
@@ -237,6 +280,7 @@ export function useDBIndex(language: string): SearchInterface {
         },
         getCategories(): Promise<any[]> {
             return db.then(data => data.getAll(categoriesStoreName));
-        }
+        },
+        getServices: !loading ? searchServices : () => Promise.reject(new Error('Search engine is not ready')),
     };
 }
