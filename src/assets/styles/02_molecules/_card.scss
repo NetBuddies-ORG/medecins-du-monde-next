@@ -109,6 +109,15 @@
     }
   }
 
+  .card.info {
+    border: 2px solid $cardInfoBackgroundColor;
+    color: $cardInfoBackgroundColor;
+
+    svg {
+      color: $cardInfoBackgroundColor;
+    }
+  }
+
   .card:hover {
     transform: scale(1.025);
   }
