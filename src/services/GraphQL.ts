@@ -276,6 +276,33 @@ export type ComponentGeneraleSeoInput = {
   id: InputMaybe<Scalars['ID']['input']>;
 };
 
+export type ComponentOrientationsOrientations = {
+  __typename?: 'ComponentOrientationsOrientations';
+  Adresse: Maybe<Scalars['String']['output']>;
+  Email: Maybe<Scalars['String']['output']>;
+  Nom: Scalars['String']['output'];
+  Telephone: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+};
+
+export type ComponentOrientationsOrientationsFiltersInput = {
+  Adresse: InputMaybe<StringFilterInput>;
+  Email: InputMaybe<StringFilterInput>;
+  Nom: InputMaybe<StringFilterInput>;
+  Telephone: InputMaybe<StringFilterInput>;
+  and: InputMaybe<Array<InputMaybe<ComponentOrientationsOrientationsFiltersInput>>>;
+  not: InputMaybe<ComponentOrientationsOrientationsFiltersInput>;
+  or: InputMaybe<Array<InputMaybe<ComponentOrientationsOrientationsFiltersInput>>>;
+};
+
+export type ComponentOrientationsOrientationsInput = {
+  Adresse: InputMaybe<Scalars['String']['input']>;
+  Email: InputMaybe<Scalars['String']['input']>;
+  Nom: InputMaybe<Scalars['String']['input']>;
+  Telephone: InputMaybe<Scalars['String']['input']>;
+  id: InputMaybe<Scalars['ID']['input']>;
+};
+
 export type ComponentUrgencesUrgences = {
   __typename?: 'ComponentUrgencesUrgences';
   Adresse: Maybe<Scalars['String']['output']>;
@@ -436,7 +463,7 @@ export type FooterRelationResponseCollection = {
   data: Array<FooterEntity>;
 };
 
-export type GenericMorph = About | Categorie | ComponentFooterLiensRapides | ComponentFooterServices | ComponentFooterSocial | ComponentGeneraleFooter | ComponentGeneraleHeader | ComponentGeneraleSeo | ComponentUrgencesUrgences | ComponentUtilsLink | Footer | Header | Home | I18NLocale | Langue | Organisme | Page | PublicSpecifique | ReactIconsIconlibrary | SearchOrganization | Service | SlugifySlug | SousCategorie | Traduction | UploadFile | UploadFolder | Urgence | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = About | Categorie | ComponentFooterLiensRapides | ComponentFooterServices | ComponentFooterSocial | ComponentGeneraleFooter | ComponentGeneraleHeader | ComponentGeneraleSeo | ComponentOrientationsOrientations | ComponentUrgencesUrgences | ComponentUtilsLink | Footer | Header | Home | I18NLocale | Langue | Organisme | Orientation | Page | PublicSpecifique | ReactIconsIconlibrary | SearchOrganization | Service | SlugifySlug | SousCategorie | Traduction | UploadFile | UploadFolder | Urgence | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type Header = {
   __typename?: 'Header';
@@ -476,6 +503,7 @@ export type HeaderRelationResponseCollection = {
 
 export type Home = {
   __typename?: 'Home';
+  OrientationsLink: Scalars['String']['output'];
   SearchLink: Scalars['String']['output'];
   UrgencesLink: Scalars['String']['output'];
   createdAt: Maybe<Scalars['DateTime']['output']>;
@@ -502,6 +530,7 @@ export type HomeEntityResponse = {
 };
 
 export type HomeInput = {
+  OrientationsLink: InputMaybe<Scalars['String']['input']>;
   SearchLink: InputMaybe<Scalars['String']['input']>;
   UrgencesLink: InputMaybe<Scalars['String']['input']>;
   publishedAt: InputMaybe<Scalars['DateTime']['input']>;
@@ -697,6 +726,7 @@ export type Mutation = {
   createLangueLocalization: Maybe<LangueEntityResponse>;
   createOrganisme: Maybe<OrganismeEntityResponse>;
   createOrganismeLocalization: Maybe<OrganismeEntityResponse>;
+  createOrientationLocalization: Maybe<OrientationEntityResponse>;
   createPage: Maybe<PageEntityResponse>;
   createPageLocalization: Maybe<PageEntityResponse>;
   createPublicSpecifique: Maybe<PublicSpecifiqueEntityResponse>;
@@ -724,6 +754,7 @@ export type Mutation = {
   deleteHome: Maybe<HomeEntityResponse>;
   deleteLangue: Maybe<LangueEntityResponse>;
   deleteOrganisme: Maybe<OrganismeEntityResponse>;
+  deleteOrientation: Maybe<OrientationEntityResponse>;
   deletePage: Maybe<PageEntityResponse>;
   deletePublicSpecifique: Maybe<PublicSpecifiqueEntityResponse>;
   deleteReactIconsIconlibrary: Maybe<ReactIconsIconlibraryEntityResponse>;
@@ -758,6 +789,7 @@ export type Mutation = {
   updateHome: Maybe<HomeEntityResponse>;
   updateLangue: Maybe<LangueEntityResponse>;
   updateOrganisme: Maybe<OrganismeEntityResponse>;
+  updateOrientation: Maybe<OrientationEntityResponse>;
   updatePage: Maybe<PageEntityResponse>;
   updatePublicSpecifique: Maybe<PublicSpecifiqueEntityResponse>;
   updateReactIconsIconlibrary: Maybe<ReactIconsIconlibraryEntityResponse>;
@@ -846,6 +878,13 @@ export type MutationCreateOrganismeArgs = {
 
 export type MutationCreateOrganismeLocalizationArgs = {
   data: InputMaybe<OrganismeInput>;
+  id: InputMaybe<Scalars['ID']['input']>;
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+};
+
+
+export type MutationCreateOrientationLocalizationArgs = {
+  data: InputMaybe<OrientationInput>;
   id: InputMaybe<Scalars['ID']['input']>;
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 };
@@ -994,6 +1033,11 @@ export type MutationDeleteLangueArgs = {
 
 export type MutationDeleteOrganismeArgs = {
   id: Scalars['ID']['input'];
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+};
+
+
+export type MutationDeleteOrientationArgs = {
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 };
 
@@ -1155,6 +1199,12 @@ export type MutationUpdateLangueArgs = {
 export type MutationUpdateOrganismeArgs = {
   data: OrganismeInput;
   id: Scalars['ID']['input'];
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+};
+
+
+export type MutationUpdateOrientationArgs = {
+  data: OrientationInput;
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 };
 
@@ -1387,6 +1437,49 @@ export type OrganismeRelationResponseCollection = {
   data: Array<OrganismeEntity>;
 };
 
+export type Orientation = {
+  __typename?: 'Orientation';
+  Orientation: Maybe<Array<Maybe<ComponentOrientationsOrientations>>>;
+  createdAt: Maybe<Scalars['DateTime']['output']>;
+  locale: Maybe<Scalars['String']['output']>;
+  localizations: Maybe<OrientationRelationResponseCollection>;
+  publishedAt: Maybe<Scalars['DateTime']['output']>;
+  updatedAt: Maybe<Scalars['DateTime']['output']>;
+};
+
+
+export type OrientationOrientationArgs = {
+  filters: InputMaybe<ComponentOrientationsOrientationsFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+
+export type OrientationLocalizationsArgs = {
+  publicationState?: InputMaybe<PublicationState>;
+};
+
+export type OrientationEntity = {
+  __typename?: 'OrientationEntity';
+  attributes: Maybe<Orientation>;
+  id: Maybe<Scalars['ID']['output']>;
+};
+
+export type OrientationEntityResponse = {
+  __typename?: 'OrientationEntityResponse';
+  data: Maybe<OrientationEntity>;
+};
+
+export type OrientationInput = {
+  Orientation: InputMaybe<Array<InputMaybe<ComponentOrientationsOrientationsInput>>>;
+  publishedAt: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type OrientationRelationResponseCollection = {
+  __typename?: 'OrientationRelationResponseCollection';
+  data: Array<OrientationEntity>;
+};
+
 export type Page = {
   __typename?: 'Page';
   ContentType: Scalars['String']['output'];
@@ -1547,6 +1640,7 @@ export type Query = {
   me: Maybe<UsersPermissionsMe>;
   organisme: Maybe<OrganismeEntityResponse>;
   organismes: Maybe<OrganismeEntityResponseCollection>;
+  orientation: Maybe<OrientationEntityResponse>;
   page: Maybe<PageEntityResponse>;
   pages: Maybe<PageEntityResponseCollection>;
   publicSpecifique: Maybe<PublicSpecifiqueEntityResponse>;
@@ -1652,6 +1746,12 @@ export type QueryOrganismesArgs = {
   pagination?: InputMaybe<PaginationArg>;
   publicationState?: InputMaybe<PublicationState>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+
+export type QueryOrientationArgs = {
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+  publicationState?: InputMaybe<PublicationState>;
 };
 
 
@@ -2656,7 +2756,14 @@ export type GetHomeQueryVariables = Exact<{
 }>;
 
 
-export type GetHomeQuery = { __typename?: 'Query', home: { __typename?: 'HomeEntityResponse', data: { __typename?: 'HomeEntity', attributes: { __typename?: 'Home', UrgencesLink: string, SearchLink: string } } } };
+export type GetHomeQuery = { __typename?: 'Query', home: { __typename?: 'HomeEntityResponse', data: { __typename?: 'HomeEntity', attributes: { __typename?: 'Home', UrgencesLink: string, SearchLink: string, OrientationsLink: string } } } };
+
+export type GetOrientationsQueryVariables = Exact<{
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+}>;
+
+
+export type GetOrientationsQuery = { __typename?: 'Query', orientation: { __typename?: 'OrientationEntityResponse', data: { __typename?: 'OrientationEntity', attributes: { __typename?: 'Orientation', Orientation: Array<{ __typename?: 'ComponentOrientationsOrientations', id: string, Nom: string, Email: string, Adresse: string, Telephone: string }> } } } };
 
 export type GetSearchOrganizationQueryVariables = Exact<{
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
@@ -2909,6 +3016,24 @@ export const GetHomeDocument = gql`
       attributes {
         UrgencesLink
         SearchLink
+        OrientationsLink
+      }
+    }
+  }
+}
+    `;
+export const GetOrientationsDocument = gql`
+    query getOrientations($locale: I18NLocaleCode) {
+  orientation(locale: $locale) {
+    data {
+      attributes {
+        Orientation {
+          id
+          Nom
+          Email
+          Adresse
+          Telephone
+        }
       }
     }
   }
@@ -2992,6 +3117,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getHome(variables?: GetHomeQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetHomeQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetHomeQuery>(GetHomeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getHome', 'query');
+    },
+    getOrientations(variables?: GetOrientationsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetOrientationsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetOrientationsQuery>(GetOrientationsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getOrientations', 'query');
     },
     getSearchOrganization(variables?: GetSearchOrganizationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetSearchOrganizationQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetSearchOrganizationQuery>(GetSearchOrganizationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getSearchOrganization', 'query');

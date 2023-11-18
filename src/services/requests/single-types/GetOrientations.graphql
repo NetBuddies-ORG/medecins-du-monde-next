@@ -1,0 +1,15 @@
+query getOrientations($locale: I18NLocaleCode){
+    orientation(locale: $locale){
+        data {
+          attributes {
+            Orientation {
+              id
+              Nom
+              Email
+              Adresse
+              Telephone
+            }
+          }
+        }
+    }
+}

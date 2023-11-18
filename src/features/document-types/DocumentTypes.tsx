@@ -11,6 +11,7 @@ import {notFound} from "next/navigation";
 import {Urgences} from "@/features/document-types/urgences/Urgences";
 import {AboutPage} from "@/features/document-types/about-page/AboutPage";
 import { ServicesPage } from "./services-page/ServicesPage";
+import { Orientations } from "./orientations/Orientations";
 
 export async function DocumentTypes() {
     const pages = getPage();
@@ -55,6 +56,10 @@ async function displayContent(page: GetPageQuery["pages"], language: string) {
             return <>
                 <Urgences extraData={await getUrgencesPage(language)} />
             </>
+        case 'Orientations':
+            return <>
+                <Orientations extraData={await getOrientationsPage(language)} />
+            </>
         default:
             notFound();
     }
@@ -93,4 +98,10 @@ const getUrgencesPage = cache(async function getUrgencesPage(language: string) {
     const client = getStrapiClient();
     // @ts-ignore
     return await client.getUrgences({locale: language});
+});
+
+const getOrientationsPage = cache(async function getOrientationsPage(language: string) {
+    const client = getStrapiClient();
+    // @ts-ignore
+    return await client.getOrientations({locale: language});
 });

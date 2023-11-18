@@ -1,6 +1,6 @@
 'use client'
 import Link from "next/link";
-import {FaAngleDown, FaCheck, FaCircleInfo, FaHeadphones} from "react-icons/fa6";
+import {FaAngleDown, FaCheck, FaCircleInfo, FaCompass, FaHeadphones} from "react-icons/fa6";
 import {IconComponent} from "@/features/common/react-icons/IconComponent";
 import {GetCategoriesQuery, GetHomeQuery, GetPublicsQuery} from "@/services/GraphQL";
 import {useTranslation} from "@/app/i18n/client";
@@ -71,6 +71,12 @@ export function CardList({extraData, categoriesContainer: {categories}, publics}
                 <div className="card danger">
                     <FaHeadphones />
                     <div className="card__title"><span>{t('HOME_URGENCES')}</span></div>
+                </div>
+            </Link>
+            <Link href={extraData?.home?.data?.attributes?.OrientationsLink}>
+                <div className="card info">
+                    <FaCompass/>
+                    <div className="card__title"><span>{t('HOME_ORIENTATIONS')}</span></div>
                 </div>
             </Link>
             {
