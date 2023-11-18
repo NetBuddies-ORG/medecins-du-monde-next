@@ -8,6 +8,7 @@ import {useEffect, useState} from "react";
 import {FaSearch, FaTimes} from "react-icons/fa";
 import {HomeSearchBar} from "@/features/document-types/home-page/HomeSearchBar";
 import {HelpModal} from "@/features/common/help-modal/HelpModal";
+import AutoComplete from "@/features/common/auto-complete/AutoComplete";
 
 interface CardListProps {
     extraData: GetHomeQuery
@@ -52,7 +53,7 @@ export function CardList({extraData, categoriesContainer: {categories}, publics}
             </div>
             <div className='searchbar input'>
                 <FaSearch />
-                <input type='text' placeholder={t('HOME_ENTER_KEYWORD')} />
+                <AutoComplete></AutoComplete>
             </div>
             <div className="searchbar__input input">
                 <select id={'publics'} value={selectedPublics} onChange={handlePublicsChange}>
