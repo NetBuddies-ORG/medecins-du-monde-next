@@ -72,7 +72,9 @@ export default function AutoComplete({language}: AutoCompleteProps) {
     return (<>
         {inputValue && <div className="help-modal-bg" onClick={clear}></div>}
         <div className="input-container">
-            {inputValue && <span><FaTimes onClick={clear} className="selectable"/></span>}
+            {inputValue && <button onClick={clear}>
+                <FaTimes onClick={clear} className="selectable"/>
+            </button>}
             {!inputValue && <FaSearch/>}
             <input
                 type="text"

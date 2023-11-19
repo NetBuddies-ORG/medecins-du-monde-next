@@ -50,6 +50,27 @@
     position: relative;
     z-index: 4;
 
+    button{
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 4rem;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        outline: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 5;
+      svg{
+        font-size: 1.25rem;
+      }
+    }
+
     .selectable {
       cursor: pointer;
       opacity: .5;

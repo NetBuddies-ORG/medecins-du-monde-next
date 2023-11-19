@@ -222,7 +222,7 @@ async function searchOrganismes(params: SearchOrganizationsParams): Promise<stri
     let finalQuery = '';
     terms.forEach((t, i) => {
         if (t !== '') {
-            finalQuery += `${t}^${100 - i} ${t}* `;
+            finalQuery += `${t}~2^${100 - i} ${t}* `;
         }
     });
     let results: Set<string> = new Set(indexOrganism.search(finalQuery).map(({ref}) => ref));
@@ -238,7 +238,7 @@ async function searchServices(params: SearchServicesParams): Promise<string[]> {
     let finalQuery = '';
     terms.forEach((t, i) => {
         if (t !== '') {
-            finalQuery += `${t}^${100 - i} ${t}* `;
+            finalQuery += `${t}~2^${100 - i} ${t}* `;
         }
     });
     let results: Set<string> = new Set(indexService.search(finalQuery).map(({ref}) => ref));
@@ -251,12 +251,14 @@ async function searchCategories(params: SearchCategories): Promise<string[]> {
         .replace(/[\u0300-\u036f]/g, "")
         .replace(/[^\w\s*]/g, "")
         .split(' ');
+    console.log(terms)
     let finalQuery = '';
     terms.forEach((t, i) => {
         if (t !== '') {
-            finalQuery += `${t}^${100 - i} ${t}* `;
+            finalQuery += `${t}~2^${100 - i} ${t}* `;
         }
     });
+    console.log(finalQuery)
     let results: Set<string> = new Set(indexCategorie.search(finalQuery).map(({ref}) => ref));
     return Array.from(results);
 }

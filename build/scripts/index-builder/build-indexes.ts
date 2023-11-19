@@ -2,11 +2,9 @@ import {writeFile} from "fs/promises";
 import {join} from "path";
 import lunr from 'lunr';
 import {removeDiacriticsSpelling} from "./removeDiacriticsSpelling";
-import {Categorie, Organisme, OrganismeEntity, Service, SousCategorie} from "@/services/GraphQL";
+import {Categorie, Organisme, Service} from "@/services/GraphQL";
 require('lunr-languages/lunr.stemmer.support')(lunr);
 require('lunr-languages/lunr.fr')(lunr);
-require('lunr-languages/lunr.nl')(lunr);
-require('lunr-languages/lunr.de')(lunr);
 
 async function buildIndex()
 {
