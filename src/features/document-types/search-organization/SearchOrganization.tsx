@@ -11,7 +11,7 @@ import {
     SousCategorieEntity
 } from "@/services/GraphQL";
 import Link from "next/link";
-import {FaMapMarkerAlt} from "react-icons/fa";
+import {FaDotCircle, FaMapMarkerAlt} from "react-icons/fa";
 import {useSearchParams} from "next/navigation";
 import {LeafletMap} from "@/features/common/leaflet";
 import {Coordinates} from "@/features/common/leaflet/LeafletMap";
@@ -51,6 +51,13 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                 subIdsInitToAdd.push(...item.attributes.sous_categories.data.map(item => item.id));
             });
             setSubSelectedCategories([...selectedSubCategories, ...subIdsInitToAdd])
+            const idsInitToAdd: string[] = [];
+            categoriesInit.forEach(item => {
+                if (!item.attributes.sous_categories.data.length) {
+                    idsInitToAdd.push(item.id)
+                }
+            });
+            setSelectedCategories([...selectedCategories, ...idsInitToAdd])
             setSelectedPublic(searchParams.get('publics') as string ?? '0')
             // @ts-ignore
             setCategoriesForFilterDisplay(categoriesInit)
@@ -81,11 +88,14 @@ export function SearchOrganization({extraData, language, publics, categories}: S
         setSelectedPublic(event.target.value);
     }
 
-    function toggleAccordions(id: string) {
-        if (selectedOpenCategories.includes(id)) {
-            setSelectedOpenCategories(selectedOpenCategories.filter(item => item !== id))
+    function toggleAccordions(category: CategorieEntity) {
+        if(!hasSubCategories(category)){
+            return;
+        }
+        if (selectedOpenCategories.includes(category.id)) {
+            setSelectedOpenCategories(selectedOpenCategories.filter(item => item !== category.id))
         } else {
-            setSelectedOpenCategories([...selectedOpenCategories, id])
+            setSelectedOpenCategories([...selectedOpenCategories, category.id])
         }
     }
 
@@ -97,12 +107,21 @@ export function SearchOrganization({extraData, language, publics, categories}: S
         }
     }
 
-    function handleCategoryCheck(event: React.MouseEvent<HTMLSpanElement>, subCategoriesId: SousCategorieEntity[]) {
+    function handleCategoryCheck(event: React.MouseEvent<HTMLSpanElement>, category: CategorieEntity) {
         event.stopPropagation();
-        if (subCategoriesId.every(item => selectedSubCategories.includes(item.id))) {
-            setSubSelectedCategories(selectedSubCategories.filter(item => !subCategoriesId.map(item => item.id).includes(item)))
+        const subCategories = category?.attributes.sous_categories?.data;
+        if(subCategories?.length) {
+            if (subCategories.every(item => selectedSubCategories.includes(item.id))) {
+                setSubSelectedCategories(selectedSubCategories.filter(item => !subCategories.map(item => item.id).includes(item)))
+            } else {
+                setSubSelectedCategories([...selectedSubCategories, ...subCategories.map(item => item.id)])
+            }
         } else {
-            setSubSelectedCategories([...selectedSubCategories, ...subCategoriesId.map(item => item.id)])
+            if (selectedCategories.includes(category.id)) {
+                setSelectedCategories(selectedCategories.filter(item => item !== category.id))
+            } else {
+                setSelectedCategories([...selectedCategories, category.id])
+            }
         }
     }
 
@@ -127,6 +146,27 @@ export function SearchOrganization({extraData, language, publics, categories}: S
         if (latCenter && longCenter) {
             setCenterCoordinates({latitude: latCenter / count, longitude: longCenter / count});
         }
+    }
+
+    function isCategoryChecked(category: CategorieEntity) {
+
+        if(!hasSubCategories(category)){
+            return selectedCategories.includes(category.id)
+        }
+
+        return category.attributes.sous_categories?.data?.every(item => selectedSubCategories.includes(item.id))
+    }
+
+    function isPartiallyChecked(category: CategorieEntity) {
+        if(!hasSubCategories(category)){
+            return false
+        }
+
+        return category.attributes.sous_categories?.data?.some(item => selectedSubCategories.includes(item.id))
+    }
+
+    function hasSubCategories(category: CategorieEntity) {
+        return category.attributes.sous_categories?.data?.length
     }
 
     return <>
@@ -161,24 +201,23 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                                 return <>
                                     <div
                                         className={'accordion-tab' + (selectedOpenCategories.includes(category.id) ? ' isOpen' : '')}>
-                                        <div className='sub-title' onClick={() => toggleAccordions(category.id)}>
+                                        <div className={`sub-title ${hasSubCategories(category) ? '' : 'default-cursor'}`} onClick={() => toggleAccordions(category)}>
                                         <span
-                                            className={"custom-checkbox" + (category?.attributes.sous_categories?.data?.every(item => selectedSubCategories.includes(item.id)) ? ' isChecked' : '')}
-                                            onClick={(event) => handleCategoryCheck(event, category?.attributes.sous_categories?.data)}>
-                                            {category?.attributes.sous_categories?.data.every(item => selectedSubCategories.includes(item.id)) &&
-                                                <FaCheck/>}
+                                            className={"custom-checkbox" + (isCategoryChecked(category) ? ' isChecked' : (isPartiallyChecked(category) ? ' isChecked' : ''))}
+                                            onClick={(event) => handleCategoryCheck(event, category)}>
+                                            { isCategoryChecked(category) ? <FaCheck/> : ((isPartiallyChecked(category) ? '' : ''))}
                                         </span>
                                             <span>
                                             {/*<span className={'custom-icon'}>*/}
                                                 {/*    <IconComponent size={30} icon={category.Icone} />*/}
                                                 {/*</span>*/}
-                                                {category.attributes.Nom}
+                                                <span className="pointer-cursor" onClick={(event) => handleCategoryCheck(event, category)}>{category.attributes.Nom}</span>
                                                 <span className="angle">
                                                 {
-                                                    selectedOpenCategories.includes(category.id) ?
+                                                    category.attributes.sous_categories.data?.length ? (selectedOpenCategories.includes(category.id) ?
                                                         <FaAngleUp/>
                                                         :
-                                                        <FaAngleDown/>
+                                                        <FaAngleDown/>) : ''
                                                 }
                                             </span>
                                         </span>
@@ -245,8 +284,7 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                                                                 language={language}
                                                                 currentVisibleItemId={currentVisibleItemId}
                                                                 handleCloseCard={handleCloseCard}
-                                                                toggleViewItem={toggleViewItem}>
-                                            </OrganizationMarker>
+                                                                toggleViewItem={toggleViewItem}/>
                                     })
                                 }
                             </LeafletMap>}

@@ -4,7 +4,6 @@ import {Organisme} from "@/services/GraphQL";
 import {LeafletMarker} from "@/features/common/leaflet";
 
 interface OrganizationMarkerProps {
-    children: never[];
     organisme: Organisme & {id?: string};
     language: string;
     currentVisibleItemId?: string;
