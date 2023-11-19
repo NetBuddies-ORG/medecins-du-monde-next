@@ -44,7 +44,8 @@ export async function generateStaticParams() {
                 res.push({
                     language,
                     segment,
-                    orgaslug: removeDiacritics(organization.Nom),
+                    //orgaslug: removeDiacritics(organization.Nom),
+                    orgaslug: organization.generatedUrl,
                 });
             }
         }
