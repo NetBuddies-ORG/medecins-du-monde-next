@@ -14,9 +14,10 @@ interface CardListProps {
     extraData: GetHomeQuery
     categoriesContainer: GetCategoriesQuery
     publics: GetPublicsQuery["publicSpecifiques"]
+    language: string
 }
 
-export function CardList({extraData, categoriesContainer: {categories}, publics}: CardListProps){
+export function CardList({extraData, categoriesContainer: {categories}, publics, language}: CardListProps){
 
     const [selectedCategories, setSelectedCategories] = useState<string[]>([])
     const [selectedPublics, setSelectedPublics] = useState<string>();
@@ -52,8 +53,7 @@ export function CardList({extraData, categoriesContainer: {categories}, publics}
                 <h2> {t('HOME_HELP_WITH_TOOLS')} <a onClick={() => showModal(true)}>{t('HOME_CLICK_HERE')}</a></h2>
             </div>
             <div className='searchbar input'>
-                <FaSearch />
-                <AutoComplete></AutoComplete>
+                <AutoComplete language={language}></AutoComplete>
             </div>
             <div className="searchbar__input input">
                 <select id={'publics'} value={selectedPublics} onChange={handlePublicsChange}>

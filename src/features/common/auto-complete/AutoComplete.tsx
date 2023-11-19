@@ -1,24 +1,75 @@
-import React, { useState } from 'react';
+'use client'
+import React, {useState} from 'react';
+import {FaSearch, FaTimes} from "react-icons/fa";
+import {useDBIndex} from "@/services/Search";
+import {Categorie} from "@/services/GraphQL";
+import {useAsyncEffect} from "@/hooks";
+import {IconComponent} from "@/features/common/react-icons/IconComponent";
 
-export default function AutoComplete() {
+interface AutoCompleteProps {
+    language: string;
+}
+
+export default function AutoComplete({language}: AutoCompleteProps) {
     const [inputValue, setInputValue] = useState('');
-    const [suggestions, setSuggestions] = useState<string[]>([]);
-    const [isSuggestionsVisible, setIsSuggestionsVisible] = useState<boolean>(false);
+    const [suggestions, setSuggestions] = useState<Categorie[]>([]);
+    const [categories, setCategories] = useState<(Categorie & {id: string})[]>([]);
+
+    const {searchCategories, getCategories, isReady} = useDBIndex(language);
+
+    useAsyncEffect(async () => {
+        setCategories(await getCategories());
+    }, [isReady]);
+
+    const clear = () => {
+        setInputValue('');
+    }
+
+    // Fonction pour surligner le texte
+    function highlightText(text, positions) {
+        let highlightedText = '';
+        let currentIndex = 0;
+
+        positions.forEach(position => {
+            const { start, end } = position;
+
+            // Ajoute le texte non surligné entre les occurrences
+            highlightedText += text.substring(currentIndex, start);
+
+            // Ajoute le texte surligné
+            highlightedText += `<span class="highlight">${text.substring(start, end)}</span>`;
+
+            currentIndex = end;
+        });
+
+        // Ajoute le texte restant non surligné
+        highlightedText += text.substring(currentIndex);
+
+        return highlightedText;
+    }
 
     const handleInputChange = (event) => {
-        console.log(event.target.value)
         const value = event.target.value;
         setInputValue(value);
-        setSuggestions(['iuhiuh']);
-
-        // Ajoutez ici la logique pour récupérer les suggestions en fonction de la valeur de l'input
-        // Exemple: appel à une API, recherche dans une liste, etc.
-        // Mettez à jour le state des suggestions en conséquence.
+        if (value){
+            searchCategories({keyword: value}).then(categoriesId => {
+                const copyCategories = JSON.parse(JSON.stringify(categories));
+                setSuggestions(copyCategories.filter(category => categoriesId.includes(category.id)).map(cat => {
+                    cat.Nom = cat.Nom.replace(new RegExp(value, 'gi'), match => `<span class="highlight">${match}</span>`);
+                    for(let subCat of cat.sous_categories.data){
+                        subCat.attributes.Nom = subCat.attributes.Nom.replace(new RegExp(value, 'gi'), match => `<span class="highlight">${match}</span>`);
+                    }
+                    return cat
+                }));
+            });
+        }
     };
 
     return (<>
-        <div className="help-modal-bg"></div>
-        <div style={{ position: 'relative', zIndex: 100000 }}>
+        {inputValue && <div className="help-modal-bg" onClick={clear}></div>}
+        <div className="input-container">
+            {inputValue && <span><FaTimes onClick={clear} className="selectable"/></span>}
+            {!inputValue && <FaSearch/>}
             <input
                 type="text"
                 value={inputValue}
@@ -27,28 +78,25 @@ export default function AutoComplete() {
             />
 
             {/* Affichez le menu de résultats ici */}
-            {suggestions.length > 0 && (
-                <ul
-                    style={{
-                        listStyleType: 'none',
-                        padding: '0',
-                        margin: '0',
-                        position: 'absolute',
-                        top: '48px', // Ajustez la position verticale en fonction de vos besoins
-                        left: '0',
-                        width: '100%',
-                        zIndex: 100000,
-                        backgroundColor: '#fff',
-                        border: '1px solid #ccc',
-                        borderRadius: '0 0 4px 4px',
-                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-                    }}
-                >
-                    {suggestions.map((suggestion, index) => (
-                        <li key={index} style={{ padding: '10px', borderBottom: '1px solid #ccc' }}>
-                            {suggestion}
+            {inputValue && (
+                <ul className="suggestions-container">
+                    {(suggestions.length > 0) && suggestions.map((category, categoryIndex) => (
+                        category.sous_categories.data.length > 0 && <li key={categoryIndex} className="suggestion-item">
+                            <div className="category-title">
+                                <IconComponent classCustom="category-icon" icon={category.Icone}/><strong dangerouslySetInnerHTML={{__html: category.Nom}}></strong>
+                            </div>
+                            <ul className="suggestion-sub-container">
+                                {
+                                    (category.sous_categories.data.length > 0) && category.sous_categories.data.map((subCategory, subCategoryIndex) => (
+                                        <li key={subCategoryIndex} className="suggestion-sub-item" dangerouslySetInnerHTML={{__html: subCategory.attributes.Nom}}></li>
+                                    ))
+                                }
+                            </ul>
                         </li>
                     ))}
+                    {
+                        (suggestions.length === 0) && <li className="suggestion-item">Aucun résultat.</li>
+                    }
                 </ul>
             )}
         </div>

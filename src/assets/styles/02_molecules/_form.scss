@@ -11,11 +11,11 @@
     margin: 1rem 0;
     position: relative;
 
-    h2{
+    h2 {
       width: 80%;
     }
 
-    .cancel{
+    .cancel {
       position: absolute;
       top: 0.5rem;
       right: 0.25rem;
@@ -46,9 +46,79 @@
 .input {
   position: relative;
 
+  .input-container {
+    position: relative;
+    z-index: 4;
+
+    .selectable {
+      cursor: pointer;
+      opacity: .5;
+    }
+
+    .suggestions-container {
+      list-style-type: none;
+      padding: 0;
+      margin-top: 0.05rem;
+      position: absolute;
+      left: 0;
+      width: 100%;
+      z-index: 5;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      overflow: scroll;
+      max-height: 350px;
+
+      .category-title {
+        display: flex;
+        font-weight: 400;
+
+        .category-icon {
+          z-index: 3;
+          position: initial;
+          right: initial;
+          bottom: initial;
+          font-size: 1.75rem;
+          margin-right: .5rem;
+        }
+      }
+
+      .suggestion-item {
+        font-size: 1rem;
+        padding: .25rem;
+        margin-bottom: .5rem;
+
+        .highlight{
+          background-color: $primaryColor;
+        }
+
+        .category-title {
+          box-shadow: 0 0 25px rgba(94, 94, 94, 0.15);
+          padding: 1rem;
+          font-size: 1rem;
+          border-bottom: 2px solid #ccc;
+        }
+
+        .suggestion-sub-container {
+          list-style-type: none;
+
+          .suggestion-sub-item {
+            box-shadow: 0 0 25px rgba(94, 94, 94, 0.25);
+            border-radius: 1rem;
+            margin: .25rem;
+            padding: .75rem;
+            font-size: 1rem;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+
+
   svg {
-    // Positioning
-    z-index: 1000;
+    z-index: 3;
     position: absolute;
     right: 1.5rem;
     bottom: 0.85rem;
@@ -79,7 +149,7 @@
     font-size: 1.2rem;
     display: flex;
 
-    .icon-picker{
+    .icon-picker {
       cursor: pointer;
       display: inline-block;
       margin-left: 0.5rem;
@@ -88,13 +158,44 @@
       height: 40px;
       border-radius: 50%;
       border: 1px solid $btnTextColor;
-      svg{
+
+      svg {
         display: flex;
         font-size: 1.25rem;
       }
     }
-    .icon-picker.active{
+
+    .icon-picker.active {
       background-color: $primaryColor;
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .input {
+    .input-container {
+      .selectable {
+      }
+
+      .suggestions-container {
+        .category-title {
+          .category-icon {
+          }
+        }
+
+        .suggestion-item {
+
+          .category-title {
+            font-size: 1.2rem;
+          }
+
+          .suggestion-sub-container {
+            .suggestion-sub-item {
+              font-size: 1.1rem;
+            }
+          }
+        }
+      }
     }
   }
 }
