@@ -34,7 +34,6 @@ async function buildIndex()
     {
         this.use(removeDiacriticsSpelling);
         this.ref('id');
-        this.field('name_category', {extractor: (p: Categorie)  => p.Nom});
         this.field('name_sub_category', {extractor: (p: Categorie)  => p.sous_categories.data.map((s) => s.attributes.Nom).join(' ')});
         categories.forEach(p => this.add(p));
     });
