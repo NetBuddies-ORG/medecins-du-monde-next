@@ -36,6 +36,7 @@ let indexLanguage: string;
 let db: Promise<IDBPDatabase<MdmDB>>;
 let indexOrganism: Index;
 let indexService: Index;
+let indexCategorie: Index;
 
 let publicsStoreName: 'publics' = 'publics';
 let organismesStoreName: 'organismes' = 'organismes';
@@ -163,6 +164,7 @@ async function initialize(language: string = 'fr') {
     fr(lunr);
     indexOrganism = lunr.Index.load(await import('../../build/static/index.json'));
     indexService = lunr.Index.load(await import('../../build/static/indexService.json'));
+    indexCategorie = lunr.Index.load(await import('../../build/static/indexCategorie.json'));
 
     deferred.resolve();
 }
@@ -243,11 +245,31 @@ async function searchServices(params: SearchServicesParams): Promise<string[]> {
     return Array.from(results);
 }
 
+async function searchCategories(params: SearchCategories): Promise<string[]> {
+    let newKeyword = params.keyword;
+    let terms = newKeyword.normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^\w\s*]/g, "")
+        .split(' ');
+    let finalQuery = '';
+    terms.forEach((t, i) => {
+        if (t !== '') {
+            finalQuery += `${t}^${100 - i} ${t}* `;
+        }
+    });
+    let results: Set<string> = new Set(indexCategorie.search(finalQuery).map(({ref}) => ref));
+    return Array.from(results);
+}
+
 export interface SearchOrganizationsParams {
     keyword: string;
 }
 
 export interface SearchServicesParams {
+    keyword: string;
+}
+
+export interface SearchCategories {
     keyword: string;
 }
 
@@ -263,7 +285,8 @@ interface SearchInterface {
     getOrganisme(id: string): Promise<Organisme>;
     getOrganismes(params: SearchOrganizationsParams): Promise<string[]>;
     getPublics(): Promise<PublicSpecifique[]>;
-    getCategories(): Promise<Categorie[]>;
+    searchCategories(params: SearchCategories): Promise<string[]>;
+    getCategories(): Promise<(Categorie & {id: string})[]>;
     getServices(params: SearchServicesParams): Promise<string[]>;
 }
 
@@ -278,6 +301,7 @@ export function useDBIndex(language: string): SearchInterface {
         getPublics(): Promise<any[]> {
             return db.then(data => data.getAll(publicsStoreName));
         },
+        searchCategories: !loading ? searchCategories : () => Promise.reject(new Error('Search engine is not ready')),
         getCategories(): Promise<any[]> {
             return db.then(data => data.getAll(categoriesStoreName));
         },

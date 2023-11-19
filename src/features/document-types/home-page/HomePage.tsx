@@ -19,7 +19,7 @@ export async function HomePage({extraData}: HomePageProps) {
     return (
         <>
             <div className="page-container">
-                <CardList publics={publicSpecifiques} extraData={extraData} categoriesContainer={categories}/>
+                <CardList publics={publicSpecifiques} extraData={extraData} categoriesContainer={categories} language={language}/>
             </div>
             <div className="custom-shape-divider-bottom-1694936473">
                 <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"

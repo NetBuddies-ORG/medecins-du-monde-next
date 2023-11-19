@@ -1,0 +1,437 @@
+{
+  "version": "2.3.9",
+  "fields": [
+    "name_category",
+    "name_sub_category"
+  ],
+  "fieldVectors": [
+    [
+      "name_category/1",
+      [
+        0,
+        0.244,
+        1,
+        1.967
+      ]
+    ],
+    [
+      "name_sub_category/1",
+      []
+    ],
+    [
+      "name_category/5",
+      [
+        0,
+        0.244,
+        2,
+        1.967
+      ]
+    ],
+    [
+      "name_sub_category/5",
+      []
+    ],
+    [
+      "name_category/6",
+      [
+        3,
+        1.706,
+        4,
+        0.586,
+        5,
+        1.706
+      ]
+    ],
+    [
+      "name_sub_category/6",
+      []
+    ],
+    [
+      "name_category/7",
+      [
+        4,
+        0.586,
+        6,
+        1.706,
+        7,
+        1.706
+      ]
+    ],
+    [
+      "name_sub_category/7",
+      []
+    ],
+    [
+      "name_category/3",
+      [
+        0,
+        0.212,
+        8,
+        1.706,
+        9,
+        1.706
+      ]
+    ],
+    [
+      "name_sub_category/3",
+      [
+        10,
+        1.006,
+        11,
+        0.699,
+        12,
+        1.006,
+        13,
+        0.699,
+        14,
+        1.006,
+        15,
+        1.006
+      ]
+    ],
+    [
+      "name_category/2",
+      [
+        0,
+        0.167,
+        4,
+        0.463,
+        13,
+        0.937,
+        16,
+        1.348,
+        17,
+        1.348
+      ]
+    ],
+    [
+      "name_sub_category/2",
+      [
+        0,
+        0.156,
+        11,
+        0.528,
+        18,
+        0.76,
+        19,
+        0.76,
+        20,
+        0.76,
+        21,
+        0.76,
+        22,
+        0.76,
+        23,
+        0.76
+      ]
+    ],
+    [
+      "name_category/4",
+      [
+        0,
+        0.187,
+        4,
+        0.518,
+        24,
+        1.506,
+        25,
+        1.506
+      ]
+    ],
+    [
+      "name_sub_category/4",
+      [
+        26,
+        2.174
+      ]
+    ]
+  ],
+  "invertedIndex": [
+    [
+      "",
+      {
+        "_index": 13,
+        "name_category": {
+          "2": {}
+        },
+        "name_sub_category": {
+          "3": {}
+        }
+      }
+    ],
+    [
+      "abri",
+      {
+        "_index": 10,
+        "name_category": {},
+        "name_sub_category": {
+          "3": {}
+        }
+      }
+    ],
+    [
+      "accueil",
+      {
+        "_index": 18,
+        "name_category": {},
+        "name_sub_category": {
+          "2": {}
+        }
+      }
+    ],
+    [
+      "administr",
+      {
+        "_index": 1,
+        "name_category": {
+          "1": {}
+        },
+        "name_sub_category": {}
+      }
+    ],
+    [
+      "aid",
+      {
+        "_index": 0,
+        "name_category": {
+          "1": {},
+          "2": {},
+          "3": {},
+          "4": {},
+          "5": {}
+        },
+        "name_sub_category": {
+          "2": {}
+        }
+      }
+    ],
+    [
+      "animaux",
+      {
+        "_index": 26,
+        "name_category": {},
+        "name_sub_category": {
+          "4": {}
+        }
+      }
+    ],
+    [
+      "au",
+      {
+        "_index": 20,
+        "name_category": {},
+        "name_sub_category": {
+          "2": {}
+        }
+      }
+    ],
+    [
+      "aux",
+      {
+        "_index": 22,
+        "name_category": {},
+        "name_sub_category": {
+          "2": {}
+        }
+      }
+    ],
+    [
+      "commun",
+      {
+        "_index": 3,
+        "name_category": {
+          "6": {}
+        },
+        "name_sub_category": {}
+      }
+    ],
+    [
+      "cultur",
+      {
+        "_index": 6,
+        "name_category": {
+          "7": {}
+        },
+        "name_sub_category": {}
+      }
+    ],
+    [
+      "de",
+      {
+        "_index": 11,
+        "name_category": {},
+        "name_sub_category": {
+          "2": {},
+          "3": {}
+        }
+      }
+    ],
+    [
+      "deplac",
+      {
+        "_index": 17,
+        "name_category": {
+          "2": {}
+        },
+        "name_sub_category": {}
+      }
+    ],
+    [
+      "domicil",
+      {
+        "_index": 16,
+        "name_category": {
+          "2": {}
+        },
+        "name_sub_category": {}
+      }
+    ],
+    [
+      "en",
+      {
+        "_index": 8,
+        "name_category": {
+          "3": {}
+        },
+        "name_sub_category": {}
+      }
+    ],
+    [
+      "et",
+      {
+        "_index": 4,
+        "name_category": {
+          "2": {},
+          "4": {},
+          "6": {},
+          "7": {}
+        },
+        "name_sub_category": {}
+      }
+    ],
+    [
+      "financier",
+      {
+        "_index": 24,
+        "name_category": {
+          "4": {}
+        },
+        "name_sub_category": {}
+      }
+    ],
+    [
+      "heberg",
+      {
+        "_index": 14,
+        "name_category": {},
+        "name_sub_category": {
+          "3": {}
+        }
+      }
+    ],
+    [
+      "jour",
+      {
+        "_index": 19,
+        "name_category": {},
+        "name_sub_category": {
+          "2": {}
+        }
+      }
+    ],
+    [
+      "juridiqu",
+      {
+        "_index": 2,
+        "name_category": {
+          "5": {}
+        },
+        "name_sub_category": {}
+      }
+    ],
+    [
+      "langu",
+      {
+        "_index": 5,
+        "name_category": {
+          "6": {}
+        },
+        "name_sub_category": {}
+      }
+    ],
+    [
+      "loisir",
+      {
+        "_index": 7,
+        "name_category": {
+          "7": {}
+        },
+        "name_sub_category": {}
+      }
+    ],
+    [
+      "materiel",
+      {
+        "_index": 25,
+        "name_category": {
+          "4": {}
+        },
+        "name_sub_category": {}
+      }
+    ],
+    [
+      "nuit",
+      {
+        "_index": 12,
+        "name_category": {},
+        "name_sub_category": {
+          "3": {}
+        }
+      }
+    ],
+    [
+      "quotidien",
+      {
+        "_index": 21,
+        "name_category": {},
+        "name_sub_category": {
+          "2": {}
+        }
+      }
+    ],
+    [
+      "rue",
+      {
+        "_index": 9,
+        "name_category": {
+          "3": {}
+        },
+        "name_sub_category": {}
+      }
+    ],
+    [
+      "temporair",
+      {
+        "_index": 15,
+        "name_category": {},
+        "name_sub_category": {
+          "3": {}
+        }
+      }
+    ],
+    [
+      "transport",
+      {
+        "_index": 23,
+        "name_category": {},
+        "name_sub_category": {
+          "2": {}
+        }
+      }
+    ]
+  ],
+  "pipeline": [
+    "removeDiacriticsSpelling",
+    "stemmer"
+  ]
+}
