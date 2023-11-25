@@ -5,21 +5,29 @@ import {useTranslation} from "@/app/i18n";
 import {GetHomeQuery} from "@/services/GraphQL";
 import {CardList} from "@/features/document-types/home-page/CardList";
 import {HomeSearchBar} from "@/features/document-types/home-page/HomeSearchBar";
+import {cache} from "react";
+import {getStrapiClient} from "@/services/Strapi";
 
 interface HomePageProps {
     extraData: GetHomeQuery
 }
+
+const getHelp = cache(async function getPublics(lang: string) {
+    const client = getStrapiClient();
+    return await client.getHelp({locale: lang});
+});
 
 export async function HomePage({extraData}: HomePageProps) {
     const language = getLanguage();
     const categories = getCategories();
     const {publicSpecifiques} = getPublics();
     const {t, i18n} = await useTranslation(language)
+    const {help} = await getHelp(language);
 
     return (
         <>
             <div className="page-container">
-                <CardList publics={publicSpecifiques} extraData={extraData} categoriesContainer={categories} language={language}/>
+                <CardList help={help} publics={publicSpecifiques} extraData={extraData} categoriesContainer={categories} language={language}/>
             </div>
             <div className="custom-shape-divider-bottom-1694936473">
                 <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"

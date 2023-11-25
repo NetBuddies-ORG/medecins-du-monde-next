@@ -276,6 +276,24 @@ export type ComponentGeneraleSeoInput = {
   id: InputMaybe<Scalars['ID']['input']>;
 };
 
+export type ComponentHelpPage = {
+  __typename?: 'ComponentHelpPage';
+  Contenu: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+};
+
+export type ComponentHelpPageFiltersInput = {
+  Contenu: InputMaybe<StringFilterInput>;
+  and: InputMaybe<Array<InputMaybe<ComponentHelpPageFiltersInput>>>;
+  not: InputMaybe<ComponentHelpPageFiltersInput>;
+  or: InputMaybe<Array<InputMaybe<ComponentHelpPageFiltersInput>>>;
+};
+
+export type ComponentHelpPageInput = {
+  Contenu: InputMaybe<Scalars['String']['input']>;
+  id: InputMaybe<Scalars['ID']['input']>;
+};
+
 export type ComponentOrientationsOrientations = {
   __typename?: 'ComponentOrientationsOrientations';
   Adresse: Maybe<Scalars['String']['output']>;
@@ -463,7 +481,7 @@ export type FooterRelationResponseCollection = {
   data: Array<FooterEntity>;
 };
 
-export type GenericMorph = About | Categorie | ComponentFooterLiensRapides | ComponentFooterServices | ComponentFooterSocial | ComponentGeneraleFooter | ComponentGeneraleHeader | ComponentGeneraleSeo | ComponentOrientationsOrientations | ComponentUrgencesUrgences | ComponentUtilsLink | Footer | Header | Home | I18NLocale | Langue | Organisme | Orientation | Page | PublicSpecifique | ReactIconsIconlibrary | SearchOrganization | Service | SlugifySlug | SousCategorie | Traduction | UploadFile | UploadFolder | Urgence | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = About | Categorie | ComponentFooterLiensRapides | ComponentFooterServices | ComponentFooterSocial | ComponentGeneraleFooter | ComponentGeneraleHeader | ComponentGeneraleSeo | ComponentHelpPage | ComponentOrientationsOrientations | ComponentUrgencesUrgences | ComponentUtilsLink | Footer | Header | Help | Home | I18NLocale | Langue | Organisme | Orientation | Page | PublicSpecifique | ReactIconsIconlibrary | SearchOrganization | Service | SlugifySlug | SousCategorie | Traduction | UploadFile | UploadFolder | Urgence | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type Header = {
   __typename?: 'Header';
@@ -499,6 +517,49 @@ export type HeaderInput = {
 export type HeaderRelationResponseCollection = {
   __typename?: 'HeaderRelationResponseCollection';
   data: Array<HeaderEntity>;
+};
+
+export type Help = {
+  __typename?: 'Help';
+  Page: Maybe<Array<Maybe<ComponentHelpPage>>>;
+  createdAt: Maybe<Scalars['DateTime']['output']>;
+  locale: Maybe<Scalars['String']['output']>;
+  localizations: Maybe<HelpRelationResponseCollection>;
+  publishedAt: Maybe<Scalars['DateTime']['output']>;
+  updatedAt: Maybe<Scalars['DateTime']['output']>;
+};
+
+
+export type HelpPageArgs = {
+  filters: InputMaybe<ComponentHelpPageFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+
+export type HelpLocalizationsArgs = {
+  publicationState?: InputMaybe<PublicationState>;
+};
+
+export type HelpEntity = {
+  __typename?: 'HelpEntity';
+  attributes: Maybe<Help>;
+  id: Maybe<Scalars['ID']['output']>;
+};
+
+export type HelpEntityResponse = {
+  __typename?: 'HelpEntityResponse';
+  data: Maybe<HelpEntity>;
+};
+
+export type HelpInput = {
+  Page: InputMaybe<Array<InputMaybe<ComponentHelpPageInput>>>;
+  publishedAt: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type HelpRelationResponseCollection = {
+  __typename?: 'HelpRelationResponseCollection';
+  data: Array<HelpEntity>;
 };
 
 export type Home = {
@@ -721,6 +782,7 @@ export type Mutation = {
   createCategorieLocalization: Maybe<CategorieEntityResponse>;
   createFooterLocalization: Maybe<FooterEntityResponse>;
   createHeaderLocalization: Maybe<HeaderEntityResponse>;
+  createHelpLocalization: Maybe<HelpEntityResponse>;
   createHomeLocalization: Maybe<HomeEntityResponse>;
   createLangue: Maybe<LangueEntityResponse>;
   createLangueLocalization: Maybe<LangueEntityResponse>;
@@ -751,6 +813,7 @@ export type Mutation = {
   deleteCategorie: Maybe<CategorieEntityResponse>;
   deleteFooter: Maybe<FooterEntityResponse>;
   deleteHeader: Maybe<HeaderEntityResponse>;
+  deleteHelp: Maybe<HelpEntityResponse>;
   deleteHome: Maybe<HomeEntityResponse>;
   deleteLangue: Maybe<LangueEntityResponse>;
   deleteOrganisme: Maybe<OrganismeEntityResponse>;
@@ -786,6 +849,7 @@ export type Mutation = {
   updateFileInfo: UploadFileEntityResponse;
   updateFooter: Maybe<FooterEntityResponse>;
   updateHeader: Maybe<HeaderEntityResponse>;
+  updateHelp: Maybe<HelpEntityResponse>;
   updateHome: Maybe<HomeEntityResponse>;
   updateLangue: Maybe<LangueEntityResponse>;
   updateOrganisme: Maybe<OrganismeEntityResponse>;
@@ -845,6 +909,13 @@ export type MutationCreateFooterLocalizationArgs = {
 
 export type MutationCreateHeaderLocalizationArgs = {
   data: InputMaybe<HeaderInput>;
+  id: InputMaybe<Scalars['ID']['input']>;
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+};
+
+
+export type MutationCreateHelpLocalizationArgs = {
+  data: InputMaybe<HelpInput>;
   id: InputMaybe<Scalars['ID']['input']>;
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 };
@@ -1020,6 +1091,11 @@ export type MutationDeleteHeaderArgs = {
 };
 
 
+export type MutationDeleteHelpArgs = {
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+};
+
+
 export type MutationDeleteHomeArgs = {
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 };
@@ -1179,6 +1255,12 @@ export type MutationUpdateFooterArgs = {
 
 export type MutationUpdateHeaderArgs = {
   data: HeaderInput;
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+};
+
+
+export type MutationUpdateHelpArgs = {
+  data: HelpInput;
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 };
 
@@ -1632,6 +1714,7 @@ export type Query = {
   categories: Maybe<CategorieEntityResponseCollection>;
   footer: Maybe<FooterEntityResponse>;
   header: Maybe<HeaderEntityResponse>;
+  help: Maybe<HelpEntityResponse>;
   home: Maybe<HomeEntityResponse>;
   i18NLocale: Maybe<I18NLocaleEntityResponse>;
   i18NLocales: Maybe<I18NLocaleEntityResponseCollection>;
@@ -1696,6 +1779,12 @@ export type QueryFooterArgs = {
 
 
 export type QueryHeaderArgs = {
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+  publicationState?: InputMaybe<PublicationState>;
+};
+
+
+export type QueryHelpArgs = {
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
   publicationState?: InputMaybe<PublicationState>;
 };
@@ -2751,6 +2840,13 @@ export type GetHeaderQueryVariables = Exact<{
 
 export type GetHeaderQuery = { __typename?: 'Query', header: { __typename?: 'HeaderEntityResponse', data: { __typename?: 'HeaderEntity', attributes: { __typename?: 'Header', Header: { __typename?: 'ComponentGeneraleHeader', Titre: string, pages: { __typename?: 'PageRelationResponseCollection', data: Array<{ __typename?: 'PageEntity', attributes: { __typename?: 'Page', Titre: string, Url: string } }> } } } } } };
 
+export type GetHelpQueryVariables = Exact<{
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+}>;
+
+
+export type GetHelpQuery = { __typename?: 'Query', help: { __typename?: 'HelpEntityResponse', data: { __typename?: 'HelpEntity', attributes: { __typename?: 'Help', Page: Array<{ __typename?: 'ComponentHelpPage', Contenu: string }> } } } };
+
 export type GetHomeQueryVariables = Exact<{
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 }>;
@@ -3009,6 +3105,19 @@ export const GetHeaderDocument = gql`
   }
 }
     `;
+export const GetHelpDocument = gql`
+    query getHelp($locale: I18NLocaleCode) {
+  help(locale: $locale) {
+    data {
+      attributes {
+        Page {
+          Contenu
+        }
+      }
+    }
+  }
+}
+    `;
 export const GetHomeDocument = gql`
     query getHome($locale: I18NLocaleCode) {
   home(locale: $locale) {
@@ -3114,6 +3223,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getHeader(variables?: GetHeaderQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetHeaderQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetHeaderQuery>(GetHeaderDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getHeader', 'query');
+    },
+    getHelp(variables?: GetHelpQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetHelpQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetHelpQuery>(GetHelpDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getHelp', 'query');
     },
     getHome(variables?: GetHomeQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetHomeQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetHomeQuery>(GetHomeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getHome', 'query');

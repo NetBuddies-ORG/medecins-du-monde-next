@@ -1,0 +1,11 @@
+query getHelp($locale: I18NLocaleCode){
+    help(locale: $locale){
+        data{
+            attributes{
+                Page{
+                    Contenu
+                }
+            }
+        }
+    }
+}

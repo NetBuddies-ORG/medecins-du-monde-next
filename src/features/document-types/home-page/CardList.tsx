@@ -2,7 +2,7 @@
 import Link from "next/link";
 import {FaAngleDown, FaCheck, FaCircleInfo, FaCompass, FaHeadphones} from "react-icons/fa6";
 import {IconComponent} from "@/features/common/react-icons/IconComponent";
-import {GetCategoriesQuery, GetHomeQuery, GetPublicsQuery} from "@/services/GraphQL";
+import {GetCategoriesQuery, GetHelpQuery, GetHomeQuery, GetPublicsQuery} from "@/services/GraphQL";
 import {useTranslation} from "@/app/i18n/client";
 import {useEffect, useState} from "react";
 import {FaSearch, FaTimes} from "react-icons/fa";
@@ -14,10 +14,11 @@ interface CardListProps {
     extraData: GetHomeQuery
     categoriesContainer: GetCategoriesQuery
     publics: GetPublicsQuery["publicSpecifiques"]
+    help: GetHelpQuery["help"]
     language: string
 }
 
-export function CardList({extraData, categoriesContainer: {categories}, publics, language}: CardListProps){
+export function CardList({help, extraData, categoriesContainer: {categories}, publics, language}: CardListProps){
 
     const [selectedCategories, setSelectedCategories] = useState<string[]>([])
     const [selectedPublics, setSelectedPublics] = useState<string>();
@@ -44,7 +45,7 @@ export function CardList({extraData, categoriesContainer: {categories}, publics,
     return <>
         {
             isModalOpen &&
-            <HelpModal closeModal={() => setIsModalOpen(false)} />
+            <HelpModal help={help} closeModal={() => setIsModalOpen(false)} />
         }
         <div className="searchbar">
             <div className="info">
