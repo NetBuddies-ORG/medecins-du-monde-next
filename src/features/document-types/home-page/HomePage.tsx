@@ -1,10 +1,6 @@
-import {FaCircleInfo} from "react-icons/fa6";
-import {FaTimes} from "react-icons/fa";
 import {getCategories, getLanguage, getPublics} from "@/context/server";
-import {useTranslation} from "@/app/i18n";
 import {GetHomeQuery} from "@/services/GraphQL";
 import {CardList} from "@/features/document-types/home-page/CardList";
-import {HomeSearchBar} from "@/features/document-types/home-page/HomeSearchBar";
 import {cache} from "react";
 import {getStrapiClient} from "@/services/Strapi";
 
@@ -21,7 +17,6 @@ export async function HomePage({extraData}: HomePageProps) {
     const language = getLanguage();
     const categories = getCategories();
     const {publicSpecifiques} = getPublics();
-    const {t, i18n} = await useTranslation(language)
     const {help} = await getHelp(language);
 
     return (

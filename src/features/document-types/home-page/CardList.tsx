@@ -4,9 +4,8 @@ import {FaAngleDown, FaCheck, FaCircleInfo, FaCompass, FaHeadphones} from "react
 import {IconComponent} from "@/features/common/react-icons/IconComponent";
 import {GetCategoriesQuery, GetHelpQuery, GetHomeQuery, GetPublicsQuery} from "@/services/GraphQL";
 import {useTranslation} from "@/app/i18n/client";
-import {useEffect, useState} from "react";
-import {FaSearch, FaTimes} from "react-icons/fa";
-import {HomeSearchBar} from "@/features/document-types/home-page/HomeSearchBar";
+import {useState} from "react";
+import {FaTimes} from "react-icons/fa";
 import {HelpModal} from "@/features/common/help-modal/HelpModal";
 import AutoComplete from "@/features/common/auto-complete/AutoComplete";
 
@@ -68,13 +67,13 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
             </div>
         </div>
         <div className="card-container">
-            <Link href={extraData?.home?.data?.attributes?.UrgencesLink}>
+            <Link prefetch={false} href={extraData?.home?.data?.attributes?.UrgencesLink}>
                 <div className="card danger">
                     <FaHeadphones />
                     <div className="card__title"><span>{t('HOME_URGENCES')}</span></div>
                 </div>
             </Link>
-            <Link href={extraData?.home?.data?.attributes?.OrientationsLink}>
+            <Link prefetch={false} href={extraData?.home?.data?.attributes?.OrientationsLink}>
                 <div className="card info">
                     <FaCompass/>
                     <div className="card__title"><span>{t('HOME_ORIENTATIONS')}</span></div>
@@ -94,7 +93,7 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
         </div>
         <div className={"footer-search" + (selectedCategories.length <= 0 ? ' isHidden' : '')}>
             <button className="btn btn-primary">
-                <Link href={{ pathname: 'rechercher-un-organisme', query: { categories: selectedCategories, publics: selectedPublics} }}>
+                <Link prefetch={false} href={{ pathname: 'rechercher-un-organisme', query: { categories: selectedCategories, publics: selectedPublics} }}>
                     Rechercher un organisme
                 </Link>
             </button>

@@ -19,7 +19,7 @@ export function HeaderMenu({listItem, lang}: HeaderMenuProps) {
                 listItem?.data.attributes.Header.pages.data.map(item => {
                     const isActive = pathname.replace((item.attributes.Url === '/' ? '': '/') + lang,'').slice(0, -1) === item.attributes.Url
                     return <li key={item.attributes.Titre}>
-                        <Link className={isActive ? 'active' : ''} href={'/' + lang + item.attributes.Url}>
+                        <Link  className={isActive ? 'active' : ''} href={'/' + lang + item.attributes.Url}>
                             {item.attributes.Titre}
                         </Link>
                     </li>

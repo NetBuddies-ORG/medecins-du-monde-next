@@ -70,8 +70,8 @@ export default function AutoComplete({language}: AutoCompleteProps) {
     };
 
     return (<>
-        {inputValue && <div className="help-modal-bg" onClick={clear}></div>}
-        <div className="input-container">
+        {inputValue && <div className="form-bg" onClick={clear}></div>}
+        <div className="input-container autocomplete">
             {inputValue && <button onClick={clear}>
                 <FaTimes onClick={clear} className="selectable"/>
             </button>}

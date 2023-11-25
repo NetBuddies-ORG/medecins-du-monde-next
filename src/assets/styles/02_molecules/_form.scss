@@ -43,12 +43,28 @@
   }
 }
 
+.form-bg{
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100dvh;
+  width: 100dvw;
+  background: #000000;
+  opacity: 0.65;
+  z-index: 10;
+  overflow-y: hidden;
+  display: flex;
+}
+
 .input {
   position: relative;
 
+  .autocomplete{
+    z-index: 11;
+  }
+
   .input-container {
     position: relative;
-    z-index: 4;
 
     button{
         position: absolute;
@@ -65,7 +81,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        z-index: 5;
+        z-index: 11;
       svg{
         font-size: 1.25rem;
       }
@@ -83,7 +99,7 @@
       position: absolute;
       left: 0;
       width: 100%;
-      z-index: 5;
+      z-index: 11;
       background-color: #efefef;
       border-radius: 1rem;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
