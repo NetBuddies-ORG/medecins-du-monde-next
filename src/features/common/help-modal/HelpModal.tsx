@@ -51,8 +51,10 @@ export function HelpModal({help, closeModal}: HelpModalProps){
                     })
                 }
             </div>
-            <button className={"modal-control modal-previous" + (currentStep === 0 ? " disabled" : "")} onClick={handlePreviousStep}><FaArrowLeftLong /></button>
-            <button className={"modal-control modal-next" + (currentStep === 2 ? " disabled" : "")} onClick={handleNextStep}><FaArrowRightLong /></button>
+            <button className={"modal-control modal-previous" + (currentStep === 0 ? " disabled" : "")}
+                    onClick={handlePreviousStep}><FaArrowLeftLong /></button>
+            <button className={"modal-control modal-next" + (currentStep === help.data.attributes.Page.length - 1 ? " disabled" : "")}
+                    onClick={handleNextStep}><FaArrowRightLong /></button>
         </div>
     </>
 }

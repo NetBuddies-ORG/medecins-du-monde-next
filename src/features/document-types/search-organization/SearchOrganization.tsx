@@ -289,26 +289,41 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                                 }
                             </LeafletMap>}
                     </div> :
-                    <div className='card-container-organisme'>
+                    (
+                        <>
                         {
-                            organismes.length > 0 && organismes.map((organisme) => {
-                                return <Link key={organisme.Nom}
-                                             href={'/' + language + '/' + extraData.searchOrganization.data.attributes.OrganismeUrl.page.data.attributes.Url + '/' + organisme.generatedUrl}>
-                                    <div className='card organisme'>
-                                        <div className='up'>
-                                            {organisme.Nom}
-                                        </div>
-                                        <div className='down'>
-                                            <div className='location'>
-                                                <FaMapMarkerAlt/>
-                                                <p>{organisme.Adresse}</p>
+                            organismes.length > 0 &&
+                            <div className='card-container-organisme'>
+                                {
+                                 organismes.map((organisme) => {
+                                        return <Link key={organisme.Nom}
+                                                     href={'/' + language + '/' + extraData.searchOrganization.data.attributes.OrganismeUrl.page.data.attributes.Url + '/' + organisme.generatedUrl}>
+                                            <div className='card organisme'>
+                                                <div className='up'>
+                                                    {organisme.Nom}
+                                                </div>
+                                                <div className='down'>
+                                                    <div className='location'>
+                                                        <FaMapMarkerAlt/>
+                                                        <p>{organisme.Adresse}</p>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </Link>
-                            })
-                        }
-                    </div>
+                                        </Link>
+                                    })
+                                }
+                            </div>
+                            }
+                            {
+                                organismes.length === 0 &&
+                                <div className='no-results'>
+                                    <p>Aucun résultat</p>
+                                </div>
+                            }
+                        </>
+                    )
+
+
 
             }
         </div>
