@@ -1,5 +1,5 @@
 import {ResolvingMetadata} from "next";
-import React, {cache, use} from "react";
+import React, {cache} from "react";
 import {getStrapiClient} from "@/services/Strapi";
 import {PageFiltersInput} from "@/services/GraphQL";
 import {notFound} from "next/navigation";

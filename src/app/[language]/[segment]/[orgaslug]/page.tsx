@@ -1,6 +1,6 @@
 import OrganizationDetails from "@/features/document-types/organization/Organization";
 import {getStrapiClient} from "@/services/Strapi";
-import {languages, removeDiacritics} from "@/helpers";
+import {languages} from "@/helpers";
 import organizations from "@/../build/static/organismes.json";
 
 type OrgaDetailsPageProps = {

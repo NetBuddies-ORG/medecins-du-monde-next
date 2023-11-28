@@ -1,4 +1,4 @@
-import React, {cache, use} from 'react';
+import React, {cache} from 'react';
 import {PageFiltersInput} from "@/services/GraphQL";
 import {getStrapiClient} from "@/services/Strapi";
 import {DocumentTypes} from "@/features/document-types/DocumentTypes";
