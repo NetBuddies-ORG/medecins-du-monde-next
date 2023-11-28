@@ -1,5 +1,6 @@
 import {getFooter, getLanguage} from "@/context/server";
 import {IconComponent} from "@/features/common/react-icons/IconComponent";
+import {FaArrowUpRightFromSquare} from "react-icons/fa6";
 
 export async function CustomFooter() {
     const lang = getLanguage();
@@ -51,6 +52,11 @@ export async function CustomFooter() {
                             <footer>
                                 <hr />
                                 © 2023 MonBo Réseau.
+                                {/*<div>*/}
+                                {/*    <small style={{opacity: .7, fontSize: '.75rem'}}>*/}
+                                {/*        Conçu par <a target="_blank" href="https://alexianmoins.be" style={{ color: 'white'}}>Alexian Moins</a> <FaArrowUpRightFromSquare style={{fontSize: '.75rem'}} /> et <a target="_blank" href="https://alexianmoins.be" style={{ color: 'white'}}>Lucas Lopez</a> <FaArrowUpRightFromSquare style={{fontSize: '.75rem'}} />.*/}
+                                {/*    </small>*/}
+                                {/*</div>*/}
                             </footer>
             </div>
         </>
