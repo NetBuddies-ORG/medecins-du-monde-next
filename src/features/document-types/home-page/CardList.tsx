@@ -57,7 +57,7 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
             </div>
             <div className="searchbar__input input">
                 <select id={'publics'} value={selectedPublics} onChange={handlePublicsChange}>
-                    <option value="0" selected disabled>Public spécifique ..</option>
+                    <option value="0" disabled>Public spécifique ..</option>
                     {
                         publics.data.map(item =>
                             <option key={item.id} value={item.id}>{item.attributes.Nom}</option>)

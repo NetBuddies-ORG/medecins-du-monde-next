@@ -5,7 +5,6 @@ import {useState} from "react";
 import Link from "next/link";
 import {useDBIndex} from "@/services/Search";
 import {useAsyncEffect} from "@/hooks";
-import {removeDiacritics} from "@/helpers";
 import noResultImage from '@/assets/utils/images/no-results.jpg'
 import Image from 'next/image'
 
@@ -39,40 +38,40 @@ export function Organizations({extraData, languague}: OrganizationsProps) {
                     <input type='text' value={keyword} onChange={(value) => setKeyword(value.target.value)}
                            placeholder='Entrez un mot clé ..'/>
                 </div>
-                {organismes.length > 0 ?
-                    <div className='card-container-organisme'>
-                        {
-                            organismes.map(item => <Link key={item.id} href={item.attributes.generatedUrl}>
-                                <div className='card organisme'>
-                                    <div className='up'>
-                                        {item.attributes.Nom}
-                                    </div>
-                                    {item?.attributes?.Adresse &&
-                                        <div className='down'>
-                                            <div className='location'>
-                                                <FaMapMarkerAlt/>
-                                                <p>{item.attributes.Adresse}</p>
-                                            </div>
+                    {organismes.length > 0 ?
+                        <div className='card-container-organisme'>
+                            {
+                                organismes.map(item => <Link key={item.id} href={item.attributes.generatedUrl}>
+                                    <div className='card organisme'>
+                                        <div className='up'>
+                                            {item.attributes.Nom}
                                         </div>
-                                    }
-                                </div>
-                            </Link>)
-                        }
-                    </div> :
-                    <div className="no-results">
-                        <Image
-                            src={noResultImage}
-                            width={175}
-                            height={175}
-                            alt="Aucun résultat"/>
-                        <div>
-                            <strong>Pas résultat</strong>
+                                        {item?.attributes?.Adresse &&
+                                            <div className='down'>
+                                                <div className='location'>
+                                                    <FaMapMarkerAlt/>
+                                                    <p>{item.attributes.Adresse}</p>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </Link>)
+                            }
+                        </div> :
+                        <div className="no-results">
+                            <Image
+                                src={noResultImage}
+                                width={175}
+                                height={175}
+                                alt="Aucun résultat"/>
+                            <div>
+                                <strong>Pas résultat</strong>
+                            </div>
+                            <div>
+                                <small>Aucun organisme ne correspond à votre critère de recherche</small>
+                            </div>
                         </div>
-                        <div>
-                            <small>Aucun organisme ne correspond à votre critère de recherche</small>
-                        </div>
-                    </div>
-                }
+                    }
             </div>
             <div className="custom-shape-divider-bottom-1694936473">
                 <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"

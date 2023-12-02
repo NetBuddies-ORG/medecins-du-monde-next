@@ -26,7 +26,7 @@ export default async function OrganizationDetails({language, segment, orgaslug}:
         notFound()
     }
 
-    if(!organization) notFound()
+    if (!organization) notFound()
 
     return (
         <>
@@ -54,19 +54,21 @@ export default async function OrganizationDetails({language, segment, orgaslug}:
                             <h3>Contactez-nous</h3>
                             <ul>
                                 <li>
-                                    <FaPhone />
-                                    <span><a href={'tel:' + organization?.Telephone}>{organization?.Telephone}</a></span>
+                                    <FaPhone/>
+                                    <span><a
+                                        href={'tel:' + organization?.Telephone}>{organization?.Telephone}</a></span>
                                 </li>
                                 <li>
-                                    <FaMapMarkerAlt />
-                                    <span><a target={'_blank'} href={'https://www.google.com/maps/place/' + organization?.Adresse}>{organization?.Adresse}</a></span>
+                                    <FaMapMarkerAlt/>
+                                    <span><a target={'_blank'}
+                                             href={'https://www.google.com/maps/place/' + organization?.Adresse}>{organization?.Adresse}</a></span>
                                 </li>
                                 <li>
-                                    <FaEnvelope />
+                                    <FaEnvelope/>
                                     <span><a href={'mailto:' + organization?.Email}>{organization?.Email}</a></span>
                                 </li>
                                 <li>
-                                    <FaGlobe />
+                                    <FaGlobe/>
                                     <span><a target={'_blank'} href={organization?.Website}>{organization?.Website}</a></span>
                                 </li>
                             </ul>
@@ -84,7 +86,7 @@ export default async function OrganizationDetails({language, segment, orgaslug}:
                                 {
                                     organization?.services?.data?.map(item => {
                                         return <li key={item.attributes.Nom}>
-                                            <IconComponent icon={item.attributes.Icone} />
+                                            <IconComponent icon={item.attributes.Icone}/>
                                             <span>{item.attributes.Nom}</span>
                                         </li>
                                     })

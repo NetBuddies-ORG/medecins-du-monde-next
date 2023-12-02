@@ -31,7 +31,9 @@ export function HelpModal({help, closeModal}: HelpModalProps){
         <div className="help-modal-bg"></div>
         <div className="help-modal-container">
             <button className="modal-close" onClick={handleClose}><FaTimes /></button>
-            <div className="modal-stepper">
+            <div className="page-container">
+                <div className="details-container__body">
+                    <div className="modal-stepper">
                 {
                     help.data.attributes.Page.map((item, index) =>{
                         return <div key={index} className="modal-step">
@@ -42,6 +44,8 @@ export function HelpModal({help, closeModal}: HelpModalProps){
                         </div>
                     })
                 }
+            </div>
+                </div>
             </div>
             <div className="bullets">
                 {

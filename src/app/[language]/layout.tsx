@@ -29,11 +29,9 @@ export default async function LanguageLayout({children, params: {language}}: Lan
     setLanguage(language);
 
     return (
-        <html lang={language}>
-            <body>
-                {children}
-            </body>
-        </html>
+        <>
+            {children}
+        </>
     )
 }
 

@@ -44,13 +44,22 @@ export function SearchOrganization({extraData, language, publics, categories}: S
 
 
     useEffect(() => {
-        if (isReady && searchParams.getAll('categories').length > 0) {
-            const categoriesInit = categories.categories.data.filter(item => searchParams.getAll('categories').includes(item.id));
-            const subIdsInitToAdd: string[] = []
+        if (isReady) {
+            const categoriesInit = categories.categories.data.filter(item => {
+                return searchParams.getAll('categories').includes(item.id)
+            });
+            const subIdsInitToAdd: string[] = [];
             categoriesInit.forEach(item => {
                 subIdsInitToAdd.push(...item.attributes.sous_categories.data.map(item => item.id));
             });
-            setSubSelectedCategories([...selectedSubCategories, ...subIdsInitToAdd])
+
+            const categoriesFromSubCategories = categories.categories.data.filter(item => {
+                return item.attributes.sous_categories.data.some(item => searchParams.getAll('subCategories').includes(item.id))
+            });
+            categoriesInit.push(...categoriesFromSubCategories);
+            subIdsInitToAdd.push(...searchParams.getAll('subCategories'));
+
+            setSubSelectedCategories([...selectedSubCategories, ...subIdsInitToAdd]);
             const idsInitToAdd: string[] = [];
             categoriesInit.forEach(item => {
                 if (!item.attributes.sous_categories.data.length) {
@@ -61,7 +70,9 @@ export function SearchOrganization({extraData, language, publics, categories}: S
             setSelectedPublic(searchParams.get('publics') as string ?? '0')
             // @ts-ignore
             setCategoriesForFilterDisplay(categoriesInit)
+            console.log(categoriesInit)
             search({
+                subCategoriesIds: searchParams.getAll('subCategories') as string[],
                 categoriesIds: searchParams.getAll('categories') as string[],
                 publicsId: searchParams.get('publics') as string ?? '0'
             }).then((organismes) => {
@@ -208,9 +219,6 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                                             { isCategoryChecked(category) ? <FaCheck/> : ((isPartiallyChecked(category) ? '' : ''))}
                                         </span>
                                             <span>
-                                            {/*<span className={'custom-icon'}>*/}
-                                                {/*    <IconComponent size={30} icon={category.Icone} />*/}
-                                                {/*</span>*/}
                                                 <span className="pointer-cursor" onClick={(event) => handleCategoryCheck(event, category)}>{category.attributes.Nom}</span>
                                                 <span className="angle">
                                                 {
@@ -244,8 +252,8 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                             })
                         }
                         <div className='footer-search'>
-                            <button className='btn btn-primary' onClick={() => setIsSlideOutOpen(false)}>Afficher
-                                les {organismes.length} résultats
+                            <button className='btn btn-primary' onClick={() => setIsSlideOutOpen(false)}>
+                                Afficher {organismes.length + ' ' + (organismes.length > 1 ? 'résultats' : 'résultat')}
                             </button>
                         </div>
                     </div>
@@ -317,7 +325,7 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                             {
                                 organismes.length === 0 &&
                                 <div className='no-results'>
-                                    <p>Aucun résultat</p>
+                                    <p>Aucun résultat.</p>
                                 </div>
                             }
                         </>

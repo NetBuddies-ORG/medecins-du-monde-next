@@ -9,7 +9,7 @@ export function Orientations({extraData}: OrientationsProps) {
     return <>
         <div className='page-container'>
             <div className="orientations-container">
-                <h2>{"Numéros d'orientations"}</h2>
+                <h2></h2>
                 <ul>
                     {
                         extraData.orientation.data.attributes.Orientation.map(item => {

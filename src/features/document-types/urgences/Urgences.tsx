@@ -9,7 +9,7 @@ export function Urgences({extraData}: UrgencesProps) {
     return <>
         <div className='page-container'>
             <div className="urgences-container">
-                <h2>{"Numéros d'urgences"}</h2>
+                <h2></h2>
                 <ul>
                     {
                         extraData.urgence.data.attributes.Element.map(item => {

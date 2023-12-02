@@ -1,12 +1,12 @@
 'use client'
 import noResultImage from '@/assets/utils/images/no-results.jpg';
-import { IconComponent } from "@/features/common/react-icons/IconComponent";
-import { useAsyncEffect } from "@/hooks";
-import { GetServicesQuery } from "@/services/GraphQL";
-import { useDBIndex } from "@/services/Search";
+import {IconComponent} from "@/features/common/react-icons/IconComponent";
+import {useAsyncEffect} from "@/hooks";
+import {GetServicesQuery} from "@/services/GraphQL";
+import {useDBIndex} from "@/services/Search";
 import Image from 'next/image';
-import { useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import {useState} from "react";
+import {FaSearch} from "react-icons/fa";
 
 interface ServicesPageProps {
     extraData: GetServicesQuery;
@@ -44,7 +44,7 @@ export function ServicesPage({extraData, language}: ServicesPageProps) {
                             services.map(item => <>
                                 <div className=''>
                                     <div>
-                                        <IconComponent icon={item.attributes.Icone} /> {item.attributes.Nom}
+                                        <IconComponent icon={item.attributes.Icone}/> {item.attributes.Nom}
                                     </div>
                                 </div>
                             </>)

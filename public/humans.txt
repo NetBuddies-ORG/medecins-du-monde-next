@@ -1,0 +1,10 @@
+Site name: MonBo Réseau
+Site URL: https://www.monboreseau.be/
+
+Developer: Alexian Moins
+Linkedin : https://www.linkedin.com/in/alexian-moins/
+Location: Belgium
+
+Developer: Lucas Lopez
+Linkedin : https://www.linkedin.com/in/lucas-lopez-9691111a2/
+Location: Belgium

@@ -1,6 +1,5 @@
-import { useTranslation } from "@/app/i18n";
-import { getLanguage } from "@/context/server";
-import { GetAboutQuery } from "@/services/GraphQL";
+import {getLanguage} from "@/context/server";
+import {GetAboutQuery} from "@/services/GraphQL";
 
 interface AboutPageProps {
     extraData: GetAboutQuery
@@ -8,12 +7,15 @@ interface AboutPageProps {
 
 export async function AboutPage({extraData}: AboutPageProps) {
     const language = getLanguage();
-    const {t, i18n} = await useTranslation(language)
 
     return (
         <>
             <div className="page-container">
-                <div dangerouslySetInnerHTML={{__html: extraData.about.data.attributes.Description}}/>
+                <div className="details-container">
+                    <div className="details-container__body">
+                        <div style={{width: '100%'}} dangerouslySetInnerHTML={{__html: extraData.about.data.attributes.Description}}/>
+                    </div>
+                </div>
             </div>
             <div className="custom-shape-divider-bottom-1694936473">
                 <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"

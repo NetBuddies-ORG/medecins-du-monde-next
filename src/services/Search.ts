@@ -174,6 +174,7 @@ async function search(params: SearchAccurateOrganizationParams): Promise<Organis
     // Get params
     const {categoriesIds, subCategoriesIds, publicsId} = params;
     const subCategoriesIdsToSearch = subCategoriesIds ?? [];
+    const categoriesIdsToSearch = categoriesIds ?? [];
 
     // Get IndexedDBData
     const organismesFromIndexedDb: (Organisme & {id: string})[] = await db.then(data => data.getAll(organismesStoreName));
@@ -203,7 +204,7 @@ async function search(params: SearchAccurateOrganizationParams): Promise<Organis
     });
 
     // Get All organismes from publicsId
-    if(publicsId != '0'){
+    if(publicsId != '0' && publicsId != undefined && publicsId != ''){
         return organismesFromIndexedDb.filter((organisme) => {
             return organisme.public_specifiques.data.map((publics) => publics.id).includes(publicsId!);
         });
@@ -251,14 +252,12 @@ async function searchCategories(params: SearchCategories): Promise<string[]> {
         .replace(/[\u0300-\u036f]/g, "")
         .replace(/[^\w\s*]/g, "")
         .split(' ');
-    console.log(terms)
     let finalQuery = '';
     terms.forEach((t, i) => {
         if (t !== '') {
             finalQuery += `${t}~2^${100 - i} ${t}* `;
         }
     });
-    console.log(finalQuery)
     let results: Set<string> = new Set(indexCategorie.search(finalQuery).map(({ref}) => ref));
     return Array.from(results);
 }
@@ -284,9 +283,7 @@ export interface SearchAccurateOrganizationParams {
 interface SearchInterface {
     isReady: boolean;
     search(params: SearchAccurateOrganizationParams): Promise<Organisme[]>;
-    getOrganisme(id: string): Promise<Organisme>;
     getOrganismes(params: SearchOrganizationsParams): Promise<string[]>;
-    getPublics(): Promise<PublicSpecifique[]>;
     searchCategories(params: SearchCategories): Promise<string[]>;
     getCategories(): Promise<(Categorie & {id: string})[]>;
     getServices(params: SearchServicesParams): Promise<string[]>;
