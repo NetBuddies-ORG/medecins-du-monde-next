@@ -4,7 +4,7 @@ import {FaAngleDown, FaCheck, FaCircleInfo, FaCompass, FaHeadphones} from "react
 import {IconComponent} from "@/features/common/react-icons/IconComponent";
 import {GetCategoriesQuery, GetHelpQuery, GetHomeQuery, GetPublicsQuery} from "@/services/GraphQL";
 import {useTranslation} from "@/app/i18n/client";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {FaTimes} from "react-icons/fa";
 import {HelpModal} from "@/features/common/help-modal/HelpModal";
 import AutoComplete from "@/features/common/auto-complete/AutoComplete";
@@ -22,8 +22,17 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
     const [selectedCategories, setSelectedCategories] = useState<string[]>([])
     const [selectedPublics, setSelectedPublics] = useState<string>();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-
+    const [isInfoVisible, setIsInfoVisible] = useState<boolean>(false)
     const {t} = useTranslation()
+    
+    useEffect(() => {
+        if(localStorage.getItem('isInfoVisible') === 'false'){
+            console.log('isInfoVisible', localStorage.getItem('isInfoVisible'))
+            setIsInfoVisible(false)
+        } else {
+            setIsInfoVisible(true)
+        }
+    }, [])
 
     function handleSelectedCategories(id: string){
         if(selectedCategories.includes(id)){
@@ -41,17 +50,25 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
         setIsModalOpen(isOpen);
     }
 
+    function hideHelpBox() {
+        localStorage.setItem('isInfoVisible', 'false')
+        setIsInfoVisible(false)
+    }
+
     return <>
         {
             isModalOpen &&
             <HelpModal help={help} closeModal={() => setIsModalOpen(false)} />
         }
         <div className="searchbar">
-            <div className="info">
-                <FaCircleInfo/>
-                <FaTimes className={'cancel'}/>
-                <h2> {t('HOME_HELP_WITH_TOOLS')} <a onClick={() => showModal(true)}>{t('HOME_CLICK_HERE')}</a></h2>
-            </div>
+            {
+                isInfoVisible &&
+                <div className="info">
+                    <FaCircleInfo/>
+                    <FaTimes className={'cancel'} onClick={() => hideHelpBox()}/>
+                    <h2> {t('HOME_HELP_WITH_TOOLS')} <a onClick={() => showModal(true)}>{t('HOME_CLICK_HERE')}</a></h2>
+                </div>
+            }
             <div className='searchbar input'>
                 <AutoComplete language={language}></AutoComplete>
             </div>
