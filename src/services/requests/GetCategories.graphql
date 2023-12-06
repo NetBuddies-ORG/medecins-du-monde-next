@@ -1,5 +1,5 @@
 query getCategories($locale: I18NLocaleCode) {
-    categories(locale: $locale){
+    categories(locale: $locale, pagination: { limit: 1000 }){
         data{
             id
             attributes{

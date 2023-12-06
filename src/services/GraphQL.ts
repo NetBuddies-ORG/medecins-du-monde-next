@@ -2878,7 +2878,7 @@ export type GetUrgencesQuery = { __typename?: 'Query', urgence: { __typename?: '
 
 export const GetCategoriesDocument = gql`
     query getCategories($locale: I18NLocaleCode) {
-  categories(locale: $locale) {
+  categories(locale: $locale, pagination: {limit: 1000}) {
     data {
       id
       attributes {
@@ -2910,7 +2910,7 @@ export const GetLocalesDocument = gql`
     `;
 export const GetOrganismesDocument = gql`
     query getOrganismes($locale: I18NLocaleCode, $filters: OrganismeFiltersInput) {
-  organismes(locale: $locale, filters: $filters) {
+  organismes(locale: $locale, filters: $filters, pagination: {limit: 1000}) {
     data {
       id
       attributes {
@@ -2991,7 +2991,7 @@ export const GetPageDocument = gql`
     `;
 export const GetPagesDocument = gql`
     query getPages($locale: I18NLocaleCode) {
-  pages(locale: $locale) {
+  pages(locale: $locale, pagination: {limit: 1000}) {
     data {
       attributes {
         Titre
@@ -3004,7 +3004,7 @@ export const GetPagesDocument = gql`
     `;
 export const GetPublicsDocument = gql`
     query getPublics($locale: I18NLocaleCode) {
-  publicSpecifiques(locale: $locale) {
+  publicSpecifiques(locale: $locale, pagination: {limit: 1000}) {
     data {
       id
       attributes {
@@ -3016,7 +3016,7 @@ export const GetPublicsDocument = gql`
     `;
 export const GetServicesDocument = gql`
     query getServices($locale: I18NLocaleCode) {
-  services(locale: $locale) {
+  services(locale: $locale, pagination: {limit: 1000}) {
     data {
       id
       attributes {
@@ -3034,7 +3034,7 @@ export const GetServicesDocument = gql`
     `;
 export const GetTranslationsDocument = gql`
     query getTranslations($locale: I18NLocaleCode) {
-  traductions(locale: $locale) {
+  traductions(locale: $locale, pagination: {limit: 1000}) {
     data {
       attributes {
         Traduction

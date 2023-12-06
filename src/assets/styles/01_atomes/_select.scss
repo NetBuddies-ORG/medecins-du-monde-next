@@ -17,6 +17,22 @@ select {
   background-origin: content-box;
   -webkit-appearance: none;
   -moz-appearance: none;
+  option{
+    color: $textColor;
+  }
+}
+
+.disabled-select {
+  color: rgba(2, 48, 71, 0.5);
+}
+
+.disabled-option{
+  color: rgba(2, 48, 71, 0.5);
+}
+
+select option:disabled {
+  color: red;
+  background: #f6f6f6;
 }
 
 .lang-picker select {

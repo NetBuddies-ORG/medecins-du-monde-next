@@ -1,5 +1,5 @@
 query getServices($locale: I18NLocaleCode){
-    services(locale: $locale){
+    services(locale: $locale, pagination: { limit: 1000 }){
         data {
           id
           attributes {

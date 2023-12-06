@@ -17,16 +17,20 @@ interface CardListProps {
     language: string
 }
 
-export function CardList({help, extraData, categoriesContainer: {categories}, publics, language}: CardListProps){
+export function CardList({help, extraData, categoriesContainer: {categories}, publics, language}: CardListProps) {
+
+    //TEMP EDIT WITH HEALTH
+    const healthId = '18'
+    const subHealthIds = ['19', '20', '21']
 
     const [selectedCategories, setSelectedCategories] = useState<string[]>([])
     const [selectedPublics, setSelectedPublics] = useState<string>();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
     const [isInfoVisible, setIsInfoVisible] = useState<boolean>(false)
     const {t} = useTranslation()
-    
+
     useEffect(() => {
-        if(localStorage.getItem('isInfoVisible') === 'false'){
+        if (localStorage.getItem('isInfoVisible') === 'false') {
             console.log('isInfoVisible', localStorage.getItem('isInfoVisible'))
             setIsInfoVisible(false)
         } else {
@@ -34,10 +38,25 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
         }
     }, [])
 
-    function handleSelectedCategories(id: string){
-        if(selectedCategories.includes(id)){
+    function handleSelectedCategories(id: string) {
+        if (healthId === id) {
+            if (subHealthIds.every(subHealthId => selectedCategories.includes(subHealthId))) {
+                let temp = [...selectedCategories]
+                for (let i = 0; i < subHealthIds.length; i++) {
+                    temp = temp.filter(item => item !== subHealthIds[i])
+                }
+                setSelectedCategories(temp)
+                return
+            }
+        }
+
+        if (selectedCategories.includes(id)) {
             setSelectedCategories(selectedCategories.filter(item => item !== id))
         } else {
+            if (healthId === id) {
+                setSelectedCategories([...selectedCategories, ...subHealthIds])
+                return
+            }
             setSelectedCategories([...selectedCategories, id])
         }
     }
@@ -58,7 +77,7 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
     return <>
         {
             isModalOpen &&
-            <HelpModal help={help} closeModal={() => setIsModalOpen(false)} />
+            <HelpModal help={help} closeModal={() => setIsModalOpen(false)}/>
         }
         <div className="searchbar">
             {
@@ -73,8 +92,10 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
                 <AutoComplete language={language}></AutoComplete>
             </div>
             <div className="searchbar__input input">
-                <select id={'publics'} value={selectedPublics} onChange={handlePublicsChange}>
-                    <option value="0" disabled>Public spécifique ..</option>
+                <select id={'publics'} value={selectedPublics}
+                        className={selectedPublics === '0' || !selectedPublics ? 'disabled-select' : ''}
+                        onChange={handlePublicsChange}>
+                    <option value="0" className="disabled-option" selected>Choisir un public spécifique ..</option>
                     {
                         publics.data.map(item =>
                             <option key={item.id} value={item.id}>{item.attributes.Nom}</option>)
@@ -86,7 +107,7 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
         <div className="card-container">
             <Link prefetch={false} href={extraData?.home?.data?.attributes?.UrgencesLink}>
                 <div className="card danger">
-                    <FaHeadphones />
+                    <FaHeadphones/>
                     <div className="card__title"><span>{t('HOME_URGENCES')}</span></div>
                 </div>
             </Link>
@@ -98,11 +119,12 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
             </Link>
             {
                 categories.data.map(category => {
+                    if (subHealthIds.includes(category.id)) return
                     return <div key={category.id}
-                                className={'card' + (selectedCategories.includes(category.id) ? ' isSelected' : '')}
+                                className={'card' + (selectedCategories.includes(category.id) || (category.id === healthId && subHealthIds.every(subHealthId => selectedCategories.includes(subHealthId))) ? ' isSelected' : '')}
                                 onClick={() => handleSelectedCategories(category.id)}>
                         <span className="check"><FaCheck/></span>
-                        <IconComponent icon={category?.attributes.Icone} />
+                        <IconComponent icon={category?.attributes.Icone}/>
                         <div className="card__title"><span>{category?.attributes.Nom}</span></div>
                     </div>
                 })
@@ -110,7 +132,10 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
         </div>
         <div className={"footer-search" + (selectedCategories.length <= 0 ? ' isHidden' : '')}>
             <button className="btn btn-primary">
-                <Link prefetch={false} href={{ pathname: 'rechercher-un-organisme', query: { categories: selectedCategories, publics: selectedPublics} }}>
+                <Link prefetch={false} href={{
+                    pathname: 'rechercher-un-organisme',
+                    query: {categories: selectedCategories, publics: selectedPublics}
+                }}>
                     Rechercher un organisme
                 </Link>
             </button>
