@@ -13,7 +13,7 @@ export async function CustomHeader() {
             <nav className="navigation">
                 <Link href={'/' + lang}>
                     <h1>
-                        <span className='title-1'>{header?.data?.attributes?.Header?.Titre.split(' ')[0]}</span>
+                        <span className='title-1'>{header?.data?.attributes?.Header?.Titre.split(' ')[0] + ' '}</span>
                         <span className='title-2'>{header?.data?.attributes?.Header?.Titre.split(' ')[1]}</span>
                     </h1>
                 </Link>
