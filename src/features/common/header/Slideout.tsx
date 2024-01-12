@@ -21,7 +21,7 @@ export function Slideout({title, menuItem, lang}: SlideoutProps){
         <div className="navigation__mobile">
             <FaBars onClick={toggleSlideout} />
             <Link href={'/' + lang}>
-                <h1><span className='title-1'>{title.split(' ')[0]}</span>
+                <h1><span className='title-1'>{title.split(' ')[0] + ' '}</span>
                     <span className='title-2'>{title.split(' ')[1]}</span>
                 </h1>
             </Link>
