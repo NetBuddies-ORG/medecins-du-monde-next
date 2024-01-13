@@ -1,4 +1,3 @@
-import {ResolvingMetadata} from "next";
 import React, {cache} from "react";
 import {getStrapiClient} from "@/services/Strapi";
 import {PageFiltersInput} from "@/services/GraphQL";
@@ -33,24 +32,4 @@ export default async function LanguageLayout({children, params: {language}}: Lan
             {children}
         </>
     )
-}
-
-export function generateMetadata(
-    { params },
-    parent: ResolvingMetadata
-) {
-    // read route params
-    const lang = params.language ?? 'fr'
-
-    return {
-        applicationName: 'MonBo Réseau',
-        title: 'MonBo Réseau',
-        description: 'MonBo Réseau',
-        robots: 'noindex',
-        appleWebApp: {
-            capable: true,
-            statusBarStyle: "default",
-            title: 'MonBo Réseau',
-        },
-    }
 }

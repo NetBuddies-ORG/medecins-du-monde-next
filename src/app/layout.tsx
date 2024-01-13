@@ -1,18 +1,5 @@
 import '@/assets/styles/main.scss';
-import {Metadata} from "next";
 import React from "react";
-
-export const metadata: Metadata = {
-    applicationName: 'Monbo Réseau',
-    title: 'Monbo Réseau',
-    description: 'Monbo Réseau',
-    manifest: '/manifest.json',
-    appleWebApp: {
-        capable: true,
-        statusBarStyle: "default",
-        title: 'Monbo Réseau',
-    },
-};
 
 export default function RootLayout({children}: {
     children: React.ReactNode
@@ -20,7 +7,7 @@ export default function RootLayout({children}: {
     return (
         <html lang="fr">
         <head>
-            <meta name="robots" content="noindex"/>
+            <meta name="robots" content="noindex" />
             <meta name="theme-color"
                   content="#fff" />
             <meta charSet="UTF-8" />

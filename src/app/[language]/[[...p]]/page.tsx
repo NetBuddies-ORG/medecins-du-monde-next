@@ -89,3 +89,18 @@ export async function generateStaticParams() {
         return {language: lang, p: splittedUrl}
     });
 }
+
+export async function generateMetadata({params: {language, p}}) {
+    const {pages} = await getPage(language, '/' + (p ? p : ''));
+    return {
+        applicationName: 'MonBo Réseau',
+        title: pages?.data[0]?.attributes?.SEO.Title,
+        description: pages?.data[0]?.attributes?.SEO.Description,
+        robots: undefined,
+        appleWebApp: {
+            capable: true,
+            statusBarStyle: "default",
+            title: pages?.data[0]?.attributes?.SEO.Title,
+        },
+    }
+}

@@ -1,7 +1,6 @@
 import {getStrapiClient} from "../../../src/services/Strapi";
 import {writeFile} from "fs/promises";
 import {join} from "path";
-import {removeDiacritics} from "../../../src/helpers";
 
 
 

@@ -2,6 +2,7 @@ import OrganizationDetails from "@/features/document-types/organization/Organiza
 import {getStrapiClient} from "@/services/Strapi";
 import {languages} from "@/helpers";
 import organizations from "@/../build/static/organismes.json";
+import {cache} from "react";
 
 type OrgaDetailsPageProps = {
     params: {
@@ -50,7 +51,28 @@ export async function generateStaticParams() {
             }
         }
     }
-
-
     return res;
 }
+
+export async function generateMetadata({params: {language, segment, orgaslug}}: OrgaDetailsPageProps) {
+
+    const organization = (await getOrganization(language, orgaslug)).organismes?.data[0]?.attributes;
+
+    return {
+        applicationName: 'MonBo Réseau',
+        title: 'MonBo Réseau - ' + organization?.Nom,
+        description: organization?.Description.slice(0, 100) + '...',
+        robots: organization?.Referencement_internet ? undefined : 'noindex',
+        appleWebApp: {
+            capable: true,
+            statusBarStyle: "default",
+            title: 'MonBo Réseau - ' + organization?.Nom,
+        },
+    }
+}
+
+const getOrganization = cache(async function getCategories(lang: string, slug: string) {
+    const client = getStrapiClient();
+    // @ts-ignore
+    return await client.getOrganismes({locale: lang, filters: {generatedUrl: {eq: slug}}});
+});

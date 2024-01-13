@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: /
 
-Sitemap: https://monboreseau.be/sitemap.xml
+Sitemap: https://monboreseau.be/sitemap-fr.xml

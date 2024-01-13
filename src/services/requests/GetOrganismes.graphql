@@ -3,6 +3,7 @@ query getOrganismes($locale: I18NLocaleCode, $filters: OrganismeFiltersInput) {
     data{
       id
       attributes{
+        Referencement_internet
         Nom
         Departement
         generatedUrl

@@ -5,6 +5,7 @@ import {fetchCategories} from "./fetch-data/fetchCategories";
 import {fetchTranslations} from "./fetch-data/fetchTranslations";
 import {fetchLocales} from "./fetch-data/fetchLocales";
 import { fetchServices } from "./fetch-data/fetchServices";
+import {buildSitemap} from "./utils/build-sitemap";
 
 console.info('Prebuild started...');
 
@@ -16,5 +17,6 @@ Promise.all([
     fetchCategories(),
     fetchOrganismes(),
     fetchServices(),
+    buildSitemap(),
     buildIndexes()
 ]).then(() => console.info('Prebuild done!'));

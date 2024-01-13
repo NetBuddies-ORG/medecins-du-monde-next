@@ -52,11 +52,12 @@ export async function CustomFooter() {
                             <footer>
                                 <hr />
                                 © 2023 MonBo Réseau.
-                                {/*<div>*/}
-                                {/*    <small style={{opacity: .7, fontSize: '.75rem'}}>*/}
-                                {/*        Conçu par <a target="_blank" href="https://alexianmoins.be" style={{ color: 'white'}}>Alexian Moins</a> <FaArrowUpRightFromSquare style={{fontSize: '.75rem'}} /> et <a target="_blank" href="https://alexianmoins.be" style={{ color: 'white'}}>Lucas Lopez</a> <FaArrowUpRightFromSquare style={{fontSize: '.75rem'}} />.*/}
-                                {/*    </small>*/}
-                                {/*</div>*/}
+                                <div>
+                                    <small style={{opacity: .7, fontSize: '.75rem'}}>
+                                        Conçu par <a target="_blank" href="https://alexianmoins.be" style={{ color: 'white'}}>Alexian Moins</a> <FaArrowUpRightFromSquare style={{fontSize: '.75rem'}} /> et Lucas Lopez.
+                                        {/*Conçu par <a target="_blank" href="https://alexianmoins.be" style={{ color: 'white'}}>Alexian Moins</a> <FaArrowUpRightFromSquare style={{fontSize: '.75rem'}} /> et <a target="_blank" href="https://alexianmoins.be" style={{ color: 'white'}}>Lucas Lopez</a> <FaArrowUpRightFromSquare style={{fontSize: '.75rem'}} />.*/}
+                                    </small>
+                                </div>
                             </footer>
             </div>
         </>
