@@ -1,4 +1,4 @@
 User-agent: *
-Disallow: /
+Disallow:
 
 Sitemap: https://monboreseau.be/sitemap-fr.xml
