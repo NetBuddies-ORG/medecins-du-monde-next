@@ -13,7 +13,7 @@ export async function AboutPage({extraData}: AboutPageProps) {
             <div className="page-container">
                 <div className="details-container">
                     <div className="details-container__body">
-                        <div style={{width: '100%'}} dangerouslySetInnerHTML={{__html: extraData.about.data.attributes.Description}}/>
+                        <div className="editor-wyswyg" style={{width: '100%'}} dangerouslySetInnerHTML={{__html: extraData.about.data.attributes.Description}}/>
                     </div>
                 </div>
             </div>

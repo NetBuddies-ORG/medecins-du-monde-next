@@ -46,11 +46,17 @@ export function Organizations({extraData, languague}: OrganizationsProps) {
                                         <div className='up'>
                                             {item.attributes.Nom}
                                         </div>
-                                        {item?.attributes?.Adresse &&
+                                        {item?.attributes?.Adresse ?
                                             <div className='down'>
                                                 <div className='location'>
                                                     <FaMapMarkerAlt/>
                                                     <p>{item.attributes.Adresse}</p>
+                                                </div>
+                                            </div> :
+                                            <div className='down'>
+                                                <div className='location'>
+                                                    <FaMapMarkerAlt/>
+                                                    <p>Adresse non disponible</p>
                                                 </div>
                                             </div>
                                         }

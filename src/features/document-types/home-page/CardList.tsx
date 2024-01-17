@@ -1,6 +1,6 @@
 'use client'
 import Link from "next/link";
-import {FaAngleDown, FaCheck, FaCircleInfo, FaCompass, FaHeadphones} from "react-icons/fa6";
+import {FaAngleDown, FaCheck, FaCircleInfo, FaCompass, FaHeadphones, FaTriangleExclamation} from "react-icons/fa6";
 import {IconComponent} from "@/features/common/react-icons/IconComponent";
 import {GetCategoriesQuery, GetHelpQuery, GetHomeQuery, GetPublicsQuery} from "@/services/GraphQL";
 import {useTranslation} from "@/app/i18n/client";
@@ -88,6 +88,10 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
                     <h2> {t('HOME_HELP_WITH_TOOLS')} <a onClick={() => showModal(true)}>{t('HOME_CLICK_HERE')}</a></h2>
                 </div>
             }
+            <div className="warn">
+                <FaTriangleExclamation/>
+                <h2>Le site est en construction, les données ne sont donc pas complètes</h2>
+            </div>
             <div className='searchbar input'>
                 <AutoComplete language={language}></AutoComplete>
             </div>
@@ -131,14 +135,14 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
             }
         </div>
         <div className={"footer-search" + (selectedCategories.length <= 0 ? ' isHidden' : '')}>
-            <button className="btn btn-primary">
                 <Link prefetch={false} href={{
                     pathname: 'rechercher-un-organisme',
                     query: {categories: selectedCategories, publics: selectedPublics}
                 }}>
-                    Rechercher un organisme
+                    <button className="btn btn-primary">
+                        Rechercher un organisme
+                    </button>
                 </Link>
-            </button>
         </div>
     </>
 }

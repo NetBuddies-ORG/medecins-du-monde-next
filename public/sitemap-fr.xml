@@ -1,1 +1,43 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://strapi.monboreseau.be/fr/</loc><lastmod>2024-01-13T15:46:52Z</lastmod><priority>1.00</priority></url><url><loc>https://strapi.monboreseau.be/fr/urgences</loc><lastmod>2024-01-13T15:46:52Z</lastmod><priority>1.00</priority></url><url><loc>https://strapi.monboreseau.be/fr/organismes</loc><lastmod>2024-01-13T15:46:52Z</lastmod><priority>1.00</priority></url><url><loc>https://strapi.monboreseau.be/fr/a-propos</loc><lastmod>2024-01-13T15:46:52Z</lastmod><priority>1.00</priority></url><url><loc>https://strapi.monboreseau.be/fr/rechercher-un-organisme</loc><lastmod>2024-01-13T15:46:52Z</lastmod><priority>1.00</priority></url><url><loc>https://strapi.monboreseau.be/fr/services</loc><lastmod>2024-01-13T15:46:52Z</lastmod><priority>1.00</priority></url><url><loc>https://strapi.monboreseau.be/fr/boite-a-outils</loc><lastmod>2024-01-13T15:46:52Z</lastmod><priority>1.00</priority></url><url><loc>https://strapi.monboreseau.be/fr/orientations</loc><lastmod>2024-01-13T15:46:52Z</lastmod><priority>1.00</priority></url><url><loc>https://strapi.monboreseau.be/fr/organismes/accueil-de-jour-l-escale</loc><lastmod>2024-01-13T15:46:53Z</lastmod><priority>1.00</priority></url></urlset>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://monboreseau.be/fr/rechercher-un-organisme</loc>
+        <lastmod>2024-01-17T22:27:53Z</lastmod>
+        <priority>0.90</priority>
+    </url>
+    <url>
+        <loc>https://monboreseau.be/fr/</loc>
+        <lastmod>2024-01-17T22:27:53Z</lastmod>
+        <priority>1.00</priority>
+    </url>
+    <url>
+        <loc>https://monboreseau.be/fr/a-propos</loc>
+        <lastmod>2024-01-17T22:27:53Z</lastmod>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://monboreseau.be/fr/organismes</loc>
+        <lastmod>2024-01-17T22:27:53Z</lastmod>
+        <priority>0.85</priority>
+    </url>
+    <url>
+        <loc>https://monboreseau.be/fr/orientations</loc>
+        <lastmod>2024-01-17T22:27:53Z</lastmod>
+        <priority>0.70</priority>
+    </url>
+    <url>
+        <loc>https://monboreseau.be/fr/services</loc>
+        <lastmod>2024-01-17T22:27:53Z</lastmod>
+        <priority>0.70</priority>
+    </url>
+    <url>
+        <loc>https://monboreseau.be/fr/boite-a-outils</loc>
+        <lastmod>2024-01-17T22:27:53Z</lastmod>
+        <priority>0.70</priority>
+    </url>
+    <url>
+        <loc>https://monboreseau.be/fr/urgences</loc>
+        <lastmod>2024-01-17T22:27:53Z</lastmod>
+        <priority>0.70</priority>
+    </url>
+</urlset>

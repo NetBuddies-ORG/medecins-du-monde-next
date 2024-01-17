@@ -281,22 +281,33 @@ export function SearchOrganization({extraData, language, publics, categories}: S
             </div>
             {
                 isMapViewSelect ?
-                    <div className='map-container'>
-                        {centerCoordinates &&
-                            <LeafletMap coordinates={centerCoordinates}
-                                        zoom={10}>
-                                {
-                                    organismes.length > 0 && organismes.map((organisme) => {
-                                        return organisme.Longitude && organisme.Latitude &&
-                                            <OrganizationMarker organisme={organisme}
-                                                                language={language}
-                                                                currentVisibleItemId={currentVisibleItemId}
-                                                                handleCloseCard={handleCloseCard}
-                                                                toggleViewItem={toggleViewItem}/>
-                                    })
-                                }
-                            </LeafletMap>}
-                    </div> :
+                    <>
+                        <div className='map-container'>
+                            {centerCoordinates &&
+                                <LeafletMap coordinates={centerCoordinates}
+                                            zoom={10}>
+                                    {
+                                        organismes.length > 0 && organismes.map((organisme) => {
+                                            return organisme.Longitude && organisme.Latitude &&
+                                                <OrganizationMarker organisme={organisme}
+                                                                    language={language}
+                                                                    currentVisibleItemId={currentVisibleItemId}
+                                                                    handleCloseCard={handleCloseCard}
+                                                                    toggleViewItem={toggleViewItem}/>
+                                        })
+                                    }
+                                </LeafletMap>
+                            }
+                        </div>
+                        {
+                            organismes.length === 0 &&
+                            <div className='no-results'>
+                                <p>Aucun résultat.</p>
+                                <small>Essayer de modifier vos paramètres de recherche</small>
+                            </div>
+                        }
+                    </>
+                    :
                     (
                         <>
                         {
@@ -326,6 +337,7 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                                 organismes.length === 0 &&
                                 <div className='no-results'>
                                     <p>Aucun résultat.</p>
+                                    <small>Essayer de modifier vos paramètres de recherche</small>
                                 </div>
                             }
                         </>

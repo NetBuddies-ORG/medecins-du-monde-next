@@ -3,9 +3,9 @@ import {getStrapiClient} from "../../../src/services/Strapi";
 import {writeFile} from "fs/promises";
 import {join} from "path";
 
-const baseDomain = new URL(`https://strapi.monboreseau.be/`);
+const baseDomain = new URL(`https://monboreseau.be/`);
 const client = getStrapiClient();
-const priority = (url: string) => Math.pow(0.8, Math.max(0, url.split('/').length - 3));
+const priority = (url: string) => Math.pow(0.8, Math.max(0, url.split('/').length - 1));
 const { format } = new Intl.NumberFormat('en', { maximumFractionDigits: 2, minimumFractionDigits: 2 });
 const fixDates = /\.\d+Z$/;
 
