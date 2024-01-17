@@ -22,7 +22,7 @@ export function HelpModal({help, closeModal}: HelpModalProps){
     }
 
     function handleNextStep() {
-        if(currentStep < 2){
+        if(currentStep < help.data.attributes.Page.length - 1){
             setCurrentStep(currentStep + 1)
         }
     }
