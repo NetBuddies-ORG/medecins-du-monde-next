@@ -149,9 +149,12 @@ export function SearchOrganization({extraData, language, publics, categories}: S
         let count: number = 0;
 
         organismes?.map((item) => {
-            latCenter += item.Latitude!;
-            longCenter += item.Longitude!;
-            ++count;
+            // Avoid to count organismes without coordinates
+            if(item.Latitude && item.Longitude){
+                latCenter += item.Latitude!;
+                longCenter += item.Longitude!;
+                ++count;
+            }
         })
 
         if (latCenter && longCenter) {
@@ -288,7 +291,7 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                                             zoom={10}>
                                     {
                                         organismes.length > 0 && organismes.map((organisme) => {
-                                            return organisme.Longitude && organisme.Latitude &&
+                                            return (organisme.Longitude && organisme.Latitude) &&
                                                 <OrganizationMarker organisme={organisme}
                                                                     language={language}
                                                                     currentVisibleItemId={currentVisibleItemId}
@@ -321,18 +324,28 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                                                 <div className='up'>
                                                     {organisme.Nom}
                                                 </div>
-                                                <div className='down'>
-                                                    <div className='location'>
-                                                        <FaMapMarkerAlt/>
-                                                        <p>{organisme.Adresse}</p>
-                                                    </div>
-                                                </div>
+                                                {
+                                                    organisme.Adresse ?
+                                                        <div className='down'>
+                                                            <div className='location'>
+                                                                <FaMapMarkerAlt/>
+                                                                <p>{organisme.Adresse}</p>
+                                                            </div>
+                                                        </div> :
+                                                        <div className='down'>
+                                                            <div className='location'>
+                                                                <FaMapMarkerAlt/>
+                                                                <p>Adresse non disponible</p>
+                                                            </div>
+                                                        </div>
+                                                }
+
                                             </div>
                                         </Link>
-                                    })
+                                 })
                                 }
                             </div>
-                            }
+                        }
                             {
                                 organismes.length === 0 &&
                                 <div className='no-results'>
