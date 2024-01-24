@@ -1,7 +1,5 @@
 'use client'
 import {LeafletMap} from "@/features/common/leaflet";
-import {control} from "leaflet";
-import zoom = control.zoom;
 
 interface OrganizationMapProps {
     latitude: number
