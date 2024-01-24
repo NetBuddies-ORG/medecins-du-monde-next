@@ -1,5 +1,14 @@
 'use client'
-import {FaAngleDown, FaAngleUp, FaCheck, FaList, FaMapLocationDot, FaXmark} from "react-icons/fa6";
+import {
+    FaAngleDown,
+    FaAngleUp,
+    FaBuilding,
+    FaBuildingUser,
+    FaCheck,
+    FaList,
+    FaMapLocationDot,
+    FaXmark
+} from "react-icons/fa6";
 import {useEffect, useState} from "react";
 import {useDBIndex} from "@/services/Search";
 import {
@@ -324,22 +333,18 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                                                 <div className='up'>
                                                     {organisme.Nom}
                                                 </div>
-                                                {
-                                                    organisme.Adresse ?
-                                                        <div className='down'>
-                                                            <div className='location'>
-                                                                <FaMapMarkerAlt/>
-                                                                <p>{organisme.Adresse}</p>
-                                                            </div>
-                                                        </div> :
-                                                        <div className='down'>
-                                                            <div className='location'>
-                                                                <FaMapMarkerAlt/>
-                                                                <p>Adresse non disponible</p>
-                                                            </div>
-                                                        </div>
-                                                }
-
+                                                <div className='department'>
+                                                    {
+                                                        organisme?.Departement &&
+                                                        <span><FaBuildingUser /> {organisme?.Departement}</span>
+                                                    }
+                                                </div>
+                                                <div className='down'>
+                                                    <div className='location'>
+                                                        <FaMapMarkerAlt/>
+                                                        {organisme.Adresse ? <p>{organisme.Adresse}</p> : <p>Adresse non disponible</p>}
+                                                    </div>
+                                                </div>
                                             </div>
                                         </Link>
                                  })

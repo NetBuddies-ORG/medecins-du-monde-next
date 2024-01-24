@@ -17,9 +17,10 @@ export interface LeafletMapProps {
     coordinates: Coordinates;
     boundsCoords?: LatLngBounds;
     zoom?: number;
+    canMove?: boolean;
 }
 
-export function LeafletMap({children, coordinates, boundsCoords, zoom = 13}: LeafletMapProps) {
+export function LeafletMap({children, coordinates, boundsCoords, zoom = 13, canMove = true}: LeafletMapProps) {
     const [ready, setReady] = useState<boolean>(false);
     const [centerCoordinates, setCenterCoordinates] = useState<LatLng>();
 
@@ -55,6 +56,7 @@ export function LeafletMap({children, coordinates, boundsCoords, zoom = 13}: Lea
             {
                 centerCoordinates &&
                 <MapContainer center={centerCoordinates}
+                              dragging={canMove}
                               touchZoom="center"
                               zoomAnimation={true}
                               zoom={zoom}

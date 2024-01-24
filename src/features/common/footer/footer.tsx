@@ -1,6 +1,5 @@
 import {getFooter, getLanguage} from "@/context/server";
 import {IconComponent} from "@/features/common/react-icons/IconComponent";
-import {FaArrowUpRightFromSquare} from "react-icons/fa6";
 
 export async function CustomFooter() {
     const lang = getLanguage();
@@ -70,7 +69,7 @@ export async function CustomFooter() {
                                         footer.data.attributes.Email &&
                                         <>
                                             <h4 className="mail">Email</h4>
-                                            <p><a href={'mailto:' + footer.data.attributes.Email}>{footer.data.attributes.Email}</a></p>
+                                            <p style={{fontSize: '.85rem'}}><a href={'mailto:' + footer.data.attributes.Email}>{footer.data.attributes.Email}</a></p>
                                         </>
                                     }
                                 </div>

@@ -34,6 +34,18 @@
 
     }
 
+    .department{
+      padding: 0.25rem 0;
+      line-height: .75rem;
+      font-size: .7rem;
+      font-weight: 300;
+      color: $cardTextColor;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      min-height: 20px;
+    }
+
     .down {
       .location {
         display: flex;

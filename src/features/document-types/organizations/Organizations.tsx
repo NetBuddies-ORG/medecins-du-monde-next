@@ -7,6 +7,7 @@ import {useDBIndex} from "@/services/Search";
 import {useAsyncEffect} from "@/hooks";
 import noResultImage from '@/assets/utils/images/no-results.jpg'
 import Image from 'next/image'
+import {FaBuildingUser} from "react-icons/fa6";
 
 interface OrganizationsProps {
     extraData: GetOrganismesQuery;
@@ -46,20 +47,18 @@ export function Organizations({extraData, languague}: OrganizationsProps) {
                                         <div className='up'>
                                             {item.attributes.Nom}
                                         </div>
-                                        {item?.attributes?.Adresse ?
-                                            <div className='down'>
-                                                <div className='location'>
-                                                    <FaMapMarkerAlt/>
-                                                    <p>{item.attributes.Adresse}</p>
-                                                </div>
-                                            </div> :
-                                            <div className='down'>
-                                                <div className='location'>
-                                                    <FaMapMarkerAlt/>
-                                                    <p>Adresse non disponible</p>
-                                                </div>
+                                        <div className='department'>
+                                            {
+                                                item.attributes?.Departement &&
+                                                <span><FaBuildingUser /> {item.attributes?.Departement}</span>
+                                            }
+                                        </div>
+                                        <div className='down'>
+                                            <div className='location'>
+                                                <FaMapMarkerAlt/>
+                                                {item.attributes.Adresse ? <p>{item.attributes.Adresse}</p> : <p>Adresse non disponible</p>}
                                             </div>
-                                        }
+                                        </div>
                                     </div>
                                 </Link>)
                             }

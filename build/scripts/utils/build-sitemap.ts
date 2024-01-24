@@ -5,11 +5,15 @@ import {join} from "path";
 
 const baseDomain = new URL(`https://monboreseau.be/`);
 const client = getStrapiClient();
-const priority = (url: string) => Math.pow(0.8, Math.max(0, url.split('/').length - 1));
-const { format } = new Intl.NumberFormat('en', { maximumFractionDigits: 2, minimumFractionDigits: 2 });
-const fixDates = /\.\d+Z$/;
+const priority = (url: string) => {
+    if (url === '/') return 1
+    return Math.pow(0.8, Math.max(0, url.split('/').length - 1))
+}
+const { format } = new Intl.NumberFormat('en', { maximumFractionDigits: 2, minimumFractionDigits: 2 })
+const fixDates = /\.\d+Z$/
 
 export async function buildSitemap() {
+    console.log('Build sitemap...');
     for (const language of languages){
         buildSitemapByCulture(language);
     }
@@ -30,11 +34,11 @@ async function buildSitemapByCulture(language) {
             '</url>').join('');
 
     const organismesSitemap = (await client.getOrganismes()).organismes.data
-        .map(item => item.attributes.Referencement_internet && '<url>' +
+        .map(item =>item.attributes.Referencement_internet ? '<url>' +
             `<loc>${new URL(language + '/organismes/' + item.attributes.generatedUrl, baseDomain)}</loc>` +
             `<lastmod>${new Date().toISOString().replace(fixDates, 'Z')}</lastmod>` +
             `<priority>${format(priority(item.attributes.generatedUrl))}</priority>` +
-            '</url>').join('');
+            '</url>' : '').join('');
 
     const sitemap= '<?xml version="1.0" encoding="utf-8" standalone="yes"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
         + pagesSitemap

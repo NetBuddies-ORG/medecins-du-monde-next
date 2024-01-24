@@ -1,7 +1,7 @@
 import {cache} from "react";
 import {getStrapiClient} from "@/services/Strapi";
 import {notFound} from "next/navigation";
-import {FaEnvelope, FaGlobe, FaPhone} from "react-icons/fa6";
+import {FaArrowUpRightFromSquare, FaEnvelope, FaGlobe, FaPhone} from "react-icons/fa6";
 import {OrganizationMap} from "@/features/document-types/organization/OrganizationMap";
 import {IconComponent} from "@/features/common/react-icons/IconComponent";
 import {FaMapMarkerAlt} from "react-icons/fa";
@@ -59,66 +59,97 @@ export default async function OrganizationDetails({language, segment, orgaslug}:
                         <div className='contact__card'>
                             <h3>Contactez-nous</h3>
                             <ul>
-                                <li>
-                                    <FaPhone/>
-                                    <span><a
-                                        href={'tel:' + organization?.Telephone}>{organization?.Telephone}</a></span>
-                                </li>
-                                <li>
-                                    <FaMapMarkerAlt/>
-                                    <span><a target={'_blank'}
-                                             href={'https://www.google.com/maps/place/' + organization?.Adresse}>{organization?.Adresse}</a></span>
-                                </li>
-                                <li>
-                                    <FaEnvelope/>
-                                    <span><a href={'mailto:' + organization?.Email}>{organization?.Email}</a></span>
-                                </li>
-                                <li>
-                                    <FaGlobe/>
-                                    <span><a target={'_blank'} href={organization?.Website}>{organization?.Website}</a></span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div className='schedules__card'>
-                            <h3>Horaires</h3>
-                            {
-                                organization?.Horaires &&
-                                <div dangerouslySetInnerHTML={{__html: organization?.Horaires}}></div>
-                            }
-                        </div>
-                        <div className='services__card'>
-                            <h3>Services</h3>
-                            <ul className='social-functions'>
                                 {
-                                    organization?.services?.data?.map(item => {
-                                        return <li key={item.attributes.Nom}>
-                                            <IconComponent icon={item.attributes.Icone}/>
-                                            <span>{item.attributes.Nom}</span>
-                                        </li>
-                                    })
+                                    organization?.Telephone &&
+                                    <li>
+                                        <FaPhone/>
+                                        <span>
+                                            <a href={'tel:' + organization?.Telephone}>{organization?.Telephone}</a>
+                                        </span>
+                                    </li>
                                 }
-                            </ul>
-                        </div>
-                        <div className='languages__card'>
-                            <h3>Langues</h3>
-                            <ul>
+                                {
+                                    organization?.Adresse &&
+                                    <li>
+                                        <FaMapMarkerAlt/>
+                                        <span><a target={'_blank'}
+                                                 href={'https://www.google.com/maps/place/' + organization?.Adresse}>{organization?.Adresse}</a></span>
+                                    </li>
+                                }
+                                {
+                                    organization?.Email &&
+                                    <li>
+                                        <FaEnvelope/>
+                                        <span><a href={'mailto:' + organization?.Email}>{organization?.Email}</a></span>
+                                    </li>
+                                }
+                                {
+                                    organization?.Website &&
+                                    <li>
+                                        <FaGlobe/>
+                                        <span><a target={'_blank'} href={organization?.Website}>{organization?.Website} <FaArrowUpRightFromSquare style={{fontSize: '.75rem'}} /></a></span>
+                                    </li>
+                                }
 
-                                {organization?.langues.data.map(item =>
-                                    <li key={item.attributes.Nom}><span>{item.attributes.Nom}</span></li>)}
                             </ul>
                         </div>
-                        <div className='access-conditions__card'>
-                            <h3>{"Conditions d'accès"}</h3>
-                            {
-                                organization?.Conditions &&
-                                <div dangerouslySetInnerHTML={{__html: organization?.Conditions}}></div>
-                            }
-                        </div>
-                        <div className='map'>
-                            <h3>Carte</h3>
-                            <OrganizationMap latitude={organization.Latitude}
-                                             longitude={organization.Longitude}/>
-                        </div>
+                        {
+                            organization?.Horaires &&
+                            <div className='schedules__card'>
+                                <h3>Horaires</h3>
+                                {
+                                    organization?.Horaires &&
+                                    <div dangerouslySetInnerHTML={{__html: organization?.Horaires}}></div>
+                                }
+                            </div>
+                        }
+                        {
+                            organization?.services?.data?.length > 0 &&
+                            <div className='services__card'>
+                                <h3>Services</h3>
+                                <ul className='social-functions'>
+                                    {
+                                        organization?.services?.data?.map(item => {
+                                            return <li key={item.attributes.Nom}>
+                                                <IconComponent icon={item.attributes.Icone}/>
+                                                <span>{item.attributes.Nom}</span>
+                                            </li>
+                                        })
+                                    }
+                                </ul>
+                            </div>
+                        }
+                        {
+                            organization?.langues?.data?.length > 0 &&
+                            <div className='languages__card'>
+                                <h3>Langues</h3>
+                                <ul>
+
+                                    {organization?.langues.data.map(item =>
+                                        <li key={item.attributes.Nom}><span>{item.attributes.Nom}</span></li>)}
+                                </ul>
+                            </div>
+                        }
+                        {
+                            organization?.Conditions &&
+                            <div className='access-conditions__card'>
+                                <h3>{"Conditions d'accès"}</h3>
+                                {
+                                    organization?.Conditions &&
+                                    <div dangerouslySetInnerHTML={{__html: organization?.Conditions}}></div>
+                                }
+                            </div>
+                        }
+                        {
+                            organization?.Latitude && organization?.Longitude &&
+                            <div className='map'>
+                                <h3>Carte</h3>
+                                <OrganizationMap latitude={organization.Latitude}
+                                                 longitude={organization.Longitude}
+                                                 canMove={false}
+                                                 zoom={15}/>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
