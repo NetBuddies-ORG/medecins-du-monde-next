@@ -8,6 +8,7 @@ import {useEffect, useState} from "react";
 import {FaTimes} from "react-icons/fa";
 import {HelpModal} from "@/features/common/help-modal/HelpModal";
 import AutoComplete from "@/features/common/auto-complete/AutoComplete";
+import { motion } from "framer-motion";
 
 interface CardListProps {
     extraData: GetHomeQuery
@@ -77,7 +78,9 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
     return <>
         {
             isModalOpen &&
-            <HelpModal help={help} closeModal={() => setIsModalOpen(false)}/>
+            <motion.div >
+                <HelpModal help={help} closeModal={() => setIsModalOpen(false)}/>
+            </motion.div>
         }
         <div className="searchbar">
             {
@@ -124,13 +127,13 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
             {
                 categories.data.map(category => {
                     if (subHealthIds.includes(category.id)) return
-                    return <div key={category.id}
+                    return <motion.div whileHover={{scale: 1.025}} key={category.id}
                                 className={'card' + (selectedCategories.includes(category.id) || (category.id === healthId && subHealthIds.every(subHealthId => selectedCategories.includes(subHealthId))) ? ' isSelected' : '')}
                                 onClick={() => handleSelectedCategories(category.id)}>
                         <span className="check"><FaCheck/></span>
                         <IconComponent icon={category?.attributes.Icone}/>
                         <div className="card__title"><span>{category?.attributes.Nom}</span></div>
-                    </div>
+                    </motion.div>
                 })
             }
         </div>

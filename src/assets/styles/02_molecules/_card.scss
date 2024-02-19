@@ -35,15 +35,16 @@
     }
 
     .department{
-      padding: 0.25rem 0;
+      padding: 0.25rem 0.25rem;
       line-height: .75rem;
       font-size: .7rem;
       font-weight: 300;
       color: $cardTextColor;
       display: flex;
       align-items: center;
-      gap: 5px;
-      min-height: 20px;
+      background-color: rgba(2, 48, 71, 0.1);
+      width: fit-content;
+      border-radius: 5px;
     }
 
     .down {
@@ -52,7 +53,6 @@
         align-items: center;
         gap: 5px;
         font-size: 0.7rem;
-
         i {
           color: $cardTextColor;
           font-weight: 300;
@@ -131,10 +131,6 @@
     }
   }
 
-  .card:hover {
-    transform: scale(1.025);
-  }
-
   a {
     text-decoration: none;
     color: unset;
@@ -201,9 +197,6 @@
 @media (min-width: 1224px) {
   .card-container {
     grid-template-columns: repeat(7, 1fr);
-  }
-  .card-container-organisme {
-    grid-template-columns: repeat(2, 1fr);
   }
   .card-container-service {
     grid-template-columns: repeat(2, 1fr);
