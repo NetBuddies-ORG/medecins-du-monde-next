@@ -2,10 +2,9 @@ import { Deferred } from "@/helpers";
 import {
     Categorie,
     Organisme,
-    PublicSpecifique
 } from "@/services/GraphQL";
 import { DBSchema, IDBPDatabase, openDB } from "idb";
-import type { Index } from 'lunr';
+import { Index } from 'lunr';
 import { useAsync } from "react-use";
 
 interface OrganizationSchema {
@@ -37,6 +36,7 @@ let db: Promise<IDBPDatabase<MdmDB>>;
 let indexOrganism: Index;
 let indexService: Index;
 let indexCategorie: Index;
+let indexSubCategorie: Index;
 
 let publicsStoreName: 'publics' = 'publics';
 let organismesStoreName: 'organismes' = 'organismes';
@@ -165,6 +165,7 @@ async function initialize(language: string = 'fr') {
     indexOrganism = lunr.Index.load(await import('../../build/static/index.json'));
     indexService = lunr.Index.load(await import('../../build/static/indexService.json'));
     indexCategorie = lunr.Index.load(await import('../../build/static/indexCategorie.json'));
+    indexSubCategorie = lunr.Index.load(await import('../../build/static/indexSubCategorie.json'));
 
     deferred.resolve();
 }
@@ -174,7 +175,6 @@ async function search(params: SearchAccurateOrganizationParams): Promise<Organis
     // Get params
     const {categoriesIds, subCategoriesIds, publicsId} = params;
     const subCategoriesIdsToSearch = subCategoriesIds ?? [];
-    const categoriesIdsToSearch = categoriesIds ?? [];
 
     // Get IndexedDBData
     const organismesFromIndexedDb: (Organisme & {id: string})[] = await db.then(data => data.getAll(organismesStoreName));
@@ -255,11 +255,36 @@ async function searchCategories(params: SearchCategories): Promise<string[]> {
     let finalQuery = '';
     terms.forEach((t, i) => {
         if (t !== '') {
-            finalQuery += `${t}~2^${100 - i} ${t}* `;
+            finalQuery += `${t}~3^${100 - i} `;
         }
     });
-    let results: Set<string> = new Set(indexCategorie.search(finalQuery).map(({ref}) => ref));
+    let results: Set<string> = new Set(indexCategorie.search(finalQuery).filter(i => i.score > 4).map(({ref}) => ref));
     return Array.from(results);
+}
+
+async function searchSubCategories(params: SearchCategories): Promise<string[]> {
+    let newKeyword = params.keyword;
+    let terms = newKeyword.normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^\w\s*]/g, "")
+        .split(' ');
+    let finalQuery = '';
+    terms.forEach((t, i) => {
+        if (t !== '') {
+            finalQuery += `${t}~2^${100 - i*2} `;
+        }
+    });
+
+    console.log(indexSubCategorie.search(finalQuery))
+    return Array.from(indexSubCategorie.search(finalQuery).map(({ ref }) => ref))
+
+    // const searchResults = indexSubCategorie.query((q) => {
+    //     params.keyword.split(' ').forEach((word, index) => {
+    //         q.term(`${word}`, { boost: 100, usePipeline: false });
+    //     })
+    //     return q;
+    // });
+    // return Array.from(new Set(searchResults.map(({ ref }) => ref)))
 }
 
 export interface SearchOrganizationsParams {
@@ -285,6 +310,7 @@ interface SearchInterface {
     search(params: SearchAccurateOrganizationParams): Promise<Organisme[]>;
     getOrganismes(params: SearchOrganizationsParams): Promise<string[]>;
     searchCategories(params: SearchCategories): Promise<string[]>;
+    searchSubCategories(params: SearchCategories): Promise<string[]>;
     getCategories(): Promise<(Categorie & {id: string})[]>;
     getServices(params: SearchServicesParams): Promise<string[]>;
 }
@@ -301,6 +327,7 @@ export function useDBIndex(language: string): SearchInterface {
             return db.then(data => data.getAll(publicsStoreName));
         },
         searchCategories: !loading ? searchCategories : () => Promise.reject(new Error('Search engine is not ready')),
+        searchSubCategories: !loading ? searchSubCategories : () => Promise.reject(new Error('Search engine is not ready')),
         getCategories(): Promise<any[]> {
             return db.then(data => data.getAll(categoriesStoreName));
         },

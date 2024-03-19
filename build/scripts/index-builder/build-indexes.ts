@@ -2,7 +2,7 @@ import {writeFile} from "fs/promises";
 import {join} from "path";
 import lunr from 'lunr';
 import {removeDiacriticsSpelling} from "./removeDiacriticsSpelling";
-import {Categorie, Organisme, Service} from "@/services/GraphQL";
+import {Organisme, Service} from "@/services/GraphQL";
 require('lunr-languages/lunr.stemmer.support')(lunr);
 require('lunr-languages/lunr.fr')(lunr);
 
@@ -32,8 +32,30 @@ async function buildIndex()
     {
         this.use(removeDiacriticsSpelling);
         this.ref('id');
-        this.field('name_sub_category', {extractor: (p: Categorie)  => p.sous_categories.data.map((s) => s.attributes.Nom).join(' ')});
-        categories.forEach(p => this.add(p));
+        this.field('name_category', {boost: 3});
+        this.field('name_sub_category', {boost: 5});
+        this.field('searchTerms', {boost: 3});
+        categories.forEach(p => this.add({
+            id: p.id,
+            name_category: p.Nom,
+            name_sub_category: p.sous_categories.data.map((s) => s.attributes.Nom).join(' '),
+            searchTerms: p.sous_categories.data.map((s) => s.attributes.SearchTerms).join(' '),
+        }));
+    });
+
+    const subCategoriesIndex = lunr(function ()
+    {
+        this.use(removeDiacriticsSpelling);
+        this.ref('id');
+        this.field('name_sub_category', {boost: 5});
+        this.field('searchTerms', {boost: 5});
+        categories.forEach(p => p.sous_categories.data.forEach((s) => {
+            this.add({
+                id: s.id,
+                name_sub_category: s.attributes.Nom,
+                searchTerms: s.attributes?.SearchTerms?.join(' ')
+            })
+        }));
     });
 
     const jsonIndex = JSON.stringify(index);
@@ -45,6 +67,8 @@ async function buildIndex()
     const jsonCategoriesIndex = JSON.stringify(categoriesIndex);
     await writeFile(join(__dirname, `../../static/indexCategorie.json`), jsonCategoriesIndex, { encoding: 'utf-8' });
 
+    const jsonSubCategoriesIndex = JSON.stringify(subCategoriesIndex);
+    await writeFile(join(__dirname, `../../static/indexSubCategorie.json`), jsonSubCategoriesIndex, { encoding: 'utf-8' });
 }
 
 export async function buildIndexes()

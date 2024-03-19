@@ -1,0 +1,2494 @@
+{
+  "version": "2.3.9",
+  "fields": [
+    "name_sub_category",
+    "searchTerms"
+  ],
+  "fieldVectors": [
+    [
+      "name_sub_category/10",
+      [
+        0,
+        26.36
+      ]
+    ],
+    [
+      "searchTerms/10",
+      []
+    ],
+    [
+      "name_sub_category/11",
+      [
+        1,
+        8.584,
+        2,
+        7.969,
+        3,
+        9.354,
+        4,
+        10.386,
+        5,
+        9.354,
+        6,
+        10.386,
+        7,
+        11.952
+      ]
+    ],
+    [
+      "searchTerms/11",
+      []
+    ],
+    [
+      "name_sub_category/12",
+      [
+        8,
+        19.074,
+        9,
+        21.95
+      ]
+    ],
+    [
+      "searchTerms/12",
+      []
+    ],
+    [
+      "name_sub_category/13",
+      [
+        10,
+        18.804,
+        11,
+        7.54,
+        12,
+        18.804
+      ]
+    ],
+    [
+      "searchTerms/13",
+      []
+    ],
+    [
+      "name_sub_category/14",
+      [
+        13,
+        16.34,
+        14,
+        9.901,
+        15,
+        18.804
+      ]
+    ],
+    [
+      "searchTerms/14",
+      []
+    ],
+    [
+      "name_sub_category/19",
+      [
+        11,
+        7.54,
+        16,
+        18.804,
+        17,
+        18.804
+      ]
+    ],
+    [
+      "searchTerms/19",
+      []
+    ],
+    [
+      "name_sub_category/20",
+      [
+        11,
+        7.54,
+        18,
+        18.804,
+        19,
+        18.804
+      ]
+    ],
+    [
+      "searchTerms/20",
+      []
+    ],
+    [
+      "name_sub_category/21",
+      [
+        11,
+        6.595,
+        20,
+        16.447,
+        21,
+        16.447,
+        22,
+        16.447
+      ]
+    ],
+    [
+      "searchTerms/21",
+      []
+    ],
+    [
+      "name_sub_category/22",
+      [
+        1,
+        10.496,
+        23,
+        14.615,
+        24,
+        11.439,
+        25,
+        12.7,
+        26,
+        14.615
+      ]
+    ],
+    [
+      "searchTerms/22",
+      []
+    ],
+    [
+      "name_sub_category/23",
+      [
+        5,
+        14.717,
+        13,
+        16.34,
+        27,
+        18.804
+      ]
+    ],
+    [
+      "searchTerms/23",
+      []
+    ],
+    [
+      "name_sub_category/24",
+      [
+        25,
+        14.292,
+        28,
+        12.872,
+        29,
+        14.292,
+        30,
+        16.447
+      ]
+    ],
+    [
+      "searchTerms/24",
+      []
+    ],
+    [
+      "name_sub_category/33",
+      [
+        2,
+        8.767,
+        3,
+        10.292,
+        4,
+        11.427,
+        5,
+        10.292,
+        31,
+        7.299,
+        32,
+        13.15
+      ]
+    ],
+    [
+      "searchTerms/33",
+      []
+    ],
+    [
+      "name_sub_category/34",
+      [
+        29,
+        16.34,
+        33,
+        18.804,
+        34,
+        18.804
+      ]
+    ],
+    [
+      "searchTerms/34",
+      []
+    ],
+    [
+      "name_sub_category/35",
+      [
+        35,
+        12.7,
+        36,
+        9.744,
+        37,
+        12.7,
+        38,
+        14.615,
+        39,
+        14.615
+      ]
+    ],
+    [
+      "searchTerms/35",
+      []
+    ],
+    [
+      "name_sub_category/36",
+      [
+        40,
+        18.804,
+        41,
+        18.804,
+        42,
+        18.804
+      ]
+    ],
+    [
+      "searchTerms/36",
+      []
+    ],
+    [
+      "name_sub_category/37",
+      [
+        43,
+        21.95,
+        44,
+        21.95
+      ]
+    ],
+    [
+      "searchTerms/37",
+      []
+    ],
+    [
+      "name_sub_category/38",
+      [
+        14,
+        8.66,
+        45,
+        16.447,
+        46,
+        14.292,
+        47,
+        16.447
+      ]
+    ],
+    [
+      "searchTerms/38",
+      []
+    ],
+    [
+      "name_sub_category/39",
+      [
+        48,
+        26.36
+      ]
+    ],
+    [
+      "searchTerms/39",
+      []
+    ],
+    [
+      "name_sub_category/40",
+      [
+        14,
+        9.901,
+        46,
+        16.34,
+        49,
+        18.804
+      ]
+    ],
+    [
+      "searchTerms/40",
+      []
+    ],
+    [
+      "name_sub_category/51",
+      [
+        50,
+        19.074,
+        51,
+        21.95
+      ]
+    ],
+    [
+      "searchTerms/51",
+      []
+    ],
+    [
+      "name_sub_category/52",
+      [
+        50,
+        19.074,
+        52,
+        21.95
+      ]
+    ],
+    [
+      "searchTerms/52",
+      []
+    ],
+    [
+      "name_sub_category/53",
+      [
+        11,
+        7.54,
+        53,
+        18.804,
+        54,
+        18.804
+      ]
+    ],
+    [
+      "searchTerms/53",
+      []
+    ],
+    [
+      "name_sub_category/30",
+      [
+        24,
+        12.872,
+        28,
+        12.872,
+        31,
+        9.129,
+        55,
+        16.447
+      ]
+    ],
+    [
+      "searchTerms/30",
+      []
+    ],
+    [
+      "name_sub_category/31",
+      [
+        1,
+        15.765,
+        56,
+        21.95
+      ]
+    ],
+    [
+      "searchTerms/31",
+      []
+    ],
+    [
+      "name_sub_category/32",
+      [
+        14,
+        7.695,
+        35,
+        12.7,
+        36,
+        9.744,
+        37,
+        12.7,
+        57,
+        14.615
+      ]
+    ],
+    [
+      "searchTerms/32",
+      []
+    ],
+    [
+      "name_sub_category/54",
+      [
+        58,
+        19.074,
+        59,
+        21.95
+      ]
+    ],
+    [
+      "searchTerms/54",
+      []
+    ],
+    [
+      "name_sub_category/55",
+      [
+        58,
+        19.074,
+        60,
+        21.95
+      ]
+    ],
+    [
+      "searchTerms/55",
+      []
+    ],
+    [
+      "name_sub_category/56",
+      [
+        61,
+        21.95,
+        62,
+        21.95
+      ]
+    ],
+    [
+      "searchTerms/56",
+      []
+    ],
+    [
+      "name_sub_category/57",
+      [
+        11,
+        7.54,
+        63,
+        18.804,
+        64,
+        18.804
+      ]
+    ],
+    [
+      "searchTerms/57",
+      []
+    ],
+    [
+      "name_sub_category/59",
+      [
+        65,
+        26.36
+      ]
+    ],
+    [
+      "searchTerms/59",
+      []
+    ],
+    [
+      "name_sub_category/58",
+      [
+        66,
+        26.36
+      ]
+    ],
+    [
+      "searchTerms/58",
+      []
+    ],
+    [
+      "name_sub_category/72",
+      [
+        67,
+        20.631
+      ]
+    ],
+    [
+      "searchTerms/72",
+      []
+    ],
+    [
+      "name_sub_category/60",
+      [
+        11,
+        7.54,
+        67,
+        14.717,
+        68,
+        13.505
+      ]
+    ],
+    [
+      "searchTerms/60",
+      []
+    ],
+    [
+      "name_sub_category/64",
+      [
+        69,
+        26.36
+      ]
+    ],
+    [
+      "searchTerms/64",
+      []
+    ],
+    [
+      "name_sub_category/65",
+      [
+        70,
+        26.36
+      ]
+    ],
+    [
+      "searchTerms/65",
+      []
+    ],
+    [
+      "name_sub_category/66",
+      [
+        11,
+        7.54,
+        71,
+        18.804,
+        72,
+        16.34
+      ]
+    ],
+    [
+      "searchTerms/66",
+      []
+    ],
+    [
+      "name_sub_category/61",
+      [
+        73,
+        26.36
+      ]
+    ],
+    [
+      "searchTerms/61",
+      []
+    ],
+    [
+      "name_sub_category/62",
+      [
+        74,
+        26.36
+      ]
+    ],
+    [
+      "searchTerms/62",
+      []
+    ],
+    [
+      "name_sub_category/67",
+      [
+        75,
+        26.36
+      ]
+    ],
+    [
+      "searchTerms/67",
+      []
+    ],
+    [
+      "name_sub_category/63",
+      [
+        68,
+        15.765,
+        76,
+        21.95
+      ]
+    ],
+    [
+      "searchTerms/63",
+      []
+    ],
+    [
+      "name_sub_category/73",
+      [
+        11,
+        7.54,
+        67,
+        14.717,
+        68,
+        13.505
+      ]
+    ],
+    [
+      "searchTerms/73",
+      []
+    ],
+    [
+      "name_sub_category/4",
+      [
+        14,
+        9.901,
+        77,
+        16.34,
+        78,
+        18.804
+      ]
+    ],
+    [
+      "searchTerms/4",
+      [
+        14,
+        0.664,
+        77,
+        0.556,
+        79,
+        0.556,
+        80,
+        0.64,
+        81,
+        0.64,
+        82,
+        0.64,
+        83,
+        0.64
+      ]
+    ],
+    [
+      "name_sub_category/5",
+      [
+        2,
+        8.767,
+        8,
+        11.427,
+        14,
+        6.924,
+        79,
+        11.427,
+        84,
+        13.15,
+        85,
+        13.15
+      ]
+    ],
+    [
+      "searchTerms/5",
+      []
+    ],
+    [
+      "name_sub_category/8",
+      [
+        11,
+        7.54,
+        86,
+        18.804,
+        87,
+        18.804
+      ]
+    ],
+    [
+      "searchTerms/8",
+      []
+    ],
+    [
+      "name_sub_category/6",
+      [
+        88,
+        18.804,
+        89,
+        16.34,
+        90,
+        18.804
+      ]
+    ],
+    [
+      "searchTerms/6",
+      []
+    ],
+    [
+      "name_sub_category/70",
+      [
+        91,
+        26.36
+      ]
+    ],
+    [
+      "searchTerms/70",
+      []
+    ],
+    [
+      "name_sub_category/2",
+      [
+        31,
+        10.438,
+        36,
+        12.537,
+        92,
+        18.804
+      ]
+    ],
+    [
+      "searchTerms/2",
+      []
+    ],
+    [
+      "name_sub_category/3",
+      [
+        31,
+        10.438,
+        36,
+        12.537,
+        93,
+        18.804
+      ]
+    ],
+    [
+      "searchTerms/3",
+      []
+    ],
+    [
+      "name_sub_category/1",
+      [
+        14,
+        6.924,
+        31,
+        7.299,
+        72,
+        11.427,
+        89,
+        11.427,
+        94,
+        13.15,
+        95,
+        13.15
+      ]
+    ],
+    [
+      "searchTerms/1",
+      []
+    ],
+    [
+      "name_sub_category/9",
+      [
+        31,
+        10.438,
+        96,
+        16.34,
+        97,
+        16.34
+      ]
+    ],
+    [
+      "searchTerms/9",
+      []
+    ],
+    [
+      "name_sub_category/7",
+      [
+        98,
+        21.95,
+        99,
+        21.95
+      ]
+    ],
+    [
+      "searchTerms/7",
+      []
+    ],
+    [
+      "name_sub_category/69",
+      [
+        31,
+        12.184,
+        100,
+        21.95
+      ]
+    ],
+    [
+      "searchTerms/69",
+      []
+    ],
+    [
+      "name_sub_category/15",
+      [
+        101,
+        26.36
+      ]
+    ],
+    [
+      "searchTerms/15",
+      []
+    ],
+    [
+      "name_sub_category/16",
+      [
+        11,
+        7.54,
+        102,
+        18.804,
+        103,
+        18.804
+      ]
+    ],
+    [
+      "searchTerms/16",
+      []
+    ],
+    [
+      "name_sub_category/17",
+      [
+        11,
+        7.54,
+        104,
+        18.804,
+        105,
+        18.804
+      ]
+    ],
+    [
+      "searchTerms/17",
+      []
+    ],
+    [
+      "name_sub_category/18",
+      [
+        36,
+        12.537,
+        106,
+        18.804,
+        107,
+        18.804
+      ]
+    ],
+    [
+      "searchTerms/18",
+      []
+    ],
+    [
+      "name_sub_category/47",
+      [
+        11,
+        7.54,
+        108,
+        18.804,
+        109,
+        18.804
+      ]
+    ],
+    [
+      "searchTerms/47",
+      []
+    ],
+    [
+      "name_sub_category/48",
+      [
+        110,
+        26.36
+      ]
+    ],
+    [
+      "searchTerms/48",
+      []
+    ],
+    [
+      "name_sub_category/49",
+      [
+        111,
+        21.95,
+        112,
+        21.95
+      ]
+    ],
+    [
+      "searchTerms/49",
+      []
+    ],
+    [
+      "name_sub_category/50",
+      [
+        1,
+        11.812,
+        2,
+        10.966,
+        3,
+        12.872,
+        113,
+        16.447
+      ]
+    ],
+    [
+      "searchTerms/50",
+      []
+    ],
+    [
+      "name_sub_category/68",
+      [
+        96,
+        16.34,
+        97,
+        16.34,
+        114,
+        18.804
+      ]
+    ],
+    [
+      "searchTerms/68",
+      []
+    ],
+    [
+      "name_sub_category/25",
+      [
+        115,
+        26.36
+      ]
+    ],
+    [
+      "searchTerms/25",
+      []
+    ],
+    [
+      "name_sub_category/26",
+      [
+        116,
+        26.36
+      ]
+    ],
+    [
+      "searchTerms/26",
+      []
+    ],
+    [
+      "name_sub_category/27",
+      [
+        117,
+        26.36
+      ]
+    ],
+    [
+      "searchTerms/27",
+      []
+    ],
+    [
+      "name_sub_category/28",
+      [
+        118,
+        26.36
+      ]
+    ],
+    [
+      "searchTerms/28",
+      []
+    ],
+    [
+      "name_sub_category/29",
+      [
+        2,
+        13.42,
+        6,
+        11.427,
+        119,
+        13.15,
+        120,
+        13.15,
+        121,
+        13.15
+      ]
+    ],
+    [
+      "searchTerms/29",
+      []
+    ],
+    [
+      "name_sub_category/71",
+      [
+        68,
+        18.932
+      ]
+    ],
+    [
+      "searchTerms/71",
+      []
+    ],
+    [
+      "name_sub_category/41",
+      [
+        11,
+        6.595,
+        122,
+        10.966,
+        123,
+        16.447,
+        124,
+        16.447
+      ]
+    ],
+    [
+      "searchTerms/41",
+      []
+    ],
+    [
+      "name_sub_category/42",
+      [
+        122,
+        14.635,
+        125,
+        21.95
+      ]
+    ],
+    [
+      "searchTerms/42",
+      []
+    ],
+    [
+      "name_sub_category/43",
+      [
+        122,
+        14.635,
+        126,
+        21.95
+      ]
+    ],
+    [
+      "searchTerms/43",
+      []
+    ],
+    [
+      "name_sub_category/44",
+      [
+        11,
+        7.54,
+        127,
+        18.804,
+        128,
+        18.804
+      ]
+    ],
+    [
+      "searchTerms/44",
+      []
+    ],
+    [
+      "name_sub_category/45",
+      [
+        24,
+        11.439,
+        122,
+        9.744,
+        129,
+        14.615,
+        130,
+        14.615,
+        131,
+        14.615
+      ]
+    ],
+    [
+      "searchTerms/45",
+      []
+    ],
+    [
+      "name_sub_category/46",
+      [
+        14,
+        7.695,
+        28,
+        11.439,
+        31,
+        8.112,
+        122,
+        9.744,
+        132,
+        14.615
+      ]
+    ],
+    [
+      "searchTerms/46",
+      []
+    ]
+  ],
+  "invertedIndex": [
+    [
+      "",
+      {
+        "_index": 2,
+        "name_sub_category": {
+          "5": {},
+          "11": {},
+          "29": {},
+          "33": {},
+          "50": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "abri",
+      {
+        "_index": 85,
+        "name_sub_category": {
+          "5": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "acc",
+      {
+        "_index": 106,
+        "name_sub_category": {
+          "18": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "accu",
+      {
+        "_index": 81,
+        "name_sub_category": {},
+        "searchTerms": {
+          "4": {}
+        }
+      }
+    ],
+    [
+      "accueil",
+      {
+        "_index": 77,
+        "name_sub_category": {
+          "4": {}
+        },
+        "searchTerms": {
+          "4": {}
+        }
+      }
+    ],
+    [
+      "activit",
+      {
+        "_index": 111,
+        "name_sub_category": {
+          "49": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "administr",
+      {
+        "_index": 26,
+        "name_sub_category": {
+          "22": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "aid",
+      {
+        "_index": 31,
+        "name_sub_category": {
+          "1": {},
+          "2": {},
+          "3": {},
+          "9": {},
+          "30": {},
+          "33": {},
+          "46": {},
+          "69": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "aidebourseprim",
+      {
+        "_index": 30,
+        "name_sub_category": {
+          "24": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "alcool",
+      {
+        "_index": 115,
+        "name_sub_category": {
+          "25": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "alimentair",
+      {
+        "_index": 100,
+        "name_sub_category": {
+          "69": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "animaux",
+      {
+        "_index": 91,
+        "name_sub_category": {
+          "70": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "appar",
+      {
+        "_index": 54,
+        "name_sub_category": {
+          "53": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "apprendr",
+      {
+        "_index": 33,
+        "name_sub_category": {
+          "34": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "assist",
+      {
+        "_index": 40,
+        "name_sub_category": {
+          "36": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "au",
+      {
+        "_index": 36,
+        "name_sub_category": {
+          "2": {},
+          "3": {},
+          "18": {},
+          "32": {},
+          "35": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "auteur",
+      {
+        "_index": 132,
+        "name_sub_category": {
+          "46": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "autr",
+      {
+        "_index": 6,
+        "name_sub_category": {
+          "11": {},
+          "29": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "aux",
+      {
+        "_index": 41,
+        "name_sub_category": {
+          "36": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "base",
+      {
+        "_index": 129,
+        "name_sub_category": {
+          "45": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "boir",
+      {
+        "_index": 86,
+        "name_sub_category": {
+          "8": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "budget",
+      {
+        "_index": 27,
+        "name_sub_category": {
+          "23": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "ca",
+      {
+        "_index": 95,
+        "name_sub_category": {
+          "1": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "confort",
+      {
+        "_index": 53,
+        "name_sub_category": {
+          "53": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "conjugal",
+      {
+        "_index": 124,
+        "name_sub_category": {
+          "41": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "contr",
+      {
+        "_index": 96,
+        "name_sub_category": {
+          "9": {},
+          "68": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "contracept",
+      {
+        "_index": 69,
+        "name_sub_category": {
+          "64": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "corporel",
+      {
+        "_index": 51,
+        "name_sub_category": {
+          "51": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "crire",
+      {
+        "_index": 21,
+        "name_sub_category": {
+          "21": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "cultur",
+      {
+        "_index": 108,
+        "name_sub_category": {
+          "47": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "cyberharcel",
+      {
+        "_index": 128,
+        "name_sub_category": {
+          "44": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "dan",
+      {
+        "_index": 23,
+        "name_sub_category": {
+          "22": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "danimaux",
+      {
+        "_index": 99,
+        "name_sub_category": {
+          "7": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "de",
+      {
+        "_index": 14,
+        "name_sub_category": {
+          "1": {},
+          "4": {},
+          "5": {},
+          "14": {},
+          "32": {},
+          "38": {},
+          "40": {},
+          "46": {}
+        },
+        "searchTerms": {
+          "4": {}
+        }
+      }
+    ],
+    [
+      "defens",
+      {
+        "_index": 45,
+        "name_sub_category": {
+          "38": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "demarch",
+      {
+        "_index": 25,
+        "name_sub_category": {
+          "22": {},
+          "24": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "dentisteri",
+      {
+        "_index": 66,
+        "name_sub_category": {
+          "58": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "depend",
+      {
+        "_index": 75,
+        "name_sub_category": {
+          "67": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "drogu",
+      {
+        "_index": 117,
+        "name_sub_category": {
+          "27": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "droit",
+      {
+        "_index": 46,
+        "name_sub_category": {
+          "38": {},
+          "40": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "du",
+      {
+        "_index": 38,
+        "name_sub_category": {
+          "35": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "dun",
+      {
+        "_index": 5,
+        "name_sub_category": {
+          "11": {},
+          "23": {},
+          "33": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "durgencetemporair",
+      {
+        "_index": 9,
+        "name_sub_category": {
+          "12": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "emploi",
+      {
+        "_index": 32,
+        "name_sub_category": {
+          "33": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "en",
+      {
+        "_index": 89,
+        "name_sub_category": {
+          "1": {},
+          "6": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "ergotherapi",
+      {
+        "_index": 64,
+        "name_sub_category": {
+          "57": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "et",
+      {
+        "_index": 11,
+        "name_sub_category": {
+          "8": {},
+          "13": {},
+          "16": {},
+          "17": {},
+          "19": {},
+          "20": {},
+          "21": {},
+          "41": {},
+          "44": {},
+          "47": {},
+          "53": {},
+          "57": {},
+          "60": {},
+          "66": {},
+          "73": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "excalibur",
+      {
+        "_index": 80,
+        "name_sub_category": {},
+        "searchTerms": {
+          "4": {}
+        }
+      }
+    ],
+    [
+      "femininemenstru",
+      {
+        "_index": 52,
+        "name_sub_category": {
+          "52": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "gard",
+      {
+        "_index": 98,
+        "name_sub_category": {
+          "7": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "general",
+      {
+        "_index": 59,
+        "name_sub_category": {
+          "54": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "genr",
+      {
+        "_index": 131,
+        "name_sub_category": {
+          "45": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "gestion",
+      {
+        "_index": 13,
+        "name_sub_category": {
+          "14": {},
+          "23": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "grossess",
+      {
+        "_index": 70,
+        "name_sub_category": {
+          "65": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "harcel",
+      {
+        "_index": 127,
+        "name_sub_category": {
+          "44": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "heberg",
+      {
+        "_index": 8,
+        "name_sub_category": {
+          "5": {},
+          "12": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "humain",
+      {
+        "_index": 47,
+        "name_sub_category": {
+          "38": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "hygien",
+      {
+        "_index": 50,
+        "name_sub_category": {
+          "51": {},
+          "52": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "infirmi",
+      {
+        "_index": 62,
+        "name_sub_category": {
+          "56": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "insalubrit",
+      {
+        "_index": 10,
+        "name_sub_category": {
+          "13": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "internet",
+      {
+        "_index": 17,
+        "name_sub_category": {
+          "19": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "interpretariat",
+      {
+        "_index": 19,
+        "name_sub_category": {
+          "20": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "intrafamilial",
+      {
+        "_index": 123,
+        "name_sub_category": {
+          "41": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "jeun",
+      {
+        "_index": 55,
+        "name_sub_category": {
+          "30": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "jeuness",
+      {
+        "_index": 112,
+        "name_sub_category": {
+          "49": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "jeux",
+      {
+        "_index": 120,
+        "name_sub_category": {
+          "29": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "jour",
+      {
+        "_index": 78,
+        "name_sub_category": {
+          "4": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "juridiqu",
+      {
+        "_index": 44,
+        "name_sub_category": {
+          "37": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "kinesitherapi",
+      {
+        "_index": 63,
+        "name_sub_category": {
+          "57": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "la",
+      {
+        "_index": 3,
+        "name_sub_category": {
+          "11": {},
+          "33": {},
+          "50": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "le",
+      {
+        "_index": 24,
+        "name_sub_category": {
+          "22": {},
+          "30": {},
+          "45": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "lecol",
+      {
+        "_index": 57,
+        "name_sub_category": {
+          "32": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "lectromenag",
+      {
+        "_index": 105,
+        "name_sub_category": {
+          "17": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "lenergi",
+      {
+        "_index": 15,
+        "name_sub_category": {
+          "14": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "lire",
+      {
+        "_index": 22,
+        "name_sub_category": {
+          "21": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "lisol",
+      {
+        "_index": 97,
+        "name_sub_category": {
+          "9": {},
+          "68": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "logement",
+      {
+        "_index": 7,
+        "name_sub_category": {
+          "11": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "logopedi",
+      {
+        "_index": 65,
+        "name_sub_category": {
+          "59": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "loisir",
+      {
+        "_index": 109,
+        "name_sub_category": {
+          "47": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "lutt",
+      {
+        "_index": 114,
+        "name_sub_category": {
+          "68": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "maladi",
+      {
+        "_index": 72,
+        "name_sub_category": {
+          "1": {},
+          "66": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "manger",
+      {
+        "_index": 87,
+        "name_sub_category": {
+          "8": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "medecin",
+      {
+        "_index": 58,
+        "name_sub_category": {
+          "54": {},
+          "55": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "mediat",
+      {
+        "_index": 48,
+        "name_sub_category": {
+          "39": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "medica",
+      {
+        "_index": 118,
+        "name_sub_category": {
+          "28": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "metier",
+      {
+        "_index": 34,
+        "name_sub_category": {
+          "34": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "meubl",
+      {
+        "_index": 104,
+        "name_sub_category": {
+          "17": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "mond",
+      {
+        "_index": 37,
+        "name_sub_category": {
+          "32": {},
+          "35": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "night",
+      {
+        "_index": 82,
+        "name_sub_category": {},
+        "searchTerms": {
+          "4": {}
+        }
+      }
+    ],
+    [
+      "nuit",
+      {
+        "_index": 79,
+        "name_sub_category": {
+          "5": {}
+        },
+        "searchTerms": {
+          "4": {}
+        }
+      }
+    ],
+    [
+      "numeriqu",
+      {
+        "_index": 107,
+        "name_sub_category": {
+          "18": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "parentalit",
+      {
+        "_index": 113,
+        "name_sub_category": {
+          "50": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "parler",
+      {
+        "_index": 20,
+        "name_sub_category": {
+          "21": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "perman",
+      {
+        "_index": 43,
+        "name_sub_category": {
+          "37": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "physiqu",
+      {
+        "_index": 126,
+        "name_sub_category": {
+          "43": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "ponctuel",
+      {
+        "_index": 94,
+        "name_sub_category": {
+          "1": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "pour",
+      {
+        "_index": 28,
+        "name_sub_category": {
+          "24": {},
+          "30": {},
+          "46": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "prevent",
+      {
+        "_index": 68,
+        "name_sub_category": {
+          "60": {},
+          "63": {},
+          "71": {},
+          "73": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "produit",
+      {
+        "_index": 119,
+        "name_sub_category": {
+          "29": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "psychiatri",
+      {
+        "_index": 74,
+        "name_sub_category": {
+          "62": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "psychologi",
+      {
+        "_index": 73,
+        "name_sub_category": {
+          "61": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "quotidien",
+      {
+        "_index": 92,
+        "name_sub_category": {
+          "2": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "raccroch",
+      {
+        "_index": 35,
+        "name_sub_category": {
+          "32": {},
+          "35": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "recherch",
+      {
+        "_index": 4,
+        "name_sub_category": {
+          "11": {},
+          "33": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "relog",
+      {
+        "_index": 0,
+        "name_sub_category": {
+          "10": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "renov",
+      {
+        "_index": 12,
+        "name_sub_category": {
+          "13": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "repar",
+      {
+        "_index": 102,
+        "name_sub_category": {
+          "16": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "reprogramm",
+      {
+        "_index": 83,
+        "name_sub_category": {},
+        "searchTerms": {
+          "4": {}
+        }
+      }
+    ],
+    [
+      "rue",
+      {
+        "_index": 90,
+        "name_sub_category": {
+          "6": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "scolair",
+      {
+        "_index": 56,
+        "name_sub_category": {
+          "31": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "sensibilis",
+      {
+        "_index": 67,
+        "name_sub_category": {
+          "60": {},
+          "72": {},
+          "73": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "sex",
+      {
+        "_index": 121,
+        "name_sub_category": {
+          "29": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "sexuel",
+      {
+        "_index": 125,
+        "name_sub_category": {
+          "42": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "shabil",
+      {
+        "_index": 101,
+        "name_sub_category": {
+          "15": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "soin",
+      {
+        "_index": 61,
+        "name_sub_category": {
+          "56": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "soutien",
+      {
+        "_index": 1,
+        "name_sub_category": {
+          "11": {},
+          "22": {},
+          "31": {},
+          "50": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "specialise",
+      {
+        "_index": 60,
+        "name_sub_category": {
+          "55": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "suicid",
+      {
+        "_index": 76,
+        "name_sub_category": {
+          "63": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "sur",
+      {
+        "_index": 130,
+        "name_sub_category": {
+          "45": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "tabac",
+      {
+        "_index": 116,
+        "name_sub_category": {
+          "26": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "telephon",
+      {
+        "_index": 16,
+        "name_sub_category": {
+          "19": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "temporair",
+      {
+        "_index": 84,
+        "name_sub_category": {
+          "5": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "traduct",
+      {
+        "_index": 18,
+        "name_sub_category": {
+          "20": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "tranger",
+      {
+        "_index": 49,
+        "name_sub_category": {
+          "40": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "transport",
+      {
+        "_index": 93,
+        "name_sub_category": {
+          "3": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "travail",
+      {
+        "_index": 39,
+        "name_sub_category": {
+          "35": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "travaux",
+      {
+        "_index": 103,
+        "name_sub_category": {
+          "16": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "troubl",
+      {
+        "_index": 71,
+        "name_sub_category": {
+          "66": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "un",
+      {
+        "_index": 29,
+        "name_sub_category": {
+          "24": {},
+          "34": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "victim",
+      {
+        "_index": 42,
+        "name_sub_category": {
+          "36": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "violenc",
+      {
+        "_index": 122,
+        "name_sub_category": {
+          "41": {},
+          "42": {},
+          "43": {},
+          "45": {},
+          "46": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "visit",
+      {
+        "_index": 88,
+        "name_sub_category": {
+          "6": {}
+        },
+        "searchTerms": {}
+      }
+    ],
+    [
+      "volontariat",
+      {
+        "_index": 110,
+        "name_sub_category": {
+          "48": {}
+        },
+        "searchTerms": {}
+      }
+    ]
+  ],
+  "pipeline": [
+    "removeDiacriticsSpelling",
+    "stemmer"
+  ]
+}

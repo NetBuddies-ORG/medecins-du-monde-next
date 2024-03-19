@@ -2206,6 +2206,7 @@ export type SlugifySlugInput = {
 export type SousCategorie = {
   __typename?: 'SousCategorie';
   Nom: Scalars['String']['output'];
+  SearchTerms: Maybe<Scalars['JSON']['output']>;
   category: Maybe<CategorieEntityResponse>;
   createdAt: Maybe<Scalars['DateTime']['output']>;
   locale: Maybe<Scalars['String']['output']>;
@@ -2241,6 +2242,7 @@ export type SousCategorieEntityResponseCollection = {
 
 export type SousCategorieFiltersInput = {
   Nom: InputMaybe<StringFilterInput>;
+  SearchTerms: InputMaybe<JsonFilterInput>;
   and: InputMaybe<Array<InputMaybe<SousCategorieFiltersInput>>>;
   category: InputMaybe<CategorieFiltersInput>;
   createdAt: InputMaybe<DateTimeFilterInput>;
@@ -2255,6 +2257,7 @@ export type SousCategorieFiltersInput = {
 
 export type SousCategorieInput = {
   Nom: InputMaybe<Scalars['String']['input']>;
+  SearchTerms: InputMaybe<Scalars['JSON']['input']>;
   category: InputMaybe<Scalars['ID']['input']>;
   publishedAt: InputMaybe<Scalars['DateTime']['input']>;
 };
@@ -2771,7 +2774,7 @@ export type GetCategoriesQueryVariables = Exact<{
 }>;
 
 
-export type GetCategoriesQuery = { __typename?: 'Query', categories: { __typename?: 'CategorieEntityResponseCollection', data: Array<{ __typename?: 'CategorieEntity', id: string, attributes: { __typename?: 'Categorie', Nom: string, Icone: string, sous_categories: { __typename?: 'SousCategorieRelationResponseCollection', data: Array<{ __typename?: 'SousCategorieEntity', id: string, attributes: { __typename?: 'SousCategorie', Nom: string } }> } } }> } };
+export type GetCategoriesQuery = { __typename?: 'Query', categories: { __typename?: 'CategorieEntityResponseCollection', data: Array<{ __typename?: 'CategorieEntity', id: string, attributes: { __typename?: 'Categorie', Nom: string, Icone: string, sous_categories: { __typename?: 'SousCategorieRelationResponseCollection', data: Array<{ __typename?: 'SousCategorieEntity', id: string, attributes: { __typename?: 'SousCategorie', Nom: string, SearchTerms: any } }> } } }> } };
 
 export type GetLocalesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2892,6 +2895,7 @@ export const GetCategoriesDocument = gql`
             id
             attributes {
               Nom
+              SearchTerms
             }
           }
         }
