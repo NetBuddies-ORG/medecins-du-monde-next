@@ -79,7 +79,6 @@ export function SearchOrganization({extraData, language, publics, categories}: S
             setSelectedPublic(searchParams.get('publics') as string ?? '0')
             // @ts-ignore
             setCategoriesForFilterDisplay(categoriesInit)
-            console.log(categoriesInit)
             search({
                 subCategoriesIds: searchParams.getAll('subCategories') as string[],
                 categoriesIds: searchParams.getAll('categories') as string[],
