@@ -14,6 +14,7 @@
     "env": "yarn env-cmd --no-override yarn run"
   },
   "dependencies": {
+    "danger": "^11.3.1",
     "@christopherpickering/react-leaflet-markercluster": "^1.1.0",
     "classnames": "^2.3.2",
     "i18next": "^23.6.0",

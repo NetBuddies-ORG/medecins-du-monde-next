@@ -31,7 +31,6 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
 
     useEffect(() => {
         if (localStorage.getItem('isInfoVisible') === 'false') {
-            console.log('isInfoVisible', localStorage.getItem('isInfoVisible'))
             setIsInfoVisible(false)
         } else {
             setIsInfoVisible(true)
