@@ -8,7 +8,7 @@ interface OrientationsProps {
 export function Orientations({extraData}: OrientationsProps) {
     return <>
         <div className='page-container'>
-            <div className="orientations-container">
+            <div className="urgences-container">
                 <h2></h2>
                 <ul>
                     {

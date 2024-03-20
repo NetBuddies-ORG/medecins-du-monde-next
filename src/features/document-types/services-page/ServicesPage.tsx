@@ -13,10 +13,28 @@ interface ServicesPageProps {
     language: string;
 }
 
+interface ServiceEntity {
+    __typename?: 'ServiceEntity';
+    id: string;
+    attributes: {
+        __typename?: 'Service';
+        Nom: string;
+        Icone: string;
+        organismes: {
+            __typename?: 'OrganismeRelationResponseCollection';
+            data: Array<{
+                __typename?: 'OrganismeEntity';
+                id: string;
+            }>
+        }
+    }
+
+}
+
 export function ServicesPage({extraData, language}: ServicesPageProps) {
 
     const [keyword, setKeyword] = useState<string>('');
-    const [services, setServices] = useState<any[]>(extraData.services.data);
+    const [services, setServices] = useState<ServiceEntity[]>(extraData.services.data);
 
     const {getServices, isReady} = useDBIndex(language);
 
@@ -41,13 +59,11 @@ export function ServicesPage({extraData, language}: ServicesPageProps) {
                 {services.length > 0 ?
                     <div className='card-container-service'>
                         {
-                            services.map(item => <>
-                                <div className=''>
-                                    <div>
+                            services.map(item =>
+                                <div key={item.id}>
                                         <IconComponent icon={item.attributes.Icone}/> {item.attributes.Nom}
-                                    </div>
                                 </div>
-                            </>)
+                            )
                         }
                     </div> :
                     <div className="no-results">

@@ -6,7 +6,6 @@ import {OrganizationMap} from "@/features/document-types/organization/Organizati
 import {IconComponent} from "@/features/common/react-icons/IconComponent";
 import {FaMapMarkerAlt} from "react-icons/fa";
 import {Maybe, Organisme} from "@/services/GraphQL";
-import Head from "next/head";
 
 const getOrganization = cache(async function getCategories(lang: string, slug: string) {
     const client = getStrapiClient();
@@ -33,9 +32,6 @@ export default async function OrganizationDetails({language, segment, orgaslug}:
 
     return (
         <>
-            <Head>
-                <meta name="robots" content="noindex"/>
-            </Head>
             <div className='page-container'>
                 <div className="details-container">
                     <div className="details-container__header">

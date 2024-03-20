@@ -5,8 +5,6 @@ import {DocumentTypes} from "@/features/document-types/DocumentTypes";
 import {notFound} from "next/navigation";
 import {setCategories, setFooter, setHeader, setLanguage, setPage, setPublics} from "@/context/server";
 import {languages} from "@/helpers";
-import Head from "next/head";
-import {ResolvingMetadata} from "next";
 
 export type CmsPageProps = {
     params: {

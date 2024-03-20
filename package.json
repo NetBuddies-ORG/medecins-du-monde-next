@@ -14,9 +14,9 @@
     "env": "yarn env-cmd --no-override yarn run"
   },
   "dependencies": {
-    "danger": "^11.3.1",
     "@christopherpickering/react-leaflet-markercluster": "^1.1.0",
     "classnames": "^2.3.2",
+    "danger": "^11.3.1",
     "i18next": "^23.6.0",
     "i18next-http-backend": "^2.3.1",
     "i18next-resources-to-backend": "^1.1.4",
@@ -47,6 +47,7 @@
     "@types/react": "18.2.8",
     "@types/react-dom": "18.2.4",
     "@types/react-slick": "^0.23.10",
+    "encoding": "^0.1.13",
     "env-cmd": "^10.1.0",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.1",
