@@ -204,7 +204,7 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                         <h3><span>Public spécifique</span></h3>
                         <div className='searchbar'>
                             <div className="searchbar__input input">
-                                <select value={selectedPublic} onChange={handlePublicsChange}>
+                                <select defaultValue={undefined} value={selectedPublic} onChange={handlePublicsChange}>
                                     <option value={0}>Aucun</option>
                                     {
                                         publics.publicSpecifiques.data.map(item => <option key={item.id}

@@ -1,121 +1,122 @@
-.orientations-container{
-    padding-inline: 1rem;
-    h2{
-      color: $cardInfoBackgroundColor;
-      font-size: 2rem;
-      font-weight: 500;
-      margin: 1rem 0;
-      padding: 7.5px;
-      text-decoration: underline;
+.urgences-container{
+  padding-inline: 1rem;
+  h2{
+    color: $cardDangerBackgroundColor;
+    font-size: 2rem;
+    font-weight: 500;
+    margin: 1rem 0;
+    padding: 7.5px;
+    text-decoration: underline;
+
+  }
+  ul{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    li{
+      box-shadow: 0 0 25px rgba(94, 94, 94, 0.3);
+      margin-bottom: 15px;
+      border-radius: 10px;
+      position: relative;
+      padding: 10px;
+      h3{
+        font-size: 1.2rem;
+        font-weight: 500;
+      }
+      .sub-element{
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        .info{
+          padding-left: 1rem;
+          font-size: 0.8rem;
+          font-weight: 400;
+          a{
+            color: $textColor;
+          }
+        }
+      }
+      .logo{
+        display: inline-block;
+        width: 100%;
+        svg{
+          font-size: 1.75rem;
+          padding: 5px;
+        }
+        button.fa-phone{
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 50%;
+          background-color: #1f802a;
+          border: none;
+          border-radius: 0 0 0 5px;
+          svg{
+            color: $whiteColor;
+          }
+        }
+        button.fa-location-arrow{
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          width: 50%;
+          background-color: $btnTextColor;
+          border: none;
+          border-radius: 0 0 5px 0;
+          svg{
+            width: 32px;
+            color: $whiteColor;
+          }
+        }
+      }
     }
+  }
+}
+
+@media (min-width: 992px) {
+  .urgences-container{
     ul{
-      list-style: none;
-      display: flex;
-      flex-direction: column;
       li{
-        box-shadow: 0 0 25px rgba(94, 94, 94, 0.3);
-        margin-bottom: 15px;
-        border-radius: 10px;
-        position: relative;
-        padding: 10px;
+        padding: 15px 15px 0 15px;
         h3{
-          font-size: 1.2rem;
-          font-weight: 500;
+
         }
         .sub-element{
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          .info{
-            padding-left: 1rem;
-            font-size: 0.8rem;
-            font-weight: 400;
-            a{
-              color: $textColor;
-            }
-          }
+
         }
         .logo{
-          display: inline-block;
-          width: 100%;
           svg{
-            font-size: 1.75rem;
-            padding: 5px;
+            font-size: 2.25rem;
           }
           button.fa-phone{
+            width: 40px;
+            height: 40px;
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50%;
             background-color: #1f802a;
+            left:unset;
+            right: 10rem;
+            bottom: 3.5rem;
             border: none;
-            border-radius: 0 0 0 5px;
+            border-radius: 50%;
             svg{
-              color: $whiteColor;
+              border-radius: 50%;
             }
           }
           button.fa-location-arrow{
+            width: 40px;
+            height: 40px;
             position: absolute;
-            right: 0;
-            bottom: 0;
-            width: 50%;
             background-color: $btnTextColor;
+            right: 6rem;
+            bottom: 3.5rem;
             border: none;
-            border-radius: 0 0 5px 0;
+            border-radius: 50%;
             svg{
-              width: 32px;
-              color: $whiteColor;
+              border-radius: 50%;
             }
           }
         }
       }
     }
   }
-  
-  @media (min-width: 992px) {
-    .urgences-container{
-      ul{
-        li{
-          padding: 15px 15px 0 15px;
-          h3{
-  
-          }
-          .sub-element{
-  
-          }
-          .logo{
-            svg{
-              font-size: 2.25rem;
-            }
-            button.fa-phone{
-              width: 40px;
-              height: 40px;
-              position: absolute;
-              background-color: #1f802a;
-              left:unset;
-              right: 10rem;
-              bottom: 3.5rem;
-              border: none;
-              border-radius: 50%;
-              svg{
-                border-radius: 50%;
-              }
-            }
-            button.fa-location-arrow{
-              width: 40px;
-              height: 40px;
-              position: absolute;
-              background-color: $btnTextColor;
-              right: 6rem;
-              bottom: 3.5rem;
-              border: none;
-              border-radius: 50%;
-              svg{
-                border-radius: 50%;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
+}

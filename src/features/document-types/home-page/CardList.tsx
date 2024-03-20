@@ -95,10 +95,10 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
                 <AutoComplete language={language}></AutoComplete>
             </div>
             <div className="searchbar__input input">
-                <select id={'publics'} value={selectedPublics}
+                <select defaultValue={0} id={'publics'} value={selectedPublics}
                         className={selectedPublics === '0' || !selectedPublics ? 'disabled-select' : ''}
                         onChange={handlePublicsChange}>
-                    <option value="0" className="disabled-option" selected>Choisir un public spécifique ..</option>
+                    <option value="0" className="disabled-option">Choisir un public spécifique ..</option>
                     {
                         publics.data.map(item =>
                             <option key={item.id} value={item.id}>{item.attributes.Nom}</option>)
