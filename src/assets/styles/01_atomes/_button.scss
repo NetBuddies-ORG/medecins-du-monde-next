@@ -27,6 +27,25 @@
 }
 
 .btn-group {
-  display: flex;
+  display: inline;
   gap: 0.5rem;
+  input{
+    margin: 1rem 0 .5rem 0;
+  }
+  select{
+    margin: .5rem 0 1rem 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .btn-group {
+    gap: 0.5rem;
+    display: flex;
+    input{
+      margin: 0;
+    }
+    select{
+      margin: 0;
+    }
+  }
 }

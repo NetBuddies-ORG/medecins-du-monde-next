@@ -1,13 +1,14 @@
 'use client'
 import {GetOrganismesQuery} from "@/services/GraphQL";
 import {FaMapMarkerAlt, FaSearch} from "react-icons/fa";
-import {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Link from "next/link";
 import {useDBIndex} from "@/services/Search";
 import {useAsyncEffect} from "@/hooks";
 import noResultImage from '@/assets/utils/images/no-results.jpg'
 import Image from 'next/image'
-import {FaBuildingUser} from "react-icons/fa6";
+import {FaAngleDown, FaBuildingUser} from "react-icons/fa6";
+import {useSearchParams} from "next/navigation";
 
 interface OrganizationsProps {
     extraData: GetOrganismesQuery;
@@ -18,65 +19,117 @@ export function Organizations({extraData, languague}: OrganizationsProps) {
 
     const [keyword, setKeyword] = useState<string>('');
     const [organismes, setOrganismes] = useState<any[]>(extraData.organismes.data);
-
+    const [selectedService, setSelectedService] = useState<string>('');
+    const [services, setServices] = useState<any[]>();
+    const searchParams = useSearchParams()
     const {getOrganismes, isReady} = useDBIndex(languague);
 
+    const getServices = () => import('../../../../build/static/services.json').then(({default: p}) => p);
+    const handleServiceChange = (e: any) => setSelectedService(e.target.value)
+
+    useEffect(() => {
+        if (searchParams.has('service') && services && services.length > 0) {
+            setSelectedService(searchParams.get('service') as string)
+        }
+    }, [searchParams, services])
+
+
+
     useAsyncEffect(async () => {
+        setServices(await getServices());
+    }, [])
+
+    useAsyncEffect(async () => {
+        const orga = extraData.organismes.data;
         if (keyword && keyword !== '' && isReady) {
             getOrganismes({keyword}).then((orgRef) => {
-                setOrganismes(extraData.organismes.data.filter(item => orgRef.includes(item.id)))
+                if(selectedService && selectedService !== '0') {
+                    setOrganismes(orga.filter(item => orgRef.includes(item.id)).filter(item => item.attributes.services.data.map(item => item.id).includes(selectedService)))
+                } else {
+                    setOrganismes(orga.filter(item => orgRef.includes(item.id)))
+                }
             })
+        } else {
+            if(selectedService && selectedService !== '0') {
+                setOrganismes(orga.filter(item => item.attributes.services.data.map(item => item.id).includes(selectedService)))
+            } else {
+                setOrganismes(orga)
+            }
+        }
+    }, [keyword])
+
+    useEffect(() => {
+        if (selectedService && selectedService !== '0') {
+            setOrganismes(extraData.organismes.data.filter(item => item.attributes.services.data.map(item => item.id).includes(selectedService)))
         } else {
             setOrganismes(extraData.organismes.data)
         }
-    }, [keyword])
+    }, [selectedService])
 
     return (
         <>
             <div className="page-container">
-                <div className='searchbar input'>
-                    <FaSearch/>
-                    <input type='text' value={keyword} onChange={(value) => setKeyword(value.target.value)}
-                           placeholder='Entrez un mot clé ..'/>
+                <div className='searchbar'>
+                    <div className='searchbar input'>
+                        <div className='input-container autocomplete'>
+                            <FaSearch/>
+                            <input type='text' value={keyword}
+                                   onChange={(value) => setKeyword(value.target.value)}
+                                   placeholder='Rechercher...'/>
+                        </div>
+                    </div>
+                    <div className='searchbar input'>
+                        <div className='input-container autocomplete'>
+                            <FaAngleDown/>
+                            <select defaultValue={undefined} value={selectedService} onChange={handleServiceChange}
+                                    className={(selectedService === '0' || !selectedService) ? 'disabled-select' : ''}>
+                                <option className="disabled-option" value='0'>Choisir un service</option>
+                                {   services && services.length > 0 &&
+                                    services?.map(item => <option key={item.id} value={item.id}>{item.Nom}</option>)
+                                }
+                            </select>
+                        </div>
+                    </div>
                 </div>
-                    {organismes.length > 0 ?
-                        <div className='card-container-organisme'>
-                            {
-                                organismes.map(item => <Link key={item.id} href={item.attributes.generatedUrl}>
-                                    <div className='card organisme'>
-                                        <div className='up'>
-                                            {item.attributes.Nom}
-                                        </div>
-                                        <div className='department'>
-                                            {
-                                                item.attributes?.Departement &&
-                                                <span><FaBuildingUser /> {item.attributes?.Departement}</span>
-                                            }
-                                        </div>
-                                        <div className='down'>
-                                            <div className='location'>
-                                                <FaMapMarkerAlt/>
-                                                {item.attributes.Adresse ? <p>{item.attributes.Adresse}</p> : <p>Adresse non disponible</p>}
-                                            </div>
+                {organismes.length > 0 ?
+                    <div className='card-container-organisme'>
+                        {
+                            organismes.map(item => <Link key={item.id} href={item.attributes.generatedUrl}>
+                                <div className='card organisme'>
+                                    <div className='up'>
+                                        {item.attributes.Nom}
+                                    </div>
+                                    <div className='department'>
+                                        {
+                                            item.attributes?.Departement &&
+                                            <span><FaBuildingUser/> {item.attributes?.Departement}</span>
+                                        }
+                                    </div>
+                                    <div className='down'>
+                                        <div className='location'>
+                                            <FaMapMarkerAlt/>
+                                            {item.attributes.Adresse ? <p>{item.attributes.Adresse}</p> :
+                                                <p>Adresse non disponible</p>}
                                         </div>
                                     </div>
-                                </Link>)
-                            }
-                        </div> :
-                        <div className="no-results">
-                            <Image
-                                src={noResultImage}
-                                width={175}
-                                height={175}
-                                alt="Aucun résultat"/>
-                            <div>
-                                <strong>Pas résultat</strong>
-                            </div>
-                            <div>
-                                <small>Aucun organisme ne correspond à votre critère de recherche</small>
-                            </div>
+                                </div>
+                            </Link>)
+                        }
+                    </div> :
+                    <div className="no-results">
+                        <Image
+                            src={noResultImage}
+                            width={175}
+                            height={175}
+                            alt="Aucun résultat"/>
+                        <div>
+                            <strong>Pas résultat</strong>
                         </div>
-                    }
+                        <div>
+                            <small>Aucun organisme ne correspond à votre critère de recherche</small>
+                        </div>
+                    </div>
+                }
             </div>
             <div className="custom-shape-divider-bottom-1694936473">
                 <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"

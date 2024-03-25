@@ -222,8 +222,10 @@ async function searchOrganismes(params: SearchOrganizationsParams): Promise<stri
         .split(' ');
     let finalQuery = '';
     terms.forEach((t, i) => {
-        if (t !== '') {
-            finalQuery += `${t}~2^${100 - i} ${t}* `;
+        if (t !== '' && i === 0) {
+            finalQuery += `${t}^${100 - i} ${t}*^10 ${t}~2 `;
+        } else {
+            finalQuery += `${t}^${100 - i} `;
         }
     });
     let results: Set<string> = new Set(indexOrganism.search(finalQuery).map(({ref}) => ref));
@@ -238,8 +240,10 @@ async function searchServices(params: SearchServicesParams): Promise<string[]> {
         .split(' ');
     let finalQuery = '';
     terms.forEach((t, i) => {
-        if (t !== '') {
-            finalQuery += `${t}~2^${100 - i} ${t}* `;
+        if (t !== '' && i === 0) {
+            finalQuery += `${t}^${100 - i} ${t}*^10 ${t}~2 `;
+        } else {
+            finalQuery += `${t}^${100 - i} `;
         }
     });
     let results: Set<string> = new Set(indexService.search(finalQuery).map(({ref}) => ref));
@@ -263,28 +267,20 @@ async function searchCategories(params: SearchCategories): Promise<string[]> {
 }
 
 async function searchSubCategories(params: SearchCategories): Promise<string[]> {
-    let newKeyword = params.keyword;
-    let terms = newKeyword.normalize("NFD")
+    let terms = params.keyword.normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
         .replace(/[^\w\s*]/g, "")
         .split(' ');
     let finalQuery = '';
     terms.forEach((t, i) => {
-        if (t !== '') {
-            finalQuery += `${t}~2^${100 - i*2} `;
+        if (t !== '' && i === 0) {
+            finalQuery += `${t}^${100 - i} ${t}*^10 ${t}~2 `;
+        } else {
+            finalQuery += `${t}^${100 - i} `;
         }
     });
 
-    console.log(indexSubCategorie.search(finalQuery))
-    return Array.from(indexSubCategorie.search(finalQuery).map(({ ref }) => ref))
-
-    // const searchResults = indexSubCategorie.query((q) => {
-    //     params.keyword.split(' ').forEach((word, index) => {
-    //         q.term(`${word}`, { boost: 100, usePipeline: false });
-    //     })
-    //     return q;
-    // });
-    // return Array.from(new Set(searchResults.map(({ ref }) => ref)))
+    return Array.from(indexSubCategorie.search(finalQuery).filter(s => s.score > 1.45).map(({ ref }) => ref))
 }
 
 export interface SearchOrganizationsParams {

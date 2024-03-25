@@ -11,6 +11,7 @@ async function buildIndex()
     const organismes = require(`../../static/organismes.json`);
     const services = require(`../../static/services.json`);
     const categories = require(`../../static/categories.json`);
+
     const index = lunr(function ()
     {
         this.use(removeDiacriticsSpelling);
@@ -47,12 +48,12 @@ async function buildIndex()
     {
         this.use(removeDiacriticsSpelling);
         this.ref('id');
-        this.field('name_sub_category', {boost: 5});
-        this.field('searchTerms', {boost: 5});
+        this.field('subcategory');
+        this.field('searchTerms', {boost: 15});
         categories.forEach(p => p.sous_categories.data.forEach((s) => {
             this.add({
                 id: s.id,
-                name_sub_category: s.attributes.Nom,
+                subcategory: s.attributes.Nom,
                 searchTerms: s.attributes?.SearchTerms?.join(' ')
             })
         }));
