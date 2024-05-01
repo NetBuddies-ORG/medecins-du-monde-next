@@ -15,7 +15,7 @@ import {IDBPDatabase} from "idb";
 import {Index} from "lunr";
 
 const getOrganisme = (slug: string) => {
-    return db.then(data => data.transaction("organismes").store.index('slug').get(slug))
+    return db?.then(data => data.transaction("organismes").store.index('slug').get(slug))
 };
 let db: Promise<IDBPDatabase<MdmDB>> | undefined = undefined;
 let indexLanguage: string;
@@ -60,8 +60,8 @@ async function search(params: SearchAccurateOrganizationParams): Promise<Organis
     const {subCategoriesIds, publicsId} = params;
 
     // Get IndexedDBData
-    const organismesFromIndexedDb: (Organisme & {id: string})[] = await db.then(data => data.getAll(organismesStoreName));
-    const categoriesFromIndexedDb: (Categorie & {id: string})[] = await db.then(data => data.getAll(categoriesStoreName));
+    const organismesFromIndexedDb: (Organisme & {id: string})[] = await db!.then(data => data.getAll(organismesStoreName));
+    const categoriesFromIndexedDb: (Categorie & {id: string})[] = await db!.then(data => data.getAll(categoriesStoreName));
 
     // Recompose the params categories and subCategories as a tree
     const recomposedParamCategories: {[key: string]: {isComplete: boolean, subcat: string[]}} = {};
@@ -189,12 +189,12 @@ export function useDBIndex(language: string): SearchInterface {
         getOrganisme: !loading ? getOrganisme : () => Promise.reject(new Error('DB is not ready')),
         getOrganismes: !loading ? searchOrganismes : () => Promise.reject(new Error('Search engine is not ready')),
         getPublics(): Promise<any[]> {
-            return db.then(data => data.getAll(publicsStoreName));
+            return db!.then(data => data.getAll(publicsStoreName));
         },
         searchCategories: !loading ? searchCategories : () => Promise.reject(new Error('Search engine is not ready')),
         searchSubCategories: !loading ? searchSubCategories : () => Promise.reject(new Error('Search engine is not ready')),
         getCategories(): Promise<any[]> {
-            return db.then(data => data.getAll(categoriesStoreName));
+            return db!.then(data => data.getAll(categoriesStoreName));
         },
         getServices: !loading ? searchServices : () => Promise.reject(new Error('Search engine is not ready')),
     };

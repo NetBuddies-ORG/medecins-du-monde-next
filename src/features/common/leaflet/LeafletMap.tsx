@@ -18,9 +18,10 @@ export interface LeafletMapProps {
     boundsCoords?: LatLngBounds;
     zoom?: number;
     canMove?: boolean;
+    canScrollZoom?: boolean;
 }
 
-export function LeafletMap({children, coordinates, boundsCoords, zoom = 13, canMove = true}: LeafletMapProps) {
+export function LeafletMap({children, coordinates, boundsCoords, zoom = 13, canMove = true, canScrollZoom = true}: LeafletMapProps) {
     const [ready, setReady] = useState<boolean>(false);
     const [centerCoordinates, setCenterCoordinates] = useState<LatLng>();
 
@@ -65,7 +66,7 @@ export function LeafletMap({children, coordinates, boundsCoords, zoom = 13, canM
                               zoomDelta={0.25}
                               zoomSnap={0.25}
                               whenReady={() => setReady(true)}
-                              scrollWheelZoom={true}
+                              scrollWheelZoom={canScrollZoom}
                               style={{height: '400px', width: '100%'}}>
                     <InvalidateSize/>
                     <SaveZoomLatLng />

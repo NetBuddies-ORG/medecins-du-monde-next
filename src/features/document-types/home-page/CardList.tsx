@@ -24,7 +24,7 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
     const healthId = '18'
     const subHealthIds = ['19', '20', '21']
 
-    const [authorizedCategories, setAuthorizedCategories] = useState<string[]>([])
+    const [authorizedCategories, setAuthorizedCategories] = useState<string[]>(categories.data.map(item => item.id))
     const [selectedCategories, setSelectedCategories] = useState<string[]>([])
     const [selectedPublics, setSelectedPublics] = useState<string>();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
@@ -68,30 +68,50 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
         }
     }
 
-    useEffect(() => {
-        if(selectedCategories.length === 0 && (selectedPublics === '0' || !selectedPublics)) {
-            setAuthorizedCategories(categories.data.map(item => item.id))
-        } else if(selectedCategories.length === 1) {
+    // useEffect(() => {
+    //     if(selectedCategories.length === 0 && (selectedPublics === '0' || !selectedPublics)) {
+    //         setAuthorizedCategories(categories.data.map(item => item.id))
+    //     } else {
             // check if I can pick a new category that could match with the selected ones
-            search({
-                categoriesIds: selectedCategories,
-                publicsId: selectedPublics,
-            }).then(res => {
-                const basicSubCategories = categories.data.flatMap(item => item.attributes.sous_categories.data.flatMap(item => item.id))
-                const resultSubCategories = res.flatMap(item => item.sous_categories.data).map(item => item.id)
+            // const categoriesIds = categories.data.filter(cat => selectedCategories.includes(cat.id))
+            //
+            // console.log('selectedCategories', selectedCategories)
+            //
+            // search({
+            //     categoriesIds: selectedCategories,
+            //     subCategoriesIds: categoriesIds.flatMap(cat => cat.attributes.sous_categories.data.map(subcat => subcat.id)),
+            //     publicsId: selectedPublics
+            // }).then((result) => {
+            //
+            //     console.log('result', result)
+            //
+            //     // Flat all the subcategories Id and remove duplicates
+            //     let searchedSubCategories = result.flatMap(item => item.sous_categories.data.map(subcat => subcat.id))
+            //     searchedSubCategories = searchedSubCategories.filter((item, index) => searchedSubCategories.indexOf(item) === index)
+            //
+            //     const recomposedParamCategories: {[key: string]: {isComplete: boolean, subcat: string[]}} = {};
+            //
+            //     if(searchedSubCategories && searchedSubCategories.length > 0) {
+            //         categories.data.map((categorie) => {
+            //             for (let subcat of categorie.attributes.sous_categories.data) {
+            //                 if (searchedSubCategories.includes(subcat.id)) {
+            //                     if(!recomposedParamCategories[categorie.id]) {
+            //                         recomposedParamCategories[categorie.id] = {isComplete: false, subcat: []};
+            //                     }
+            //                     recomposedParamCategories[categorie.id].subcat.push(subcat.id) ;
+            //                 }
+            //             }
+            //             if(recomposedParamCategories[categorie.id] && recomposedParamCategories[categorie.id].subcat.length === categorie.attributes.sous_categories.data.length) {
+            //                 recomposedParamCategories[categorie.id].isComplete = true;
+            //             }
+            //         })
+            //     }
 
-                const mergedSubCategories = basicSubCategories.filter(item => resultSubCategories.includes(item))
+                // console.log('recomposed', Object.values(recomposedParamCategories).filter((val) => val.isComplete))
 
-                const authorizedCategories: string[] = []
-                categories.data.forEach(category => {
-                    if (category.attributes.sous_categories.data.every(subCategory => mergedSubCategories.includes(subCategory.id))) {
-                        authorizedCategories.push(category.id)
-                    }
-                })
-                setAuthorizedCategories(authorizedCategories)
-            })
-        }
-    }, [selectedCategories, selectedPublics])
+            // })
+    //     }
+    // }, [selectedCategories, selectedPublics])
 
     function handlePublicsChange(event: React.ChangeEvent<HTMLSelectElement>) {
         setSelectedPublics(event.target.value);

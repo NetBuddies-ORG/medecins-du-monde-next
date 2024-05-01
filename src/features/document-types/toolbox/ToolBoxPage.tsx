@@ -1,10 +1,10 @@
 import {GetToolBoxQuery} from "@/services/GraphQL";
 
-interface AboutPageProps {
+interface ToolBoxPageProps {
     extraData: GetToolBoxQuery
 }
 
-export function ToolBoxPage({extraData}: AboutPageProps) {
+export function ToolBoxPage({extraData}: ToolBoxPageProps) {
     return (
         <>
             <div className="page-container">

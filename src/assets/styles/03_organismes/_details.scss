@@ -160,6 +160,11 @@
           align-content: center;
           align-items: center;
 
+          a{
+            text-decoration: none;
+            color: inherit;
+          }
+
           svg {
             font-size: 1.25rem;
             margin-right: 5px;

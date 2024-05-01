@@ -90,13 +90,13 @@ const getServicesPage = cache(async function getServicesPage(language: string) {
 const getAboutPage = cache(async function getAboutPage(language: string) {
     const client = getStrapiClient();
     // @ts-ignore
-    return await client.getToolBox({locale: language});
+    return await client.getAbout({locale: language});
 });
 
 const getToolBoxPage = cache(async function getAboutPage(language: string) {
     const client = getStrapiClient();
     // @ts-ignore
-    return await client.getAbout({locale: language});
+    return await client.getToolBox({locale: language});
 });
 
 const getSearchOrganizationsPage = cache(async function getSearchOrganizationsPage(language: string) {

@@ -6,6 +6,7 @@ import {OrganizationMap} from "@/features/document-types/organization/Organizati
 import {IconComponent} from "@/features/common/react-icons/IconComponent";
 import {FaMapMarkerAlt} from "react-icons/fa";
 import {Maybe, Organisme} from "@/services/GraphQL";
+import Link from "next/link";
 
 const getOrganization = cache(async function getCategories(lang: string, slug: string) {
     const client = getStrapiClient();
@@ -29,6 +30,11 @@ export default async function OrganizationDetails({language, segment, orgaslug}:
     }
 
     if (!organization) notFound()
+
+    function formatWebAdress(website: string) {
+        if(website.includes('http')) return website
+        return 'https://' + website
+    }
 
     return (
         <>
@@ -69,7 +75,7 @@ export default async function OrganizationDetails({language, segment, orgaslug}:
                                     <li>
                                         <FaMapMarkerAlt/>
                                         <span><a target={'_blank'}
-                                                 href={'https://www.google.com/maps/place/' + organization?.Adresse}>{organization?.Adresse}</a></span>
+                                                 href={'https://www.google.com/maps/search/' + organization?.Adresse}>{organization?.Adresse}</a></span>
                                     </li>
                                 }
                                 {
@@ -83,7 +89,11 @@ export default async function OrganizationDetails({language, segment, orgaslug}:
                                     organization?.Website &&
                                     <li>
                                         <FaGlobe/>
-                                        <span><a target={'_blank'} href={organization?.Website}>{organization?.Website} <FaArrowUpRightFromSquare style={{fontSize: '.75rem'}} /></a></span>
+                                        <span><a target={'_blank'} href={formatWebAdress(organization?.Website)}>
+                                            {
+                                                organization?.Website
+                                            }
+                                        <FaArrowUpRightFromSquare style={{fontSize: '.75rem'}} /></a></span>
                                     </li>
                                 }
 
@@ -105,10 +115,16 @@ export default async function OrganizationDetails({language, segment, orgaslug}:
                                 <h3>Services</h3>
                                 <ul className='social-functions'>
                                     {
-                                        organization?.services?.data?.map(item => {
+                                        organization?.services?.data?.sort((a, b) => {
+                                            if (a.attributes.Nom.toLowerCase() < b.attributes.Nom.toLowerCase()) return -1;
+                                            if (a.attributes.Nom.toLowerCase() > b.attributes.Nom.toLowerCase()) return 1;
+                                            return 0;
+                                        }).map(item => {
                                             return <li key={item.attributes.Nom}>
-                                                <IconComponent icon={item.attributes.Icone}/>
-                                                <span>{item.attributes.Nom}</span>
+                                                <Link href={'/fr/organismes/?service=' + item.id}>
+                                                    <IconComponent icon={item.attributes.Icone}/>
+                                                    <span>{item.attributes.Nom}</span>
+                                                </Link>
                                             </li>
                                         })
                                     }
@@ -142,6 +158,7 @@ export default async function OrganizationDetails({language, segment, orgaslug}:
                                 <h3>Carte</h3>
                                 <OrganizationMap latitude={organization.Latitude}
                                                  longitude={organization.Longitude}
+                                                 canScrollZoom={false}
                                                  canMove={false}
                                                  zoom={15}/>
                             </div>
