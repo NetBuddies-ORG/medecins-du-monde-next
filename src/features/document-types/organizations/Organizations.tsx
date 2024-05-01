@@ -36,7 +36,7 @@ export function Organizations({extraData, languague}: OrganizationsProps) {
 
 
     useAsyncEffect(async () => {
-        setServices(await getServices());
+        setServices((await getServices()).sort((a: any, b: any) => a.Nom.localeCompare(b.Nom)))
     }, [])
 
     useAsyncEffect(async () => {

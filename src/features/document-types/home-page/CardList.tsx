@@ -8,6 +8,7 @@ import {useEffect, useState} from "react";
 import {FaTimes} from "react-icons/fa";
 import {HelpModal} from "@/features/common/help-modal/HelpModal";
 import AutoComplete from "@/features/common/auto-complete/AutoComplete";
+import {useDBIndex} from "@/services/Search";
 
 interface CardListProps {
     extraData: GetHomeQuery
@@ -23,11 +24,14 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
     const healthId = '18'
     const subHealthIds = ['19', '20', '21']
 
+    const [authorizedCategories, setAuthorizedCategories] = useState<string[]>([])
     const [selectedCategories, setSelectedCategories] = useState<string[]>([])
     const [selectedPublics, setSelectedPublics] = useState<string>();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
     const [isInfoVisible, setIsInfoVisible] = useState<boolean>(false)
     const {t} = useTranslation()
+
+    const {search} = useDBIndex(language)
 
     useEffect(() => {
         if (localStorage.getItem('isInfoVisible') === 'false') {
@@ -38,6 +42,7 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
     }, [])
 
     function handleSelectedCategories(id: string) {
+
         if (healthId === id) {
             if (subHealthIds.every(subHealthId => selectedCategories.includes(subHealthId))) {
                 let temp = [...selectedCategories]
@@ -52,6 +57,9 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
         if (selectedCategories.includes(id)) {
             setSelectedCategories(selectedCategories.filter(item => item !== id))
         } else {
+            if(!authorizedCategories.includes(id)) {
+                return
+            }
             if (healthId === id) {
                 setSelectedCategories([...selectedCategories, ...subHealthIds])
                 return
@@ -59,6 +67,31 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
             setSelectedCategories([...selectedCategories, id])
         }
     }
+
+    useEffect(() => {
+        if(selectedCategories.length === 0 && (selectedPublics === '0' || !selectedPublics)) {
+            setAuthorizedCategories(categories.data.map(item => item.id))
+        } else if(selectedCategories.length === 1) {
+            // check if I can pick a new category that could match with the selected ones
+            search({
+                categoriesIds: selectedCategories,
+                publicsId: selectedPublics,
+            }).then(res => {
+                const basicSubCategories = categories.data.flatMap(item => item.attributes.sous_categories.data.flatMap(item => item.id))
+                const resultSubCategories = res.flatMap(item => item.sous_categories.data).map(item => item.id)
+
+                const mergedSubCategories = basicSubCategories.filter(item => resultSubCategories.includes(item))
+
+                const authorizedCategories: string[] = []
+                categories.data.forEach(category => {
+                    if (category.attributes.sous_categories.data.every(subCategory => mergedSubCategories.includes(subCategory.id))) {
+                        authorizedCategories.push(category.id)
+                    }
+                })
+                setAuthorizedCategories(authorizedCategories)
+            })
+        }
+    }, [selectedCategories, selectedPublics])
 
     function handlePublicsChange(event: React.ChangeEvent<HTMLSelectElement>) {
         setSelectedPublics(event.target.value);
@@ -123,13 +156,15 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
             {
                 categories.data.map(category => {
                     if (subHealthIds.includes(category.id)) return
-                    return <div key={category.id}
-                                className={'card' + (selectedCategories.includes(category.id) || (category.id === healthId && subHealthIds.every(subHealthId => selectedCategories.includes(subHealthId))) ? ' isSelected' : '')}
+                    return (
+                        <div key={category.id}
+                                className={'card' + ((!authorizedCategories.includes(category.id) && !selectedCategories.includes(category.id)) ? ' disabled': '') + (selectedCategories.includes(category.id) || (category.id === healthId && subHealthIds.every(subHealthId => selectedCategories.includes(subHealthId))) ? ' isSelected' : '')}
                                 onClick={() => handleSelectedCategories(category.id)}>
-                        <span className="check"><FaCheck/></span>
-                        <IconComponent icon={category?.attributes.Icone}/>
-                        <div className="card__title"><span>{category?.attributes.Nom}</span></div>
-                    </div>
+                            <span className="check"><FaCheck/></span>
+                            <IconComponent icon={category?.attributes.Icone}/>
+                            <div className="card__title"><span>{category?.attributes.Nom}</span></div>
+                        </div>
+                    )
                 })
             }
         </div>

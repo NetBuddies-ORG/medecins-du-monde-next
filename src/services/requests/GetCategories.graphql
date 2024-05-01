@@ -5,7 +5,7 @@ query getCategories($locale: I18NLocaleCode) {
             attributes{
                 Nom
                 Icone
-                sous_categories{
+                sous_categories (pagination: { limit: 1000 }){
                     data{
                         id
                         attributes{

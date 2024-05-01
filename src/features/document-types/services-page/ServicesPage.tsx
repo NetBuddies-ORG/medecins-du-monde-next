@@ -69,10 +69,6 @@ export function ServicesPage({extraData, language}: ServicesPageProps) {
     useEffect(() => {
     }, [services])
 
-
-
-    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
     return (
         <>
             <div className="page-container">

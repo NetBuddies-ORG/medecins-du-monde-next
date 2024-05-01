@@ -36,7 +36,7 @@ query getOrganismes($locale: I18NLocaleCode, $filters: OrganismeFiltersInput) {
             }
           }
         }
-        public_specifiques{
+        public_specifiques (pagination: { limit: 1000 }){
           data{
             id
             attributes{
@@ -44,7 +44,7 @@ query getOrganismes($locale: I18NLocaleCode, $filters: OrganismeFiltersInput) {
             }
           }
         }
-        services{
+        services (pagination: { limit: 1000 }){
           data{
             id
             attributes{
@@ -54,7 +54,7 @@ query getOrganismes($locale: I18NLocaleCode, $filters: OrganismeFiltersInput) {
           }
         }
         Conditions
-        sous_categories{
+        sous_categories (pagination: { limit: 1000 }){
           data{
             id
             attributes{

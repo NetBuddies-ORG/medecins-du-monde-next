@@ -1,0 +1,10 @@
+query getToolBox{
+    toolBox{
+        data{
+            id
+            attributes{
+                content
+            }
+        }
+    }
+}

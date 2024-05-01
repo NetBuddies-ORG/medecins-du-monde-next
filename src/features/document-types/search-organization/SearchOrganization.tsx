@@ -84,6 +84,7 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                 categoriesIds: searchParams.getAll('categories') as string[],
                 publicsId: searchParams.get('publics') as string ?? '0'
             }).then((organismes) => {
+                console.log('init', organismes)
                 setOrganismes(organismes);
                 positionCenter(organismes);
             });
@@ -97,6 +98,7 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                 subCategoriesIds: selectedSubCategories,
                 publicsId: selectedPublic as string ?? '0'
             }).then((organismes) => {
+                console.log('search', organismes)
                 setOrganismes(organismes);
                 positionCenter(organismes);
             });
@@ -221,7 +223,7 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                             categoriesForFilterDisplay.length > 0 &&
                             categoriesForFilterDisplay.map((category) => {
                                 return <>
-                                    <div
+                                    <div key={category.id}
                                         className={'accordion-tab' + (selectedOpenCategories.includes(category.id) ? ' isOpen' : '')}>
                                         <div className={`sub-title ${hasSubCategories(category) ? '' : 'default-cursor'}`} onClick={() => toggleAccordions(category)}>
                                         <span
@@ -301,6 +303,7 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                                         organismes.length > 0 && organismes.map((organisme) => {
                                             return (organisme.Longitude && organisme.Latitude) &&
                                                 <OrganizationMarker organisme={organisme}
+                                                                    key={organisme.id}
                                                                     language={language}
                                                                     currentVisibleItemId={currentVisibleItemId}
                                                                     handleCloseCard={handleCloseCard}
@@ -326,7 +329,7 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                             <div className='card-container-organisme'>
                                 {
                                  organismes.map((organisme) => {
-                                        return <Link key={organisme.Nom}
+                                        return <Link key={organisme.id}
                                                      href={'/' + language + '/' + extraData.searchOrganization.data.attributes.OrganismeUrl.page.data.attributes.Url + '/' + organisme.generatedUrl}>
                                             <div className='card organisme'>
                                                 <div className='up'>

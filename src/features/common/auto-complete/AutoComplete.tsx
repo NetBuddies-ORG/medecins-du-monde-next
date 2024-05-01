@@ -1,12 +1,12 @@
 'use client'
 import React, {useState} from 'react';
 import {FaSearch, FaTimes} from "react-icons/fa";
-import {useDBIndex} from "@/services/Search";
 import {Categorie} from "@/services/GraphQL";
 import {useAsyncEffect} from "@/hooks";
 import Link from "next/link";
 import Image from "next/image";
 import noResultImage from "@/assets/utils/images/no-results.jpg";
+import {useDBIndex} from "@/services/Search";
 
 interface AutoCompleteProps {
     language: string;

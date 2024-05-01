@@ -12,6 +12,7 @@ import {Urgences} from "@/features/document-types/urgences/Urgences";
 import {AboutPage} from "@/features/document-types/about-page/AboutPage";
 import { ServicesPage } from "./services-page/ServicesPage";
 import { Orientations } from "./orientations/Orientations";
+import {ToolBoxPage} from "@/features/document-types/toolbox/ToolBoxPage";
 
 export async function DocumentTypes() {
     const pages = getPage();
@@ -42,6 +43,10 @@ async function displayContent(page: GetPageQuery["pages"], language: string) {
         case 'About':
             return <>
                 <AboutPage extraData={await getAboutPage(language)}/>
+            </>
+        case 'Toolbox':
+            return <>
+                <ToolBoxPage extraData={await getToolBoxPage(language)} />
             </>
         case 'SearchOrganization':
             return <SearchOrganization publics={getPublics()}
@@ -83,6 +88,12 @@ const getServicesPage = cache(async function getServicesPage(language: string) {
 });
 
 const getAboutPage = cache(async function getAboutPage(language: string) {
+    const client = getStrapiClient();
+    // @ts-ignore
+    return await client.getToolBox({locale: language});
+});
+
+const getToolBoxPage = cache(async function getAboutPage(language: string) {
     const client = getStrapiClient();
     // @ts-ignore
     return await client.getAbout({locale: language});
