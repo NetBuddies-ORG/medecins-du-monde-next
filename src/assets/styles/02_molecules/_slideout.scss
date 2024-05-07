@@ -122,6 +122,13 @@
           align-content: center;
           align-items: center;
           gap: 12px;
+          &.disabled{
+            color: rgba(0, 0, 0, 0.2);
+            cursor: not-allowed;
+            .checkmark{
+              cursor: not-allowed;
+            }
+          }
           .checkmark{
             //custom checkbox
             height: 25px;
@@ -160,6 +167,16 @@
     .accordion-tab{
       font-size: 1rem;
       margin-bottom: 1rem;
+      &.disabled{
+        color: rgba(0, 0, 0, 0.2);
+        cursor: not-allowed;
+        .sub-title{
+          cursor: not-allowed;
+          .custom-checkbox{
+            cursor: not-allowed;
+          }
+        }
+      }
       .default-cursor{
         cursor: default !important;
       }

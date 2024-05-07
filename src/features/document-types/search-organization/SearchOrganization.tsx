@@ -47,6 +47,7 @@ export function SearchOrganization({extraData, language, publics, categories}: S
         id: string
     })[]>([]);
     const [centerCoordinates, setCenterCoordinates] = useState<Coordinates>();
+    const [authorizedSubCategories, setAuthorizedSubCategories] = useState<string[]>([]);
 
     const searchParams = useSearchParams()
     const {search, isReady} = useDBIndex(language);
@@ -84,7 +85,6 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                 categoriesIds: searchParams.getAll('categories') as string[],
                 publicsId: searchParams.get('publics') as string ?? '0'
             }).then((organismes) => {
-                console.log('init', organismes)
                 setOrganismes(organismes);
                 positionCenter(organismes);
             });
@@ -93,17 +93,42 @@ export function SearchOrganization({extraData, language, publics, categories}: S
 
     useEffect(() => {
         if (isReady && searchParams.getAll('categories').length > 0) {
+            async function searchOrga(subcategoriesToIterate: string[]){
+                const test: string [] = []
+                for (const item of subcategoriesToIterate) {
+                    const searchResult = await search({
+                        categoriesIds: [],
+                        subCategoriesIds: [...selectedSubCategories, item],
+                        publicsId: selectedPublic as string ?? '0'
+                    });
+                    if (searchResult.length > 0) {
+                        test.push(item)
+                    }
+                }
+                setAuthorizedSubCategories(test)
+            }
+            if (selectedSubCategories.length === 0) {
+                setAuthorizedSubCategories([...categoriesForFilterDisplay.flatMap(c => c.attributes.sous_categories.data.map(sc => sc.id))])
+            } else {
+                let subcategoriesToIterate = categoriesForFilterDisplay.flatMap(c => c.attributes.sous_categories.data.map(sc => sc.id));
+                subcategoriesToIterate = subcategoriesToIterate.filter((item, index) => subcategoriesToIterate.indexOf(item) === index)
+                searchOrga(subcategoriesToIterate)
+            }
+
             search({
                 categoriesIds: selectedCategories,
                 subCategoriesIds: selectedSubCategories,
                 publicsId: selectedPublic as string ?? '0'
             }).then((organismes) => {
-                console.log('search', organismes)
                 setOrganismes(organismes);
                 positionCenter(organismes);
             });
         }
     }, [selectedPublic, selectedSubCategories])
+
+    useEffect(() => {
+        console.log(authorizedSubCategories)
+    }, [authorizedSubCategories]);
 
     function handlePublicsChange(event: React.ChangeEvent<HTMLSelectElement>) {
         setSelectedPublic(event.target.value);
@@ -130,12 +155,15 @@ export function SearchOrganization({extraData, language, publics, categories}: S
 
     function handleCategoryCheck(event: React.MouseEvent<HTMLSpanElement>, category: CategorieEntity) {
         event.stopPropagation();
+        if(!category.attributes.sous_categories.data.flatMap(sc => sc.id).some(id => authorizedSubCategories.includes(id))){
+            return
+        }
         const subCategories = category?.attributes.sous_categories?.data;
         if(subCategories?.length) {
             if (subCategories.every(item => selectedSubCategories.includes(item.id))) {
                 setSubSelectedCategories(selectedSubCategories.filter(item => !subCategories.map(item => item.id).includes(item)))
             } else {
-                setSubSelectedCategories([...selectedSubCategories, ...subCategories.map(item => item.id)])
+                setSubSelectedCategories([...selectedSubCategories, ...subCategories.filter(sc => authorizedSubCategories.includes(sc.id)).map(item => item.id)])
             }
         } else {
             if (selectedCategories.includes(category.id)) {
@@ -219,12 +247,13 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                     </div>
                     <div className='so-body'>
                         <h3><span>Catégories</span></h3>
+
                         {
                             categoriesForFilterDisplay.length > 0 &&
                             categoriesForFilterDisplay.map((category) => {
                                 return <>
                                     <div key={category.id}
-                                        className={'accordion-tab' + (selectedOpenCategories.includes(category.id) ? ' isOpen' : '')}>
+                                        className={'accordion-tab ' + (selectedOpenCategories.includes(category.id) ? 'isOpen' : '') + (!category.attributes.sous_categories.data.flatMap(sc => sc.id).some(id => authorizedSubCategories.includes(id)) ? ' disabled' : '')}>
                                         <div className={`sub-title ${hasSubCategories(category) ? '' : 'default-cursor'}`} onClick={() => toggleAccordions(category)}>
                                         <span
                                             className={"custom-checkbox" + (isCategoryChecked(category) ? ' isChecked' : (isPartiallyChecked(category) ? ' isChecked' : ''))}
@@ -232,7 +261,7 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                                             { isCategoryChecked(category) ? <FaCheck/> : ((isPartiallyChecked(category) ? '' : ''))}
                                         </span>
                                             <span>
-                                                <span className="pointer-cursor" onClick={(event) => handleCategoryCheck(event, category)}>{category.attributes.Nom}</span>
+                                                <span onClick={(event) => handleCategoryCheck(event, category)}>{category.attributes.Nom}</span>
                                                 <span className="angle">
                                                 {
                                                     category.attributes.sous_categories.data?.length ? (selectedOpenCategories.includes(category.id) ?
@@ -247,8 +276,8 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                                         <ul>
                                             {
                                                 category.attributes.sous_categories.data.map((subCategory) => {
-                                                    return <li key={subCategory.id}
-                                                               onClick={() => handleCheck(subCategory.id)}>
+                                                    return<li key={subCategory.id} className={"sub-category" + (authorizedSubCategories.includes(subCategory.id)|| selectedSubCategories.includes(subCategory.id) ? '' : ' disabled')}
+                                                              onClick={() => (authorizedSubCategories.includes(subCategory.id) || selectedSubCategories.includes(subCategory.id)) && handleCheck(subCategory.id)}>
                                                         <div
                                                             className={"checkmark" + (selectedSubCategories.includes(subCategory.id) ? " isChecked" : "")}>
                                                             {selectedSubCategories.includes(subCategory.id) &&
@@ -256,7 +285,6 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                                                         </div>
                                                         <span>{subCategory.attributes.Nom}</span>
                                                     </li>
-
                                                 })
                                             }
                                         </ul>

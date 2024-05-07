@@ -188,13 +188,15 @@ export function useDBIndex(language: string): SearchInterface {
         search: !loading ? search : () => Promise.reject(new Error('Search engine is not ready')),
         getOrganisme: !loading ? getOrganisme : () => Promise.reject(new Error('DB is not ready')),
         getOrganismes: !loading ? searchOrganismes : () => Promise.reject(new Error('Search engine is not ready')),
-        getPublics(): Promise<any[]> {
-            return db!.then(data => data.getAll(publicsStoreName));
+        async getPublics(): Promise<any[]> {
+            const data = await db!;
+            return await data.getAll(publicsStoreName);
         },
         searchCategories: !loading ? searchCategories : () => Promise.reject(new Error('Search engine is not ready')),
         searchSubCategories: !loading ? searchSubCategories : () => Promise.reject(new Error('Search engine is not ready')),
-        getCategories(): Promise<any[]> {
-            return db!.then(data => data.getAll(categoriesStoreName));
+        async getCategories(): Promise<any[]> {
+            const data = await db!;
+            return await data.getAll(categoriesStoreName);
         },
         getServices: !loading ? searchServices : () => Promise.reject(new Error('Search engine is not ready')),
     };
