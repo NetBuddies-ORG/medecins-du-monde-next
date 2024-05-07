@@ -108,7 +108,7 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                 }
                 setAuthorizedSubCategories(test)
             }
-            if (selectedSubCategories.length === 0) {
+            if (selectedSubCategories.length === 0 && !selectedPublic) {
                 setAuthorizedSubCategories([...categoriesForFilterDisplay.flatMap(c => c.attributes.sous_categories.data.map(sc => sc.id))])
             } else {
                 let subcategoriesToIterate = categoriesForFilterDisplay.flatMap(c => c.attributes.sous_categories.data.map(sc => sc.id));
@@ -388,14 +388,10 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                                     </div>
                                 }
                                 {
-                                    isReady ?
-                                        organismes.length === 0 &&
+                                    isReady && organismes.length === 0 &&
                                         <div className='no-results'>
                                             <p>Aucun résultat.</p>
                                             <small>Essayer de modifier vos paramètres de recherche</small>
-                                        </div> :
-                                        <div className={'spinner-container'}>
-                                            <div className="loader"></div>
                                         </div>
                                 }
                             </>
