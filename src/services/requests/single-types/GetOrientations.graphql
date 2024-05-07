@@ -8,6 +8,14 @@ query getOrientations($locale: I18NLocaleCode){
               Email
               Adresse
               Telephone
+              categories_orientation_urgence{
+                data{
+                  id
+                  attributes {
+                    Nom
+                  }
+                }
+              }
             }
           }
         }
