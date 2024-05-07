@@ -2,6 +2,9 @@
   "name": "monboreseau",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": "20.12.2"
+  },
   "scripts": {
     "graphql": "yarn graphql-codegen --config codegen.yml",
     "start": "yarn env-cmd --no-override yarn next dev",
