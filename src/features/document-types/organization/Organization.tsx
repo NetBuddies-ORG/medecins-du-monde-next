@@ -36,6 +36,10 @@ export default async function OrganizationDetails({language, segment, orgaslug}:
         return 'https://' + website
     }
 
+    function formatSize(website: string) {
+        if(website.length > 30) return website.substring(0, 30) + '... '
+    }
+
     return (
         <>
             <div className='page-container'>
@@ -91,7 +95,7 @@ export default async function OrganizationDetails({language, segment, orgaslug}:
                                         <FaGlobe/>
                                         <span><a target={'_blank'} href={formatWebAdress(organization?.Website)}>
                                             {
-                                                organization?.Website
+                                                formatSize(organization?.Website)
                                             }
                                         <FaArrowUpRightFromSquare style={{fontSize: '.75rem'}} /></a></span>
                                     </li>
@@ -107,28 +111,6 @@ export default async function OrganizationDetails({language, segment, orgaslug}:
                                     organization?.Horaires &&
                                     <div dangerouslySetInnerHTML={{__html: organization?.Horaires}}></div>
                                 }
-                            </div>
-                        }
-                        {
-                            organization?.services?.data?.length > 0 &&
-                            <div className='services__card'>
-                                <h3>Services</h3>
-                                <ul className='social-functions'>
-                                    {
-                                        organization?.services?.data?.sort((a, b) => {
-                                            if (a.attributes.Nom.toLowerCase() < b.attributes.Nom.toLowerCase()) return -1;
-                                            if (a.attributes.Nom.toLowerCase() > b.attributes.Nom.toLowerCase()) return 1;
-                                            return 0;
-                                        }).map(item => {
-                                            return <li key={item.attributes.Nom}>
-                                                <Link href={'/fr/organismes/?service=' + item.id}>
-                                                    <IconComponent icon={item.attributes.Icone}/>
-                                                    <span>{item.attributes.Nom}</span>
-                                                </Link>
-                                            </li>
-                                        })
-                                    }
-                                </ul>
                             </div>
                         }
                         {
@@ -161,6 +143,28 @@ export default async function OrganizationDetails({language, segment, orgaslug}:
                                                  canScrollZoom={false}
                                                  canMove={false}
                                                  zoom={15}/>
+                            </div>
+                        }
+                        {
+                            organization?.services?.data?.length > 0 &&
+                            <div className='services__card'>
+                                <h3>Services</h3>
+                                <ul className='social-functions'>
+                                    {
+                                        organization?.services?.data?.sort((a, b) => {
+                                            if (a.attributes.Nom.toLowerCase() < b.attributes.Nom.toLowerCase()) return -1;
+                                            if (a.attributes.Nom.toLowerCase() > b.attributes.Nom.toLowerCase()) return 1;
+                                            return 0;
+                                        }).map(item => {
+                                            return <li key={item.attributes.Nom}>
+                                                <Link href={'/fr/organismes/?service=' + item.id}>
+                                                    <IconComponent icon={item.attributes.Icone}/>
+                                                    <span>{item.attributes.Nom}</span>
+                                                </Link>
+                                            </li>
+                                        })
+                                    }
+                                </ul>
                             </div>
                         }
                     </div>
