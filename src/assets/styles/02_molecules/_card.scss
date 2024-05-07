@@ -8,7 +8,7 @@
 }
 
 .card-container-organisme {
-  margin: 1rem 0;
+    margin: 1rem 0;
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   grid-gap: 12px 12px;
@@ -69,6 +69,7 @@
   grid-gap: 12px 12px;
 
   a {
+    font-size: 16px;
     text-decoration: none;
     color: unset;
   }
@@ -93,22 +94,35 @@
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 12px 12px;
 
-  .card.isSelected {
-    transition: background-color .2s ease-in-out;
-    background-color: $primaryColor;
-    position: relative;
+  .card{
+    &.isSelected {
+      transition: background-color .1s ease-in-out;
+      background-color: $primaryColor;
+      position: relative;
 
-    .check {
-      svg {
-        display: inline;
-        background-color: $cardTextColor;
-        border-radius: 50%;
-        font-size: 1.5rem;
-        padding: 5px;
-        color: $primaryColor;
-        position: absolute;
-        top: 10px;
-        right: 10px;
+      .check {
+        svg {
+          display: inline;
+          background-color: $cardTextColor;
+          border-radius: 50%;
+          font-size: 1.5rem;
+          padding: 5px;
+          color: $primaryColor;
+          position: absolute;
+          top: 10px;
+          right: 10px;
+        }
+      }
+    }
+
+    &.disabled {
+      cursor: not-allowed;
+      opacity: 0.25;
+    }
+
+    &:not(.disabled){
+      &:hover {
+        transform: scale(1.025);
       }
     }
   }
@@ -197,6 +211,9 @@
 @media (min-width: 1224px) {
   .card-container {
     grid-template-columns: repeat(7, 1fr);
+  }
+  .card-container-organisme {
+    grid-template-columns: repeat(1, 1fr);
   }
   .card-container-service {
     grid-template-columns: repeat(2, 1fr);

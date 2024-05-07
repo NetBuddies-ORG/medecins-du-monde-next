@@ -5,30 +5,69 @@ import {useAsyncEffect} from "@/hooks";
 import {GetServicesQuery} from "@/services/GraphQL";
 import {useDBIndex} from "@/services/Search";
 import Image from 'next/image';
-import {useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {FaSearch} from "react-icons/fa";
+import Link from "next/link";
 
 interface ServicesPageProps {
     extraData: GetServicesQuery;
     language: string;
 }
 
+interface ServiceEntity {
+    __typename?: 'ServiceEntity';
+    id: string;
+    attributes: {
+        __typename?: 'Service';
+        Nom: string;
+        Icone: string;
+        organismes: {
+            __typename?: 'OrganismeRelationResponseCollection';
+            data: Array<{
+                __typename?: 'OrganismeEntity';
+                id: string;
+            }>
+        }
+    }
+
+}
+
 export function ServicesPage({extraData, language}: ServicesPageProps) {
 
     const [keyword, setKeyword] = useState<string>('');
-    const [services, setServices] = useState<any[]>(extraData.services.data);
+    const [services, setServices] = useState<ServiceEntity[]>(extraData.services.data.sort((a, b) => a.attributes.Nom.localeCompare(b.attributes.Nom)));
 
     const {getServices, isReady} = useDBIndex(language);
+    const servicesByAlphabet: { [key: string]: ServiceEntity[] } = useMemo(() => {
+        if(!services) return {};
+        const reordered = JSON.parse(JSON.stringify(services));
+        const result: { [key: string]: ServiceEntity[] } = {};
+        reordered.forEach(item => {
+            const firstLetter = item.attributes.Nom.charAt(0).toUpperCase();
+            if (!result[firstLetter]) {
+                result[firstLetter] = [];
+            }
+            result[firstLetter].push(item);
+        });
+
+        return result;
+    }, [services]);
 
     useAsyncEffect(async () => {
         if (keyword && keyword !== '' && isReady) {
             getServices({keyword}).then((servRef) => {
-                setServices(extraData.services.data.filter(item => servRef.includes(item.id)))
+                setServices(extraData.services.data.filter(item =>
+                    servRef.includes(item.id)).sort((a, b) => a.attributes.Nom.localeCompare(b.attributes.Nom)))
             })
         } else {
-            setServices(extraData.services.data)
+            // sort by name
+            const sorted = extraData.services.data.sort((a, b) => a.attributes.Nom.localeCompare(b.attributes.Nom))
+            setServices(sorted)
         }
     }, [keyword])
+
+    useEffect(() => {
+    }, [services])
 
     return (
         <>
@@ -41,13 +80,21 @@ export function ServicesPage({extraData, language}: ServicesPageProps) {
                 {services.length > 0 ?
                     <div className='card-container-service'>
                         {
-                            services.map(item => <>
-                                <div className=''>
-                                    <div>
-                                        <IconComponent icon={item.attributes.Icone}/> {item.attributes.Nom}
-                                    </div>
+                            Object.keys(servicesByAlphabet).map(letter => (
+                                <div key={letter}>
+                                    <h2>{letter}</h2>
+                                    {servicesByAlphabet[letter].map(item => (
+                                        <Link key={item.id} prefetch={false} href={{
+                                            pathname: '/fr/organismes',
+                                            query: { service: item.id }
+                                        }}>
+                                            <div style={{marginBottom: 5}}>
+                                                <IconComponent icon={item.attributes.Icone} /> {item.attributes.Nom}
+                                            </div>
+                                        </Link>
+                                    ))}
                                 </div>
-                            </>)
+                            ))
                         }
                     </div> :
                     <div className="no-results">

@@ -1,5 +1,5 @@
 query getLocales{
-    i18NLocales{
+    i18NLocales(pagination: { limit: 1000 }){
         data{
             attributes{
                 code

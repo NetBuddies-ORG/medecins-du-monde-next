@@ -2,143 +2,27 @@ import { Deferred } from "@/helpers";
 import {
     Categorie,
     Organisme,
-    PublicSpecifique
 } from "@/services/GraphQL";
-import { DBSchema, IDBPDatabase, openDB } from "idb";
-import type { Index } from 'lunr';
 import { useAsync } from "react-use";
+import {
+    categoriesStoreName, MdmDB, organismesStoreName,
+    publicsStoreName, SearchAccurateOrganizationParams,
+    SearchCategories,
+    SearchInterface, SearchOrganizationsParams, SearchServicesParams
+} from "@/services/index-db/IndexDBTypes";
+import {setupDB} from "@/services/index-db/IndexDBConfig";
+import {IDBPDatabase} from "idb";
+import {Index} from "lunr";
 
-interface OrganizationSchema {
-    value: any;
-    key: string;
-    indexes: { slug: string; };
-}
-
-interface IndexDBchema {
-    value: any;
-    key: string;
-    indexes: { Nom: string; };
-}
-
-interface MdmDB extends DBSchema {
-    organismes: OrganizationSchema,
-    publics: IndexDBchema,
-    categories: IndexDBchema,
-    services: IndexDBchema,
-    revision:
-        {
-            value: string;
-            key: 'REVISION_ORGANISME' | 'REVISION_PUBLICS' | 'REVISION_CATEGORIES' | 'REVISION_SERVICE';
-        }
-}
-
+const getOrganisme = (slug: string) => {
+    return db?.then(data => data.transaction("organismes").store.index('slug').get(slug))
+};
+let db: Promise<IDBPDatabase<MdmDB>> | undefined = undefined;
 let indexLanguage: string;
-let db: Promise<IDBPDatabase<MdmDB>>;
 let indexOrganism: Index;
 let indexService: Index;
 let indexCategorie: Index;
-
-let publicsStoreName: 'publics' = 'publics';
-let organismesStoreName: 'organismes' = 'organismes';
-let categoriesStoreName: 'categories' = 'categories';
-let servicesStoreName: 'services' = 'services';
-let revisionStoreName: 'revision' = 'revision';
-
-const NEXT_PUBLIC_REVISION_ORGANISME = process.env.NEXT_PUBLIC_REVISION_ORGANISME;
-const NEXT_PUBLIC_REVISION_PUBLICS = process.env.NEXT_PUBLIC_REVISION_PUBLICS;
-const NEXT_PUBLIC_REVISION_SERVICES = process.env.NEXT_PUBLIC_REVISION_SERVICES;
-const NEXT_PUBLIC_REVISION_CATEGORIES = process.env.NEXT_PUBLIC_REVISION_CATEGORIES;
-
-const getOrganisme = (slug: string) => {
-    return db.then(data => data.transaction("organismes").store.index('slug').get(slug))
-};
-const getOrganismes = () => import(`../../build/static/organismes.json`).then(({default: p}) => p);
-const getPublics = () => import('../../build/static/publics.json').then(({default: p}) => p);
-const getCategories = () => import('../../build/static/categories.json').then(({default: p}) => p);
-const getServices = () => import('../../build/static/services.json').then(({default: p}) => p);
-
-
-async function setupDB(language: string): Promise<IDBPDatabase<MdmDB>> {
-    let data = await (db ?? openDB<MdmDB>('Mdm', 2, {
-        upgrade(db, oldVersion, _, transaction) {
-            if (oldVersion < 1) {
-                db.createObjectStore(revisionStoreName);
-                db.createObjectStore(publicsStoreName, {keyPath: 'id'});
-                db.createObjectStore(categoriesStoreName, {keyPath: 'id'});
-                db.createObjectStore(organismesStoreName, {keyPath: 'id'});
-
-                const organismesStore = transaction.objectStore(organismesStoreName);
-                organismesStore.createIndex("slug", "slug", {multiEntry: true, unique: true});
-            }
-
-            if (oldVersion < 2) {
-                db.createObjectStore(servicesStoreName, {keyPath: 'id'});
-            }
-        }
-    }));
-
-    const organismesRevisionIndexDb = await data.get('revision', 'REVISION_ORGANISME');
-    const organismesRevisionBuilt = NEXT_PUBLIC_REVISION_ORGANISME;
-
-    if (!organismesRevisionIndexDb || organismesRevisionBuilt !== organismesRevisionIndexDb) {
-        const organismes = await getOrganismes();
-        const transaction = data.transaction([revisionStoreName, organismesStoreName], 'readwrite');
-        const revisionStore = transaction.objectStore(revisionStoreName);
-        const organismesStore = transaction.objectStore(organismesStoreName);
-
-        await revisionStore.put(organismesRevisionBuilt!, 'REVISION_ORGANISME');
-        await organismesStore.clear();
-        await Promise.all(organismes.map(t => organismesStore.put(t)));
-        await transaction.done;
-    }
-
-    const publicsRevisionIndexDb = await data.get('revision', 'REVISION_PUBLICS');
-    const publicsRevisionBuilt = NEXT_PUBLIC_REVISION_PUBLICS;
-
-    if (!publicsRevisionIndexDb || publicsRevisionBuilt !== publicsRevisionIndexDb) {
-        const publics = await getPublics();
-        const transaction = data.transaction([revisionStoreName, publicsStoreName], 'readwrite');
-        const revisionStore = transaction.objectStore(revisionStoreName);
-        const publicsStore = transaction.objectStore(publicsStoreName);
-
-        await revisionStore.put(publicsRevisionBuilt!, 'REVISION_PUBLICS');
-        await publicsStore.clear();
-        await Promise.all(publics.map(t => publicsStore.put(t)));
-        await transaction.done;
-    }
-
-    const categoriesRevisionIndexDb = await data.get('revision', 'REVISION_CATEGORIES');
-    const categoriesRevisionBuilt = NEXT_PUBLIC_REVISION_CATEGORIES;
-
-    if (!categoriesRevisionIndexDb || categoriesRevisionBuilt !== categoriesRevisionIndexDb) {
-        const categories = await getCategories();
-        const transaction = data.transaction([revisionStoreName, categoriesStoreName], 'readwrite');
-        const revisionStore = transaction.objectStore(revisionStoreName);
-        const categoriesStore = transaction.objectStore(categoriesStoreName);
-
-        await revisionStore.put(categoriesRevisionBuilt!, 'REVISION_CATEGORIES');
-        await categoriesStore.clear();
-        await Promise.all(categories.map(t => categoriesStore.put(t)));
-        await transaction.done;
-    }
-
-    const servicesRevisionIndexDb = await data.get('revision', 'REVISION_SERVICE');
-    const servicesRevisionBuilt = NEXT_PUBLIC_REVISION_SERVICES;
-
-    if (!servicesRevisionIndexDb || servicesRevisionBuilt !== servicesRevisionIndexDb) {
-        const services = await getServices();
-        const transaction = data.transaction([revisionStoreName, servicesStoreName], 'readwrite');
-        const revisionStore = transaction.objectStore(revisionStoreName);
-        const servicesStore = transaction.objectStore(servicesStoreName);
-
-        await revisionStore.put(servicesRevisionBuilt!, 'REVISION_SERVICE');
-        await servicesStore.clear();
-        await Promise.all(services.map(t => servicesStore.put(t)));
-        await transaction.done;
-    }
-
-    return data;
-}
+let indexSubCategorie: Index;
 
 let initialization = new Map<string, Promise<void>>();
 
@@ -150,7 +34,7 @@ async function initialize(language: string = 'fr') {
     const deferred = new Deferred();
     initialization.set(language, deferred.promise);
     indexLanguage = language;
-    db = setupDB(language);
+    db = setupDB(language, db);
     const [
         {default: lunr},
         {default: stemmer}
@@ -165,6 +49,7 @@ async function initialize(language: string = 'fr') {
     indexOrganism = lunr.Index.load(await import('../../build/static/index.json'));
     indexService = lunr.Index.load(await import('../../build/static/indexService.json'));
     indexCategorie = lunr.Index.load(await import('../../build/static/indexCategorie.json'));
+    indexSubCategorie = lunr.Index.load(await import('../../build/static/indexSubCategorie.json'));
 
     deferred.resolve();
 }
@@ -172,46 +57,58 @@ async function initialize(language: string = 'fr') {
 async function search(params: SearchAccurateOrganizationParams): Promise<Organisme[]> {
 
     // Get params
-    const {categoriesIds, subCategoriesIds, publicsId} = params;
-    const subCategoriesIdsToSearch = subCategoriesIds ?? [];
-    const categoriesIdsToSearch = categoriesIds ?? [];
+    const {subCategoriesIds, publicsId} = params;
 
     // Get IndexedDBData
-    const organismesFromIndexedDb: (Organisme & {id: string})[] = await db.then(data => data.getAll(organismesStoreName));
-    const categoriesFromIndexedDb: (Categorie & {id: string})[] = await db.then(data => data.getAll(categoriesStoreName));
+    const organismesFromIndexedDb: (Organisme & {id: string})[] = await db!.then(data => data.getAll(organismesStoreName));
+    const categoriesFromIndexedDb: (Categorie & {id: string})[] = await db!.then(data => data.getAll(categoriesStoreName));
 
-    // Get All subCategories from params categoriesIds
-    const subCategoriesFromParamsCategoriesIds = categoriesFromIndexedDb.filter((categorie) => {
-        return categoriesIds.includes(categorie.id);
-    }).flatMap((categorie: Categorie) => {
-        return categorie.sous_categories.data;
-    });
-
-    //Add subCategoriesIdsToSearch to subCategoriesFromParamsCategoriesIds
-    for(let sub of subCategoriesFromParamsCategoriesIds){
-        if(!subCategoriesIdsToSearch.includes(sub.id)){
-            subCategoriesIdsToSearch.push(sub.id);
-        }
+    // Recompose the params categories and subCategories as a tree
+    const recomposedParamCategories: {[key: string]: {isComplete: boolean, subcat: string[]}} = {};
+    if(subCategoriesIds && subCategoriesIds.length > 0) {
+        categoriesFromIndexedDb.map((categorie) => {
+            for (let subcat of categorie.sous_categories.data) {
+                if (subCategoriesIds.includes(subcat.id)) {
+                    if(!recomposedParamCategories[categorie.id]) {
+                        recomposedParamCategories[categorie.id] = {isComplete: false, subcat: []};
+                    }
+                    recomposedParamCategories[categorie.id].subcat.push(subcat.id) ;
+                }
+            }
+            if(recomposedParamCategories[categorie.id] && recomposedParamCategories[categorie.id].subcat.length === categorie.sous_categories.data.length) {
+                recomposedParamCategories[categorie.id].isComplete = true;
+            }
+        })
     }
 
-    // Get All organismes from subCategoriesIds
-    const organismesFromSubCategoriesIds = organismesFromIndexedDb.filter((organisme) => {
-        for(let sub of organisme.sous_categories.data){
-            if (subCategoriesIdsToSearch.includes(sub.id)) {
-                return true;
+    // Iterate over the organismes and filter them
+    // If a category is not complete, we need to check if the organism has all the subcategories
+    // If a category is complete, we need to check if the organism has at least one of the subcategories
+    // If a public is selected, we need to check if the organism has this public
+    // then we merge the results
+    const filteredOrga = organismesFromIndexedDb.filter((organisme) => {
+        let isPublicsOk = true;
+        let isSubCategoriesOk = true;
+
+        if(publicsId && publicsId !== '0') {
+            isPublicsOk = organisme.public_specifiques.data.map((publicSpe) => publicSpe.id).includes(publicsId);
+        }
+
+        const categoriesOk: {[key: string]: boolean} = {};
+
+        for(let catId in recomposedParamCategories) {
+            if(recomposedParamCategories[catId].isComplete) {
+                categoriesOk[catId] = organisme.sous_categories.data.map((cat) => cat.id).some((subCatId) => recomposedParamCategories[catId].subcat.includes(subCatId));
+            } else {
+                categoriesOk[catId] = recomposedParamCategories[catId].subcat.every((subCatId) => organisme.sous_categories.data.map((cat) => cat.id).includes(subCatId));
             }
         }
-    });
 
-    // Get All organismes from publicsId
-    if(publicsId != '0' && publicsId != undefined && publicsId != ''){
-        return organismesFromIndexedDb.filter((organisme) => {
-            return organisme.public_specifiques.data.map((publics) => publics.id).includes(publicsId!);
-        });
-    }
+        isSubCategoriesOk = Object.values(categoriesOk).every((val) => val);
+        return isPublicsOk && isSubCategoriesOk;
+    })
 
-
-    return organismesFromSubCategoriesIds;
+    return filteredOrga
 }
 
 async function searchOrganismes(params: SearchOrganizationsParams): Promise<string[]> {
@@ -222,8 +119,10 @@ async function searchOrganismes(params: SearchOrganizationsParams): Promise<stri
         .split(' ');
     let finalQuery = '';
     terms.forEach((t, i) => {
-        if (t !== '') {
-            finalQuery += `${t}~2^${100 - i} ${t}* `;
+        if (t !== '' && i === 0) {
+            finalQuery += `${t}^${100 - i} ${t}*^10 ${t}~2 `;
+        } else {
+            finalQuery += `${t}^${100 - i} `;
         }
     });
     let results: Set<string> = new Set(indexOrganism.search(finalQuery).map(({ref}) => ref));
@@ -238,8 +137,10 @@ async function searchServices(params: SearchServicesParams): Promise<string[]> {
         .split(' ');
     let finalQuery = '';
     terms.forEach((t, i) => {
-        if (t !== '') {
-            finalQuery += `${t}~2^${100 - i} ${t}* `;
+        if (t !== '' && i === 0) {
+            finalQuery += `${t}^${100 - i} ${t}*^10 ${t}~2 `;
+        } else {
+            finalQuery += `${t}^${100 - i} `;
         }
     });
     let results: Set<string> = new Set(indexService.search(finalQuery).map(({ref}) => ref));
@@ -255,38 +156,28 @@ async function searchCategories(params: SearchCategories): Promise<string[]> {
     let finalQuery = '';
     terms.forEach((t, i) => {
         if (t !== '') {
-            finalQuery += `${t}~2^${100 - i} ${t}* `;
+            finalQuery += `${t}~3^${100 - i} `;
         }
     });
-    let results: Set<string> = new Set(indexCategorie.search(finalQuery).map(({ref}) => ref));
+    let results: Set<string> = new Set(indexCategorie.search(finalQuery).filter(i => i.score > 4).map(({ref}) => ref));
     return Array.from(results);
 }
 
-export interface SearchOrganizationsParams {
-    keyword: string;
-}
+async function searchSubCategories(params: SearchCategories): Promise<string[]> {
+    let terms = params.keyword.normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^\w\s*]/g, "")
+        .split(' ');
+    let finalQuery = '';
+    terms.forEach((t, i) => {
+        if (t !== '' && i === 0) {
+            finalQuery += `${t}^${100 - i} ${t}*^10 ${t}~2 `;
+        } else {
+            finalQuery += `${t}^${100 - i} `;
+        }
+    });
 
-export interface SearchServicesParams {
-    keyword: string;
-}
-
-export interface SearchCategories {
-    keyword: string;
-}
-
-export interface SearchAccurateOrganizationParams {
-    categoriesIds: string[],
-    subCategoriesIds?: string[];
-    publicsId?: string;
-}
-
-interface SearchInterface {
-    isReady: boolean;
-    search(params: SearchAccurateOrganizationParams): Promise<Organisme[]>;
-    getOrganismes(params: SearchOrganizationsParams): Promise<string[]>;
-    searchCategories(params: SearchCategories): Promise<string[]>;
-    getCategories(): Promise<(Categorie & {id: string})[]>;
-    getServices(params: SearchServicesParams): Promise<string[]>;
+    return Array.from(indexSubCategorie.search(finalQuery).filter(s => s.score > 1.45).map(({ ref }) => ref))
 }
 
 export function useDBIndex(language: string): SearchInterface {
@@ -297,12 +188,15 @@ export function useDBIndex(language: string): SearchInterface {
         search: !loading ? search : () => Promise.reject(new Error('Search engine is not ready')),
         getOrganisme: !loading ? getOrganisme : () => Promise.reject(new Error('DB is not ready')),
         getOrganismes: !loading ? searchOrganismes : () => Promise.reject(new Error('Search engine is not ready')),
-        getPublics(): Promise<any[]> {
-            return db.then(data => data.getAll(publicsStoreName));
+        async getPublics(): Promise<any[]> {
+            const data = await db!;
+            return await data.getAll(publicsStoreName);
         },
         searchCategories: !loading ? searchCategories : () => Promise.reject(new Error('Search engine is not ready')),
-        getCategories(): Promise<any[]> {
-            return db.then(data => data.getAll(categoriesStoreName));
+        searchSubCategories: !loading ? searchSubCategories : () => Promise.reject(new Error('Search engine is not ready')),
+        async getCategories(): Promise<any[]> {
+            const data = await db!;
+            return await data.getAll(categoriesStoreName);
         },
         getServices: !loading ? searchServices : () => Promise.reject(new Error('Search engine is not ready')),
     };

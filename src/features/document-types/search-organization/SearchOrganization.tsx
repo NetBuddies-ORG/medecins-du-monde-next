@@ -25,6 +25,7 @@ import {useSearchParams} from "next/navigation";
 import {LeafletMap} from "@/features/common/leaflet";
 import {Coordinates} from "@/features/common/leaflet/LeafletMap";
 import {OrganizationMarker} from "@/features/document-types/search-organization/OrganizationMarker";
+import {AnimatePresence, motion} from "framer-motion";
 
 interface SearchOrganizationProps {
     extraData: GetSearchOrganizationQuery;
@@ -47,6 +48,7 @@ export function SearchOrganization({extraData, language, publics, categories}: S
         id: string
     })[]>([]);
     const [centerCoordinates, setCenterCoordinates] = useState<Coordinates>();
+    const [authorizedSubCategories, setAuthorizedSubCategories] = useState<string[]>([]);
 
     const searchParams = useSearchParams()
     const {search, isReady} = useDBIndex(language);
@@ -79,7 +81,6 @@ export function SearchOrganization({extraData, language, publics, categories}: S
             setSelectedPublic(searchParams.get('publics') as string ?? '0')
             // @ts-ignore
             setCategoriesForFilterDisplay(categoriesInit)
-            console.log(categoriesInit)
             search({
                 subCategoriesIds: searchParams.getAll('subCategories') as string[],
                 categoriesIds: searchParams.getAll('categories') as string[],
@@ -92,7 +93,29 @@ export function SearchOrganization({extraData, language, publics, categories}: S
     }, [isReady])
 
     useEffect(() => {
-        if (isReady && searchParams.getAll('categories').length > 0) {
+        if (isReady && (searchParams.getAll('categories').length > 0 || searchParams.getAll('subCategories').length > 0)){
+            async function searchOrga(subcategoriesToIterate: string[]){
+                const test: string [] = []
+                for (const item of subcategoriesToIterate) {
+                    const searchResult = await search({
+                        categoriesIds: [],
+                        subCategoriesIds: [...selectedSubCategories, item],
+                        publicsId: selectedPublic as string ?? '0'
+                    });
+                    if (searchResult.length > 0) {
+                        test.push(item)
+                    }
+                }
+                setAuthorizedSubCategories(test)
+            }
+            if (selectedSubCategories.length === 0) {
+                setAuthorizedSubCategories([...categoriesForFilterDisplay.flatMap(c => c.attributes.sous_categories.data.map(sc => sc.id))])
+            } else {
+                let subcategoriesToIterate = categoriesForFilterDisplay.flatMap(c => c.attributes.sous_categories.data.map(sc => sc.id));
+                subcategoriesToIterate = subcategoriesToIterate.filter((item, index) => subcategoriesToIterate.indexOf(item) === index)
+                searchOrga(subcategoriesToIterate)
+            }
+
             search({
                 categoriesIds: selectedCategories,
                 subCategoriesIds: selectedSubCategories,
@@ -103,6 +126,7 @@ export function SearchOrganization({extraData, language, publics, categories}: S
             });
         }
     }, [selectedPublic, selectedSubCategories])
+
 
     function handlePublicsChange(event: React.ChangeEvent<HTMLSelectElement>) {
         setSelectedPublic(event.target.value);
@@ -129,12 +153,15 @@ export function SearchOrganization({extraData, language, publics, categories}: S
 
     function handleCategoryCheck(event: React.MouseEvent<HTMLSpanElement>, category: CategorieEntity) {
         event.stopPropagation();
+        if(!category.attributes.sous_categories.data.flatMap(sc => sc.id).some(id => authorizedSubCategories.includes(id))){
+            return
+        }
         const subCategories = category?.attributes.sous_categories?.data;
         if(subCategories?.length) {
             if (subCategories.every(item => selectedSubCategories.includes(item.id))) {
                 setSubSelectedCategories(selectedSubCategories.filter(item => !subCategories.map(item => item.id).includes(item)))
             } else {
-                setSubSelectedCategories([...selectedSubCategories, ...subCategories.map(item => item.id)])
+                setSubSelectedCategories([...selectedSubCategories, ...subCategories.filter(sc => authorizedSubCategories.includes(sc.id)).map(item => item.id)])
             }
         } else {
             if (selectedCategories.includes(category.id)) {
@@ -193,45 +220,52 @@ export function SearchOrganization({extraData, language, publics, categories}: S
     }
 
     return <>
-        <div className='page-container'>
-            {<div className={'slideout-results' + (isSlideOutOpen ? ' isOpen' : '')} id='slideout-results'>
-                <div className='so-header'>
-                    Affiner ma recherche
-                    <FaXmark onClick={() => setIsSlideOutOpen(!isSlideOutOpen)}/>
-                </div>
+        <AnimatePresence>
+            <motion.div className='page-container'>
+                {<div className={'slideout-results' + (isSlideOutOpen ? ' isOpen' : '')} id='slideout-results'>
+                    <div className='so-header'>
+                        Affiner ma recherche
+                        <FaXmark onClick={() => setIsSlideOutOpen(!isSlideOutOpen)}/>
+                    </div>
 
-                <div className="page-container">
-                    <div className='so-cat'>
-                        <h3><span>Public spécifique</span></h3>
-                        <div className='searchbar'>
-                            <div className="searchbar__input input">
-                                <select value={selectedPublic} onChange={handlePublicsChange}>
-                                    <option value={0}>Aucun</option>
-                                    {
-                                        publics.publicSpecifiques.data.map(item => <option key={item.id}
-                                                                                           value={item.id}>{item.attributes.Nom}</option>)
-                                    }
-                                </select>
-                                <FaAngleDown/>
+                    <div className="page-container">
+                        <div className='so-cat'>
+                            <h3><span>Public spécifique</span></h3>
+                            <div className='searchbar'>
+                                <div className="searchbar__input input">
+                                    <select defaultValue={undefined} value={selectedPublic}
+                                            onChange={handlePublicsChange}>
+                                        <option value={0}>Aucun</option>
+                                        {
+                                            publics.publicSpecifiques.data.map(item => <option key={item.id}
+                                                                                               value={item.id}>{item.attributes.Nom}</option>)
+                                        }
+                                    </select>
+                                    <FaAngleDown/>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className='so-body'>
-                        <h3><span>Catégories</span></h3>
-                        {
-                            categoriesForFilterDisplay.length > 0 &&
-                            categoriesForFilterDisplay.map((category) => {
-                                return <>
-                                    <div
-                                        className={'accordion-tab' + (selectedOpenCategories.includes(category.id) ? ' isOpen' : '')}>
-                                        <div className={`sub-title ${hasSubCategories(category) ? '' : 'default-cursor'}`} onClick={() => toggleAccordions(category)}>
+                        <div className='so-body'>
+                            <h3><span>Catégories</span></h3>
+
+                            {
+                                categoriesForFilterDisplay.length > 0 &&
+                                categoriesForFilterDisplay.map((category) => {
+                                    return <>
+                                        <div key={category.id}
+                                             className={'accordion-tab ' + (selectedOpenCategories.includes(category.id) ? 'isOpen' : '') + (!category.attributes.sous_categories.data.flatMap(sc => sc.id).some(id => authorizedSubCategories.includes(id)) ? ' disabled' : '')}>
+                                            <div
+                                                className={`sub-title ${hasSubCategories(category) ? '' : 'default-cursor'}`}
+                                                onClick={() => toggleAccordions(category)}>
                                         <span
                                             className={"custom-checkbox" + (isCategoryChecked(category) ? ' isChecked' : (isPartiallyChecked(category) ? ' isChecked' : ''))}
                                             onClick={(event) => handleCategoryCheck(event, category)}>
-                                            { isCategoryChecked(category) ? <FaCheck/> : ((isPartiallyChecked(category) ? '' : ''))}
+                                            {isCategoryChecked(category) ?
+                                                <FaCheck/> : ((isPartiallyChecked(category) ? '' : ''))}
                                         </span>
-                                            <span>
-                                                <span className="pointer-cursor" onClick={(event) => handleCategoryCheck(event, category)}>{category.attributes.Nom}</span>
+                                                <span>
+                                                <span
+                                                    onClick={(event) => handleCategoryCheck(event, category)}>{category.attributes.Nom}</span>
                                                 <span className="angle">
                                                 {
                                                     category.attributes.sous_categories.data?.length ? (selectedOpenCategories.includes(category.id) ?
@@ -242,115 +276,76 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                                             </span>
                                         </span>
 
+                                            </div>
+                                            <ul>
+                                                {
+                                                    category.attributes.sous_categories.data.map((subCategory) => {
+                                                        return <li key={subCategory.id}
+                                                                   className={"sub-category" + (authorizedSubCategories.includes(subCategory.id) || selectedSubCategories.includes(subCategory.id) ? '' : ' disabled')}
+                                                                   onClick={() => (authorizedSubCategories.includes(subCategory.id) || selectedSubCategories.includes(subCategory.id)) && handleCheck(subCategory.id)}>
+                                                            <div
+                                                                className={"checkmark" + (selectedSubCategories.includes(subCategory.id) ? " isChecked" : "")}>
+                                                                {selectedSubCategories.includes(subCategory.id) &&
+                                                                    <FaCheck/>}
+                                                            </div>
+                                                            <span>{subCategory.attributes.Nom}</span>
+                                                        </li>
+                                                    })
+                                                }
+                                            </ul>
                                         </div>
-                                        <ul>
-                                            {
-                                                category.attributes.sous_categories.data.map((subCategory) => {
-                                                    return <li key={subCategory.id}
-                                                               onClick={() => handleCheck(subCategory.id)}>
-                                                        <div
-                                                            className={"checkmark" + (selectedSubCategories.includes(subCategory.id) ? " isChecked" : "")}>
-                                                            {selectedSubCategories.includes(subCategory.id) &&
-                                                                <FaCheck/>}
-                                                        </div>
-                                                        <span>{subCategory.attributes.Nom}</span>
-                                                    </li>
-
-                                                })
-                                            }
-                                        </ul>
-                                    </div>
-                                </>
-                            })
-                        }
-                        <div className='footer-search'>
-                            <button className='btn btn-primary' onClick={() => setIsSlideOutOpen(false)}>
-                                Afficher {organismes.length + ' ' + (organismes.length > 1 ? 'résultats' : 'résultat')}
-                            </button>
+                                    </>
+                                })
+                            }
+                            <div className='footer-search'>
+                                <button className='btn btn-primary' onClick={() => setIsSlideOutOpen(false)}>
+                                    Afficher {organismes.length + ' ' + (organismes.length > 1 ? 'résultats' : 'résultat')}
+                                </button>
+                            </div>
                         </div>
                     </div>
+                </div>}
+                <div className='searchbar input'>
+                    <button className='btn btn-primary' id='affine-results-toggle'
+                            onClick={() => setIsSlideOutOpen(!isSlideOutOpen)}>Affiner ma recherche
+                    </button>
                 </div>
-            </div>}
-            <div className='searchbar input'>
-                <button className='btn btn-primary' id='affine-results-toggle'
-                        onClick={() => setIsSlideOutOpen(!isSlideOutOpen)}>Affiner ma recherche
-                </button>
-            </div>
-            <div className='resultbar'>
+                <div className='resultbar'>
                 <span className='count'>
                   {organismes.length} résultats
                 </span>
-                <div className={"view-picker"}>
+                    <div className={"view-picker"}>
                     <span className={"icon-picker" + (isMapViewSelect ? '' : ' active')}
                           onClick={() => setIsMapViewSelect(!isMapViewSelect)}>
                         <FaList/>
                     </span>
-                    <span className={"icon-picker" + (isMapViewSelect ? ' active' : '')}
-                          onClick={() => setIsMapViewSelect(!isMapViewSelect)}>
+                        <span className={"icon-picker" + (isMapViewSelect ? ' active' : '')}
+                              onClick={() => setIsMapViewSelect(!isMapViewSelect)}>
                         <FaMapLocationDot/>
                     </span>
+                    </div>
                 </div>
-            </div>
-            {
-                isMapViewSelect ?
-                    <>
-                        <div className='map-container'>
-                            {centerCoordinates &&
-                                <LeafletMap coordinates={centerCoordinates}
-                                            zoom={10}>
-                                    {
-                                        organismes.length > 0 && organismes.map((organisme) => {
-                                            return (organisme.Longitude && organisme.Latitude) &&
-                                                <OrganizationMarker organisme={organisme}
-                                                                    language={language}
-                                                                    currentVisibleItemId={currentVisibleItemId}
-                                                                    handleCloseCard={handleCloseCard}
-                                                                    toggleViewItem={toggleViewItem}/>
-                                        })
-                                    }
-                                </LeafletMap>
-                            }
-                        </div>
-                        {
-                            organismes.length === 0 &&
-                            <div className='no-results'>
-                                <p>Aucun résultat.</p>
-                                <small>Essayer de modifier vos paramètres de recherche</small>
-                            </div>
-                        }
-                    </>
-                    :
-                    (
+                {
+                    isMapViewSelect ?
                         <>
-                        {
-                            organismes.length > 0 &&
-                            <div className='card-container-organisme'>
-                                {
-                                 organismes.map((organisme) => {
-                                        return <Link key={organisme.Nom}
-                                                     href={'/' + language + '/' + extraData.searchOrganization.data.attributes.OrganismeUrl.page.data.attributes.Url + '/' + organisme.generatedUrl}>
-                                            <div className='card organisme'>
-                                                <div className='up'>
-                                                    {organisme.Nom}
-                                                </div>
-                                                <div className='department'>
-                                                    {
-                                                        organisme?.Departement &&
-                                                        <span><FaBuildingUser /> {organisme?.Departement}</span>
-                                                    }
-                                                </div>
-                                                <div className='down'>
-                                                    <div className='location'>
-                                                        <FaMapMarkerAlt/>
-                                                        {organisme.Adresse ? <p>{organisme.Adresse}</p> : <p>Adresse non disponible</p>}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </Link>
-                                 })
+                            <div className='map-container'>
+                                {centerCoordinates &&
+                                    <LeafletMap coordinates={centerCoordinates}
+                                                zoom={10}>
+                                        {
+                                            organismes.length > 0 && organismes.map((organisme) => {
+                                                return (organisme.Longitude && organisme.Latitude) &&
+                                                    <OrganizationMarker organisme={organisme}
+                                                                        key={organisme.id}
+                                                                        language={language}
+                                                                        currentVisibleItemId={currentVisibleItemId}
+                                                                        handleCloseCard={handleCloseCard}
+                                                                        toggleViewItem={toggleViewItem}/>
+                                            })
+                                        }
+                                    </LeafletMap>
                                 }
                             </div>
-                        }
                             {
                                 organismes.length === 0 &&
                                 <div className='no-results'>
@@ -359,12 +354,57 @@ export function SearchOrganization({extraData, language, publics, categories}: S
                                 </div>
                             }
                         </>
-                    )
+                        :
+                        (
+                            <>
+                                {
+                                    organismes.length > 0 &&
+                                    <div className='card-container-organisme'>
+                                        {
+                                            organismes.map((organisme) => {
+                                                return <Link key={organisme.id}
+                                                             href={'/' + language + '/' + extraData.searchOrganization.data.attributes.OrganismeUrl.page.data.attributes.Url + '/' + organisme.generatedUrl}>
+                                                    <div className='card organisme'>
+                                                        <div className='up'>
+                                                            {organisme.Nom}
+                                                        </div>
+                                                        <div className='department'>
+                                                            {
+                                                                organisme?.Departement &&
+                                                                <span><FaBuildingUser/> {organisme?.Departement}</span>
+                                                            }
+                                                        </div>
+                                                        <div className='down'>
+                                                            <div className='location'>
+                                                                <FaMapMarkerAlt/>
+                                                                {organisme.Adresse ? <p>{organisme.Adresse}</p> :
+                                                                    <p>Adresse non disponible</p>}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </Link>
+                                            })
+                                        }
+                                    </div>
+                                }
+                                {
+                                    isReady ?
+                                        organismes.length === 0 &&
+                                        <div className='no-results'>
+                                            <p>Aucun résultat.</p>
+                                            <small>Essayer de modifier vos paramètres de recherche</small>
+                                        </div> :
+                                        <div className={'spinner-container'}>
+                                            <div className="loader"></div>
+                                        </div>
+                                }
+                            </>
+                        )
 
 
-
-            }
-        </div>
+                }
+            </motion.div>
+        </AnimatePresence>
         <div className="custom-shape-divider-bottom-1694936473">
             <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
                  preserveAspectRatio="none">

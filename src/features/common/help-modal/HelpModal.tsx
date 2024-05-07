@@ -46,7 +46,7 @@ export function HelpModal({help, closeModal}: HelpModalProps) {
                     <div className="modal-stepper">
                         {
                             help.data.attributes.Page.map((item, index) => {
-                                return <div key={index} className="modal-step">
+                                return <div key={item.__typename} className="modal-step">
                                     {
                                         currentStep === index &&
                                         <div dangerouslySetInnerHTML={{__html: item.Contenu}}></div>
@@ -60,7 +60,7 @@ export function HelpModal({help, closeModal}: HelpModalProps) {
             <div className="bullets">
                 {
                     help.data.attributes.Page.map((item, index) => {
-                        return <div key={index} className={`bullet ${currentStep === index ? 'active' : ''}`}
+                        return <div key={item.__typename} className={`bullet ${currentStep === index ? 'active' : ''}`}
                                     onClick={() => setCurrentStep(index)}></div>
                     })
                 }

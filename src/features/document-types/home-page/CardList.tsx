@@ -24,6 +24,7 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
     const healthId = '18'
     const subHealthIds = ['19', '20', '21']
 
+    const [authorizedCategories, setAuthorizedCategories] = useState<string[]>(categories.data.map(item => item.id))
     const [selectedCategories, setSelectedCategories] = useState<string[]>([])
     const [selectedPublics, setSelectedPublics] = useState<string>();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
@@ -32,7 +33,6 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
 
     useEffect(() => {
         if (localStorage.getItem('isInfoVisible') === 'false') {
-            console.log('isInfoVisible', localStorage.getItem('isInfoVisible'))
             setIsInfoVisible(false)
         } else {
             setIsInfoVisible(true)
@@ -54,6 +54,9 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
         if (selectedCategories.includes(id)) {
             setSelectedCategories(selectedCategories.filter(item => item !== id))
         } else {
+            if(!authorizedCategories.includes(id)) {
+                return
+            }
             if (healthId === id) {
                 setSelectedCategories([...selectedCategories, ...subHealthIds])
                 return
@@ -99,10 +102,10 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
                 <AutoComplete language={language}></AutoComplete>
             </div>
             <div className="searchbar__input input">
-                <select id={'publics'} value={selectedPublics}
+                <select defaultValue={0} id={'publics'} value={selectedPublics}
                         className={selectedPublics === '0' || !selectedPublics ? 'disabled-select' : ''}
                         onChange={handlePublicsChange}>
-                    <option value="0" className="disabled-option" selected>Choisir un public spécifique ..</option>
+                    <option value="0" className="disabled-option">Choisir un public spécifique ..</option>
                     {
                         publics.data.map(item =>
                             <option key={item.id} value={item.id}>{item.attributes.Nom}</option>)
@@ -127,14 +130,15 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
             {
                 categories.data.map(category => {
                     if (subHealthIds.includes(category.id)) return
-                    return <motion.div whileHover={{scale: 1.05}} key={category.id}
-                                       transition={{duration: 0.1}}
-                                className={'card' + (selectedCategories.includes(category.id) || (category.id === healthId && subHealthIds.every(subHealthId => selectedCategories.includes(subHealthId))) ? ' isSelected' : '')}
+                    return (
+                        <motion.div key={category.id} whileHover={{scale: 1.05}} transition={{duration: 0.1}}
+                                className={'card' + ((!authorizedCategories.includes(category.id) && !selectedCategories.includes(category.id)) ? ' disabled': '') + (selectedCategories.includes(category.id) || (category.id === healthId && subHealthIds.every(subHealthId => selectedCategories.includes(subHealthId))) ? ' isSelected' : '')}
                                 onClick={() => handleSelectedCategories(category.id)}>
-                        <span className="check"><FaCheck/></span>
-                        <IconComponent icon={category?.attributes.Icone}/>
-                        <div className="card__title"><span>{category?.attributes.Nom}</span></div>
-                    </motion.div>
+                            <span className="check"><FaCheck/></span>
+                            <IconComponent icon={category?.attributes.Icone}/>
+                            <div className="card__title"><span>{category?.attributes.Nom}</span></div>
+                        </motion.div>
+                    )
                 })
             }
         </div>

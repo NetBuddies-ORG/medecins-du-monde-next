@@ -481,7 +481,7 @@ export type FooterRelationResponseCollection = {
   data: Array<FooterEntity>;
 };
 
-export type GenericMorph = About | Categorie | ComponentFooterLiensRapides | ComponentFooterServices | ComponentFooterSocial | ComponentGeneraleFooter | ComponentGeneraleHeader | ComponentGeneraleSeo | ComponentHelpPage | ComponentOrientationsOrientations | ComponentUrgencesUrgences | ComponentUtilsLink | Footer | Header | Help | Home | I18NLocale | Langue | Organisme | Orientation | Page | PublicSpecifique | ReactIconsIconlibrary | SearchOrganization | Service | SlugifySlug | SousCategorie | Traduction | UploadFile | UploadFolder | Urgence | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = About | Categorie | ComponentFooterLiensRapides | ComponentFooterServices | ComponentFooterSocial | ComponentGeneraleFooter | ComponentGeneraleHeader | ComponentGeneraleSeo | ComponentHelpPage | ComponentOrientationsOrientations | ComponentUrgencesUrgences | ComponentUtilsLink | Footer | Header | Help | Home | I18NLocale | Langue | Organisme | Orientation | Page | PublicSpecifique | ReactIconsIconlibrary | SearchOrganization | Service | SlugifySlug | SousCategorie | ToolBox | Traduction | UploadFile | UploadFolder | Urgence | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type Header = {
   __typename?: 'Header';
@@ -825,6 +825,7 @@ export type Mutation = {
   deleteService: Maybe<ServiceEntityResponse>;
   deleteSlugifySlug: Maybe<SlugifySlugEntityResponse>;
   deleteSousCategorie: Maybe<SousCategorieEntityResponse>;
+  deleteToolBox: Maybe<ToolBoxEntityResponse>;
   deleteTraduction: Maybe<TraductionEntityResponse>;
   deleteUploadFile: Maybe<UploadFileEntityResponse>;
   deleteUploadFolder: Maybe<UploadFolderEntityResponse>;
@@ -861,6 +862,7 @@ export type Mutation = {
   updateService: Maybe<ServiceEntityResponse>;
   updateSlugifySlug: Maybe<SlugifySlugEntityResponse>;
   updateSousCategorie: Maybe<SousCategorieEntityResponse>;
+  updateToolBox: Maybe<ToolBoxEntityResponse>;
   updateTraduction: Maybe<TraductionEntityResponse>;
   updateUploadFile: Maybe<UploadFileEntityResponse>;
   updateUploadFolder: Maybe<UploadFolderEntityResponse>;
@@ -1337,6 +1339,11 @@ export type MutationUpdateSousCategorieArgs = {
 };
 
 
+export type MutationUpdateToolBoxArgs = {
+  data: ToolBoxInput;
+};
+
+
 export type MutationUpdateTraductionArgs = {
   data: TraductionInput;
   id: Scalars['ID']['input'];
@@ -1740,6 +1747,7 @@ export type Query = {
   slugifySlugs: Maybe<SlugifySlugEntityResponseCollection>;
   sousCategorie: Maybe<SousCategorieEntityResponse>;
   sousCategories: Maybe<SousCategorieEntityResponseCollection>;
+  toolBox: Maybe<ToolBoxEntityResponse>;
   traduction: Maybe<TraductionEntityResponse>;
   traductions: Maybe<TraductionEntityResponseCollection>;
   uploadFile: Maybe<UploadFileEntityResponse>;
@@ -1934,6 +1942,11 @@ export type QuerySousCategoriesArgs = {
   pagination?: InputMaybe<PaginationArg>;
   publicationState?: InputMaybe<PublicationState>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+
+export type QueryToolBoxArgs = {
+  publicationState?: InputMaybe<PublicationState>;
 };
 
 
@@ -2206,6 +2219,7 @@ export type SlugifySlugInput = {
 export type SousCategorie = {
   __typename?: 'SousCategorie';
   Nom: Scalars['String']['output'];
+  SearchTerms: Maybe<Scalars['JSON']['output']>;
   category: Maybe<CategorieEntityResponse>;
   createdAt: Maybe<Scalars['DateTime']['output']>;
   locale: Maybe<Scalars['String']['output']>;
@@ -2241,6 +2255,7 @@ export type SousCategorieEntityResponseCollection = {
 
 export type SousCategorieFiltersInput = {
   Nom: InputMaybe<StringFilterInput>;
+  SearchTerms: InputMaybe<JsonFilterInput>;
   and: InputMaybe<Array<InputMaybe<SousCategorieFiltersInput>>>;
   category: InputMaybe<CategorieFiltersInput>;
   createdAt: InputMaybe<DateTimeFilterInput>;
@@ -2255,6 +2270,7 @@ export type SousCategorieFiltersInput = {
 
 export type SousCategorieInput = {
   Nom: InputMaybe<Scalars['String']['input']>;
+  SearchTerms: InputMaybe<Scalars['JSON']['input']>;
   category: InputMaybe<Scalars['ID']['input']>;
   publishedAt: InputMaybe<Scalars['DateTime']['input']>;
 };
@@ -2287,6 +2303,30 @@ export type StringFilterInput = {
   null: InputMaybe<Scalars['Boolean']['input']>;
   or: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   startsWith: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ToolBox = {
+  __typename?: 'ToolBox';
+  content: Maybe<Scalars['String']['output']>;
+  createdAt: Maybe<Scalars['DateTime']['output']>;
+  publishedAt: Maybe<Scalars['DateTime']['output']>;
+  updatedAt: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type ToolBoxEntity = {
+  __typename?: 'ToolBoxEntity';
+  attributes: Maybe<ToolBox>;
+  id: Maybe<Scalars['ID']['output']>;
+};
+
+export type ToolBoxEntityResponse = {
+  __typename?: 'ToolBoxEntityResponse';
+  data: Maybe<ToolBoxEntity>;
+};
+
+export type ToolBoxInput = {
+  content: InputMaybe<Scalars['String']['input']>;
+  publishedAt: InputMaybe<Scalars['DateTime']['input']>;
 };
 
 export type Traduction = {
@@ -2771,7 +2811,7 @@ export type GetCategoriesQueryVariables = Exact<{
 }>;
 
 
-export type GetCategoriesQuery = { __typename?: 'Query', categories: { __typename?: 'CategorieEntityResponseCollection', data: Array<{ __typename?: 'CategorieEntity', id: string, attributes: { __typename?: 'Categorie', Nom: string, Icone: string, sous_categories: { __typename?: 'SousCategorieRelationResponseCollection', data: Array<{ __typename?: 'SousCategorieEntity', id: string, attributes: { __typename?: 'SousCategorie', Nom: string } }> } } }> } };
+export type GetCategoriesQuery = { __typename?: 'Query', categories: { __typename?: 'CategorieEntityResponseCollection', data: Array<{ __typename?: 'CategorieEntity', id: string, attributes: { __typename?: 'Categorie', Nom: string, Icone: string, sous_categories: { __typename?: 'SousCategorieRelationResponseCollection', data: Array<{ __typename?: 'SousCategorieEntity', id: string, attributes: { __typename?: 'SousCategorie', Nom: string, SearchTerms: any } }> } } }> } };
 
 export type GetLocalesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2871,6 +2911,11 @@ export type GetSearchOrganizationQueryVariables = Exact<{
 
 export type GetSearchOrganizationQuery = { __typename?: 'Query', searchOrganization: { __typename?: 'SearchOrganizationEntityResponse', data: { __typename?: 'SearchOrganizationEntity', attributes: { __typename?: 'SearchOrganization', OrganismeUrl: { __typename?: 'ComponentUtilsLink', page: { __typename?: 'PageEntityResponse', data: { __typename?: 'PageEntity', attributes: { __typename?: 'Page', Url: string } } } } } } } };
 
+export type GetToolBoxQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetToolBoxQuery = { __typename?: 'Query', toolBox: { __typename?: 'ToolBoxEntityResponse', data: { __typename?: 'ToolBoxEntity', id: string, attributes: { __typename?: 'ToolBox', content: string } } } };
+
 export type GetUrgencesQueryVariables = Exact<{
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 }>;
@@ -2887,11 +2932,12 @@ export const GetCategoriesDocument = gql`
       attributes {
         Nom
         Icone
-        sous_categories {
+        sous_categories(pagination: {limit: 1000}) {
           data {
             id
             attributes {
               Nom
+              SearchTerms
             }
           }
         }
@@ -2902,7 +2948,7 @@ export const GetCategoriesDocument = gql`
     `;
 export const GetLocalesDocument = gql`
     query getLocales {
-  i18NLocales {
+  i18NLocales(pagination: {limit: 1000}) {
     data {
       attributes {
         code
@@ -2950,7 +2996,7 @@ export const GetOrganismesDocument = gql`
             }
           }
         }
-        public_specifiques {
+        public_specifiques(pagination: {limit: 1000}) {
           data {
             id
             attributes {
@@ -2958,7 +3004,7 @@ export const GetOrganismesDocument = gql`
             }
           }
         }
-        services {
+        services(pagination: {limit: 1000}) {
           data {
             id
             attributes {
@@ -2968,7 +3014,7 @@ export const GetOrganismesDocument = gql`
           }
         }
         Conditions
-        sous_categories {
+        sous_categories(pagination: {limit: 1000}) {
           data {
             id
             attributes {
@@ -2983,7 +3029,7 @@ export const GetOrganismesDocument = gql`
     `;
 export const GetPageDocument = gql`
     query getPage($locale: I18NLocaleCode, $filters: PageFiltersInput) {
-  pages(locale: $locale, filters: $filters) {
+  pages(locale: $locale, filters: $filters, pagination: {limit: 1000}) {
     data {
       attributes {
         Titre
@@ -3176,6 +3222,18 @@ export const GetSearchOrganizationDocument = gql`
   }
 }
     `;
+export const GetToolBoxDocument = gql`
+    query getToolBox {
+  toolBox {
+    data {
+      id
+      attributes {
+        content
+      }
+    }
+  }
+}
+    `;
 export const GetUrgencesDocument = gql`
     query getUrgences($locale: I18NLocaleCode) {
   urgence(locale: $locale) {
@@ -3244,6 +3302,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getSearchOrganization(variables?: GetSearchOrganizationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetSearchOrganizationQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetSearchOrganizationQuery>(GetSearchOrganizationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getSearchOrganization', 'query');
+    },
+    getToolBox(variables?: GetToolBoxQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetToolBoxQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetToolBoxQuery>(GetToolBoxDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getToolBox', 'query');
     },
     getUrgences(variables?: GetUrgencesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetUrgencesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetUrgencesQuery>(GetUrgencesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUrgences', 'query');
