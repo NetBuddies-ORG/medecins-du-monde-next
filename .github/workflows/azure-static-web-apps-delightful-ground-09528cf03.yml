@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: 20
           cache: 'yarn'
-      - name: 'Install NPM packages'
+      - name: 'Install Yarn packages'
         run: 'yarn install --frozen-lockfile'
 
       - name: Build And Deploy
