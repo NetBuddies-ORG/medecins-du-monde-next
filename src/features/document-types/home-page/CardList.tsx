@@ -69,44 +69,6 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
         }
     }
 
-    useAsyncEffect(async () => {
-        // let allAvailableSubCategoriesIds: string[] = []
-        // if (selectedCategories.length === 0 && (selectedPublics === '0' || !selectedPublics)) {
-        //     allAvailableSubCategoriesIds.push(...categories.data.map(item => item.id))
-        // } else {
-        //
-        //     // check if I can pick a new category that could match with the selected ones
-        //     const categoriesIds = categories.data.filter(cat => selectedCategories.includes(cat.id))
-        //
-        //     const result = await search({
-        //         categoriesIds: selectedCategories,
-        //         subCategoriesIds: categoriesIds.flatMap(cat => cat.attributes.sous_categories.data.map(subcat => subcat.id)),
-        //         publicsId: selectedPublics
-        //     })
-        //
-        //     // Flat all the subcategories Id and remove duplicates
-        //     let searchedSubCategories = result.flatMap(item => item.sous_categories.data.map(subcat => subcat.id))
-        //     searchedSubCategories = searchedSubCategories.filter((item, index) => searchedSubCategories.indexOf(item) === index)
-        //     categories.data.map(async (categorie) => {
-        //         const subCategoriesIds = [...categorie.attributes.sous_categories.data.map(item => item.id), ...categoriesIds.flatMap(cat => cat.attributes.sous_categories.data.map(subcat => subcat.id))]
-        //         const res = await search({
-        //             categoriesIds: [...selectedCategories, categorie.id],
-        //             subCategoriesIds: subCategoriesIds,
-        //         })
-        //         if(res.length > 0) {
-        //             console.log('res', res)
-        //             allAvailableSubCategoriesIds = [categorie.id, ...allAvailableSubCategoriesIds]
-        //         }
-        //     })
-        //     console.log('allAvailableSubCategoriesIds', allAvailableSubCategoriesIds)
-        // }
-        // setAuthorizedCategories(allAvailableSubCategoriesIds)
-    }, [selectedCategories, selectedPublics])
-
-    useEffect(() => {
-        // console.log('authorizedCategories', authorizedCategories)
-    }, [authorizedCategories]);
-
     function handlePublicsChange(event: React.ChangeEvent<HTMLSelectElement>) {
         setSelectedPublics(event.target.value);
     }
