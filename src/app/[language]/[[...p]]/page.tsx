@@ -1,4 +1,4 @@
-import React, {cache} from 'react';
+import React, {cache, Suspense} from 'react';
 import {PageFiltersInput} from "@/services/GraphQL";
 import {getStrapiClient} from "@/services/Strapi";
 import {DocumentTypes} from "@/features/document-types/DocumentTypes";
@@ -60,9 +60,9 @@ export default async function CmsPage({params: {language, p}}: CmsPageProps) {
 
 
     return (
-        <>
+        <Suspense>
             <DocumentTypes />
-        </>
+        </Suspense>
     );
 }
 
