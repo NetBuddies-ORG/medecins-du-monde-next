@@ -113,21 +113,22 @@ export function CardList({help, extraData, categoriesContainer: {categories}, pu
         </div>
         <div className="card-container">
             <Link prefetch={false} href={extraData?.home?.data?.attributes?.UrgencesLink}>
-                <div className="card danger">
+                <motion.div whileHover={{scale: 1.05}} transition={{duration: 0.1}} className="card danger">
                     <FaHeadphones/>
                     <div className="card__title"><span>{t('HOME_URGENCES')}</span></div>
-                </div>
+                </motion.div>
             </Link>
             <Link prefetch={false} href={extraData?.home?.data?.attributes?.OrientationsLink}>
-                <div className="card info">
+                <motion.div whileHover={{scale: 1.05}} transition={{duration: 0.1}} className="card info">
                     <FaCompass/>
                     <div className="card__title"><span>{t('HOME_ORIENTATIONS')}</span></div>
-                </div>
+                </motion.div>
             </Link>
             {
                 categories.data.map(category => {
                     if (subHealthIds.includes(category.id)) return
-                    return <motion.div whileHover={{scale: 1.025}} key={category.id}
+                    return <motion.div whileHover={{scale: 1.05}} key={category.id}
+                                       transition={{duration: 0.1}}
                                 className={'card' + (selectedCategories.includes(category.id) || (category.id === healthId && subHealthIds.every(subHealthId => selectedCategories.includes(subHealthId))) ? ' isSelected' : '')}
                                 onClick={() => handleSelectedCategories(category.id)}>
                         <span className="check"><FaCheck/></span>
