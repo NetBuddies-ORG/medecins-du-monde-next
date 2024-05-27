@@ -154,6 +154,64 @@ export type CategorieRelationResponseCollection = {
   data: Array<CategorieEntity>;
 };
 
+export type CategoriesOrientationUrgence = {
+  __typename?: 'CategoriesOrientationUrgence';
+  Nom: Scalars['String']['output'];
+  createdAt: Maybe<Scalars['DateTime']['output']>;
+  locale: Maybe<Scalars['String']['output']>;
+  localizations: Maybe<CategoriesOrientationUrgenceRelationResponseCollection>;
+  publishedAt: Maybe<Scalars['DateTime']['output']>;
+  updatedAt: Maybe<Scalars['DateTime']['output']>;
+};
+
+
+export type CategoriesOrientationUrgenceLocalizationsArgs = {
+  filters: InputMaybe<CategoriesOrientationUrgenceFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+export type CategoriesOrientationUrgenceEntity = {
+  __typename?: 'CategoriesOrientationUrgenceEntity';
+  attributes: Maybe<CategoriesOrientationUrgence>;
+  id: Maybe<Scalars['ID']['output']>;
+};
+
+export type CategoriesOrientationUrgenceEntityResponse = {
+  __typename?: 'CategoriesOrientationUrgenceEntityResponse';
+  data: Maybe<CategoriesOrientationUrgenceEntity>;
+};
+
+export type CategoriesOrientationUrgenceEntityResponseCollection = {
+  __typename?: 'CategoriesOrientationUrgenceEntityResponseCollection';
+  data: Array<CategoriesOrientationUrgenceEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type CategoriesOrientationUrgenceFiltersInput = {
+  Nom: InputMaybe<StringFilterInput>;
+  and: InputMaybe<Array<InputMaybe<CategoriesOrientationUrgenceFiltersInput>>>;
+  createdAt: InputMaybe<DateTimeFilterInput>;
+  id: InputMaybe<IdFilterInput>;
+  locale: InputMaybe<StringFilterInput>;
+  localizations: InputMaybe<CategoriesOrientationUrgenceFiltersInput>;
+  not: InputMaybe<CategoriesOrientationUrgenceFiltersInput>;
+  or: InputMaybe<Array<InputMaybe<CategoriesOrientationUrgenceFiltersInput>>>;
+  publishedAt: InputMaybe<DateTimeFilterInput>;
+  updatedAt: InputMaybe<DateTimeFilterInput>;
+};
+
+export type CategoriesOrientationUrgenceInput = {
+  Nom: InputMaybe<Scalars['String']['input']>;
+  publishedAt: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type CategoriesOrientationUrgenceRelationResponseCollection = {
+  __typename?: 'CategoriesOrientationUrgenceRelationResponseCollection';
+  data: Array<CategoriesOrientationUrgenceEntity>;
+};
+
 export type ComponentFooterLiensRapides = {
   __typename?: 'ComponentFooterLiensRapides';
   Nom: Maybe<Scalars['String']['output']>;
@@ -300,6 +358,7 @@ export type ComponentOrientationsOrientations = {
   Email: Maybe<Scalars['String']['output']>;
   Nom: Scalars['String']['output'];
   Telephone: Maybe<Scalars['String']['output']>;
+  categories_orientation_urgence: Maybe<CategoriesOrientationUrgenceEntityResponse>;
   id: Scalars['ID']['output'];
 };
 
@@ -309,6 +368,7 @@ export type ComponentOrientationsOrientationsFiltersInput = {
   Nom: InputMaybe<StringFilterInput>;
   Telephone: InputMaybe<StringFilterInput>;
   and: InputMaybe<Array<InputMaybe<ComponentOrientationsOrientationsFiltersInput>>>;
+  categories_orientation_urgence: InputMaybe<CategoriesOrientationUrgenceFiltersInput>;
   not: InputMaybe<ComponentOrientationsOrientationsFiltersInput>;
   or: InputMaybe<Array<InputMaybe<ComponentOrientationsOrientationsFiltersInput>>>;
 };
@@ -318,6 +378,7 @@ export type ComponentOrientationsOrientationsInput = {
   Email: InputMaybe<Scalars['String']['input']>;
   Nom: InputMaybe<Scalars['String']['input']>;
   Telephone: InputMaybe<Scalars['String']['input']>;
+  categories_orientation_urgence: InputMaybe<Scalars['ID']['input']>;
   id: InputMaybe<Scalars['ID']['input']>;
 };
 
@@ -326,6 +387,7 @@ export type ComponentUrgencesUrgences = {
   Adresse: Maybe<Scalars['String']['output']>;
   Nom: Maybe<Scalars['String']['output']>;
   Telephone: Maybe<Scalars['String']['output']>;
+  categories_orientation_urgence: Maybe<CategoriesOrientationUrgenceEntityResponse>;
   id: Scalars['ID']['output'];
 };
 
@@ -334,6 +396,7 @@ export type ComponentUrgencesUrgencesFiltersInput = {
   Nom: InputMaybe<StringFilterInput>;
   Telephone: InputMaybe<StringFilterInput>;
   and: InputMaybe<Array<InputMaybe<ComponentUrgencesUrgencesFiltersInput>>>;
+  categories_orientation_urgence: InputMaybe<CategoriesOrientationUrgenceFiltersInput>;
   not: InputMaybe<ComponentUrgencesUrgencesFiltersInput>;
   or: InputMaybe<Array<InputMaybe<ComponentUrgencesUrgencesFiltersInput>>>;
 };
@@ -342,6 +405,7 @@ export type ComponentUrgencesUrgencesInput = {
   Adresse: InputMaybe<Scalars['String']['input']>;
   Nom: InputMaybe<Scalars['String']['input']>;
   Telephone: InputMaybe<Scalars['String']['input']>;
+  categories_orientation_urgence: InputMaybe<Scalars['ID']['input']>;
   id: InputMaybe<Scalars['ID']['input']>;
 };
 
@@ -481,7 +545,7 @@ export type FooterRelationResponseCollection = {
   data: Array<FooterEntity>;
 };
 
-export type GenericMorph = About | Categorie | ComponentFooterLiensRapides | ComponentFooterServices | ComponentFooterSocial | ComponentGeneraleFooter | ComponentGeneraleHeader | ComponentGeneraleSeo | ComponentHelpPage | ComponentOrientationsOrientations | ComponentUrgencesUrgences | ComponentUtilsLink | Footer | Header | Help | Home | I18NLocale | Langue | Organisme | Orientation | Page | PublicSpecifique | ReactIconsIconlibrary | SearchOrganization | Service | SlugifySlug | SousCategorie | ToolBox | Traduction | UploadFile | UploadFolder | Urgence | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = About | Categorie | CategoriesOrientationUrgence | ComponentFooterLiensRapides | ComponentFooterServices | ComponentFooterSocial | ComponentGeneraleFooter | ComponentGeneraleHeader | ComponentGeneraleSeo | ComponentHelpPage | ComponentOrientationsOrientations | ComponentUrgencesUrgences | ComponentUtilsLink | Footer | Header | Help | Home | I18NLocale | Langue | Organisme | Orientation | Page | PublicSpecifique | ReactIconsIconlibrary | SearchOrganization | Service | SlugifySlug | SousCategorie | ToolBox | Traduction | UploadFile | UploadFolder | Urgence | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type Header = {
   __typename?: 'Header';
@@ -780,6 +844,8 @@ export type Mutation = {
   createAboutLocalization: Maybe<AboutEntityResponse>;
   createCategorie: Maybe<CategorieEntityResponse>;
   createCategorieLocalization: Maybe<CategorieEntityResponse>;
+  createCategoriesOrientationUrgence: Maybe<CategoriesOrientationUrgenceEntityResponse>;
+  createCategoriesOrientationUrgenceLocalization: Maybe<CategoriesOrientationUrgenceEntityResponse>;
   createFooterLocalization: Maybe<FooterEntityResponse>;
   createHeaderLocalization: Maybe<HeaderEntityResponse>;
   createHelpLocalization: Maybe<HelpEntityResponse>;
@@ -811,6 +877,7 @@ export type Mutation = {
   createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   deleteAbout: Maybe<AboutEntityResponse>;
   deleteCategorie: Maybe<CategorieEntityResponse>;
+  deleteCategoriesOrientationUrgence: Maybe<CategoriesOrientationUrgenceEntityResponse>;
   deleteFooter: Maybe<FooterEntityResponse>;
   deleteHeader: Maybe<HeaderEntityResponse>;
   deleteHelp: Maybe<HelpEntityResponse>;
@@ -847,6 +914,7 @@ export type Mutation = {
   resetPassword: Maybe<UsersPermissionsLoginPayload>;
   updateAbout: Maybe<AboutEntityResponse>;
   updateCategorie: Maybe<CategorieEntityResponse>;
+  updateCategoriesOrientationUrgence: Maybe<CategoriesOrientationUrgenceEntityResponse>;
   updateFileInfo: UploadFileEntityResponse;
   updateFooter: Maybe<FooterEntityResponse>;
   updateHeader: Maybe<HeaderEntityResponse>;
@@ -897,6 +965,19 @@ export type MutationCreateCategorieArgs = {
 
 export type MutationCreateCategorieLocalizationArgs = {
   data: InputMaybe<CategorieInput>;
+  id: InputMaybe<Scalars['ID']['input']>;
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+};
+
+
+export type MutationCreateCategoriesOrientationUrgenceArgs = {
+  data: CategoriesOrientationUrgenceInput;
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+};
+
+
+export type MutationCreateCategoriesOrientationUrgenceLocalizationArgs = {
+  data: InputMaybe<CategoriesOrientationUrgenceInput>;
   id: InputMaybe<Scalars['ID']['input']>;
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 };
@@ -1083,6 +1164,12 @@ export type MutationDeleteCategorieArgs = {
 };
 
 
+export type MutationDeleteCategoriesOrientationUrgenceArgs = {
+  id: Scalars['ID']['input'];
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+};
+
+
 export type MutationDeleteFooterArgs = {
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 };
@@ -1238,6 +1325,13 @@ export type MutationUpdateAboutArgs = {
 
 export type MutationUpdateCategorieArgs = {
   data: CategorieInput;
+  id: Scalars['ID']['input'];
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+};
+
+
+export type MutationUpdateCategoriesOrientationUrgenceArgs = {
+  data: CategoriesOrientationUrgenceInput;
   id: Scalars['ID']['input'];
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 };
@@ -1722,6 +1816,8 @@ export type Query = {
   about: Maybe<AboutEntityResponse>;
   categorie: Maybe<CategorieEntityResponse>;
   categories: Maybe<CategorieEntityResponseCollection>;
+  categoriesOrientationUrgence: Maybe<CategoriesOrientationUrgenceEntityResponse>;
+  categoriesOrientationUrgences: Maybe<CategoriesOrientationUrgenceEntityResponseCollection>;
   footer: Maybe<FooterEntityResponse>;
   header: Maybe<HeaderEntityResponse>;
   help: Maybe<HelpEntityResponse>;
@@ -1776,6 +1872,21 @@ export type QueryCategorieArgs = {
 
 export type QueryCategoriesArgs = {
   filters: InputMaybe<CategorieFiltersInput>;
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+
+export type QueryCategoriesOrientationUrgenceArgs = {
+  id: InputMaybe<Scalars['ID']['input']>;
+  locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
+};
+
+
+export type QueryCategoriesOrientationUrgencesArgs = {
+  filters: InputMaybe<CategoriesOrientationUrgenceFiltersInput>;
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
   pagination?: InputMaybe<PaginationArg>;
   publicationState?: InputMaybe<PublicationState>;
@@ -2902,7 +3013,7 @@ export type GetOrientationsQueryVariables = Exact<{
 }>;
 
 
-export type GetOrientationsQuery = { __typename?: 'Query', orientation: { __typename?: 'OrientationEntityResponse', data: { __typename?: 'OrientationEntity', attributes: { __typename?: 'Orientation', Orientation: Array<{ __typename?: 'ComponentOrientationsOrientations', id: string, Nom: string, Email: string, Adresse: string, Telephone: string }> } } } };
+export type GetOrientationsQuery = { __typename?: 'Query', orientation: { __typename?: 'OrientationEntityResponse', data: { __typename?: 'OrientationEntity', attributes: { __typename?: 'Orientation', Orientation: Array<{ __typename?: 'ComponentOrientationsOrientations', id: string, Nom: string, Email: string, Adresse: string, Telephone: string, categories_orientation_urgence: { __typename?: 'CategoriesOrientationUrgenceEntityResponse', data: { __typename?: 'CategoriesOrientationUrgenceEntity', id: string, attributes: { __typename?: 'CategoriesOrientationUrgence', Nom: string } } } }> } } } };
 
 export type GetSearchOrganizationQueryVariables = Exact<{
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
@@ -2921,7 +3032,7 @@ export type GetUrgencesQueryVariables = Exact<{
 }>;
 
 
-export type GetUrgencesQuery = { __typename?: 'Query', urgence: { __typename?: 'UrgenceEntityResponse', data: { __typename?: 'UrgenceEntity', attributes: { __typename?: 'Urgence', Element: Array<{ __typename?: 'ComponentUrgencesUrgences', id: string, Nom: string, Telephone: string, Adresse: string }> } } } };
+export type GetUrgencesQuery = { __typename?: 'Query', urgence: { __typename?: 'UrgenceEntityResponse', data: { __typename?: 'UrgenceEntity', attributes: { __typename?: 'Urgence', Element: Array<{ __typename?: 'ComponentUrgencesUrgences', id: string, Nom: string, Telephone: string, Adresse: string, categories_orientation_urgence: { __typename?: 'CategoriesOrientationUrgenceEntityResponse', data: { __typename?: 'CategoriesOrientationUrgenceEntity', id: string, attributes: { __typename?: 'CategoriesOrientationUrgence', Nom: string } } } }> } } } };
 
 
 export const GetCategoriesDocument = gql`
@@ -3197,6 +3308,14 @@ export const GetOrientationsDocument = gql`
           Email
           Adresse
           Telephone
+          categories_orientation_urgence {
+            data {
+              id
+              attributes {
+                Nom
+              }
+            }
+          }
         }
       }
     }
@@ -3244,6 +3363,14 @@ export const GetUrgencesDocument = gql`
           Nom
           Telephone
           Adresse
+          categories_orientation_urgence {
+            data {
+              id
+              attributes {
+                Nom
+              }
+            }
+          }
         }
       }
     }
