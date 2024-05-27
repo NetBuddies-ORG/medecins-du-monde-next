@@ -58,12 +58,7 @@ export default async function CmsPage({params: {language, p}}: CmsPageProps) {
     setFooter(footer);
     setLanguage(language);
 
-
-    return (
-        <Suspense>
-            <DocumentTypes />
-        </Suspense>
-    );
+    return <DocumentTypes />
 }
 
 export async function generateStaticParams() {

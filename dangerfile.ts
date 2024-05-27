@@ -5,16 +5,15 @@ import {
 	markdown
 } from 'danger';
 
-function formatMarkdownTable(title, icon, content)
-{
-	const tableTemplate = `| | {0} |
+function formatMarkdownTable(title: string, icon: string, content: string) {
+  const tableTemplate = `| | {0} |
 | --- | --- |
 | {1} | {2} |`
 
-	let result = tableTemplate.replace('{0}', title);
-	result = result.replace('{1}', icon);
-	result = result.replace('{2}', content);
-	return result;
+  let result = tableTemplate.replace('{0}', title)
+  result = result.replace('{1}', icon)
+  result = result.replace('{2}', content)
+  return result
 }
 
 if (danger.git.created_files.length > 0) {
