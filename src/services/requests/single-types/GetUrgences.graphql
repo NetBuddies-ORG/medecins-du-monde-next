@@ -7,11 +7,12 @@ query getUrgences($locale: I18NLocaleCode){
                     Nom
                     Telephone
                     Adresse
-                  	categories_orientation_urgence{
+                  	c_o_u{
                       data{
                         id
                         attributes {
                           Nom
+                          Poids
                         }
                       }
                     }

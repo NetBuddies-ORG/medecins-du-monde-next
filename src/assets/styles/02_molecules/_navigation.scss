@@ -32,6 +32,13 @@
       .title-2{
         font-weight: 250;
       }
+      .title-3{
+        font-weight: 200;
+        font-size: 0.7rem;
+        position: absolute;
+        top: 1.4rem;
+        right: 0rem;
+      }
     }
   }
 
@@ -39,6 +46,12 @@
     display: none;
   }
 }
+//TODO décaller à droite le menu pour éviter l'overlap avec le logo
+@media (min-width: 992px) and (max-width: 1224px) {
+  .navigation__desktop{
+  }
+}
+
 
 @media (min-width: 992px) {
   .navigation {
@@ -56,6 +69,13 @@
         }
         .title-2{
           font-weight: 300;
+        }
+        .title-3{
+          font-weight: 200;
+          font-size: 0.7rem;
+          position: absolute;
+          top: 1.4rem;
+          left: 0rem;
         }
       }
     }

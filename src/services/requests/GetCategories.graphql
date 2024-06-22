@@ -1,3 +1,4 @@
+# Write your query or mutation here
 query getCategories($locale: I18NLocaleCode) {
     categories(locale: $locale, pagination: { limit: 1000 }){
         data{
@@ -11,6 +12,7 @@ query getCategories($locale: I18NLocaleCode) {
                         attributes{
                             Nom
                             SearchTerms
+                            Toolbox
                         }
                     }
                 }
