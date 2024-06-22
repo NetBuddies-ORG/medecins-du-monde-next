@@ -1,4 +1,5 @@
 import {GetOrientationsQuery} from "@/services/GraphQL";
+import React from "react";
 import {FaLocationArrow, FaPhone} from "react-icons/fa6";
 
 interface OrientationsProps {
@@ -6,39 +7,52 @@ interface OrientationsProps {
 }
 
 export function Orientations({extraData}: OrientationsProps) {
+    const categories = extraData.orientation.data.attributes.Orientation?.map(e => e.c_a_o);
+    const uniqueCategories = [...new Set(categories?.map(c => c?.data?.id))];
+
+    const orientationsInCategories = uniqueCategories.map(categoryId => {
+        return {
+            category: categories?.find(c => c?.data?.id === categoryId),
+            orientations: extraData.orientation.data.attributes.Orientation?.filter(e => e.c_a_o?.data?.id === categoryId)
+        }
+    })?.sort((a, b) => a.category?.data?.attributes?.Poids !== undefined && b.category?.data?.attributes?.Poids !== undefined ? a.category?.data?.attributes?.Poids - b.category?.data?.attributes?.Poids : 0);
+
     return <>
         <div className='page-container'>
             <div className="urgences-container">
-                <h2></h2>
-                <ul>
-                    {
-                        extraData.orientation.data.attributes.Orientation.map(item => {
-                            return <li key={item.id}>
-                                <h3>
-                                    {item.Nom}
-                                </h3>
-                                <div className="sub-element">
-                                    <div className="info">
-                                        <div>
-                                            <a href={"tel:" + item.Telephone}>Tel: {item.Telephone}</a>
+                { orientationsInCategories.map(category => <React.Fragment key={`${category?.category?.data?.id}_categorykey`}>
+                        <h2 className="text-color-primary">{category?.category?.data ? category?.category?.data?.attributes?.Nom : ''}</h2>
+                        <ul>
+                            {
+                                category?.orientations.map(item => {
+                                    return <li key={item.id}>
+                                        <h3>
+                                            {item.Nom}
+                                        </h3>
+                                        <div className="sub-element">
+                                            <div className="info">
+                                                <div>
+                                                    <a href={"tel:" + item.Telephone}>Tel: {item.Telephone}</a>
+                                                </div>
+                                                <div>
+                                                    <a href={"http://maps.google.com/?q=" + item.Adresse} target="_blank">Adresse: {item.Adresse}</a>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <a href={"http://maps.google.com/?q=" + item.Adresse} target="_blank">Adresse: {item.Adresse}</a>
+                                        <div className='logo'>
+                                            <button className="fa-phone">
+                                                <a href={"tel:" + item.Telephone}><FaPhone/></a>
+                                            </button>
+                                            <button className="fa-location-arrow">
+                                                <a href={"http://maps.google.com/?q=" + item.Adresse} target="_blank"><FaLocationArrow/></a>
+                                            </button>
                                         </div>
-                                    </div>
-                                </div>
-                                <div className='logo'>
-                                    <button className="fa-phone">
-                                        <a href={"tel:" + item.Telephone}><FaPhone/></a>
-                                    </button>
-                                    <button className="fa-location-arrow">
-                                        <a href={"http://maps.google.com/?q=" + item.Adresse} target="_blank"><FaLocationArrow/></a>
-                                    </button>
-                                </div>
-                            </li>
-                        })
-                    }
-                </ul>
+                                    </li>
+                                })
+                            }
+                        </ul>
+                </React.Fragment>)
+            }
             </div>
         </div>
         <div className="custom-shape-divider-bottom-1694936473">

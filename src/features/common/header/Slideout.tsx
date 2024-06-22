@@ -1,16 +1,16 @@
 'use client'
 import {FaBars} from "react-icons/fa6";
-import {useState} from "react";
+import {ReactNode, useState} from "react";
 import {GetHeaderQuery} from "@/services/GraphQL";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
 
 interface SlideoutProps {
-    title: string;
+    titleComponent: ReactNode;
     menuItem: GetHeaderQuery["header"];
     lang: string;
 }
-export function Slideout({title, menuItem, lang}: SlideoutProps){
+export function Slideout({titleComponent, menuItem, lang}: SlideoutProps){
     const [visibility, setVisibility] = useState<boolean>(false);
     const pathname = usePathname();
     const toggleSlideout = () => {
@@ -21,8 +21,7 @@ export function Slideout({title, menuItem, lang}: SlideoutProps){
         <div className="navigation__mobile">
             <FaBars onClick={toggleSlideout} />
             <Link href={'/' + lang}>
-                <h1><span className='title-1'>{title.split(' ')[0] + ' '}</span>
-                    <span className='title-2'>{title.split(' ')[1]}</span>
+                <h1>{titleComponent}
                 </h1>
             </Link>
         </div>

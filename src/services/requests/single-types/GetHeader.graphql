@@ -4,6 +4,7 @@ query getHeader($locale: I18NLocaleCode){
             attributes{
                 Header{
                     Titre
+                    SousTitre
                     pages{
                         data{
                             attributes{

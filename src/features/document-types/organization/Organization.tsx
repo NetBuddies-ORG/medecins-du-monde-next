@@ -127,7 +127,7 @@ export default async function OrganizationDetails({language, segment, orgaslug}:
                         {
                             organization?.Conditions &&
                             <div className='access-conditions__card'>
-                                <h3>{"Conditions d'accès"}</h3>
+                                <h3>{"Plus d'informations"}</h3>
                                 {
                                     organization?.Conditions &&
                                     <div dangerouslySetInnerHTML={{__html: organization?.Conditions}}></div>

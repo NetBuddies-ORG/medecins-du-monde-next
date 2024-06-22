@@ -157,6 +157,7 @@ export type CategorieRelationResponseCollection = {
 export type CategoriesOrientationUrgence = {
   __typename?: 'CategoriesOrientationUrgence';
   Nom: Scalars['String']['output'];
+  Poids: Scalars['Int']['output'];
   createdAt: Maybe<Scalars['DateTime']['output']>;
   locale: Maybe<Scalars['String']['output']>;
   localizations: Maybe<CategoriesOrientationUrgenceRelationResponseCollection>;
@@ -191,6 +192,7 @@ export type CategoriesOrientationUrgenceEntityResponseCollection = {
 
 export type CategoriesOrientationUrgenceFiltersInput = {
   Nom: InputMaybe<StringFilterInput>;
+  Poids: InputMaybe<IntFilterInput>;
   and: InputMaybe<Array<InputMaybe<CategoriesOrientationUrgenceFiltersInput>>>;
   createdAt: InputMaybe<DateTimeFilterInput>;
   id: InputMaybe<IdFilterInput>;
@@ -204,6 +206,7 @@ export type CategoriesOrientationUrgenceFiltersInput = {
 
 export type CategoriesOrientationUrgenceInput = {
   Nom: InputMaybe<Scalars['String']['input']>;
+  Poids: InputMaybe<Scalars['Int']['input']>;
   publishedAt: InputMaybe<Scalars['DateTime']['input']>;
 };
 
@@ -291,6 +294,7 @@ export type ComponentGeneraleFooterInput = {
 
 export type ComponentGeneraleHeader = {
   __typename?: 'ComponentGeneraleHeader';
+  SousTitre: Maybe<Scalars['String']['output']>;
   Titre: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   pages: Maybe<PageRelationResponseCollection>;
@@ -305,6 +309,7 @@ export type ComponentGeneraleHeaderPagesArgs = {
 };
 
 export type ComponentGeneraleHeaderInput = {
+  SousTitre: InputMaybe<Scalars['String']['input']>;
   Titre: InputMaybe<Scalars['String']['input']>;
   id: InputMaybe<Scalars['ID']['input']>;
   pages: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
@@ -352,13 +357,19 @@ export type ComponentHelpPageInput = {
   id: InputMaybe<Scalars['ID']['input']>;
 };
 
+export type ComponentLinksLinks = {
+  __typename?: 'ComponentLinksLinks';
+  Link: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+};
+
 export type ComponentOrientationsOrientations = {
   __typename?: 'ComponentOrientationsOrientations';
   Adresse: Maybe<Scalars['String']['output']>;
   Email: Maybe<Scalars['String']['output']>;
   Nom: Scalars['String']['output'];
   Telephone: Maybe<Scalars['String']['output']>;
-  categories_orientation_urgence: Maybe<CategoriesOrientationUrgenceEntityResponse>;
+  c_a_o: Maybe<CategoriesOrientationUrgenceEntityResponse>;
   id: Scalars['ID']['output'];
 };
 
@@ -368,7 +379,7 @@ export type ComponentOrientationsOrientationsFiltersInput = {
   Nom: InputMaybe<StringFilterInput>;
   Telephone: InputMaybe<StringFilterInput>;
   and: InputMaybe<Array<InputMaybe<ComponentOrientationsOrientationsFiltersInput>>>;
-  categories_orientation_urgence: InputMaybe<CategoriesOrientationUrgenceFiltersInput>;
+  c_a_o: InputMaybe<CategoriesOrientationUrgenceFiltersInput>;
   not: InputMaybe<ComponentOrientationsOrientationsFiltersInput>;
   or: InputMaybe<Array<InputMaybe<ComponentOrientationsOrientationsFiltersInput>>>;
 };
@@ -378,7 +389,7 @@ export type ComponentOrientationsOrientationsInput = {
   Email: InputMaybe<Scalars['String']['input']>;
   Nom: InputMaybe<Scalars['String']['input']>;
   Telephone: InputMaybe<Scalars['String']['input']>;
-  categories_orientation_urgence: InputMaybe<Scalars['ID']['input']>;
+  c_a_o: InputMaybe<Scalars['ID']['input']>;
   id: InputMaybe<Scalars['ID']['input']>;
 };
 
@@ -387,7 +398,7 @@ export type ComponentUrgencesUrgences = {
   Adresse: Maybe<Scalars['String']['output']>;
   Nom: Maybe<Scalars['String']['output']>;
   Telephone: Maybe<Scalars['String']['output']>;
-  categories_orientation_urgence: Maybe<CategoriesOrientationUrgenceEntityResponse>;
+  c_o_u: Maybe<CategoriesOrientationUrgenceEntityResponse>;
   id: Scalars['ID']['output'];
 };
 
@@ -396,7 +407,7 @@ export type ComponentUrgencesUrgencesFiltersInput = {
   Nom: InputMaybe<StringFilterInput>;
   Telephone: InputMaybe<StringFilterInput>;
   and: InputMaybe<Array<InputMaybe<ComponentUrgencesUrgencesFiltersInput>>>;
-  categories_orientation_urgence: InputMaybe<CategoriesOrientationUrgenceFiltersInput>;
+  c_o_u: InputMaybe<CategoriesOrientationUrgenceFiltersInput>;
   not: InputMaybe<ComponentUrgencesUrgencesFiltersInput>;
   or: InputMaybe<Array<InputMaybe<ComponentUrgencesUrgencesFiltersInput>>>;
 };
@@ -405,7 +416,7 @@ export type ComponentUrgencesUrgencesInput = {
   Adresse: InputMaybe<Scalars['String']['input']>;
   Nom: InputMaybe<Scalars['String']['input']>;
   Telephone: InputMaybe<Scalars['String']['input']>;
-  categories_orientation_urgence: InputMaybe<Scalars['ID']['input']>;
+  c_o_u: InputMaybe<Scalars['ID']['input']>;
   id: InputMaybe<Scalars['ID']['input']>;
 };
 
@@ -545,7 +556,7 @@ export type FooterRelationResponseCollection = {
   data: Array<FooterEntity>;
 };
 
-export type GenericMorph = About | Categorie | CategoriesOrientationUrgence | ComponentFooterLiensRapides | ComponentFooterServices | ComponentFooterSocial | ComponentGeneraleFooter | ComponentGeneraleHeader | ComponentGeneraleSeo | ComponentHelpPage | ComponentOrientationsOrientations | ComponentUrgencesUrgences | ComponentUtilsLink | Footer | Header | Help | Home | I18NLocale | Langue | Organisme | Orientation | Page | PublicSpecifique | ReactIconsIconlibrary | SearchOrganization | Service | SlugifySlug | SousCategorie | ToolBox | Traduction | UploadFile | UploadFolder | Urgence | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = About | Categorie | CategoriesOrientationUrgence | ComponentFooterLiensRapides | ComponentFooterServices | ComponentFooterSocial | ComponentGeneraleFooter | ComponentGeneraleHeader | ComponentGeneraleSeo | ComponentHelpPage | ComponentLinksLinks | ComponentOrientationsOrientations | ComponentUrgencesUrgences | ComponentUtilsLink | Footer | Header | Help | Home | I18NLocale | Langue | Organisme | Orientation | Page | PublicSpecifique | ReactIconsIconlibrary | SearchOrganization | Service | SlugifySlug | SousCategorie | ToolBox | Traduction | UploadFile | UploadFolder | Urgence | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type Header = {
   __typename?: 'Header';
@@ -2331,6 +2342,7 @@ export type SousCategorie = {
   __typename?: 'SousCategorie';
   Nom: Scalars['String']['output'];
   SearchTerms: Maybe<Scalars['JSON']['output']>;
+  Toolbox: Maybe<Scalars['String']['output']>;
   category: Maybe<CategorieEntityResponse>;
   createdAt: Maybe<Scalars['DateTime']['output']>;
   locale: Maybe<Scalars['String']['output']>;
@@ -2367,6 +2379,7 @@ export type SousCategorieEntityResponseCollection = {
 export type SousCategorieFiltersInput = {
   Nom: InputMaybe<StringFilterInput>;
   SearchTerms: InputMaybe<JsonFilterInput>;
+  Toolbox: InputMaybe<StringFilterInput>;
   and: InputMaybe<Array<InputMaybe<SousCategorieFiltersInput>>>;
   category: InputMaybe<CategorieFiltersInput>;
   createdAt: InputMaybe<DateTimeFilterInput>;
@@ -2382,6 +2395,7 @@ export type SousCategorieFiltersInput = {
 export type SousCategorieInput = {
   Nom: InputMaybe<Scalars['String']['input']>;
   SearchTerms: InputMaybe<Scalars['JSON']['input']>;
+  Toolbox: InputMaybe<Scalars['String']['input']>;
   category: InputMaybe<Scalars['ID']['input']>;
   publishedAt: InputMaybe<Scalars['DateTime']['input']>;
 };
@@ -2922,7 +2936,7 @@ export type GetCategoriesQueryVariables = Exact<{
 }>;
 
 
-export type GetCategoriesQuery = { __typename?: 'Query', categories: { __typename?: 'CategorieEntityResponseCollection', data: Array<{ __typename?: 'CategorieEntity', id: string, attributes: { __typename?: 'Categorie', Nom: string, Icone: string, sous_categories: { __typename?: 'SousCategorieRelationResponseCollection', data: Array<{ __typename?: 'SousCategorieEntity', id: string, attributes: { __typename?: 'SousCategorie', Nom: string, SearchTerms: any } }> } } }> } };
+export type GetCategoriesQuery = { __typename?: 'Query', categories: { __typename?: 'CategorieEntityResponseCollection', data: Array<{ __typename?: 'CategorieEntity', id: string, attributes: { __typename?: 'Categorie', Nom: string, Icone: string, sous_categories: { __typename?: 'SousCategorieRelationResponseCollection', data: Array<{ __typename?: 'SousCategorieEntity', id: string, attributes: { __typename?: 'SousCategorie', Nom: string, SearchTerms: any, Toolbox: string } }> } } }> } };
 
 export type GetLocalesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2992,7 +3006,7 @@ export type GetHeaderQueryVariables = Exact<{
 }>;
 
 
-export type GetHeaderQuery = { __typename?: 'Query', header: { __typename?: 'HeaderEntityResponse', data: { __typename?: 'HeaderEntity', attributes: { __typename?: 'Header', Header: { __typename?: 'ComponentGeneraleHeader', Titre: string, pages: { __typename?: 'PageRelationResponseCollection', data: Array<{ __typename?: 'PageEntity', attributes: { __typename?: 'Page', Titre: string, Url: string } }> } } } } } };
+export type GetHeaderQuery = { __typename?: 'Query', header: { __typename?: 'HeaderEntityResponse', data: { __typename?: 'HeaderEntity', attributes: { __typename?: 'Header', Header: { __typename?: 'ComponentGeneraleHeader', Titre: string, SousTitre: string, pages: { __typename?: 'PageRelationResponseCollection', data: Array<{ __typename?: 'PageEntity', attributes: { __typename?: 'Page', Titre: string, Url: string } }> } } } } } };
 
 export type GetHelpQueryVariables = Exact<{
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
@@ -3013,7 +3027,7 @@ export type GetOrientationsQueryVariables = Exact<{
 }>;
 
 
-export type GetOrientationsQuery = { __typename?: 'Query', orientation: { __typename?: 'OrientationEntityResponse', data: { __typename?: 'OrientationEntity', attributes: { __typename?: 'Orientation', Orientation: Array<{ __typename?: 'ComponentOrientationsOrientations', id: string, Nom: string, Email: string, Adresse: string, Telephone: string, categories_orientation_urgence: { __typename?: 'CategoriesOrientationUrgenceEntityResponse', data: { __typename?: 'CategoriesOrientationUrgenceEntity', id: string, attributes: { __typename?: 'CategoriesOrientationUrgence', Nom: string } } } }> } } } };
+export type GetOrientationsQuery = { __typename?: 'Query', orientation: { __typename?: 'OrientationEntityResponse', data: { __typename?: 'OrientationEntity', attributes: { __typename?: 'Orientation', Orientation: Array<{ __typename?: 'ComponentOrientationsOrientations', id: string, Nom: string, Email: string, Adresse: string, Telephone: string, c_a_o: { __typename?: 'CategoriesOrientationUrgenceEntityResponse', data: { __typename?: 'CategoriesOrientationUrgenceEntity', id: string, attributes: { __typename?: 'CategoriesOrientationUrgence', Nom: string, Poids: number } } } }> } } } };
 
 export type GetSearchOrganizationQueryVariables = Exact<{
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
@@ -3032,7 +3046,7 @@ export type GetUrgencesQueryVariables = Exact<{
 }>;
 
 
-export type GetUrgencesQuery = { __typename?: 'Query', urgence: { __typename?: 'UrgenceEntityResponse', data: { __typename?: 'UrgenceEntity', attributes: { __typename?: 'Urgence', Element: Array<{ __typename?: 'ComponentUrgencesUrgences', id: string, Nom: string, Telephone: string, Adresse: string, categories_orientation_urgence: { __typename?: 'CategoriesOrientationUrgenceEntityResponse', data: { __typename?: 'CategoriesOrientationUrgenceEntity', id: string, attributes: { __typename?: 'CategoriesOrientationUrgence', Nom: string } } } }> } } } };
+export type GetUrgencesQuery = { __typename?: 'Query', urgence: { __typename?: 'UrgenceEntityResponse', data: { __typename?: 'UrgenceEntity', attributes: { __typename?: 'Urgence', Element: Array<{ __typename?: 'ComponentUrgencesUrgences', id: string, Nom: string, Telephone: string, Adresse: string, c_o_u: { __typename?: 'CategoriesOrientationUrgenceEntityResponse', data: { __typename?: 'CategoriesOrientationUrgenceEntity', id: string, attributes: { __typename?: 'CategoriesOrientationUrgence', Nom: string, Poids: number } } } }> } } } };
 
 
 export const GetCategoriesDocument = gql`
@@ -3049,6 +3063,7 @@ export const GetCategoriesDocument = gql`
             attributes {
               Nom
               SearchTerms
+              Toolbox
             }
           }
         }
@@ -3257,6 +3272,7 @@ export const GetHeaderDocument = gql`
       attributes {
         Header {
           Titre
+          SousTitre
           pages {
             data {
               attributes {
@@ -3308,11 +3324,12 @@ export const GetOrientationsDocument = gql`
           Email
           Adresse
           Telephone
-          categories_orientation_urgence {
+          c_a_o {
             data {
               id
               attributes {
                 Nom
+                Poids
               }
             }
           }
@@ -3363,11 +3380,12 @@ export const GetUrgencesDocument = gql`
           Nom
           Telephone
           Adresse
-          categories_orientation_urgence {
+          c_o_u {
             data {
               id
               attributes {
                 Nom
+                Poids
               }
             }
           }
