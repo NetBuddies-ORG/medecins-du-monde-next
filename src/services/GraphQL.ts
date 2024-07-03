@@ -1,5 +1,4 @@
-import { GraphQLClient } from 'graphql-request';
-import { GraphQLClientRequestHeaders } from 'graphql-request/build/cjs/types';
+import { GraphQLClient, RequestOptions } from 'graphql-request';
 import gql from 'graphql-tag';
 export type Maybe<T> = T;
 export type InputMaybe<T> = T;
@@ -8,6 +7,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+type GraphQLClientRequestHeaders = RequestOptions['requestHeaders'];
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -3396,63 +3396,63 @@ export const GetUrgencesDocument = gql`
 }
     `;
 
-export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
+export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
 
-const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType) => action();
+const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType, _variables) => action();
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
     getCategories(variables?: GetCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCategoriesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesQuery>(GetCategoriesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategories', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesQuery>(GetCategoriesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategories', 'query', variables);
     },
     getLocales(variables?: GetLocalesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetLocalesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetLocalesQuery>(GetLocalesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getLocales', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GetLocalesQuery>(GetLocalesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getLocales', 'query', variables);
     },
     getOrganismes(variables?: GetOrganismesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetOrganismesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetOrganismesQuery>(GetOrganismesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getOrganismes', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GetOrganismesQuery>(GetOrganismesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getOrganismes', 'query', variables);
     },
     getPage(variables?: GetPageQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetPageQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetPageQuery>(GetPageDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getPage', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GetPageQuery>(GetPageDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getPage', 'query', variables);
     },
     getPages(variables?: GetPagesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetPagesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetPagesQuery>(GetPagesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getPages', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GetPagesQuery>(GetPagesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getPages', 'query', variables);
     },
     getPublics(variables?: GetPublicsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetPublicsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetPublicsQuery>(GetPublicsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getPublics', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GetPublicsQuery>(GetPublicsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getPublics', 'query', variables);
     },
     getServices(variables?: GetServicesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetServicesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetServicesQuery>(GetServicesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getServices', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GetServicesQuery>(GetServicesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getServices', 'query', variables);
     },
     getTranslations(variables?: GetTranslationsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetTranslationsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetTranslationsQuery>(GetTranslationsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getTranslations', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GetTranslationsQuery>(GetTranslationsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getTranslations', 'query', variables);
     },
     getAbout(variables?: GetAboutQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetAboutQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetAboutQuery>(GetAboutDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getAbout', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAboutQuery>(GetAboutDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getAbout', 'query', variables);
     },
     getFooter(variables?: GetFooterQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetFooterQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetFooterQuery>(GetFooterDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getFooter', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GetFooterQuery>(GetFooterDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getFooter', 'query', variables);
     },
     getHeader(variables?: GetHeaderQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetHeaderQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetHeaderQuery>(GetHeaderDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getHeader', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GetHeaderQuery>(GetHeaderDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getHeader', 'query', variables);
     },
     getHelp(variables?: GetHelpQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetHelpQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetHelpQuery>(GetHelpDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getHelp', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GetHelpQuery>(GetHelpDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getHelp', 'query', variables);
     },
     getHome(variables?: GetHomeQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetHomeQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetHomeQuery>(GetHomeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getHome', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GetHomeQuery>(GetHomeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getHome', 'query', variables);
     },
     getOrientations(variables?: GetOrientationsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetOrientationsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetOrientationsQuery>(GetOrientationsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getOrientations', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GetOrientationsQuery>(GetOrientationsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getOrientations', 'query', variables);
     },
     getSearchOrganization(variables?: GetSearchOrganizationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetSearchOrganizationQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetSearchOrganizationQuery>(GetSearchOrganizationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getSearchOrganization', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GetSearchOrganizationQuery>(GetSearchOrganizationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getSearchOrganization', 'query', variables);
     },
     getToolBox(variables?: GetToolBoxQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetToolBoxQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetToolBoxQuery>(GetToolBoxDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getToolBox', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GetToolBoxQuery>(GetToolBoxDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getToolBox', 'query', variables);
     },
     getUrgences(variables?: GetUrgencesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetUrgencesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetUrgencesQuery>(GetUrgencesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUrgences', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GetUrgencesQuery>(GetUrgencesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUrgences', 'query', variables);
     }
   };
 }
