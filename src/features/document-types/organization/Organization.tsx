@@ -18,9 +18,9 @@ const getOrganization = cache(async function getCategories(
   slug: string
 ) {
   const client = getStrapiClient()
-  // @ts-ignore
   return await client.getOrganismes({
     locale: lang,
+    // @ts-ignore
     filters: { generatedUrl: { eq: slug } },
   })
 })
