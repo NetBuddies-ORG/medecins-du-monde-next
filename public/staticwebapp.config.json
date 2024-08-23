@@ -31,7 +31,7 @@
     "x-content-type-options": "nosniff",
     "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
     "referrer-policy": "strict-origin-when-cross-origin",
-    "content-Security-Policy": "default-src 'none'; style-src 'self' 'unsafe-inline' fonts.googleapis.com; prefetch-src 'self'; base-uri 'none'; form-action 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://matomo.monboreseau.be; font-src 'self' fonts.gstatic.com; manifest-src 'self'; img-src 'self' data: https://ik.imagekit.io https://openlayers.org https://tile.openstreetmap.org http://a.tile.openstreetmap.org http://b.tile.openstreetmap.org http://c.tile.openstreetmap.org https://matomo.alexianmoins.be; connect-src 'self' https://matomo.alexianmoins.be; frame-src 'self'",
+    "content-Security-Policy": "default-src 'none'; style-src 'self' 'unsafe-inline' fonts.googleapis.com; prefetch-src 'self'; base-uri 'none'; form-action 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://matomo.monboreseau.be; font-src 'self' fonts.gstatic.com; manifest-src 'self'; img-src 'self' data: https://ik.imagekit.io https://openlayers.org https://tile.openstreetmap.org http://a.tile.openstreetmap.org http://b.tile.openstreetmap.org http://c.tile.openstreetmap.org https://matomo.monboreseau.be; connect-src 'self' https://matomo.monboreseau.be; frame-src 'self'",
     "feature-policy": "accelerometer 'none'; camera 'none'; geolocation 'none'; gyroscope 'none'; magnetometer 'none'; microphone 'none'; payment 'none'; usb 'none'",
     "permissions-policy": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), interest-cohort=()"
   },
