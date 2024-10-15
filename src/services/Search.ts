@@ -15,6 +15,7 @@ import {
 import { setupDB } from '@/services/index-db/IndexDBConfig'
 import { IDBPDatabase } from 'idb'
 import { Index } from 'lunr'
+import { searchByKeyword } from '@/helpers/search'
 
 const getOrganisme = (slug: string) => {
   return db?.then((data) =>
@@ -28,7 +29,7 @@ let indexService: Index
 let indexCategorie: Index
 let indexSubCategorie: Index
 
-let initialization = new Map<string, Promise<void>>()
+const initialization = new Map<string, Promise<void>>()
 
 async function initialize(language: string = 'fr') {
   if (typeof window === 'undefined' || indexLanguage === language) {
@@ -80,7 +81,7 @@ async function search(
   } = {}
   if (subCategoriesIds && subCategoriesIds.length > 0) {
     categoriesFromIndexedDb.map((categorie) => {
-      for (let subcat of categorie.sous_categories.data) {
+      for (const subcat of categorie.sous_categories.data) {
         if (subCategoriesIds.includes(subcat.id)) {
           if (!recomposedParamCategories[categorie.id]) {
             recomposedParamCategories[categorie.id] = {
@@ -101,12 +102,12 @@ async function search(
     })
   }
 
-  // Iterate over the organismes and filter them
+  // Iterate over the organisms and filter them
   // If a category is not complete, we need to check if the organism has all the subcategories
   // If a category is complete, we need to check if the organism has at least one of the subcategories
   // If a public is selected, we need to check if the organism has this public
   // then we merge the results
-  const filteredOrga = organismesFromIndexedDb.filter((organisme) => {
+  return organismesFromIndexedDb.filter((organisme) => {
     let isPublicsOk = true
     let isSubCategoriesOk = true
 
@@ -118,7 +119,7 @@ async function search(
 
     const categoriesOk: { [key: string]: boolean } = {}
 
-    for (let catId in recomposedParamCategories) {
+    for (const catId in recomposedParamCategories) {
       if (recomposedParamCategories[catId].isComplete) {
         categoriesOk[catId] = organisme.sous_categories.data
           .map((cat) => cat.id)
@@ -138,106 +139,26 @@ async function search(
     isSubCategoriesOk = Object.values(categoriesOk).every((val) => val)
     return isPublicsOk && isSubCategoriesOk
   })
-
-  return filteredOrga
 }
 
 async function searchOrganismes(
   params: SearchOrganizationsParams
 ): Promise<string[]> {
-  let newKeyword = params.keyword.trim()
-  let terms = newKeyword
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^\w\s*]/g, '')
-    .split(' ')
-  let finalQuery = ''
-  terms.forEach((t, i) => {
-    if (t !== '') {
-      if (i === 0) {
-        // First term with high weight
-        finalQuery += `${t}^10 ${t}*^5 ${t}~1 `
-      } else if (i === 1) {
-        // Second term with significantly lower weight
-        finalQuery += `${t}^1 ${t}*^0.5 ${t}~1 `
-      } else {
-        // Subsequent terms with gradually decreasing weight
-        finalQuery += `${t}^${8 - i * 2} ${t}*^4 ${t}~1 `
-      }
-    }
-  })
-
-  console.log(indexOrganism.search(finalQuery))
-
-  return indexOrganism.search(finalQuery).map(({ ref, score }) => ref)
+  return await searchByKeyword({ index: indexOrganism, params })
 }
 
 async function searchServices(params: SearchServicesParams): Promise<string[]> {
-  let newKeyword = params.keyword
-  let terms = newKeyword
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^\w\s*]/g, '')
-    .split(' ')
-  let finalQuery = ''
-  terms.forEach((t, i) => {
-    if (t !== '' && i === 0) {
-      finalQuery += `${t}^${100 - i} ${t}*^10 ${t}~2 `
-    } else {
-      finalQuery += `${t}^${100 - i} `
-    }
-  })
-  let results: Set<string> = new Set(
-    indexService.search(finalQuery).map(({ ref }) => ref)
-  )
-  return Array.from(results)
+  return await searchByKeyword({ index: indexService, params: params })
 }
 
 async function searchCategories(params: SearchCategories): Promise<string[]> {
-  let newKeyword = params.keyword
-  let terms = newKeyword
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^\w\s*]/g, '')
-    .split(' ')
-  let finalQuery = ''
-  terms.forEach((t, i) => {
-    if (t !== '') {
-      finalQuery += `${t}~3^${100 - i} `
-    }
-  })
-  let results: Set<string> = new Set(
-    indexCategorie
-      .search(finalQuery)
-      .filter((i) => i.score > 4)
-      .map(({ ref }) => ref)
-  )
-  return Array.from(results)
+  return await searchByKeyword({ index: indexCategorie, params })
 }
 
 async function searchSubCategories(
   params: SearchCategories
 ): Promise<string[]> {
-  let terms = params.keyword
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^\w\s*]/g, '')
-    .split(' ')
-  let finalQuery = ''
-  terms.forEach((t, i) => {
-    if (t !== '' && i === 0) {
-      finalQuery += `${t}^${100 - i} ${t}*^10 ${t}~2 `
-    } else {
-      finalQuery += `${t}^${100 - i} `
-    }
-  })
-
-  return Array.from(
-    indexSubCategorie
-      .search(finalQuery)
-      .filter((s) => s.score > 1.45)
-      .map(({ ref }) => ref)
-  )
+  return await searchByKeyword({ index: indexSubCategorie, params })
 }
 
 export function useDBIndex(language: string): SearchInterface {

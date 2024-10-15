@@ -78,7 +78,7 @@ export async function generateStaticParams() {
 
   for (const language of languages) {
     try {
-      for (let page of await getPagesList(language)) {
+      for (const page of await getPagesList(language)) {
         dynamicRoutes.push(language + page.attributes.Url)
       }
     } catch (missingLanguage) {

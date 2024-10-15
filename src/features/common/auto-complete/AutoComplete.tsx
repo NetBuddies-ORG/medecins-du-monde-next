@@ -57,7 +57,7 @@ export default function AutoComplete({language}: AutoCompleteProps) {
                         if (value.length > 1) {
                             const subCategories = cat.sous_categories.data
                                 .filter(subCat => subCategoriesId.includes(subCat.id));
-                            for (let subCat of subCategories) {
+                            for (const subCat of subCategories) {
                                 subCat.attributes.Nom = subCat.attributes.Nom.replace(regex, match =>
                                     `<span class="highlight">${match}</span>`);
                             }

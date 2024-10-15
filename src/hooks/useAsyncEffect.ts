@@ -7,7 +7,7 @@ export function useAsyncEffect(effect: () => Promise<unknown>, deps: DependencyL
 {
     useEffect(() =>
     {
-        let task = effect();
+        const task = effect();
         return () => { task.then(r => r instanceof Function && r()); }
     }, deps)
 }

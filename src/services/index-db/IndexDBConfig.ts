@@ -20,7 +20,7 @@ const getServices = () => import('../../../build/static/services.json').then(({d
 
 // Fonction de configuration et d'initialisation de la base de données IndexedDB
 export async function setupDB(language: string, db?: Promise<IDBPDatabase<MdmDB>>): Promise<IDBPDatabase<MdmDB>> {
-    let data = await (db ?? openDB<MdmDB>('Mdm', 2, {
+    const data = await (db ?? openDB<MdmDB>('Mdm', 2, {
         upgrade(db, oldVersion, _, transaction) {
             if (oldVersion < 1) {
                 db.createObjectStore(revisionStoreName);

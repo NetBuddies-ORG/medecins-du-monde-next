@@ -25,7 +25,7 @@ export async function generateStaticParams() {
 
     for (const language of languages) {
         try {
-            for (let page of (await getPagesList(language))) {
+            for (const page of (await getPagesList(language))) {
                 if (page.attributes.ContentType === "Organizations") {
                     catalogues.push('/' + language + page.attributes.Url);
                 }
@@ -38,8 +38,8 @@ export async function generateStaticParams() {
     const res: OrgaDetailsPageProps["params"][] = [];
 
 
-    for (let organization of organizations) {
-        for (let catalogue of catalogues) {
+    for (const organization of organizations) {
+        for (const catalogue of catalogues) {
             const [_, language, segment] = catalogue.split('/');
             if (language && segment && organization) {
                 res.push({

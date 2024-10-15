@@ -14,7 +14,7 @@ async function buildCmsPageByCulture() {
 
     const result = {};
 
-    for (let language of languages) {
+    for (const language of languages) {
         const translations = (await client.getTranslations({ locale: language })).traductions.data
             .map(item => item);
 

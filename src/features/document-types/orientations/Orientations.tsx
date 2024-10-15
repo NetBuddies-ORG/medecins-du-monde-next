@@ -35,7 +35,7 @@ export function Orientations({extraData}: OrientationsProps) {
                                                     <a href={"tel:" + item.Telephone}>Tel: {item.Telephone}</a>
                                                 </div>
                                                 <div>
-                                                    <a href={"http://maps.google.com/?q=" + item.Adresse} target="_blank">Adresse: {item.Adresse}</a>
+                                                    <a href={"http://maps.google.com/?q=" + item.Adresse} target="_blank" rel="noreferrer">Adresse: {item.Adresse}</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -44,7 +44,7 @@ export function Orientations({extraData}: OrientationsProps) {
                                                 <a href={"tel:" + item.Telephone}><FaPhone/></a>
                                             </button>
                                             <button className="fa-location-arrow">
-                                                <a href={"http://maps.google.com/?q=" + item.Adresse} target="_blank"><FaLocationArrow/></a>
+                                                <a href={"http://maps.google.com/?q=" + item.Adresse} target="_blank" rel="noreferrer"><FaLocationArrow/></a>
                                             </button>
                                         </div>
                                     </li>

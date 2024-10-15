@@ -105,7 +105,7 @@ export default async function OrganizationDetails({
                         href={
                           'https://www.google.com/maps/search/' +
                           organization?.Adresse
-                        }
+                        } rel="noreferrer"
                       >
                         {organization?.Adresse}
                       </a>
@@ -128,7 +128,7 @@ export default async function OrganizationDetails({
                     <span>
                       <a
                         target={'_blank'}
-                        href={formatWebAdress(organization?.Website)}
+                        href={formatWebAdress(organization?.Website)} rel="noreferrer"
                       >
                         {formatSize(organization?.Website)}
                         <FaArrowUpRightFromSquare
