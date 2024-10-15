@@ -23,7 +23,7 @@ export type CmsPageProps = {
 const getPage = cache(async function getPage(locale: string, url: string) {
   const client = getStrapiClient()
   const filters: PageFiltersInput = {
-    // @ts-ignore
+    // @ts-expect-error generated type
     Url: {
       eq: url,
     },

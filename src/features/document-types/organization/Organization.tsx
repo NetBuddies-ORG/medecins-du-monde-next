@@ -20,7 +20,7 @@ const getOrganization = cache(async function getCategories(
   const client = getStrapiClient()
   return await client.getOrganismes({
     locale: lang,
-    // @ts-ignore
+    // @ts-expect-error generated type error
     filters: { generatedUrl: { eq: slug } },
   })
 })
@@ -32,14 +32,14 @@ type OrganizationDetailsProps = {
 }
 export default async function OrganizationDetails({
   language,
-  segment,
   orgaslug,
 }: OrganizationDetailsProps) {
   let organization: Maybe<Organisme>
   try {
-    // @ts-ignore
+    // @ts-expect-error type
     organization = (await getOrganization(language, orgaslug)).organismes
       ?.data[0]?.attributes
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     notFound()
   }
@@ -52,7 +52,7 @@ export default async function OrganizationDetails({
   }
 
   function formatSize(website: string) {
-    const regex = /^(https?:\/\/)?([^\/]+)\/?/
+    const regex = /^(https?:\/\/)?([^/]+)\/?/
     const match = website.match(regex)
     return match
       ? match[1]
@@ -105,7 +105,8 @@ export default async function OrganizationDetails({
                         href={
                           'https://www.google.com/maps/search/' +
                           organization?.Adresse
-                        } rel="noreferrer"
+                        }
+                        rel="noreferrer"
                       >
                         {organization?.Adresse}
                       </a>
@@ -128,7 +129,8 @@ export default async function OrganizationDetails({
                     <span>
                       <a
                         target={'_blank'}
-                        href={formatWebAdress(organization?.Website)} rel="noreferrer"
+                        href={formatWebAdress(organization?.Website)}
+                        rel="noreferrer"
                       >
                         {formatSize(organization?.Website)}
                         <FaArrowUpRightFromSquare

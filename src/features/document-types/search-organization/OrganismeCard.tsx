@@ -49,11 +49,11 @@ export function OrganismeCard({
         )}
         <a href={`/${lang}/organismes/${organisme?.generatedUrl}`}>
           <div className="image-container">
-            {partnerImage ? (
+            {partnerImage && organisme ? (
               <Image
                 src={partnerImage}
                 onError={fixImage}
-                alt={organisme?.Nom!}
+                alt={organisme?.Nom}
                 width={600}
                 height={80}
               />

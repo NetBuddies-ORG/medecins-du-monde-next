@@ -1,7 +1,5 @@
 import {
-    PHASE_DEVELOPMENT_SERVER,
     PHASE_PRODUCTION_BUILD,
-    PHASE_PRODUCTION_SERVER,
 } from 'next/constants.js';
 
 /** @type {import("next").NextConfig} */

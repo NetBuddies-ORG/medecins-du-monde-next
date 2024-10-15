@@ -3,12 +3,17 @@ import { join } from 'path'
 import lunr from 'lunr'
 import { removeDiacriticsSpelling } from './removeDiacriticsSpelling'
 import { Organisme, Service } from '@/services/GraphQL'
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 require('lunr-languages/lunr.stemmer.support')(lunr)
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 require('lunr-languages/lunr.fr')(lunr)
 
 async function buildIndex() {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const organismes = require(`../../static/organismes.json`)
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const services = require(`../../static/services.json`)
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const categories = require(`../../static/categories.json`)
 
   const index = lunr(function () {

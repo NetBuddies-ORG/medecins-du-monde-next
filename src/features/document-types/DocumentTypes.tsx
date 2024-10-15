@@ -57,7 +57,7 @@ async function displayContent(page: GetPageQuery['pages'], language: string) {
     case 'Toolbox':
       return (
         <>
-          <ToolBoxPage extraData={await getToolBoxPage(language)} />
+          <ToolBoxPage />
         </>
       )
     case 'SearchOrganization':
@@ -106,39 +106,29 @@ const getOrganizationsPage = cache(async function getOrganizationsPage(
   language: string
 ) {
   const client = getStrapiClient()
-  // @ts-ignore
+  // @ts-expect-error generated type
   return await client.getOrganismes({ locale: language, filters: {} })
 })
 
 const getServicesPage = cache(async function getServicesPage(language: string) {
   const client = getStrapiClient()
-  // @ts-ignore
   return await client.getServices({ locale: language })
 })
 
 const getAboutPage = cache(async function getAboutPage(language: string) {
   const client = getStrapiClient()
-  // @ts-ignore
   return await client.getAbout({ locale: language })
-})
-
-const getToolBoxPage = cache(async function getAboutPage(language: string) {
-  const client = getStrapiClient()
-  // @ts-ignore
-  return await client.getToolBox({ locale: language })
 })
 
 const getSearchOrganizationsPage = cache(
   async function getSearchOrganizationsPage(language: string) {
     const client = getStrapiClient()
-    // @ts-ignore
     return await client.getSearchOrganization({ locale: language })
   }
 )
 
 const getUrgencesPage = cache(async function getUrgencesPage(language: string) {
   const client = getStrapiClient()
-  // @ts-ignore
   return await client.getUrgences({ locale: language })
 })
 
@@ -146,6 +136,5 @@ const getOrientationsPage = cache(async function getOrientationsPage(
   language: string
 ) {
   const client = getStrapiClient()
-  // @ts-ignore
   return await client.getOrientations({ locale: language })
 })

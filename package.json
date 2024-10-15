@@ -13,6 +13,8 @@
     "build:next": "yarn run build:pre && yarn next build",
     "build:post": "ts-node ./build/scripts/postbuild.ts",
     "build:preview": "ts-node ./build/scripts/postbuild.ts",
+    "lint": "next lint",
+    "lint:fix": "eslint --fix .",
     "tsc-check": "tsc --noEmit",
     "env": "yarn env-cmd --no-override yarn run",
     "prepare": "husky install"
@@ -21,6 +23,10 @@
     "@christopherpickering/react-leaflet-markercluster": "^1.1.0",
     "classnames": "^2.5.1",
     "danger": "^12.3.3",
+    "eslint": "^9.12.0",
+    "eslint-config-airbnb-typescript": "^18.0.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-typescript": "^0.14.0",
     "framer-motion": "^11.11.9",
     "i18next": "^23.16.0",
     "i18next-http-backend": "^2.6.2",
@@ -54,9 +60,12 @@
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.0",
     "@types/react-slick": "^0.23.13",
+    "@typescript-eslint/eslint-plugin": "^8.9.0",
+    "@typescript-eslint/parser": "^8.9.0",
     "encoding": "^0.1.13",
     "env-cmd": "^10.1.0",
-    "globals": "^15.1.0",
+    "eslint-plugin-react": "^7.37.1",
+    "globals": "^15.11.0",
     "graphql": "^16.9.0",
     "graphql-request": "^6.1.0",
     "graphql-tag": "^2.12.6",
@@ -67,6 +76,7 @@
     "server-only-context": "^0.1.0",
     "slick-carousel": "^1.8.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.4"
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.9.0"
   }
 }

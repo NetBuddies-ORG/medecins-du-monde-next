@@ -97,7 +97,7 @@ export function SearchOrganization({
       })
       setSelectedCategories([...selectedCategories, ...idsInitToAdd])
       setSelectedPublic((searchParams.get('publics') as string) ?? '0')
-      // @ts-ignore
+      //@ts-expect-error mixup between type from data & expected data from graphql
       setCategoriesForFilterDisplay(categoriesInit)
       search({
         subCategoriesIds: searchParams.getAll('subCategories') as string[],
