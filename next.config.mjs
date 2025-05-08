@@ -24,7 +24,7 @@ const config = {
                     " https://tile.openstreetmap.org" +
                     " http://a.tile.openstreetmap.org" +
                     " http://b.tile.openstreetmap.org" +
-                    " https://strapi-mdm.alexianmoins.be" +
+                    " https://strapi.monboreseau.be" +
                     " data:" +
                     " https://ik.imagekit.io" +
                     " http://c.tile.openstreetmap.org;" +
