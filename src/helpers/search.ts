@@ -38,30 +38,26 @@ export async function searchByKeyword({
     .trim()
     .replace(/\s+/g, ' ')
     .split(' ')
-    .filter((t) => !stopWords.includes(t.toLowerCase())) // Filtrer les stop words
+    .filter((t) => !stopWords.includes(t.toLowerCase()))
 
-  let finalQuery = ''
+  if (terms.length === 0) return []
 
-  // Si plusieurs termes, traiter comme une expression exacte
-  if (terms.length > 1) {
-    finalQuery = `"${terms.join(' ')}"`
-  } else {
-    terms.forEach((t, i) => {
-      if (t !== '' && i === 0) {
-        finalQuery += `${t}^${100 - i} ${t}*^10 ${t}~2 `
-      } else {
-        finalQuery += `${t}^${100 - i} `
-      }
-    })
-  }
+  // Générer une requête pondérée pour chaque mot
+  const finalQuery = terms
+    .map((t, i) => `${t}^${100 - i} ${t}*^20 ${t}~1^10`)
+    .join(' ')
 
-  const filteredResultsMedian = filterByScore(
-    index.search(finalQuery).map(({ ref, score }) => ({ ref, score })),
-    'mean'
-  ).sort((a, b) => b.score - a.score)
+  // Recherche dans l’index avec les boosts
+  const rawResults = index
+    .search(finalQuery)
+    .map(({ ref, score }) => ({ ref, score }))
 
-  const results: Set<string> = new Set(filteredResultsMedian.map((i) => i.ref))
-  return Array.from(results)
+  const filteredResults = filterByScore(rawResults, 'mean')
+  const sortedRefs = filteredResults
+    .sort((a, b) => b.score - a.score)
+    .map((i) => i.ref)
+
+  return Array.from(new Set(sortedRefs))
 }
 
 function filterByScore(
@@ -71,6 +67,11 @@ function filterByScore(
   minScore: number = 0.25
 ) {
   const scores = results.map((r) => r.score)
+
+  if (scores.length <= 5) {
+    return results
+  }
+
   let threshold = 0
 
   if (method === 'mean') {

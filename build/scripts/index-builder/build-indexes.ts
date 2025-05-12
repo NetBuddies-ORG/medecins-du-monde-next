@@ -13,12 +13,13 @@ async function buildIndex() {
   const organismes = require(`../../static/organismes.json`)
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const services = require(`../../static/services.json`)
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  // eslint-disable-next-line @typescript-eslint/no-require-import s
   const categories = require(`../../static/categories.json`)
 
   const index = lunr(function () {
     this.use(removeDiacriticsSpelling)
     this.ref('id')
+
     this.field('name_organismes', {
       extractor: (p: Organisme) => p.Nom,
     })
@@ -30,6 +31,16 @@ async function buildIndex() {
       extractor: (p: Organisme) => p.Departement,
       boost: 0.5,
     })
+    this.field('search_text', {
+      extractor: (p: Organisme) =>
+        `${p.Nom} ${p.Adresse ?? ''} ${p.Departement ?? ''}`
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^\w\s]/g, '')
+          .toLowerCase(),
+      boost: 2,
+    })
+
     organismes.forEach((p) => this.add(p))
   })
 
