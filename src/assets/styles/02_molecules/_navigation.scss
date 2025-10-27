@@ -33,18 +33,19 @@
       margin-left: 1rem;
       color: #000000;
       font-weight: 400;
+      font-size: 1.25rem;
       .title-1{
-
       }
       .title-2{
+
         font-weight: 250;
       }
       .title-3{
         font-weight: 200;
-        font-size: 0.7rem;
         position: absolute;
         top: 1.4rem;
         right: 0rem;
+        font-size: .7rem;
       }
     }
   }
@@ -68,6 +69,7 @@
         position: absolute;
         top: -5px;
         width: 100%;
+        font-size: 1.5rem;
         .title-1{
           font-weight: 500;
         }
