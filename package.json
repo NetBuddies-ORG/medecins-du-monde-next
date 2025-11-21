@@ -6,18 +6,14 @@
     "node": "20"
   },
   "scripts": {
-    "graphql": "yarn graphql-codegen --config codegen.yml",
-    "start": "yarn env-cmd --no-override yarn next dev",
-    "build:static": "yarn run build:next",
-    "build:pre": "yarn ts-node ./build/scripts/prebuild.ts",
-    "build:next": "yarn run build:pre && yarn next build",
-    "build:post": "ts-node ./build/scripts/postbuild.ts",
-    "build:preview": "ts-node ./build/scripts/postbuild.ts",
+    "dev": "yarn env-cmd --no-override yarn next dev",
+    "build:pre": "ts-node build/scripts/prebuild.ts",
+    "build": "env-cmd --no-override yarn build:pre && next build --turbopack",
+    "start": "next start",
     "lint": "next lint",
     "lint:fix": "eslint --fix .",
-    "tsc-check": "tsc --noEmit",
-    "env": "yarn env-cmd --no-override yarn run",
-    "prepare": "husky install"
+    "typecheck": "tsc --noEmit",
+    "graphql": "yarn graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@christopherpickering/react-leaflet-markercluster": "^1.1.0",
@@ -27,7 +23,7 @@
     "eslint-config-airbnb-typescript": "^18.0.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-typescript": "^0.14.0",
-    "framer-motion": "^11.11.9",
+    "framer-motion": "^12.23.24",
     "i18next": "^23.16.0",
     "i18next-http-backend": "^2.6.2",
     "i18next-resources-to-backend": "^1.2.1",
@@ -35,10 +31,10 @@
     "leaflet": "^1.9.4",
     "lunr": "^2.3.9",
     "lunr-languages": "^1.14.0",
-    "next": "^14.2.15",
+    "next": "15.5.0",
     "prettier": "^3.2.5",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
     "react-i18next": "^15.0.3",
     "react-icons": "^4.11.0",
     "react-leaflet": "^4.2.1",
@@ -57,8 +53,8 @@
     "@types/lunr": "^2.3.7",
     "@types/node": "^20.11.1",
     "@types/node-fetch": "^2.6.11",
-    "@types/react": "^18.3.1",
-    "@types/react-dom": "^18.3.0",
+    "@types/react": "19.0.12",
+    "@types/react-dom": "19.0.4",
     "@types/react-slick": "^0.23.13",
     "@typescript-eslint/eslint-plugin": "^8.9.0",
     "@typescript-eslint/parser": "^8.9.0",
@@ -76,7 +72,7 @@
     "server-only-context": "^0.1.0",
     "slick-carousel": "^1.8.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.3",
+    "typescript": "5.9.3",
     "typescript-eslint": "^8.9.0"
   }
 }

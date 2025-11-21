@@ -27,16 +27,12 @@ const getFooter = cache(async function getFooter(language: string) {
   return await client.getFooter({ locale: language })
 })
 
-type OrganizationDetailsLayoutProps = PropsWithChildren<{
-  params: {
-    language: string
-    segment: string
-  }
-}>
 export default async function OrganizationDetailsLayout({
   children,
-  params: { language, segment },
-}: OrganizationDetailsLayoutProps) {
+  params,
+}: LayoutProps<'/[language]/[segment]'>) {
+  const { language, segment } = await params
+
   const { pages } = await getPage(language, '/' + segment)
   const header = await getHeader(language)
   const footer = await getFooter(language)

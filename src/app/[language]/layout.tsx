@@ -16,15 +16,15 @@ const getPage = cache(async function getPage(locale: string, url: string) {
 })
 
 interface LanguagePageProps {
-  params: {
+  params: Promise<{
     language: string
-  }
+  }>
 }
-
 export default async function LanguageLayout({
   children,
-  params: { language },
+  params,
 }: LanguagePageProps & { children: React.ReactNode }) {
+  const { language } = await params
   const { pages } = await getPage(language, `/`)
 
   if (!pages) notFound()
