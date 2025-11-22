@@ -87,7 +87,7 @@ export async function CustomFooter() {
           </div>
         </div>
         <footer>
-          <hr />© 2023 MonBo Réseau.
+          <hr />© 2025 MonBo Réseau.
           <div>
             <small style={{ opacity: 0.7, fontSize: '.75rem' }}>
               Conçu par Alexian Moins et Lucas Lopez.

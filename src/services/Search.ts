@@ -63,24 +63,30 @@ async function initialize(language: string = 'fr') {
   deferred.resolve()
 }
 
-async function search(
-  params: SearchAccurateOrganizationParams
-): Promise<Organisme[]> {
-  // Get params
+async function search(params: SearchAccurateOrganizationParams): Promise<{
+  organismes: Organisme[]
+  debug: {
+    Nom: string
+    TotalSubCategories: number
+    MatchedSubCategories: number
+    SpecializationScore: number
+    MatchedSubCategoryNames: string
+  }[]
+}> {
   const { subCategoriesIds, publicsId } = params
 
-  // Get IndexedDBData
+  // Récupération des données depuis IndexedDB
   const organismesFromIndexedDb: (Organisme & { id: string })[] =
     await db!.then((data) => data.getAll(organismesStoreName))
   const categoriesFromIndexedDb: (Categorie & { id: string })[] =
     await db!.then((data) => data.getAll(categoriesStoreName))
 
-  // Recompose the params categories and subCategories as a tree
+  // Reconstruction de l'arborescence des catégories sélectionnées
   const recomposedParamCategories: {
     [key: string]: { isComplete: boolean; subcat: string[] }
   } = {}
   if (subCategoriesIds && subCategoriesIds.length > 0) {
-    categoriesFromIndexedDb.map((categorie) => {
+    categoriesFromIndexedDb.forEach((categorie) => {
       for (const subcat of categorie.sous_categories.data) {
         if (subCategoriesIds.includes(subcat.id)) {
           if (!recomposedParamCategories[categorie.id]) {
@@ -102,43 +108,82 @@ async function search(
     })
   }
 
-  // Iterate over the organisms and filter them
-  // If a category is not complete, we need to check if the organism has all the subcategories
-  // If a category is complete, we need to check if the organism has at least one of the subcategories
-  // If a public is selected, we need to check if the organism has this public
-  // then we merge the results
-  return organismesFromIndexedDb.filter((organisme) => {
-    let isPublicsOk = true
-    let isSubCategoriesOk = true
-
-    if (publicsId && publicsId !== '0') {
-      isPublicsOk = organisme.public_specifiques.data
-        .map((publicSpe) => publicSpe.id)
-        .includes(publicsId)
-    }
-
-    const categoriesOk: { [key: string]: boolean } = {}
-
-    for (const catId in recomposedParamCategories) {
-      if (recomposedParamCategories[catId].isComplete) {
-        categoriesOk[catId] = organisme.sous_categories.data
-          .map((cat) => cat.id)
-          .some((subCatId) =>
-            recomposedParamCategories[catId].subcat.includes(subCatId)
-          )
-      } else {
-        categoriesOk[catId] = recomposedParamCategories[catId].subcat.every(
-          (subCatId) =>
-            organisme.sous_categories.data
-              .map((cat) => cat.id)
-              .includes(subCatId)
-        )
+  // Filtrage et calcul du score de spécialisation
+  const resultWithScore = organismesFromIndexedDb
+    .map((organisme) => {
+      // Vérification public
+      let isPublicsOk = true
+      if (publicsId && publicsId !== '0') {
+        isPublicsOk = organisme.public_specifiques.data
+          .map((publicSpe) => publicSpe.id)
+          .includes(publicsId)
       }
-    }
 
-    isSubCategoriesOk = Object.values(categoriesOk).every((val) => val)
-    return isPublicsOk && isSubCategoriesOk
-  })
+      // Vérification sous-catégories
+      const categoriesOk: { [key: string]: boolean } = {}
+      for (const catId in recomposedParamCategories) {
+        if (recomposedParamCategories[catId].isComplete) {
+          categoriesOk[catId] = organisme.sous_categories.data
+            .map((cat) => cat.id)
+            .some((subCatId) =>
+              recomposedParamCategories[catId].subcat.includes(subCatId)
+            )
+        } else {
+          categoriesOk[catId] = recomposedParamCategories[catId].subcat.every(
+            (subCatId) =>
+              organisme.sous_categories.data
+                .map((cat) => cat.id)
+                .includes(subCatId)
+          )
+        }
+      }
+      const isSubCategoriesOk = Object.values(categoriesOk).every((val) => val)
+
+      // Calcul du score de spécialisation
+      const matchedSubCategories = organisme.sous_categories.data.filter(
+        (sub) => subCategoriesIds?.includes(sub.id)
+      )
+      const matchedSubCategoriesCount = matchedSubCategories.length
+      const totalSubCategoriesCount = organisme.sous_categories.data.length
+      const specializationScore =
+        totalSubCategoriesCount > 0
+          ? matchedSubCategoriesCount / totalSubCategoriesCount
+          : 0
+
+      return {
+        organisme,
+        isPublicsOk,
+        isSubCategoriesOk,
+        matchedSubCategories,
+        matchedSubCategoriesCount,
+        totalSubCategoriesCount,
+        specializationScore,
+      }
+    })
+    // Filtre uniquement les organismes valides
+    .filter(
+      ({ isPublicsOk, isSubCategoriesOk, matchedSubCategoriesCount }) =>
+        isPublicsOk && isSubCategoriesOk && matchedSubCategoriesCount > 0
+    )
+    // Trie par score de spécialisation décroissant
+    .sort((a, b) => b.specializationScore - a.specializationScore)
+
+  // Préparer les données pour debug
+  const debug = resultWithScore.map((r) => ({
+    Nom: r.organisme.Nom,
+    TotalSubCategories: r.totalSubCategoriesCount,
+    MatchedSubCategories: r.matchedSubCategoriesCount,
+    SpecializationScore: Number(r.specializationScore.toFixed(2)),
+    MatchedSubCategoryNames: r.matchedSubCategories
+      .map((s) => s.attributes.Nom)
+      .join(', '),
+  }))
+
+  // Retourne la liste des organismes et les infos debug
+  return {
+    organismes: resultWithScore.map((r) => r.organisme),
+    debug,
+  }
 }
 
 async function searchOrganismes(
