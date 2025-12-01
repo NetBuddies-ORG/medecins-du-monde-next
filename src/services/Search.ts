@@ -63,126 +63,147 @@ async function initialize(language: string = 'fr') {
   deferred.resolve()
 }
 
+// Définition des interfaces pour la clarté (à adapter selon vos modèles réels)
+interface SearchDebugInfo {
+  Nom: string
+  TotalSubCategories: number
+  MatchedSubCategories: number
+  PrecisionRatio: number // Ancien "SpecializationScore"
+  CombinedScore: number // Nouveau Score
+  MatchedSubCategoryNames: string
+}
+
 async function search(params: SearchAccurateOrganizationParams): Promise<{
   organismes: Organisme[]
-  debug: {
-    Nom: string
-    TotalSubCategories: number
-    MatchedSubCategories: number
-    SpecializationScore: number
-    MatchedSubCategoryNames: string
-  }[]
+  debug: SearchDebugInfo[]
 }> {
   const { subCategoriesIds, publicsId } = params
 
-  // Récupération des données depuis IndexedDB
-  const organismesFromIndexedDb: (Organisme & { id: string })[] =
-    await db!.then((data) => data.getAll(organismesStoreName))
-  const categoriesFromIndexedDb: (Categorie & { id: string })[] =
-    await db!.then((data) => data.getAll(categoriesStoreName))
+  // 1. OPTIMISATION : Récupération parallèle des données (plus rapide)
+  const [organismesList, categoriesList] = await Promise.all([
+    db!.then(
+      (data) =>
+        data.getAll(organismesStoreName) as Promise<
+          (Organisme & { id: string })[]
+        >
+    ),
+    db!.then(
+      (data) =>
+        data.getAll(categoriesStoreName) as Promise<
+          (Categorie & { id: string })[]
+        >
+    ),
+  ])
 
-  // Reconstruction de l'arborescence des catégories sélectionnées
-  const recomposedParamCategories: {
-    [key: string]: { isComplete: boolean; subcat: string[] }
-  } = {}
-  if (subCategoriesIds && subCategoriesIds.length > 0) {
-    categoriesFromIndexedDb.forEach((categorie) => {
-      for (const subcat of categorie.sous_categories.data) {
-        if (subCategoriesIds.includes(subcat.id)) {
-          if (!recomposedParamCategories[categorie.id]) {
-            recomposedParamCategories[categorie.id] = {
-              isComplete: false,
-              subcat: [],
-            }
-          }
-          recomposedParamCategories[categorie.id].subcat.push(subcat.id)
-        }
-      }
-      if (
-        recomposedParamCategories[categorie.id] &&
-        recomposedParamCategories[categorie.id].subcat.length ===
-          categorie.sous_categories.data.length
-      ) {
-        recomposedParamCategories[categorie.id].isComplete = true
-      }
+  // Préparation : Créer un Set pour les IDs recherchés (recherche en O(1) au lieu de O(n))
+  const searchIdsSet = new Set(subCategoriesIds || [])
+  const hasSearchFilter = searchIdsSet.size > 0
+  const hasPublicFilter = publicsId && publicsId !== '0'
+
+  const scoredResults: {
+    organisme: Organisme
+    stats: SearchDebugInfo
+  }[] = []
+
+  // 2. BOUCLE UNIQUE : On itère une seule fois sur les organismes (Performance)
+  for (const organisme of organismesList) {
+    // --- FILTRE 1 : Public (Exclusion stricte) ---
+    // Si le filtre public est actif et que l'organisme ne contient pas ce public -> on passe
+    if (hasPublicFilter) {
+      const orgPublics = organisme.public_specifiques?.data || []
+      const matchPublic = orgPublics.some((p) => p.id === publicsId)
+      if (!matchPublic) continue // Passe à l'organisme suivant immédiatement
+    }
+
+    // --- FILTRE 2 & CALCUL : Sous-catégories ---
+    const orgSubCats = organisme.sous_categories?.data || []
+    let matchedSubCats: any[] = []
+
+    if (hasSearchFilter) {
+      // On trouve les intersections
+      matchedSubCats = orgSubCats.filter((sub) => searchIdsSet.has(sub.id))
+
+      // Si aucun match, on exclut l'organisme (sauf si on veut afficher des résultats par défaut)
+      if (matchedSubCats.length === 0) continue
+    } else {
+      // Si aucune recherche spécifiée, on peut décider de tout retourner ou rien (ici comportement par défaut)
+      // matchedSubCats = [];
+    }
+
+    // --- CALCUL DES SCORES ---
+    const matchCount = matchedSubCats.length
+    const totalCount = orgSubCats.length
+
+    // A. Ratio de Précision (Votre ancien score) : Qualité de la spécialisation
+    // Evite la division par zéro
+    const precisionRatio = totalCount > 0 ? matchCount / totalCount : 0
+
+    // B. Score Combiné (Le correctif) : Volume * Précision
+    // On met au carré le matchCount pour donner encore plus de poids au volume,
+    // ou simplement matchCount * precisionRatio.
+    // Formule choisie ici : Score = Matchs * (Matchs / Total)
+    const combinedScore = matchCount * precisionRatio
+
+    // Préparation des données Debug / Stats
+    const debugInfo: SearchDebugInfo = {
+      Nom: organisme.Nom,
+      TotalSubCategories: totalCount,
+      MatchedSubCategories: matchCount,
+      PrecisionRatio: Number(precisionRatio.toFixed(2)),
+      CombinedScore: Number(combinedScore.toFixed(2)),
+      MatchedSubCategoryNames: matchedSubCats
+        .map((s) => s.attributes?.Nom || s.id)
+        .join(', '),
+    }
+
+    scoredResults.push({
+      organisme,
+      stats: debugInfo,
     })
   }
 
-  // Filtrage et calcul du score de spécialisation
-  const resultWithScore = organismesFromIndexedDb
-    .map((organisme) => {
-      // Vérification public
-      let isPublicsOk = true
-      if (publicsId && publicsId !== '0') {
-        isPublicsOk = organisme.public_specifiques.data
-          .map((publicSpe) => publicSpe.id)
-          .includes(publicsId)
-      }
+  // 3. TRI FINAL
+  scoredResults.sort((a, b) => b.stats.CombinedScore - a.stats.CombinedScore)
 
-      // Vérification sous-catégories
-      const categoriesOk: { [key: string]: boolean } = {}
-      for (const catId in recomposedParamCategories) {
-        if (recomposedParamCategories[catId].isComplete) {
-          categoriesOk[catId] = organisme.sous_categories.data
-            .map((cat) => cat.id)
-            .some((subCatId) =>
-              recomposedParamCategories[catId].subcat.includes(subCatId)
-            )
-        } else {
-          categoriesOk[catId] = recomposedParamCategories[catId].subcat.every(
-            (subCatId) =>
-              organisme.sous_categories.data
-                .map((cat) => cat.id)
-                .includes(subCatId)
-          )
-        }
-      }
-      const isSubCategoriesOk = Object.values(categoriesOk).every((val) => val)
+  // --- NOUVELLE ETAPE : ÉCRÉMAGE (THRESHOLDING) ---
 
-      // Calcul du score de spécialisation
-      const matchedSubCategories = organisme.sous_categories.data.filter(
-        (sub) => subCategoriesIds?.includes(sub.id)
-      )
-      const matchedSubCategoriesCount = matchedSubCategories.length
-      const totalSubCategoriesCount = organisme.sous_categories.data.length
-      const specializationScore =
-        totalSubCategoriesCount > 0
-          ? matchedSubCategoriesCount / totalSubCategoriesCount
-          : 0
+  // On ne garde que les résultats pertinents si on en a au moins un
+  if (scoredResults.length > 0) {
+    const bestScore = scoredResults[0].stats.CombinedScore
 
-      return {
-        organisme,
-        isPublicsOk,
-        isSubCategoriesOk,
-        matchedSubCategories,
-        matchedSubCategoriesCount,
-        totalSubCategoriesCount,
-        specializationScore,
-      }
-    })
-    // Filtre uniquement les organismes valides
-    .filter(
-      ({ isPublicsOk, isSubCategoriesOk, matchedSubCategoriesCount }) =>
-        isPublicsOk && isSubCategoriesOk && matchedSubCategoriesCount > 0
+    // FACTEUR DE TOLÉRANCE (A ajuster selon vos tests)
+    // 0.3 = On garde les organismes qui ont au moins 30% du score du premier
+    // Si vous voulez être très sélectif, mettez 0.5 (50%)
+    const relevanceThreshold = 0.15
+
+    // FILTRE DE QUALITÉ MINIMALE
+    // On veut éviter les résultats parasites (ex: 1 match sur 100 services)
+    // On peut dire : score combiné doit être > 0.5 au minimum absolu
+    const minAbsoluteScore = 0.5
+
+    // Application du filtre
+    const cutoffScore = Math.max(
+      bestScore * relevanceThreshold,
+      minAbsoluteScore
     )
-    // Trie par score de spécialisation décroissant
-    .sort((a, b) => b.specializationScore - a.specializationScore)
 
-  // Préparer les données pour debug
-  const debug = resultWithScore.map((r) => ({
-    Nom: r.organisme.Nom,
-    TotalSubCategories: r.totalSubCategoriesCount,
-    MatchedSubCategories: r.matchedSubCategoriesCount,
-    SpecializationScore: Number(r.specializationScore.toFixed(2)),
-    MatchedSubCategoryNames: r.matchedSubCategories
-      .map((s) => s.attributes.Nom)
-      .join(', '),
-  }))
+    // On remplace la liste par la version filtrée
+    const filteredResults = scoredResults.filter(
+      (r) => r.stats.CombinedScore >= cutoffScore
+    )
 
-  // Retourne la liste des organismes et les infos debug
+    // Optionnel : Limite dure (Top 20 max) pour ne pas noyer l'utilisateur
+    // const finalResults = filteredResults.slice(0, 20);
+
+    // Mise à jour de la variable à retourner
+    scoredResults.length = 0 // Vide l'original (optimisation mémoire)
+    scoredResults.push(...filteredResults)
+  }
+
+  // Retour
   return {
-    organismes: resultWithScore.map((r) => r.organisme),
-    debug,
+    organismes: scoredResults.map((r) => r.organisme),
+    debug: scoredResults.map((r) => r.stats),
   }
 }
 
