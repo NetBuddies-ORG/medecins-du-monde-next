@@ -174,12 +174,12 @@ async function search(params: SearchAccurateOrganizationParams): Promise<{
     // FACTEUR DE TOLÉRANCE (A ajuster selon vos tests)
     // 0.3 = On garde les organismes qui ont au moins 30% du score du premier
     // Si vous voulez être très sélectif, mettez 0.5 (50%)
-    const relevanceThreshold = 0.05
+    const relevanceThreshold = 0
 
     // FILTRE DE QUALITÉ MINIMALE
     // On veut éviter les résultats parasites (ex: 1 match sur 100 services)
     // On peut dire : score combiné doit être > 0.5 au minimum absolu
-    const minAbsoluteScore = 0.5
+    const minAbsoluteScore = 0.05
 
     // Application du filtre
     const cutoffScore = Math.max(
