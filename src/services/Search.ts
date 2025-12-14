@@ -68,8 +68,11 @@ interface SearchDebugInfo {
   Nom: string
   TotalSubCategories: number
   MatchedSubCategories: number
+  RecallRatio: number
+  SubCategoryScore: number
+  PublicScore: number
   PrecisionRatio: number // Ancien "SpecializationScore"
-  CombinedScore: number // Nouveau Score
+  CombinedScore?: number // Nouveau Score
   MatchedSubCategoryNames: string
 }
 
@@ -158,6 +161,7 @@ async function search(params: SearchAccurateOrganizationParams): Promise<{
       stats: {
         Nom: organisme.Nom,
         TotalSubCategories: orgSubCats.length,
+        CombinedScore: 0,
         MatchedSubCategories: matchedSubCats.length,
         PrecisionRatio: Number(
           (matchedSubCats.length / Math.max(orgSubCats.length, 1)).toFixed(2)
