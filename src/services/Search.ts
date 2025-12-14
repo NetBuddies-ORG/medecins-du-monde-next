@@ -77,133 +77,124 @@ async function search(params: SearchAccurateOrganizationParams): Promise<{
   organismes: Organisme[]
   debug: SearchDebugInfo[]
 }> {
-  const { subCategoriesIds, publicsId } = params
+  const { subCategoriesIds = [], publicsId } = params
 
-  // 1. OPTIMISATION : Récupération parallèle des données (plus rapide)
-  const [organismesList, categoriesList] = await Promise.all([
+  // --- CONFIGURATION DES POIDS ---
+  const WEIGHT_PUBLIC = 0.65
+  const WEIGHT_SUBCATEGORY = 0.35
+
+  const MIN_FINAL_SCORE = 0.35 // élimine le bruit
+  const RELATIVE_THRESHOLD = 0.4 // % du meilleur score
+  const MAX_RESULTS = 20 // optionnel
+
+  // --- RÉCUPÉRATION DES DONNÉES ---
+  const [organismesList] = await Promise.all([
     db!.then(
       (data) =>
         data.getAll(organismesStoreName) as Promise<
           (Organisme & { id: string })[]
         >
     ),
-    db!.then(
-      (data) =>
-        data.getAll(categoriesStoreName) as Promise<
-          (Categorie & { id: string })[]
-        >
-    ),
   ])
 
-  // Préparation : Créer un Set pour les IDs recherchés (recherche en O(1) au lieu de O(n))
-  const searchIdsSet = new Set(subCategoriesIds || [])
-  const hasSearchFilter = searchIdsSet.size > 0
+  const searchSubCatSet = new Set(subCategoriesIds)
+  const hasSubCategoryFilter = searchSubCatSet.size > 0
   const hasPublicFilter = publicsId && publicsId !== '0'
 
   const scoredResults: {
     organisme: Organisme
-    stats: SearchDebugInfo
+    stats: SearchDebugInfo & { FinalScore: number }
   }[] = []
 
-  // 2. BOUCLE UNIQUE : On itère une seule fois sur les organismes (Performance)
+  // --- BOUCLE PRINCIPALE ---
   for (const organisme of organismesList) {
-    // --- FILTRE 1 : Public (Exclusion stricte) ---
-    // Si le filtre public est actif et que l'organisme ne contient pas ce public -> on passe
+    const orgPublics = organisme.public_specifiques?.data || []
+    const orgSubCats = organisme.sous_categories?.data || []
+
+    // ---------- SCORE PUBLIC ----------
+    let publicScore = 0.5 // neutre par défaut
+
     if (hasPublicFilter) {
-      const orgPublics = organisme.public_specifiques?.data || []
       const matchPublic = orgPublics.some((p) => p.id === publicsId)
-      if (!matchPublic) continue // Passe à l'organisme suivant immédiatement
+
+      if (!matchPublic) continue // exclusion stricte
+      publicScore = 1
     }
 
-    // --- FILTRE 2 & CALCUL : Sous-catégories ---
-    const orgSubCats = organisme.sous_categories?.data || []
+    // ---------- SCORE SOUS-CATÉGORIES ----------
+    let subCategoryScore = 0
+
     let matchedSubCats: any[] = []
 
-    if (hasSearchFilter) {
-      // On trouve les intersections
-      matchedSubCats = orgSubCats.filter((sub) => searchIdsSet.has(sub.id))
+    if (hasSubCategoryFilter) {
+      matchedSubCats = orgSubCats.filter((sub) => searchSubCatSet.has(sub.id))
 
-      // Si aucun match, on exclut l'organisme (sauf si on veut afficher des résultats par défaut)
       if (matchedSubCats.length === 0) continue
-    } else {
-      // Si aucune recherche spécifiée, on peut décider de tout retourner ou rien (ici comportement par défaut)
-      // matchedSubCats = [];
+
+      const matchCount = matchedSubCats.length
+      const totalOrgSubCats = orgSubCats.length
+      const totalSearchSubCats = searchSubCatSet.size
+
+      const precision = totalOrgSubCats > 0 ? matchCount / totalOrgSubCats : 0
+
+      const recall =
+        totalSearchSubCats > 0 ? matchCount / totalSearchSubCats : 0
+
+      // F1-score
+      subCategoryScore =
+        precision + recall > 0
+          ? (2 * precision * recall) / (precision + recall)
+          : 0
     }
 
-    // --- CALCUL DES SCORES ---
-    const matchCount = matchedSubCats.length
-    const totalCount = orgSubCats.length
+    // ---------- SCORE FINAL ----------
+    const finalScore =
+      WEIGHT_PUBLIC * publicScore + WEIGHT_SUBCATEGORY * subCategoryScore
 
-    // A. Ratio de Précision (Votre ancien score) : Qualité de la spécialisation
-    // Evite la division par zéro
-    const precisionRatio = totalCount > 0 ? matchCount / totalCount : 0
-
-    // B. Score Combiné (Le correctif) : Volume * Précision
-    // On met au carré le matchCount pour donner encore plus de poids au volume,
-    // ou simplement matchCount * precisionRatio.
-    // Formule choisie ici : Score = Matchs * (Matchs / Total)
-    const combinedScore = matchCount * precisionRatio
-
-    // Préparation des données Debug / Stats
-    const debugInfo: SearchDebugInfo = {
-      Nom: organisme.Nom,
-      TotalSubCategories: totalCount,
-      MatchedSubCategories: matchCount,
-      PrecisionRatio: Number(precisionRatio.toFixed(2)),
-      CombinedScore: Number(combinedScore.toFixed(2)),
-      MatchedSubCategoryNames: matchedSubCats
-        .map((s) => s.attributes?.Nom || s.id)
-        .join(', '),
-    }
+    if (finalScore < MIN_FINAL_SCORE) continue
 
     scoredResults.push({
       organisme,
-      stats: debugInfo,
+      stats: {
+        Nom: organisme.Nom,
+        TotalSubCategories: orgSubCats.length,
+        MatchedSubCategories: matchedSubCats.length,
+        PrecisionRatio: Number(
+          (matchedSubCats.length / Math.max(orgSubCats.length, 1)).toFixed(2)
+        ),
+        RecallRatio: Number(
+          (matchedSubCats.length / Math.max(searchSubCatSet.size, 1)).toFixed(2)
+        ),
+        SubCategoryScore: Number(subCategoryScore.toFixed(2)),
+        PublicScore: Number(publicScore.toFixed(2)),
+        FinalScore: Number(finalScore.toFixed(2)),
+        MatchedSubCategoryNames: matchedSubCats
+          .map((s) => s.attributes?.Nom || s.id)
+          .join(', '),
+      },
     })
   }
 
-  // 3. TRI FINAL
-  scoredResults.sort((a, b) => b.stats.CombinedScore - a.stats.CombinedScore)
+  // --- TRI ---
+  scoredResults.sort((a, b) => b.stats.FinalScore - a.stats.FinalScore)
 
-  // --- NOUVELLE ETAPE : ÉCRÉMAGE (THRESHOLDING) ---
-
-  // On ne garde que les résultats pertinents si on en a au moins un
+  // --- THRESHOLD RELATIF ---
   if (scoredResults.length > 0) {
-    const bestScore = scoredResults[0].stats.CombinedScore
+    const bestScore = scoredResults[0].stats.FinalScore
+    const cutoff = Math.max(bestScore * RELATIVE_THRESHOLD, MIN_FINAL_SCORE)
 
-    // FACTEUR DE TOLÉRANCE (A ajuster selon vos tests)
-    // 0.3 = On garde les organismes qui ont au moins 30% du score du premier
-    // Si vous voulez être très sélectif, mettez 0.5 (50%)
-    const relevanceThreshold = 0
+    const filtered = scoredResults.filter((r) => r.stats.FinalScore >= cutoff)
 
-    // FILTRE DE QUALITÉ MINIMALE
-    // On veut éviter les résultats parasites (ex: 1 match sur 100 services)
-    // On peut dire : score combiné doit être > 0.5 au minimum absolu
-    const minAbsoluteScore = 0.05
-
-    // Application du filtre
-    const cutoffScore = Math.max(
-      bestScore * relevanceThreshold,
-      minAbsoluteScore
-    )
-
-    // On remplace la liste par la version filtrée
-    const filteredResults = scoredResults.filter(
-      (r) => r.stats.CombinedScore >= cutoffScore
-    )
-
-    // Optionnel : Limite dure (Top 20 max) pour ne pas noyer l'utilisateur
-    // const finalResults = filteredResults.slice(0, 20);
-
-    // Mise à jour de la variable à retourner
-    scoredResults.length = 0 // Vide l'original (optimisation mémoire)
-    scoredResults.push(...filteredResults)
+    scoredResults.length = 0
+    scoredResults.push(...filtered)
   }
 
-  // Retour
+  // --- LIMITE FINALE ---
+  const finalResults = scoredResults.slice(0, MAX_RESULTS)
+
   return {
-    organismes: scoredResults.map((r) => r.organisme),
-    debug: scoredResults.map((r) => r.stats),
+    organismes: finalResults.map((r) => r.organisme),
+    debug: finalResults.map((r) => r.stats),
   }
 }
 
