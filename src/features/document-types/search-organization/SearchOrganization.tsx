@@ -39,14 +39,14 @@ export function SearchOrganization({
   categories,
 }: SearchOrganizationProps) {
   const [isMapViewSelect, setIsMapViewSelect] = useState<boolean>(false)
-  const [isSlideOutOpen, setIsSlideOutOpen] = useState<boolean>(false)
+  const [isSlideOutOpen, setIsSlideOutOpen] = useState<boolean>(true)
   const [organismes, setOrganismes] = useState<(Organisme & { id?: string })[]>(
     []
   )
 
   const [selectedOpenCategories, setSelectedOpenCategories] = useState<
     string[]
-  >([])
+  >(categories.categories.data.map((c) => c.id))
   const [selectedPublic, setSelectedPublic] = useState<string>('0')
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [selectedSubCategories, setSubSelectedCategories] = useState<string[]>(
@@ -88,7 +88,7 @@ export function SearchOrganization({
       categoriesInit.push(...categoriesFromSubCategories)
       subIdsInitToAdd.push(...searchParams.getAll('subCategories'))
 
-      setSubSelectedCategories([...selectedSubCategories, ...subIdsInitToAdd])
+      // setSubSelectedCategories([...selectedSubCategories, ...subIdsInitToAdd])
       const idsInitToAdd: string[] = []
       categoriesInit.forEach((item) => {
         if (!item.attributes.sous_categories.data.length) {
@@ -100,10 +100,11 @@ export function SearchOrganization({
       //@ts-expect-error mixup between type from data & expected data from graphql
       setCategoriesForFilterDisplay(categoriesInit)
       search({
-        subCategoriesIds: searchParams.getAll('subCategories') as string[],
+        // subCategoriesIds: searchParams.getAll('subCategories') as string[],
         categoriesIds: searchParams.getAll('categories') as string[],
         publicsId: (searchParams.get('publics') as string) ?? '0',
-      }).then((organismes) => {
+      }).then(({ organismes, debug }) => {
+        console.table(debug)
         setOrganismes(organismes)
         positionCenter(organismes)
       })
@@ -119,7 +120,7 @@ export function SearchOrganization({
       async function searchOrga(subcategoriesToIterate: string[]) {
         const test: string[] = []
         for (const item of subcategoriesToIterate) {
-          const searchResult = await search({
+          const { organismes: searchResult, debug } = await search({
             categoriesIds: [],
             subCategoriesIds: [...selectedSubCategories, item],
             publicsId: (selectedPublic as string) ?? '0',
@@ -150,7 +151,8 @@ export function SearchOrganization({
         categoriesIds: selectedCategories,
         subCategoriesIds: selectedSubCategories,
         publicsId: (selectedPublic as string) ?? '0',
-      }).then((organismes) => {
+      }).then(({ organismes, debug }) => {
+        console.table(debug)
         setOrganismes(organismes)
         positionCenter(organismes)
       })

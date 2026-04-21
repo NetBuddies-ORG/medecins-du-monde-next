@@ -63,82 +63,143 @@ async function initialize(language: string = 'fr') {
   deferred.resolve()
 }
 
-async function search(
-  params: SearchAccurateOrganizationParams
-): Promise<Organisme[]> {
-  // Get params
-  const { subCategoriesIds, publicsId } = params
+// Définition des interfaces pour la clarté (à adapter selon vos modèles réels)
+interface SearchDebugInfo {
+  Nom: string
+  TotalSubCategories: number
+  MatchedSubCategories: number
+  RecallRatio: number
+  SubCategoryScore: number
+  PublicScore: number
+  PrecisionRatio: number // Ancien "SpecializationScore"
+  CombinedScore?: number // Nouveau Score
+  MatchedSubCategoryNames: string
+}
 
-  // Get IndexedDBData
-  const organismesFromIndexedDb: (Organisme & { id: string })[] =
-    await db!.then((data) => data.getAll(organismesStoreName))
-  const categoriesFromIndexedDb: (Categorie & { id: string })[] =
-    await db!.then((data) => data.getAll(categoriesStoreName))
+async function search(params: SearchAccurateOrganizationParams): Promise<{
+  organismes: Organisme[]
+  debug: SearchDebugInfo[]
+}> {
+  const { subCategoriesIds = [], publicsId } = params
 
-  // Recompose the params categories and subCategories as a tree
-  const recomposedParamCategories: {
-    [key: string]: { isComplete: boolean; subcat: string[] }
-  } = {}
-  if (subCategoriesIds && subCategoriesIds.length > 0) {
-    categoriesFromIndexedDb.map((categorie) => {
-      for (const subcat of categorie.sous_categories.data) {
-        if (subCategoriesIds.includes(subcat.id)) {
-          if (!recomposedParamCategories[categorie.id]) {
-            recomposedParamCategories[categorie.id] = {
-              isComplete: false,
-              subcat: [],
-            }
-          }
-          recomposedParamCategories[categorie.id].subcat.push(subcat.id)
-        }
-      }
-      if (
-        recomposedParamCategories[categorie.id] &&
-        recomposedParamCategories[categorie.id].subcat.length ===
-          categorie.sous_categories.data.length
-      ) {
-        recomposedParamCategories[categorie.id].isComplete = true
-      }
+  // --- CONFIGURATION DES POIDS ---
+  const WEIGHT_PUBLIC = 0.65
+  const WEIGHT_SUBCATEGORY = 0.35
+
+  const MIN_FINAL_SCORE = 0.35 // élimine le bruit
+  const RELATIVE_THRESHOLD = 0.4 // % du meilleur score
+  const MAX_RESULTS = 20 // optionnel
+
+  // --- RÉCUPÉRATION DES DONNÉES ---
+  const [organismesList] = await Promise.all([
+    db!.then(
+      (data) =>
+        data.getAll(organismesStoreName) as Promise<
+          (Organisme & { id: string })[]
+        >
+    ),
+  ])
+
+  const searchSubCatSet = new Set(subCategoriesIds)
+  const hasSubCategoryFilter = searchSubCatSet.size > 0
+  const hasPublicFilter = publicsId && publicsId !== '0'
+
+  const scoredResults: {
+    organisme: Organisme
+    stats: SearchDebugInfo & { FinalScore: number }
+  }[] = []
+
+  // --- BOUCLE PRINCIPALE ---
+  for (const organisme of organismesList) {
+    const orgPublics = organisme.public_specifiques?.data || []
+    const orgSubCats = organisme.sous_categories?.data || []
+
+    // ---------- SCORE PUBLIC ----------
+    let publicScore = 0.5 // neutre par défaut
+
+    if (hasPublicFilter) {
+      const matchPublic = orgPublics.some((p) => p.id === publicsId)
+
+      if (!matchPublic) continue // exclusion stricte
+      publicScore = 1
+    }
+
+    // ---------- SCORE SOUS-CATÉGORIES ----------
+    let subCategoryScore = 0
+
+    let matchedSubCats: any[] = []
+
+    if (hasSubCategoryFilter) {
+      matchedSubCats = orgSubCats.filter((sub) => searchSubCatSet.has(sub.id))
+
+      if (matchedSubCats.length === 0) continue
+
+      const matchCount = matchedSubCats.length
+      const totalOrgSubCats = orgSubCats.length
+      const totalSearchSubCats = searchSubCatSet.size
+
+      const precision = totalOrgSubCats > 0 ? matchCount / totalOrgSubCats : 0
+
+      const recall =
+        totalSearchSubCats > 0 ? matchCount / totalSearchSubCats : 0
+
+      // F1-score
+      subCategoryScore =
+        precision + recall > 0
+          ? (2 * precision * recall) / (precision + recall)
+          : 0
+    }
+
+    // ---------- SCORE FINAL ----------
+    const finalScore =
+      WEIGHT_PUBLIC * publicScore + WEIGHT_SUBCATEGORY * subCategoryScore
+
+    if (finalScore < MIN_FINAL_SCORE) continue
+
+    scoredResults.push({
+      organisme,
+      stats: {
+        Nom: organisme.Nom,
+        TotalSubCategories: orgSubCats.length,
+        CombinedScore: 0,
+        MatchedSubCategories: matchedSubCats.length,
+        PrecisionRatio: Number(
+          (matchedSubCats.length / Math.max(orgSubCats.length, 1)).toFixed(2)
+        ),
+        RecallRatio: Number(
+          (matchedSubCats.length / Math.max(searchSubCatSet.size, 1)).toFixed(2)
+        ),
+        SubCategoryScore: Number(subCategoryScore.toFixed(2)),
+        PublicScore: Number(publicScore.toFixed(2)),
+        FinalScore: Number(finalScore.toFixed(2)),
+        MatchedSubCategoryNames: matchedSubCats
+          .map((s) => s.attributes?.Nom || s.id)
+          .join(', '),
+      },
     })
   }
 
-  // Iterate over the organisms and filter them
-  // If a category is not complete, we need to check if the organism has all the subcategories
-  // If a category is complete, we need to check if the organism has at least one of the subcategories
-  // If a public is selected, we need to check if the organism has this public
-  // then we merge the results
-  return organismesFromIndexedDb.filter((organisme) => {
-    let isPublicsOk = true
-    let isSubCategoriesOk = true
+  // --- TRI ---
+  scoredResults.sort((a, b) => b.stats.FinalScore - a.stats.FinalScore)
 
-    if (publicsId && publicsId !== '0') {
-      isPublicsOk = organisme.public_specifiques.data
-        .map((publicSpe) => publicSpe.id)
-        .includes(publicsId)
-    }
+  // --- THRESHOLD RELATIF ---
+  if (scoredResults.length > 0) {
+    const bestScore = scoredResults[0].stats.FinalScore
+    const cutoff = Math.max(bestScore * RELATIVE_THRESHOLD, MIN_FINAL_SCORE)
 
-    const categoriesOk: { [key: string]: boolean } = {}
+    const filtered = scoredResults.filter((r) => r.stats.FinalScore >= cutoff)
 
-    for (const catId in recomposedParamCategories) {
-      if (recomposedParamCategories[catId].isComplete) {
-        categoriesOk[catId] = organisme.sous_categories.data
-          .map((cat) => cat.id)
-          .some((subCatId) =>
-            recomposedParamCategories[catId].subcat.includes(subCatId)
-          )
-      } else {
-        categoriesOk[catId] = recomposedParamCategories[catId].subcat.every(
-          (subCatId) =>
-            organisme.sous_categories.data
-              .map((cat) => cat.id)
-              .includes(subCatId)
-        )
-      }
-    }
+    scoredResults.length = 0
+    scoredResults.push(...filtered)
+  }
 
-    isSubCategoriesOk = Object.values(categoriesOk).every((val) => val)
-    return isPublicsOk && isSubCategoriesOk
-  })
+  // --- LIMITE FINALE ---
+  const finalResults = scoredResults.slice(0, MAX_RESULTS)
+
+  return {
+    organismes: finalResults.map((r) => r.organisme),
+    debug: finalResults.map((r) => r.stats),
+  }
 }
 
 async function searchOrganismes(
