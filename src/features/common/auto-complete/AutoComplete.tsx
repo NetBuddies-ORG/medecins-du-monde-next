@@ -1,5 +1,5 @@
 'use client'
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FaSearch, FaTimes} from "react-icons/fa";
 import {Categorie} from "@/services/GraphQL";
 import {useAsyncEffect} from "@/hooks";
@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import noResultImage from "@/assets/utils/images/no-results.jpg";
 import {useDBIndex} from "@/services/Search";
+import {highlight} from "@/helpers/highlight";
 
 interface AutoCompleteProps {
     language: string;
@@ -23,7 +24,7 @@ export default function AutoComplete({language}: AutoCompleteProps) {
     } = useDBIndex(language);
 
     useAsyncEffect(async () => {
-        setCategories(await getCategories());
+        if (isReady) setCategories(await getCategories());
     }, [isReady]);
 
     const clear = () => {
@@ -31,10 +32,16 @@ export default function AutoComplete({language}: AutoCompleteProps) {
     }
 
     const handleInputChange = (event) => {
-        const value = event.target.value;
-        setInputValue(value);
-        if (value) {
-            searchSubCategories({keyword: value}).then(subCategoriesId => {
+        setInputValue(event.target.value);
+    };
+
+    // Depends on isReady and categories: a keyword typed while the search engine loads
+    // is searched once it is ready. `cancelled` drops the answer of an outdated keyword.
+    useEffect(() => {
+        let cancelled = false;
+        if (inputValue && isReady) {
+            searchSubCategories({keyword: inputValue}).then(subCategoriesId => {
+                if (cancelled) return;
 
                 const copyCategories = JSON.parse(JSON.stringify(categories)) as (Categorie & {id: string})[];
                 const categoriesLinkedToSubCategories = copyCategories.filter(cat => {
@@ -47,19 +54,15 @@ export default function AutoComplete({language}: AutoCompleteProps) {
                     // Compare les index de la première sous-catégorie trouvée dans les deux catégories
                     return subCategoriesId.indexOf(aSubCategories[0].id) - subCategoriesId.indexOf(bSubCategories[0].id);
                 });
-                // apply the same method as above but keep the order of the subcategories
-
-                const regex = new RegExp(value.replace(/[aeiou]/g, '[aeiouàáâãäåæçèéêëìíîïðñòóôõöùúûüýÿ]'), 'gi');
 
                 categoriesLinkedToSubCategoriesSorted
                     .map((cat: Categorie & {id: string}) => {
                         // Les caractères spéciaux sont épargnés pour la recherche.
-                        if (value.length > 1) {
+                        if (inputValue.length > 1) {
                             const subCategories = cat.sous_categories.data
                                 .filter(subCat => subCategoriesId.includes(subCat.id));
                             for (const subCat of subCategories) {
-                                subCat.attributes.Nom = subCat.attributes.Nom.replace(regex, match =>
-                                    `<span class="highlight">${match}</span>`);
+                                subCat.attributes.Nom = highlight(subCat.attributes.Nom, inputValue);
                             }
                             cat.sous_categories.data = subCategories;
                         }
@@ -69,7 +72,10 @@ export default function AutoComplete({language}: AutoCompleteProps) {
                 setSuggestions(categoriesLinkedToSubCategoriesSorted);
             });
         }
-    };
+        return () => {
+            cancelled = true;
+        };
+    }, [inputValue, isReady, categories]);
 
     return (<>
         {inputValue && <div className="form-bg" onClick={clear}></div>}
@@ -109,7 +115,8 @@ export default function AutoComplete({language}: AutoCompleteProps) {
                         </li>
                     ))}
                     {
-                        (suggestions.length === 0) && <li className="suggestion-no-result">
+                        // Not while the search engine loads: the suggestions are not computed yet
+                        (isReady && suggestions.length === 0) && <li className="suggestion-no-result">
                         <div>
                             <Image
                                 src={noResultImage}

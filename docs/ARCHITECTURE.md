@@ -117,6 +117,16 @@ choisi par `pages.data[0].attributes.ContentType` :
 Index construits au build par `build/scripts/index-builder/indexes.ts`, testés dans
 `search.test.ts` avec ces mêmes fonctions.
 
+Les index sont en **français** (lunr-languages : trimmer, mots vides, stemmer), accents retirés
+avant le stemmer. Chaque mot est indexé deux fois, **racine et mot entier** :
+- la racine sert aux requêtes exactes, qui passent par le stemmer (« logements » trouve
+  « logement », « familiale » trouve « familial ») ;
+- le mot entier sert aux requêtes par début de mot (`terme*`), que lunr ne fait pas passer par le
+  stemmer : « hebergem », tapé en cours de saisie, trouve encore « hébergement » (racine « heberg »).
+
+Le navigateur doit enregistrer les mêmes fonctions de pipeline avant de charger les index
+(`lunr.stemmer.support`, `lunr.fr` et `removeDiacriticsSpelling`, dans `initialize()` de `Search.ts`).
+
 - Normalise (accents, ponctuation), retire des mots vides français.
 - Pour chaque terme : `terme^(100-i) terme*^20 terme~1^10` (exact, préfixe, flou).
 - Si plus de 5 résultats, filtre ceux sous `max(moyenne − écart-type, 0.25)`.

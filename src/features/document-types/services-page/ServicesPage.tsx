@@ -64,7 +64,8 @@ export function ServicesPage({extraData, language}: ServicesPageProps) {
             const sorted = extraData.services.data.sort((a, b) => a.attributes.Nom.localeCompare(b.attributes.Nom))
             setServices(sorted)
         }
-    }, [keyword])
+        // isReady: a keyword typed while the search engine loads must be searched once it is ready
+    }, [keyword, isReady])
 
     useEffect(() => {
     }, [services])

@@ -44,8 +44,9 @@ yarn lint              # ESLint 10, flat config eslint.config.mjs
 yarn test              # Tests unitaires (Vitest) ; `yarn test:watch` en mode surveillance
 ```
 
-Les **tests unitaires** (Vitest) couvrent la recherche : `src/helpers/rankOrganismes.test.ts` (filtres)
-et `src/helpers/search.test.ts` (recherche texte). Sur chaque PR, la CI lance `yarn tsc-check`,
+Les **tests unitaires** (Vitest) couvrent la recherche : `src/helpers/rankOrganismes.test.ts` (filtres),
+`src/helpers/search.test.ts` (recherche texte) et `src/helpers/highlight.test.ts` (surlignage des
+suggestions de l'accueil). Sur chaque PR, la CI lance `yarn tsc-check`,
 `yarn lint` (qui doit rester à 0 erreur et 0 avertissement) et `yarn test`.
 Valider un changement = `yarn tsc-check` + `yarn lint` + `yarn test` + `yarn build:static` (Next refait son
 propre contrôle de types, plus strict que `tsc-check` sur les routes) + vérification manuelle dans
@@ -176,9 +177,16 @@ champs `Key` / `Traduction`), puis `yarn build:pre`. Côté client : `useTransla
   reliés qu'à des sous-catégories.
 - **Le score de `search()` ne doit jamais exclure** un organisme qui correspond : il ne sert qu'à
   trier. Un seuil minimal masquait les organismes généralistes quand aucun public n'était choisi.
-- **Effets de `SearchOrganization.tsx`** : tout effet qui appelle `search()` doit dépendre de
-  `isReady`. Sinon il ne tourne qu'avant l'initialisation du moteur, et plus jamais ensuite
-  (c'est ce qui désactivait toutes les sous-catégories venant de l'URL).
+- **Effets qui utilisent le moteur de recherche** (`useDBIndex`) : tout effet qui appelle
+  `search()`, `getOrganismes()`, `getServices()`… doit avoir `isReady` dans ses dépendances.
+  Sinon, une action faite pendant l'initialisation du moteur (mot-clé tapé, filtre venant de
+  l'URL) est ignorée et jamais rejouée. Ce bug a touché la page de recherche (sous-catégories
+  toutes désactivées) et les pages Organismes et Services (mot-clé tapé trop tôt jamais appliqué,
+  visible surtout en dev ou sur un appareil lent).
+- **Index de recherche en français** : le stemmer français et la double indexation racine + mot
+  entier sont définis dans `build/scripts/index-builder/indexes.ts`. Toute fonction de pipeline
+  ajoutée là et présente dans le pipeline de recherche doit aussi être enregistrée côté navigateur
+  (`initialize()` de `Search.ts`), sinon `lunr.Index.load` échoue.
 - **Relations imbriquées** (`sous_categories`, `services`… dans une entité) : limitées à 1000 par
   la requête, sans contrôle possible (Strapi v4 ne renvoie pas de total pour les relations).
 - **`getOrganisme(slug)`** interroge un index IndexedDB `slug` alors que les données ont

@@ -77,7 +77,8 @@ export function Organizations({ extraData, languague }: OrganizationsProps) {
         setOrganismes(orga)
       }
     }
-  }, [keyword])
+    // isReady: a keyword typed while the search engine loads must be searched once it is ready
+  }, [keyword, isReady])
 
   useEffect(() => {
     if (selectedService && selectedService !== '0') {
