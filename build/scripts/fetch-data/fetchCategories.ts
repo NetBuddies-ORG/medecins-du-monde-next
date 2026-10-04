@@ -1,4 +1,4 @@
-import {getStrapiClient} from "../../../src/services/Strapi";
+import { getAllData, getStrapiClient } from "../../../src/services/Strapi";
 import {writeFile} from "fs/promises";
 import {join} from "path";
 
@@ -11,7 +11,7 @@ export async function fetchCategories() {
 
 async function buildCmsPageByCulture() {
     const client = getStrapiClient();
-    const categories = (await client.getCategories()).categories.data
+    const categories = getAllData('categories', (await client.getCategories()).categories)
         .map(item => ({id: item.id, ...item.attributes}));
    await  writeFile(join(__dirname, `../../static/categories.json`), JSON.stringify(categories), { encoding: 'utf8' });
 }

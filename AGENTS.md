@@ -8,7 +8,7 @@ Pour le détail du fonctionnement interne, lire [docs/ARCHITECTURE.md](docs/ARCH
 
 ## En une phrase
 
-Site **Next.js 14 (App Router) exporté en statique** (`output: 'export'`) dont tout le contenu vient
+Site **Next.js 16 (App Router, Turbopack) exporté en statique** (`output: 'export'`) dont tout le contenu vient
 d'un **Strapi v4 headless** via **GraphQL**, déployé sur **Azure Static Web Apps**. La recherche
 d'organismes tourne **entièrement côté navigateur** (index lunr pré-construits + IndexedDB).
 
@@ -16,16 +16,17 @@ d'organismes tourne **entièrement côté navigateur** (index lunr pré-construi
 
 | Domaine | Outil |
 | --- | --- |
-| Framework | Next.js 14.2 App Router, React 18, TypeScript 5 (`strict: false`, `strictNullChecks: true`) |
+| Framework | Next.js 16 App Router (Turbopack), React 19, TypeScript 6.0 (`strict: false`, `strictNullChecks: true`, `moduleResolution: bundler`) |
 | CMS | Strapi v4 — `https://strapi.monboreseau.be/graphql` (réponses au format `data { id attributes { … } }`) |
-| Client GraphQL | `graphql-request` + SDK généré par `graphql-codegen` → `src/services/GraphQL.ts` |
+| Client GraphQL | `graphql-request` 7 (ESM uniquement) + SDK généré par `graphql-codegen` → `src/services/GraphQL.ts` |
 | Recherche | `lunr` + `lunr-languages` (fr), données en IndexedDB via `idb` |
-| Carte | `leaflet` / `react-leaflet` + clusters, chargés en `dynamic(..., { ssr: false })` |
+| Carte | `leaflet` / `react-leaflet` 5 + `react-leaflet-cluster`, chargés en `dynamic(..., { ssr: false })` |
 | i18n | `i18next` / `react-i18next`, traductions venant de Strapi (`build/static/translations.json`) |
-| Styles | SCSS global (atomic design) dans `src/assets/styles/`, pas de CSS modules ni Tailwind |
+| Styles | SCSS global (atomic design) dans `src/assets/styles/`, pas de CSS modules ni Tailwind. Police Poppins auto-hébergée via `next/font` |
 | Animations / icônes | `framer-motion`, `react-icons` (fa / fa6) |
 | Analytics | Matomo auto-hébergé (`public/scripts/matomo.js`) |
-| Gestionnaire de paquets | **Yarn 4.15** épinglé (`packageManager` + binaire commité `.yarn/releases/`, `nodeLinker: node-modules`), Node **20** |
+| Gestionnaire de paquets | **Yarn 4.15** épinglé (`packageManager` + binaire commité `.yarn/releases/`, `nodeLinker: node-modules`), Node **22** |
+| Scripts de build | `tsx` (exécute `build/scripts/*.ts`) |
 
 ## Commandes
 
@@ -39,11 +40,13 @@ yarn start             # Serveur de dev Next (http://localhost:3000 → redirige
 yarn build:static      # Build complet = prebuild + next build → export statique dans dist/
 yarn graphql           # Régénère src/services/GraphQL.ts depuis le schéma Strapi live
 yarn tsc-check         # Vérification TypeScript (doit passer à 0 erreur)
-npx eslint .           # Lint (flat config eslint.config.mjs). `yarn lint` (= next lint) n'est pas configuré
+yarn lint              # ESLint 10, flat config eslint.config.mjs
 ```
 
-Il n'y a **aucun test automatisé**. Valider un changement = `yarn tsc-check` + `npx eslint .` +
-vérification manuelle dans le navigateur (`yarn start`).
+Il n'y a **aucun test automatisé**. Sur chaque PR, la CI lance `yarn tsc-check` et `yarn lint`
+(qui doit rester à 0 erreur et 0 avertissement). Valider un changement = `yarn tsc-check` + `yarn lint` + `yarn build:static` (Next refait son
+propre contrôle de types, plus strict que `tsc-check` sur les routes) + vérification manuelle dans
+le navigateur (`yarn start`).
 
 
 ## Carte du dépôt
@@ -100,13 +103,20 @@ public/
 - **Langue** : identifiants et commentaires mélangent français et anglais. Les noms d'entités et
   de champs Strapi sont en français avec majuscule (`Nom`, `Adresse`, `sous_categories`,
   `public_specifiques`, `Referencement_internet`) — les garder tels quels.
-- **Imports** : alias `@/*` → `src/*`. Les scripts de `build/` utilisent des chemins relatifs
-  (`../../../src/...`) car ils tournent sous `ts-node` (CommonJS).
+- **Imports** : alias `@/*` → `src/*`. Les scripts de `build/` utilisent plutôt des chemins
+  relatifs (`../../../src/...`) ; ils tournent sous `tsx`.
+- **Paramètres de route (Next 15+)** : `params` est une `Promise` dans les pages, layouts et
+  `generateMetadata`. Toujours `const { language } = await params`. `generateStaticParams`
+  renvoie, lui, des objets simples.
 - **Composants serveur par défaut**. Ajouter `'use client'` uniquement pour l'interactivité
   (état, effets, Leaflet, IndexedDB). Les composants serveur lisent leurs données via
   `getPage()/getHeader()/getLanguage()…` de `@/context/server`, positionnés par la route.
 - **Accès Strapi côté serveur** : fonction locale enveloppée dans `React.cache`, qui appelle
   `getStrapiClient().<requête>({ locale })`. Suivre le motif existant de `DocumentTypes.tsx`.
+- **Lire une collection complète** : toujours via `getAllData('nom', réponse.collection)`
+  (`@/services/Strapi`), et la requête `.graphql` doit demander `meta { pagination { total } }`.
+  Le build échoue si Strapi renvoie moins d'éléments que le total (limite de 1000 dépassée ou
+  `maxLimit` du serveur), au lieu de publier des données tronquées.
 - **Les filtres GraphQL** génèrent des erreurs de type : le code existant utilise
   `// @ts-expect-error generated type`. Acceptable ici, mais ne pas en ajouter ailleurs sans raison.
 - **Prettier** : `singleQuote`, pas de point-virgule, `trailingComma: es5`. Les fichiers anciens
@@ -147,7 +157,14 @@ champs `Key` / `Traduction`), puis `yarn build:pre`. Côté client : `useTransla
   `next.config.mjs` (clé `env`), qui n'est chargé qu'au lancement de `next build`, donc après le
   prebuild. Les calculer plus tôt (ex. dans un script lancé avant le prebuild) donnerait
   l'empreinte des anciens JSON.
-- **`search()` ignore `categoriesIds`** : seuls `subCategoriesIds` et `publicsId` filtrent.
+- **`search()` ignore `categoriesIds`** : seuls `subCategoriesIds` et `publicsId` filtrent. Arriver
+  sur la recherche avec `?categories=X` donne donc 0 résultat tant qu'aucune sous-catégorie n'est
+  cochée (comportement voulu : le panneau de filtres s'ouvre, sous-catégories décochées).
+- **Effets de `SearchOrganization.tsx`** : tout effet qui appelle `search()` doit dépendre de
+  `isReady`. Sinon il ne tourne qu'avant l'initialisation du moteur, et plus jamais ensuite
+  (c'est ce qui désactivait toutes les sous-catégories venant de l'URL).
+- **Relations imbriquées** (`sous_categories`, `services`… dans une entité) : limitées à 1000 par
+  la requête, sans contrôle possible (Strapi v4 ne renvoie pas de total pour les relations).
 - **`getOrganisme(slug)`** interroge un index IndexedDB `slug` alors que les données ont
   `generatedUrl` : toujours `undefined` (non utilisé actuellement).
 - **Yarn** : la version est épinglée par `yarnPath` dans `.yarnrc.yml`. N'importe quel `yarn`
@@ -159,8 +176,21 @@ champs `Key` / `Traduction`), puis `yarn build:pre`. Côté client : `useTransla
 - **`next.config.mjs`** : en mode export, `redirects`/`headers` sont supprimés (la redirection
   `/` → `/fr/` en prod est faite par Azure SWA).
 - **Fichiers vides / restes d'un autre projet** : `IndexDBManager.ts`, `SearchEngine.ts`,
-  `build/scripts/postbuild.ts`, champs `jwt`/`apiBaseUrl` de l'interface `Configuration` (`helpers/config.ts`),
   regex `passvisitwallonia` dans `images/loader.ts`. Ne pas s'en inspirer.
+- **Pas d'`@import url(...)` distant dans le SCSS** : Turbopack les supprime du CSS final. Les
+  polices passent par `next/font` (voir `src/app/layout.tsx`, variable CSS `--font-poppins`).
+- **Build local sous Windows** : Next 16 y écrit les fichiers de préchargement
+  (`__next.*.txt`) dans des sous-dossiers au lieu de noms plats ([vercel/next.js#92339](https://github.com/vercel/next.js/issues/92339)).
+  Un `dist/` construit sous Windows renvoie donc des 404 sur ces préchargements (la navigation
+  marche quand même, sans préchargement). La CI construit sous Linux et n'est pas concernée :
+  ne pas déployer un `dist/` construit sous Windows.
+- **Contraintes de versions** :
+  - `graphql` reste en 16, car `graphql-request` 7 n'accepte pas la 17 ;
+  - TypeScript doit rester < 6.1, à cause de `typescript-eslint` ;
+  - les plugins `@graphql-codegen/typescript` et `typescript-operations` restent en 4.x, car
+    en 6.x ils génèrent des types d'entrée en double ;
+  - `lodash` est forcé en 4.18 dans le lockfile (`yarn set resolution`) pour corriger une faille
+    tirée par `@graphql-codegen/plugin-helpers`.
 - **Une seule langue** active (`["fr"]` dans `locales.json`), mais tout le routage est préfixé par
   `[language]` : conserver cette structure.
 

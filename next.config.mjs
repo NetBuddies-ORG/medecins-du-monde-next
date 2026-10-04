@@ -82,16 +82,7 @@ function build(phase)
             ...config.images,
             loader: isExport ? 'custom' : 'default',
             loaderFile: isExport ? './src/images/loader.ts' : undefined,
-            domains: ['ik.imagekit.io']
-        },
-        webpack(config, options)
-        {
-
-            let cfg = options.config.serverRuntimeConfig;
-            options.config.publicRuntimeConfig.isDev = cfg.isDev = options.dev;
-            options.config.publicRuntimeConfig.isStatic = cfg.isStatic = !options.dev && !cfg.isPreview;
-
-            return config;
+            remotePatterns: [{protocol: 'https', hostname: 'ik.imagekit.io'}],
         },
     }
     if (isExport)

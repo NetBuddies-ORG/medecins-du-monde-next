@@ -1,5 +1,6 @@
 query getLocales{
     i18NLocales(pagination: { limit: 1000 }){
+        meta{ pagination{ total } }
         data{
             attributes{
                 code

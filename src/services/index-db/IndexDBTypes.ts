@@ -52,7 +52,6 @@ export interface SearchInterface {
   isReady: boolean
   search(params: SearchAccurateOrganizationParams): Promise<{
     organismes: Organisme[]
-    debug: any
   }>
   getOrganismes(params: SearchOrganizationsParams): Promise<string[]>
   searchCategories(params: SearchCategories): Promise<string[]>

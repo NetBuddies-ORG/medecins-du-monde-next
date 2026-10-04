@@ -1,5 +1,5 @@
 import { Deferred } from '@/helpers'
-import { Categorie, Organisme } from '@/services/GraphQL'
+import { Organisme } from '@/services/GraphQL'
 import { useAsync } from 'react-use'
 import {
   categoriesStoreName,
@@ -63,22 +63,8 @@ async function initialize(language: string = 'fr') {
   deferred.resolve()
 }
 
-// Définition des interfaces pour la clarté (à adapter selon vos modèles réels)
-interface SearchDebugInfo {
-  Nom: string
-  TotalSubCategories: number
-  MatchedSubCategories: number
-  RecallRatio: number
-  SubCategoryScore: number
-  PublicScore: number
-  PrecisionRatio: number // Ancien "SpecializationScore"
-  CombinedScore?: number // Nouveau Score
-  MatchedSubCategoryNames: string
-}
-
 async function search(params: SearchAccurateOrganizationParams): Promise<{
   organismes: Organisme[]
-  debug: SearchDebugInfo[]
 }> {
   const { subCategoriesIds = [], publicsId } = params
 
@@ -104,10 +90,7 @@ async function search(params: SearchAccurateOrganizationParams): Promise<{
   const hasSubCategoryFilter = searchSubCatSet.size > 0
   const hasPublicFilter = publicsId && publicsId !== '0'
 
-  const scoredResults: {
-    organisme: Organisme
-    stats: SearchDebugInfo & { FinalScore: number }
-  }[] = []
+  const scoredResults: { organisme: Organisme; score: number }[] = []
 
   // --- BOUCLE PRINCIPALE ---
   for (const organisme of organismesList) {
@@ -127,10 +110,10 @@ async function search(params: SearchAccurateOrganizationParams): Promise<{
     // ---------- SCORE SOUS-CATÉGORIES ----------
     let subCategoryScore = 0
 
-    let matchedSubCats: any[] = []
-
     if (hasSubCategoryFilter) {
-      matchedSubCats = orgSubCats.filter((sub) => searchSubCatSet.has(sub.id))
+      const matchedSubCats = orgSubCats.filter((sub) =>
+        searchSubCatSet.has(sub.id)
+      )
 
       if (matchedSubCats.length === 0) continue
 
@@ -156,38 +139,19 @@ async function search(params: SearchAccurateOrganizationParams): Promise<{
 
     if (finalScore < MIN_FINAL_SCORE) continue
 
-    scoredResults.push({
-      organisme,
-      stats: {
-        Nom: organisme.Nom,
-        TotalSubCategories: orgSubCats.length,
-        CombinedScore: 0,
-        MatchedSubCategories: matchedSubCats.length,
-        PrecisionRatio: Number(
-          (matchedSubCats.length / Math.max(orgSubCats.length, 1)).toFixed(2)
-        ),
-        RecallRatio: Number(
-          (matchedSubCats.length / Math.max(searchSubCatSet.size, 1)).toFixed(2)
-        ),
-        SubCategoryScore: Number(subCategoryScore.toFixed(2)),
-        PublicScore: Number(publicScore.toFixed(2)),
-        FinalScore: Number(finalScore.toFixed(2)),
-        MatchedSubCategoryNames: matchedSubCats
-          .map((s) => s.attributes?.Nom || s.id)
-          .join(', '),
-      },
-    })
+    // Rounded to 2 decimals: ties in the ranking and thresholds below rely on it
+    scoredResults.push({ organisme, score: Number(finalScore.toFixed(2)) })
   }
 
   // --- TRI ---
-  scoredResults.sort((a, b) => b.stats.FinalScore - a.stats.FinalScore)
+  scoredResults.sort((a, b) => b.score - a.score)
 
   // --- THRESHOLD RELATIF ---
   if (scoredResults.length > 0) {
-    const bestScore = scoredResults[0].stats.FinalScore
+    const bestScore = scoredResults[0].score
     const cutoff = Math.max(bestScore * RELATIVE_THRESHOLD, MIN_FINAL_SCORE)
 
-    const filtered = scoredResults.filter((r) => r.stats.FinalScore >= cutoff)
+    const filtered = scoredResults.filter((r) => r.score >= cutoff)
 
     scoredResults.length = 0
     scoredResults.push(...filtered)
@@ -198,7 +162,6 @@ async function search(params: SearchAccurateOrganizationParams): Promise<{
 
   return {
     organismes: finalResults.map((r) => r.organisme),
-    debug: finalResults.map((r) => r.stats),
   }
 }
 

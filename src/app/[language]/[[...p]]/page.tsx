@@ -1,6 +1,6 @@
 import React, { cache } from 'react'
 import { PageFiltersInput } from '@/services/GraphQL'
-import { getStrapiClient } from '@/services/Strapi'
+import { getAllData, getStrapiClient } from '@/services/Strapi'
 import { DocumentTypes } from '@/features/document-types/DocumentTypes'
 import { notFound } from 'next/navigation'
 import {
@@ -13,11 +13,13 @@ import {
 } from '@/context/server'
 import { languages } from '@/helpers'
 
+type CmsPageParams = {
+  language: string
+  p?: string[]
+}
+
 export type CmsPageProps = {
-  params: {
-    language: string
-    p?: string[]
-  }
+  params: Promise<CmsPageParams>
 }
 
 const getPage = cache(async function getPage(locale: string, url: string) {
@@ -51,9 +53,8 @@ const getFooter = cache(async function getFooter(language: string) {
   return await client.getFooter({ locale: language })
 })
 
-export default async function CmsPage({
-  params: { language, p },
-}: CmsPageProps) {
+export default async function CmsPage({ params }: CmsPageProps) {
+  const { language, p } = await params
   const cmsP = p?.map((item) => item)
   const { pages } = await getPage(language, '/' + (cmsP ? cmsP : ''))
   const header = await getHeader(language)
@@ -73,7 +74,7 @@ export default async function CmsPage({
 export async function generateStaticParams() {
   const client = getStrapiClient()
   const getPagesList = async (language: string) =>
-    (await client.getPages({ locale: language })).pages.data
+    getAllData('pages', (await client.getPages({ locale: language })).pages)
   const dynamicRoutes: string[] = []
 
   for (const language of languages) {
@@ -86,14 +87,14 @@ export async function generateStaticParams() {
     }
   }
 
-  return dynamicRoutes.map((url) => {
-    const splittedUrl = url.split('/')
-    const lang = splittedUrl.shift()
+  return dynamicRoutes.map((url): CmsPageParams => {
+    const [lang, ...splittedUrl] = url.split('/')
     return { language: lang, p: splittedUrl }
   })
 }
 
-export async function generateMetadata({ params: { language, p } }) {
+export async function generateMetadata({ params }: CmsPageProps) {
+  const { language, p } = await params
   const { pages } = await getPage(language, '/' + (p ? p : ''))
   return {
     applicationName: 'MonBo Réseau',

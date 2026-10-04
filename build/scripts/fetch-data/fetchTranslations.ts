@@ -1,4 +1,4 @@
-import {getStrapiClient} from "../../../src/services/Strapi";
+import { getAllData, getStrapiClient } from "../../../src/services/Strapi";
 import {languages} from "../../../src/helpers";
 import {writeFile} from "fs/promises";
 import {join} from "path";
@@ -15,7 +15,7 @@ async function buildCmsPageByCulture() {
     const result = {};
 
     for (const language of languages) {
-        const translations = (await client.getTranslations({ locale: language })).traductions.data
+        const translations = getAllData('traductions', (await client.getTranslations({ locale: language })).traductions)
             .map(item => item);
 
         const languageTranslations = translations

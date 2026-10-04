@@ -1,5 +1,6 @@
 query getPublics($locale: I18NLocaleCode) {
     publicSpecifiques(locale: $locale, pagination: { limit: 1000 }){
+        meta{ pagination{ total } }
         data{
             id
             attributes{

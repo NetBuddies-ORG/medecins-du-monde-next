@@ -11,38 +11,32 @@ export async function CustomFooter() {
           {footer.data.attributes.Services.length > 0 && (
             <div className="services">
               <h4>Services</h4>
-              {footer.data.attributes.Services.map((service) => (
-                <>
-                  <p>
-                    <a href={service.Url}>{service.Nom}</a>
-                  </p>
-                </>
+              {footer.data.attributes.Services.map((service, index) => (
+                <p key={index}>
+                  <a href={service.Url}>{service.Nom}</a>
+                </p>
               ))}
             </div>
           )}
           {footer.data.attributes.Social.length > 0 && (
             <div className="social-media">
               <h4>Résaux sociaux</h4>
-              {footer.data.attributes.Social.map((item) => (
-                <>
-                  <p>
-                    <a href={item.Url}>
-                      <IconComponent icon={item.Icone} /> {item.Nom}
-                    </a>
-                  </p>
-                </>
+              {footer.data.attributes.Social.map((item, index) => (
+                <p key={index}>
+                  <a href={item.Url}>
+                    <IconComponent icon={item.Icone} /> {item.Nom}
+                  </a>
+                </p>
               ))}
             </div>
           )}
           {footer.data.attributes.LiensRapides.length > 0 && (
             <div className="links">
               <h4>Liens rapides</h4>
-              {footer.data.attributes.LiensRapides.map((item) => (
-                <>
-                  <p>
-                    <a href={item.Url}>{item.Nom}</a>
-                  </p>
-                </>
+              {footer.data.attributes.LiensRapides.map((item, index) => (
+                <p key={index}>
+                  <a href={item.Url}>{item.Nom}</a>
+                </p>
               ))}
             </div>
           )}

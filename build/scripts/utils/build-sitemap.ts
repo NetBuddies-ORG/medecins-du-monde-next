@@ -1,5 +1,5 @@
 import { languages } from '../../../src/helpers/config'
-import { getStrapiClient } from '../../../src/services/Strapi'
+import { getAllData, getStrapiClient } from '../../../src/services/Strapi'
 import { writeFile } from 'fs/promises'
 import { join } from 'path'
 
@@ -26,7 +26,7 @@ async function buildSitemapByCulture(language: string) {
   const pages = await client.getPages({ culture: language })
 
   /* Write pages sitemap here */
-  const pagesSitemap = pages.pages.data
+  const pagesSitemap = getAllData('pages', pages.pages)
     .map(
       (page) =>
         '<url>' +
@@ -37,7 +37,7 @@ async function buildSitemapByCulture(language: string) {
     )
     .join('')
 
-  const organismesSitemap = (await client.getOrganismes()).organismes.data
+  const organismesSitemap = getAllData('organismes', (await client.getOrganismes()).organismes)
     .map((item) =>
       item.attributes.Referencement_internet
         ? '<url>' +

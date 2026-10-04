@@ -8,7 +8,7 @@ import {
   FaMapLocationDot,
   FaXmark,
 } from 'react-icons/fa6'
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { useDBIndex } from '@/services/Search'
 import {
   CategorieEntity,
@@ -103,8 +103,7 @@ export function SearchOrganization({
         // subCategoriesIds: searchParams.getAll('subCategories') as string[],
         categoriesIds: searchParams.getAll('categories') as string[],
         publicsId: (searchParams.get('publics') as string) ?? '0',
-      }).then(({ organismes, debug }) => {
-        console.table(debug)
+      }).then(({ organismes }) => {
         setOrganismes(organismes)
         positionCenter(organismes)
       })
@@ -112,6 +111,8 @@ export function SearchOrganization({
   }, [isReady])
 
   useEffect(() => {
+    // Results of a previous run must not overwrite those of a newer one
+    let cancelled = false
     if (
       isReady &&
       (searchParams.getAll('categories').length > 0 ||
@@ -120,7 +121,7 @@ export function SearchOrganization({
       async function searchOrga(subcategoriesToIterate: string[]) {
         const test: string[] = []
         for (const item of subcategoriesToIterate) {
-          const { organismes: searchResult, debug } = await search({
+          const { organismes: searchResult } = await search({
             categoriesIds: [],
             subCategoriesIds: [...selectedSubCategories, item],
             publicsId: (selectedPublic as string) ?? '0',
@@ -129,7 +130,7 @@ export function SearchOrganization({
             test.push(item)
           }
         }
-        setAuthorizedSubCategories(test)
+        if (!cancelled) setAuthorizedSubCategories(test)
       }
       if (selectedSubCategories.length === 0 && !selectedPublic) {
         setAuthorizedSubCategories([
@@ -151,13 +152,18 @@ export function SearchOrganization({
         categoriesIds: selectedCategories,
         subCategoriesIds: selectedSubCategories,
         publicsId: (selectedPublic as string) ?? '0',
-      }).then(({ organismes, debug }) => {
-        console.table(debug)
+      }).then(({ organismes }) => {
+        if (cancelled) return
         setOrganismes(organismes)
         positionCenter(organismes)
       })
     }
-  }, [selectedPublic, selectedSubCategories])
+    return () => {
+      cancelled = true
+    }
+    // isReady and categoriesForFilterDisplay are required: without them this effect only ran before the
+    // search engine was ready, and every sub-category coming from the URL stayed disabled
+  }, [isReady, selectedPublic, selectedSubCategories, categoriesForFilterDisplay])
 
   function handlePublicsChange(event: React.ChangeEvent<HTMLSelectElement>) {
     setSelectedPublic(event.target.value)
@@ -324,9 +330,8 @@ export function SearchOrganization({
                   {categoriesForFilterDisplay.length > 0 &&
                     categoriesForFilterDisplay.map((category) => {
                       return (
-                        <>
+                        <Fragment key={category.id}>
                           <div
-                            key={category.id}
                             className={
                               'accordion-tab ' +
                               (selectedOpenCategories.includes(category.id)
@@ -438,7 +443,7 @@ export function SearchOrganization({
                               )}
                             </ul>
                           </div>
-                        </>
+                        </Fragment>
                       )
                     })}
                   <div className="footer-search">
@@ -524,7 +529,6 @@ export function SearchOrganization({
                         href={
                           '/' +
                           language +
-                          '/' +
                           extraData.searchOrganization.data.attributes
                             .OrganismeUrl.page.data.attributes.Url +
                           '/' +

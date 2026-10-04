@@ -63,6 +63,7 @@ compte qu'au prebuild suivant.
 | `/[language]/[segment]/[orgaslug]` | `app/[language]/[segment]/[orgaslug]/page.tsx` | Fiche organisme. `segment` = `Url` de la page de type `Organizations`, `orgaslug` = `generatedUrl` |
 
 `generateStaticParams` interroge Strapi pour produire la liste exhaustive des chemins.
+Depuis Next 15, `params` est une `Promise` à `await` dans les pages, layouts et `generateMetadata`.
 `generateMetadata` alimente `<title>`/description depuis le composant SEO Strapi (`noindex`
 pour les organismes sans `Referencement_internet`).
 
@@ -93,8 +94,9 @@ choisi par `pages.data[0].attributes.ContentType` :
 ## Accès aux données Strapi
 
 - Requêtes : `src/services/requests/**/*.graphql` (collections à la racine, single types dans
-  `single-types/`). Les collections utilisent `pagination: { limit: 1000 }` — au-delà de 1000
-  organismes, les données seront tronquées silencieusement.
+  `single-types/`). Les collections demandent `pagination: { limit: 1000 }` et
+  `meta { pagination { total } }`. `getAllData()` (`services/Strapi.ts`) compare les deux et fait
+  échouer le build en cas de troncature. Les relations imbriquées ne peuvent pas être contrôlées.
 - SDK : `yarn graphql` lit le schéma live (`codegen.yml`) et génère `src/services/GraphQL.ts`
   (plugins `typescript`, `typescript-operations`, `typescript-graphql-request`,
   `avoidOptionals: true`).
@@ -132,7 +134,6 @@ Pour chaque organisme en IndexedDB :
   recherchées couvertes).
 - **Score final** = `0.65 × public + 0.35 × sous-catégories`, puis seuil absolu 0.35, seuil
   relatif 40 % du meilleur score, 20 résultats maximum.
-- Retourne aussi un tableau `debug` (affiché via `console.table` dans `SearchOrganization.tsx`).
 
 `categoriesIds` fait partie des paramètres mais **n'est pas utilisé** par l'algorithme.
 
@@ -150,7 +151,7 @@ Pour chaque organisme en IndexedDB :
 | `azure-static-web-apps-delightful-ground-…` | push / PR sur `main` | Production |
 | `azure-static-web-apps-gentle-grass-…` | push / PR sur `dev` | Préproduction |
 | `deploy-trigger-strapi.yml` | manuel | Production (rebuild après modification de contenu) |
-| `pull-request-pre-conditions.yml` | PR | Danger : titre et labels |
+| `pull-request-pre-conditions.yml` | PR | Danger (titre et labels) + `tsc-check` et `lint` |
 | `utility-release-drafter.yml` | push `main` | Brouillon de release |
 
 Commande de build Azure : `yarn build:static`, sortie `dist/`.

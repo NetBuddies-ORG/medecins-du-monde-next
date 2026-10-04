@@ -1,5 +1,6 @@
 query getPages($locale: I18NLocaleCode) {
   pages(locale: $locale, pagination: { limit: 1000 }){
+    meta{ pagination{ total } }
     data{
       attributes{
         Titre

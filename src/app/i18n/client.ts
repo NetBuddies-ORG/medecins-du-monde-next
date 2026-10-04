@@ -7,13 +7,11 @@ import {
   UseTranslationOptions,
   UseTranslationResponse,
 } from 'react-i18next'
-import backend from 'i18next-http-backend'
 import { getOptions } from '@/app/i18n/settings'
 
 // on client side the normal singleton is ok
 i18next
   .use(initReactI18next)
-  .use(backend)
   .init({
     ...getOptions('fr'),
   })

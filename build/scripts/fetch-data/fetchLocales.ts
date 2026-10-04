@@ -1,4 +1,4 @@
-import {getStrapiClient} from "../../../src/services/Strapi";
+import { getAllData, getStrapiClient } from "../../../src/services/Strapi";
 import {writeFile} from "fs/promises";
 import {join} from "path";
 
@@ -11,7 +11,7 @@ export async function fetchLocales() {
 
 async function buildCmsPageByCulture() {
     const client = getStrapiClient();
-    const categories = (await client.getLocales()).i18NLocales.data
+    const categories = getAllData('i18NLocales', (await client.getLocales()).i18NLocales)
         .map(item => item.attributes.code);
     await writeFile(join(__dirname, `../../static/locales.json`), JSON.stringify(categories), { encoding: 'utf8' });
 }

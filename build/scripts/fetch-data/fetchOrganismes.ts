@@ -1,4 +1,4 @@
-import {getStrapiClient} from "../../../src/services/Strapi";
+import { getAllData, getStrapiClient } from "../../../src/services/Strapi";
 import {writeFile} from "fs/promises";
 import {join} from "path";
 
@@ -12,7 +12,7 @@ export async function fetchOrganismes() {
 async function buildCmsPageByCulture() {
     const client = getStrapiClient();
 
-    const organismes = (await client.getOrganismes()).organismes.data
+    const organismes = getAllData('organismes', (await client.getOrganismes()).organismes)
         .map(item => ({ id: item.id, ...item.attributes}));
 
     await writeFile(join(__dirname, `../../static/organismes.json`), JSON.stringify(organismes), { encoding: 'utf8' });

@@ -6,7 +6,6 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   {
     rules: {
-      "no-unused-vars": "warn",
       '@typescript-eslint/no-explicit-any': 'off', // Désactiver la règle qui empêche l'utilisation de `any`
     }
   },

@@ -1,4 +1,4 @@
-import { GraphQLClient, RequestOptions } from 'graphql-request';
+import { GraphQLClient, type RequestOptions } from 'graphql-request';
 import gql from 'graphql-tag';
 export type Maybe<T> = T;
 export type InputMaybe<T> = T;
@@ -2936,12 +2936,12 @@ export type GetCategoriesQueryVariables = Exact<{
 }>;
 
 
-export type GetCategoriesQuery = { __typename?: 'Query', categories: { __typename?: 'CategorieEntityResponseCollection', data: Array<{ __typename?: 'CategorieEntity', id: string, attributes: { __typename?: 'Categorie', Nom: string, Icone: string, sous_categories: { __typename?: 'SousCategorieRelationResponseCollection', data: Array<{ __typename?: 'SousCategorieEntity', id: string, attributes: { __typename?: 'SousCategorie', Nom: string, SearchTerms: any, Toolbox: string } }> } } }> } };
+export type GetCategoriesQuery = { __typename?: 'Query', categories: { __typename?: 'CategorieEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number } }, data: Array<{ __typename?: 'CategorieEntity', id: string, attributes: { __typename?: 'Categorie', Nom: string, Icone: string, sous_categories: { __typename?: 'SousCategorieRelationResponseCollection', data: Array<{ __typename?: 'SousCategorieEntity', id: string, attributes: { __typename?: 'SousCategorie', Nom: string, SearchTerms: any, Toolbox: string } }> } } }> } };
 
 export type GetLocalesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetLocalesQuery = { __typename?: 'Query', i18NLocales: { __typename?: 'I18NLocaleEntityResponseCollection', data: Array<{ __typename?: 'I18NLocaleEntity', attributes: { __typename?: 'I18NLocale', code: string } }> } };
+export type GetLocalesQuery = { __typename?: 'Query', i18NLocales: { __typename?: 'I18NLocaleEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number } }, data: Array<{ __typename?: 'I18NLocaleEntity', attributes: { __typename?: 'I18NLocale', code: string } }> } };
 
 export type GetOrganismesQueryVariables = Exact<{
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
@@ -2949,7 +2949,7 @@ export type GetOrganismesQueryVariables = Exact<{
 }>;
 
 
-export type GetOrganismesQuery = { __typename?: 'Query', organismes: { __typename?: 'OrganismeEntityResponseCollection', data: Array<{ __typename?: 'OrganismeEntity', id: string, attributes: { __typename?: 'Organisme', Referencement_internet: boolean, Nom: string, Departement: string, generatedUrl: string, Latitude: number, Longitude: number, Description: string, Telephone: string, Adresse: string, Email: string, Website: string, Horaires: string, Conditions: string, Logo: { __typename?: 'UploadFileEntityResponse', data: { __typename?: 'UploadFileEntity', attributes: { __typename?: 'UploadFile', url: string } } }, langues: { __typename?: 'LangueRelationResponseCollection', data: Array<{ __typename?: 'LangueEntity', attributes: { __typename?: 'Langue', Nom: string, Drapeau: { __typename?: 'UploadFileEntityResponse', data: { __typename?: 'UploadFileEntity', attributes: { __typename?: 'UploadFile', url: string } } } } }> }, public_specifiques: { __typename?: 'PublicSpecifiqueRelationResponseCollection', data: Array<{ __typename?: 'PublicSpecifiqueEntity', id: string, attributes: { __typename?: 'PublicSpecifique', Nom: string } }> }, services: { __typename?: 'ServiceRelationResponseCollection', data: Array<{ __typename?: 'ServiceEntity', id: string, attributes: { __typename?: 'Service', Nom: string, Icone: string } }> }, sous_categories: { __typename?: 'SousCategorieRelationResponseCollection', data: Array<{ __typename?: 'SousCategorieEntity', id: string, attributes: { __typename?: 'SousCategorie', Nom: string } }> } } }> } };
+export type GetOrganismesQuery = { __typename?: 'Query', organismes: { __typename?: 'OrganismeEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number } }, data: Array<{ __typename?: 'OrganismeEntity', id: string, attributes: { __typename?: 'Organisme', Referencement_internet: boolean, Nom: string, Departement: string, generatedUrl: string, Latitude: number, Longitude: number, Description: string, Telephone: string, Adresse: string, Email: string, Website: string, Horaires: string, Conditions: string, Logo: { __typename?: 'UploadFileEntityResponse', data: { __typename?: 'UploadFileEntity', attributes: { __typename?: 'UploadFile', url: string } } }, langues: { __typename?: 'LangueRelationResponseCollection', data: Array<{ __typename?: 'LangueEntity', attributes: { __typename?: 'Langue', Nom: string, Drapeau: { __typename?: 'UploadFileEntityResponse', data: { __typename?: 'UploadFileEntity', attributes: { __typename?: 'UploadFile', url: string } } } } }> }, public_specifiques: { __typename?: 'PublicSpecifiqueRelationResponseCollection', data: Array<{ __typename?: 'PublicSpecifiqueEntity', id: string, attributes: { __typename?: 'PublicSpecifique', Nom: string } }> }, services: { __typename?: 'ServiceRelationResponseCollection', data: Array<{ __typename?: 'ServiceEntity', id: string, attributes: { __typename?: 'Service', Nom: string, Icone: string } }> }, sous_categories: { __typename?: 'SousCategorieRelationResponseCollection', data: Array<{ __typename?: 'SousCategorieEntity', id: string, attributes: { __typename?: 'SousCategorie', Nom: string } }> } } }> } };
 
 export type GetPageQueryVariables = Exact<{
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
@@ -2964,28 +2964,28 @@ export type GetPagesQueryVariables = Exact<{
 }>;
 
 
-export type GetPagesQuery = { __typename?: 'Query', pages: { __typename?: 'PageEntityResponseCollection', data: Array<{ __typename?: 'PageEntity', attributes: { __typename?: 'Page', Titre: string, Url: string, ContentType: string } }> } };
+export type GetPagesQuery = { __typename?: 'Query', pages: { __typename?: 'PageEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number } }, data: Array<{ __typename?: 'PageEntity', attributes: { __typename?: 'Page', Titre: string, Url: string, ContentType: string } }> } };
 
 export type GetPublicsQueryVariables = Exact<{
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 }>;
 
 
-export type GetPublicsQuery = { __typename?: 'Query', publicSpecifiques: { __typename?: 'PublicSpecifiqueEntityResponseCollection', data: Array<{ __typename?: 'PublicSpecifiqueEntity', id: string, attributes: { __typename?: 'PublicSpecifique', Nom: string } }> } };
+export type GetPublicsQuery = { __typename?: 'Query', publicSpecifiques: { __typename?: 'PublicSpecifiqueEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number } }, data: Array<{ __typename?: 'PublicSpecifiqueEntity', id: string, attributes: { __typename?: 'PublicSpecifique', Nom: string } }> } };
 
 export type GetServicesQueryVariables = Exact<{
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 }>;
 
 
-export type GetServicesQuery = { __typename?: 'Query', services: { __typename?: 'ServiceEntityResponseCollection', data: Array<{ __typename?: 'ServiceEntity', id: string, attributes: { __typename?: 'Service', Nom: string, Icone: string, organismes: { __typename?: 'OrganismeRelationResponseCollection', data: Array<{ __typename?: 'OrganismeEntity', id: string }> } } }> } };
+export type GetServicesQuery = { __typename?: 'Query', services: { __typename?: 'ServiceEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number } }, data: Array<{ __typename?: 'ServiceEntity', id: string, attributes: { __typename?: 'Service', Nom: string, Icone: string, organismes: { __typename?: 'OrganismeRelationResponseCollection', data: Array<{ __typename?: 'OrganismeEntity', id: string }> } } }> } };
 
 export type GetTranslationsQueryVariables = Exact<{
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
 }>;
 
 
-export type GetTranslationsQuery = { __typename?: 'Query', traductions: { __typename?: 'TraductionEntityResponseCollection', data: Array<{ __typename?: 'TraductionEntity', attributes: { __typename?: 'Traduction', Traduction: string, Key: string } }> } };
+export type GetTranslationsQuery = { __typename?: 'Query', traductions: { __typename?: 'TraductionEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number } }, data: Array<{ __typename?: 'TraductionEntity', attributes: { __typename?: 'Traduction', Traduction: string, Key: string } }> } };
 
 export type GetAboutQueryVariables = Exact<{
   locale: InputMaybe<Scalars['I18NLocaleCode']['input']>;
@@ -3052,6 +3052,11 @@ export type GetUrgencesQuery = { __typename?: 'Query', urgence: { __typename?: '
 export const GetCategoriesDocument = gql`
     query getCategories($locale: I18NLocaleCode) {
   categories(locale: $locale, pagination: {limit: 1000}) {
+    meta {
+      pagination {
+        total
+      }
+    }
     data {
       id
       attributes {
@@ -3075,6 +3080,11 @@ export const GetCategoriesDocument = gql`
 export const GetLocalesDocument = gql`
     query getLocales {
   i18NLocales(pagination: {limit: 1000}) {
+    meta {
+      pagination {
+        total
+      }
+    }
     data {
       attributes {
         code
@@ -3086,6 +3096,11 @@ export const GetLocalesDocument = gql`
 export const GetOrganismesDocument = gql`
     query getOrganismes($locale: I18NLocaleCode, $filters: OrganismeFiltersInput) {
   organismes(locale: $locale, filters: $filters, pagination: {limit: 1000}) {
+    meta {
+      pagination {
+        total
+      }
+    }
     data {
       id
       attributes {
@@ -3173,6 +3188,11 @@ export const GetPageDocument = gql`
 export const GetPagesDocument = gql`
     query getPages($locale: I18NLocaleCode) {
   pages(locale: $locale, pagination: {limit: 1000}) {
+    meta {
+      pagination {
+        total
+      }
+    }
     data {
       attributes {
         Titre
@@ -3186,6 +3206,11 @@ export const GetPagesDocument = gql`
 export const GetPublicsDocument = gql`
     query getPublics($locale: I18NLocaleCode) {
   publicSpecifiques(locale: $locale, pagination: {limit: 1000}) {
+    meta {
+      pagination {
+        total
+      }
+    }
     data {
       id
       attributes {
@@ -3198,6 +3223,11 @@ export const GetPublicsDocument = gql`
 export const GetServicesDocument = gql`
     query getServices($locale: I18NLocaleCode) {
   services(locale: $locale, pagination: {limit: 1000}) {
+    meta {
+      pagination {
+        total
+      }
+    }
     data {
       id
       attributes {
@@ -3216,6 +3246,11 @@ export const GetServicesDocument = gql`
 export const GetTranslationsDocument = gql`
     query getTranslations($locale: I18NLocaleCode) {
   traductions(locale: $locale, pagination: {limit: 1000}) {
+    meta {
+      pagination {
+        total
+      }
+    }
     data {
       attributes {
         Traduction
@@ -3403,56 +3438,56 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    getCategories(variables?: GetCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCategoriesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesQuery>(GetCategoriesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategories', 'query', variables);
+    getCategories(variables?: GetCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetCategoriesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesQuery>({ document: GetCategoriesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'getCategories', 'query', variables);
     },
-    getLocales(variables?: GetLocalesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetLocalesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetLocalesQuery>(GetLocalesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getLocales', 'query', variables);
+    getLocales(variables?: GetLocalesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetLocalesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetLocalesQuery>({ document: GetLocalesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'getLocales', 'query', variables);
     },
-    getOrganismes(variables?: GetOrganismesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetOrganismesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetOrganismesQuery>(GetOrganismesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getOrganismes', 'query', variables);
+    getOrganismes(variables?: GetOrganismesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetOrganismesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetOrganismesQuery>({ document: GetOrganismesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'getOrganismes', 'query', variables);
     },
-    getPage(variables?: GetPageQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetPageQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetPageQuery>(GetPageDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getPage', 'query', variables);
+    getPage(variables?: GetPageQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetPageQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetPageQuery>({ document: GetPageDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'getPage', 'query', variables);
     },
-    getPages(variables?: GetPagesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetPagesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetPagesQuery>(GetPagesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getPages', 'query', variables);
+    getPages(variables?: GetPagesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetPagesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetPagesQuery>({ document: GetPagesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'getPages', 'query', variables);
     },
-    getPublics(variables?: GetPublicsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetPublicsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetPublicsQuery>(GetPublicsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getPublics', 'query', variables);
+    getPublics(variables?: GetPublicsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetPublicsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetPublicsQuery>({ document: GetPublicsDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'getPublics', 'query', variables);
     },
-    getServices(variables?: GetServicesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetServicesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetServicesQuery>(GetServicesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getServices', 'query', variables);
+    getServices(variables?: GetServicesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetServicesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetServicesQuery>({ document: GetServicesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'getServices', 'query', variables);
     },
-    getTranslations(variables?: GetTranslationsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetTranslationsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetTranslationsQuery>(GetTranslationsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getTranslations', 'query', variables);
+    getTranslations(variables?: GetTranslationsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetTranslationsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetTranslationsQuery>({ document: GetTranslationsDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'getTranslations', 'query', variables);
     },
-    getAbout(variables?: GetAboutQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetAboutQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetAboutQuery>(GetAboutDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getAbout', 'query', variables);
+    getAbout(variables?: GetAboutQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetAboutQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAboutQuery>({ document: GetAboutDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'getAbout', 'query', variables);
     },
-    getFooter(variables?: GetFooterQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetFooterQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetFooterQuery>(GetFooterDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getFooter', 'query', variables);
+    getFooter(variables?: GetFooterQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetFooterQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetFooterQuery>({ document: GetFooterDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'getFooter', 'query', variables);
     },
-    getHeader(variables?: GetHeaderQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetHeaderQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetHeaderQuery>(GetHeaderDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getHeader', 'query', variables);
+    getHeader(variables?: GetHeaderQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetHeaderQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetHeaderQuery>({ document: GetHeaderDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'getHeader', 'query', variables);
     },
-    getHelp(variables?: GetHelpQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetHelpQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetHelpQuery>(GetHelpDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getHelp', 'query', variables);
+    getHelp(variables?: GetHelpQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetHelpQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetHelpQuery>({ document: GetHelpDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'getHelp', 'query', variables);
     },
-    getHome(variables?: GetHomeQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetHomeQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetHomeQuery>(GetHomeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getHome', 'query', variables);
+    getHome(variables?: GetHomeQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetHomeQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetHomeQuery>({ document: GetHomeDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'getHome', 'query', variables);
     },
-    getOrientations(variables?: GetOrientationsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetOrientationsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetOrientationsQuery>(GetOrientationsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getOrientations', 'query', variables);
+    getOrientations(variables?: GetOrientationsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetOrientationsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetOrientationsQuery>({ document: GetOrientationsDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'getOrientations', 'query', variables);
     },
-    getSearchOrganization(variables?: GetSearchOrganizationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetSearchOrganizationQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetSearchOrganizationQuery>(GetSearchOrganizationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getSearchOrganization', 'query', variables);
+    getSearchOrganization(variables?: GetSearchOrganizationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetSearchOrganizationQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetSearchOrganizationQuery>({ document: GetSearchOrganizationDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'getSearchOrganization', 'query', variables);
     },
-    getToolBox(variables?: GetToolBoxQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetToolBoxQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetToolBoxQuery>(GetToolBoxDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getToolBox', 'query', variables);
+    getToolBox(variables?: GetToolBoxQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetToolBoxQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetToolBoxQuery>({ document: GetToolBoxDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'getToolBox', 'query', variables);
     },
-    getUrgences(variables?: GetUrgencesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetUrgencesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetUrgencesQuery>(GetUrgencesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUrgences', 'query', variables);
+    getUrgences(variables?: GetUrgencesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetUrgencesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetUrgencesQuery>({ document: GetUrgencesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'getUrgences', 'query', variables);
     }
   };
 }

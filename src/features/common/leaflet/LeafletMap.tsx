@@ -9,8 +9,9 @@ import {
 import { LatLng, LatLngBounds } from 'leaflet'
 import React, { useEffect, useState } from 'react'
 import 'leaflet/dist/leaflet.css'
-import '@christopherpickering/react-leaflet-markercluster/dist/styles.min.css'
-import MarkerClusterGroup from '@christopherpickering/react-leaflet-markercluster'
+import 'react-leaflet-cluster/dist/assets/MarkerCluster.css'
+import 'react-leaflet-cluster/dist/assets/MarkerCluster.Default.css'
+import MarkerClusterGroup from 'react-leaflet-cluster'
 import { createMarkerFromSrc, pinFullRed } from '../../../../public/images/pins'
 
 export interface Coordinates {

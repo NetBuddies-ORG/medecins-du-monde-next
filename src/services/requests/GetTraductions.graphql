@@ -1,5 +1,6 @@
 query getTranslations($locale: I18NLocaleCode){
     traductions(locale: $locale, pagination: { limit: 1000 }){
+        meta{ pagination{ total } }
         data{
             attributes{
                 Traduction

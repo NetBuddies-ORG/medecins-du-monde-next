@@ -16,6 +16,3 @@ _paq.push(['enableLinkTracking'])
   g.src = u + 'matomo.js'
   s.parentNode.insertBefore(g, s)
 })()
-
-// eslint-disable-next-line no-undef
-console.info('Matomo is loaded')

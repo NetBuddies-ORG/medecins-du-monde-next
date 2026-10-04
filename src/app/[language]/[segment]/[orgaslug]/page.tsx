@@ -1,20 +1,23 @@
 import OrganizationDetails from '@/features/document-types/organization/Organization'
-import { getStrapiClient } from '@/services/Strapi'
+import { getAllData, getStrapiClient } from '@/services/Strapi'
 import { languages } from '@/helpers'
 import organizations from '@/../build/static/organismes.json'
 import { cache } from 'react'
 
+type OrgaDetailsParams = {
+  language: string
+  segment: string
+  orgaslug: string
+}
+
 type OrgaDetailsPageProps = {
-  params: {
-    language: string
-    segment: string
-    orgaslug: string
-  }
+  params: Promise<OrgaDetailsParams>
 }
 
 export default async function OrgaDetailsPage({
-  params: { language, segment, orgaslug },
+  params,
 }: OrgaDetailsPageProps) {
+  const { language, segment, orgaslug } = await params
   return (
     <OrganizationDetails
       language={language}
@@ -28,7 +31,7 @@ export async function generateStaticParams() {
   const client = getStrapiClient()
   const catalogues: string[] = []
   const getPagesList = async (language: string) =>
-    (await client.getPages({ locale: language })).pages.data
+    getAllData('pages', (await client.getPages({ locale: language })).pages)
 
   for (const language of languages) {
     try {
@@ -42,7 +45,7 @@ export async function generateStaticParams() {
     }
   }
 
-  const res: OrgaDetailsPageProps['params'][] = []
+  const res: OrgaDetailsParams[] = []
 
   for (const organization of organizations) {
     for (const catalogue of catalogues) {
@@ -60,9 +63,8 @@ export async function generateStaticParams() {
   return res
 }
 
-export async function generateMetadata({
-  params: { language, orgaslug },
-}: OrgaDetailsPageProps) {
+export async function generateMetadata({ params }: OrgaDetailsPageProps) {
+  const { language, orgaslug } = await params
   const organization = (await getOrganization(language, orgaslug)).organismes
     ?.data[0]?.attributes
 

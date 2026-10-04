@@ -1,4 +1,4 @@
-import { getStrapiClient } from '../../../src/services/Strapi'
+import { getAllData, getStrapiClient } from '../../../src/services/Strapi'
 import { writeFile } from 'fs/promises'
 import { join } from 'path'
 
@@ -10,7 +10,7 @@ export async function fetchPublics() {
 async function buildCmsPageByCulture() {
   const client = getStrapiClient()
 
-  const publics = (await client.getPublics()).publicSpecifiques.data.flatMap(
+  const publics = getAllData('publicSpecifiques', (await client.getPublics()).publicSpecifiques).flatMap(
     (item) => ({ id: item.id, ...item.attributes })
   )
 

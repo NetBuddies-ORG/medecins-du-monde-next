@@ -9,7 +9,7 @@ fonctionne entièrement dans le navigateur.
 
 ## Démarrer
 
-Prérequis : Node 20 et Yarn, quelle que soit sa version : le dépôt embarque Yarn 4.15 (`.yarn/releases/`).
+Prérequis : Node 22 et Yarn, quelle que soit sa version : le dépôt embarque Yarn 4.15 (`.yarn/releases/`).
 
 ```bash
 yarn install
