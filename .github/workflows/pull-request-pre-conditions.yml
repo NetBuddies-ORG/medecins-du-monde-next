@@ -27,7 +27,7 @@ jobs:
 
   codeQuality:
     runs-on: ubuntu-latest
-    name: 'Type check & lint'
+    name: 'Type check, lint & tests'
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -40,3 +40,5 @@ jobs:
         run: yarn tsc-check
       - name: 'Lint'
         run: yarn lint
+      - name: 'Tests'
+        run: yarn test

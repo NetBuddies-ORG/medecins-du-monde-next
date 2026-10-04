@@ -59,9 +59,19 @@ export function SearchOrganization({
     })[]
   >([])
   const [centerCoordinates, setCenterCoordinates] = useState<Coordinates>()
-  const [authorizedSubCategories, setAuthorizedSubCategories] = useState<
-    string[]
-  >([])
+  // Number of organisations per sub-category for the selected public: a sub-category at 0 is disabled
+  const [subCategoryCounts, setSubCategoryCounts] = useState<
+    Record<string, number>
+  >({})
+  const authorizedSubCategories = Object.keys(subCategoryCounts).filter(
+    (id) => subCategoryCounts[id] > 0
+  )
+  // Sub-categories start unchecked (client request): ask for a choice instead of showing "0 résultat"
+  const needsSubCategoryChoice =
+    selectedSubCategories.length === 0 &&
+    categoriesForFilterDisplay.some(
+      (c) => c.attributes.sous_categories.data.length > 0
+    )
 
   const searchParams = useSearchParams()
   const { search, isReady } = useDBIndex(language)
@@ -110,44 +120,42 @@ export function SearchOrganization({
     }
   }, [isReady])
 
+  // Each effect depends on isReady: otherwise it only runs before the search engine is ready.
+  // `cancelled` keeps the results of a previous run from overwriting those of a newer one.
   useEffect(() => {
-    // Results of a previous run must not overwrite those of a newer one
+    let cancelled = false
+    if (isReady && categoriesForFilterDisplay.length > 0) {
+      const subCategoriesIds = [
+        ...new Set(
+          categoriesForFilterDisplay.flatMap((c) =>
+            c.attributes.sous_categories.data.map((sc) => sc.id)
+          )
+        ),
+      ]
+      Promise.all(
+        subCategoriesIds.map((id) =>
+          search({
+            categoriesIds: [],
+            subCategoriesIds: [id],
+            publicsId: selectedPublic ?? '0',
+          }).then(({ organismes }) => [id, organismes.length] as const)
+        )
+      ).then((counts) => {
+        if (!cancelled) setSubCategoryCounts(Object.fromEntries(counts))
+      })
+    }
+    return () => {
+      cancelled = true
+    }
+  }, [isReady, selectedPublic, categoriesForFilterDisplay])
+
+  useEffect(() => {
     let cancelled = false
     if (
       isReady &&
       (searchParams.getAll('categories').length > 0 ||
         searchParams.getAll('subCategories').length > 0)
     ) {
-      async function searchOrga(subcategoriesToIterate: string[]) {
-        const test: string[] = []
-        for (const item of subcategoriesToIterate) {
-          const { organismes: searchResult } = await search({
-            categoriesIds: [],
-            subCategoriesIds: [...selectedSubCategories, item],
-            publicsId: (selectedPublic as string) ?? '0',
-          })
-          if (searchResult.length > 0) {
-            test.push(item)
-          }
-        }
-        if (!cancelled) setAuthorizedSubCategories(test)
-      }
-      if (selectedSubCategories.length === 0 && !selectedPublic) {
-        setAuthorizedSubCategories([
-          ...categoriesForFilterDisplay.flatMap((c) =>
-            c.attributes.sous_categories.data.map((sc) => sc.id)
-          ),
-        ])
-      } else {
-        let subcategoriesToIterate = categoriesForFilterDisplay.flatMap((c) =>
-          c.attributes.sous_categories.data.map((sc) => sc.id)
-        )
-        subcategoriesToIterate = subcategoriesToIterate.filter(
-          (item, index) => subcategoriesToIterate.indexOf(item) === index
-        )
-        searchOrga(subcategoriesToIterate)
-      }
-
       search({
         categoriesIds: selectedCategories,
         subCategoriesIds: selectedSubCategories,
@@ -161,9 +169,7 @@ export function SearchOrganization({
     return () => {
       cancelled = true
     }
-    // isReady and categoriesForFilterDisplay are required: without them this effect only ran before the
-    // search engine was ready, and every sub-category coming from the URL stayed disabled
-  }, [isReady, selectedPublic, selectedSubCategories, categoriesForFilterDisplay])
+  }, [isReady, selectedPublic, selectedSubCategories])
 
   function handlePublicsChange(event: React.ChangeEvent<HTMLSelectElement>) {
     setSelectedPublic(event.target.value)
@@ -449,12 +455,15 @@ export function SearchOrganization({
                   <div className="footer-search">
                     <button
                       className="btn btn-primary"
+                      disabled={needsSubCategoryChoice}
                       onClick={() => setIsSlideOutOpen(false)}
                     >
-                      Afficher{' '}
-                      {organismes.length +
-                        ' ' +
-                        (organismes.length > 1 ? 'résultats' : 'résultat')}
+                      {needsSubCategoryChoice
+                        ? 'Choisissez au moins une sous-catégorie'
+                        : 'Afficher ' +
+                          organismes.length +
+                          ' ' +
+                          (organismes.length > 1 ? 'résultats' : 'résultat')}
                     </button>
                   </div>
                 </div>

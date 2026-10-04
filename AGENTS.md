@@ -41,10 +41,13 @@ yarn build:static      # Build complet = prebuild + next build → export statiq
 yarn graphql           # Régénère src/services/GraphQL.ts depuis le schéma Strapi live
 yarn tsc-check         # Vérification TypeScript (doit passer à 0 erreur)
 yarn lint              # ESLint 10, flat config eslint.config.mjs
+yarn test              # Tests unitaires (Vitest) ; `yarn test:watch` en mode surveillance
 ```
 
-Il n'y a **aucun test automatisé**. Sur chaque PR, la CI lance `yarn tsc-check` et `yarn lint`
-(qui doit rester à 0 erreur et 0 avertissement). Valider un changement = `yarn tsc-check` + `yarn lint` + `yarn build:static` (Next refait son
+Les **tests unitaires** (Vitest) couvrent la recherche : `src/helpers/rankOrganismes.test.ts` (filtres)
+et `src/helpers/search.test.ts` (recherche texte). Sur chaque PR, la CI lance `yarn tsc-check`,
+`yarn lint` (qui doit rester à 0 erreur et 0 avertissement) et `yarn test`.
+Valider un changement = `yarn tsc-check` + `yarn lint` + `yarn test` + `yarn build:static` (Next refait son
 propre contrôle de types, plus strict que `tsc-check` sur les routes) + vérification manuelle dans
 le navigateur (`yarn start`).
 
@@ -70,13 +73,15 @@ src/
     requests/**/*.graphql      Requêtes GraphQL (source de vérité du SDK)
     Search.ts                  Moteur de recherche client (hook useDBIndex)
     index-db/                  Schéma + initialisation IndexedDB
-  helpers/                     config (langues), search (requêtes lunr), diacritiques, Deferred
+  helpers/                     config (langues), search (recherche texte lunr), rankOrganismes (recherche
+                               par filtres, fonction pure), diacritiques, Deferred. Tests en *.test.ts
   assets/styles/               SCSS : 00_base / 01_atomes / 02_molecules / 03_organismes, importés dans main.scss
   images/loader.ts             Loader next/image pour l'export statique (ImageKit)
 build/
   scripts/prebuild.ts          Orchestration du prebuild (fetch Strapi + index + sitemap)
   scripts/fetch-data/          Un fetcher par entité → build/static/*.json
-  scripts/index-builder/       Construction des index lunr
+  scripts/index-builder/       Construction des index lunr ; leur définition est dans indexes.ts,
+                               partagée avec les tests
   static/*.json                Données + index générés, COMMITÉS, importés par le code client et serveur
 public/
   staticwebapp.config.json     Config Azure SWA : redirections, CSP de prod, headers de cache, 404
@@ -129,6 +134,13 @@ public/
 
 ## Recettes courantes
 
+**Modifier le comportement de la recherche**
+1. Toute la logique est dans des fonctions pures : `rankOrganismes()` (filtres),
+   `searchByKeyword()` (texte) et les index de `build/scripts/index-builder/indexes.ts`.
+   `Search.ts` ne fait que brancher IndexedDB et les index chargés.
+2. Écrire d'abord le test du comportement voulu dans le `*.test.ts` correspondant, puis modifier
+   le code. Les tests de texte construisent les index avec les mêmes fonctions que le build.
+
 **Ajouter/modifier un champ Strapi**
 1. Modifier le `.graphql` concerné dans `src/services/requests/`.
 2. `yarn graphql` pour régénérer `src/services/GraphQL.ts` (le schéma doit déjà exister côté Strapi).
@@ -158,8 +170,12 @@ champs `Key` / `Traduction`), puis `yarn build:pre`. Côté client : `useTransla
   prebuild. Les calculer plus tôt (ex. dans un script lancé avant le prebuild) donnerait
   l'empreinte des anciens JSON.
 - **`search()` ignore `categoriesIds`** : seuls `subCategoriesIds` et `publicsId` filtrent. Arriver
-  sur la recherche avec `?categories=X` donne donc 0 résultat tant qu'aucune sous-catégorie n'est
-  cochée (comportement voulu : le panneau de filtres s'ouvre, sous-catégories décochées).
+  sur la recherche avec `?categories=X` ouvre le panneau de filtres avec les sous-catégories
+  décochées (demande du client) ; le bouton invite à en choisir une.
+  Une catégorie sans sous-catégorie (« Santé ») ne peut rien filtrer : les organismes ne sont
+  reliés qu'à des sous-catégories.
+- **Le score de `search()` ne doit jamais exclure** un organisme qui correspond : il ne sert qu'à
+  trier. Un seuil minimal masquait les organismes généralistes quand aucun public n'était choisi.
 - **Effets de `SearchOrganization.tsx`** : tout effet qui appelle `search()` doit dépendre de
   `isReady`. Sinon il ne tourne qu'avant l'initialisation du moteur, et plus jamais ensuite
   (c'est ce qui désactivait toutes les sous-catégories venant de l'URL).

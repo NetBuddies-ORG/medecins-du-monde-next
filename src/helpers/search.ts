@@ -38,7 +38,8 @@ export async function searchByKeyword({
     .trim()
     .replace(/\s+/g, ' ')
     .split(' ')
-    .filter((t) => !stopWords.includes(t.toLowerCase()))
+    // Empty terms come from queries made only of spaces or punctuation: lunr rejects them
+    .filter((t) => t && !stopWords.includes(t.toLowerCase()))
 
   if (terms.length === 0) return []
 

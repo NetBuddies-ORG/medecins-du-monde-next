@@ -19,6 +19,11 @@
     background-color: $primaryColor;
   }
 
+  &:disabled {
+    cursor: not-allowed;
+    opacity: .6;
+  }
+
   &-danger {
     width: 100%;
     background-color: $cardDangerBackgroundColor;

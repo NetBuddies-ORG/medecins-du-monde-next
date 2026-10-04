@@ -114,6 +114,9 @@ choisi par `pages.data[0].attributes.ContentType` :
 
 ### Recherche plein texte — `helpers/search.ts#searchByKeyword`
 
+Index construits au build par `build/scripts/index-builder/indexes.ts`, testés dans
+`search.test.ts` avec ces mêmes fonctions.
+
 - Normalise (accents, ponctuation), retire des mots vides français.
 - Pour chaque terme : `terme^(100-i) terme*^20 terme~1^10` (exact, préfixe, flou).
 - Si plus de 5 résultats, filtre ceux sous `max(moyenne − écart-type, 0.25)`.
@@ -123,17 +126,27 @@ Utilisée par la liste des organismes (`Organizations.tsx`), la page services (`
 et l'autocomplétion de l'accueil (`AutoComplete.tsx`, sur les sous-catégories). L'index
 `indexCategorie.json` est construit et chargé mais `searchCategories` n'a pas d'appelant.
 
-### Recherche par filtres — `search()`
+### Recherche par filtres — `helpers/rankOrganismes.ts`
 
-Pour chaque organisme en IndexedDB :
+`search()` lit les organismes dans IndexedDB et délègue à `rankOrganismes()`, une fonction pure
+couverte par `rankOrganismes.test.ts`. Pour chaque organisme :
 - **Public** : si un public est choisi, exclusion stricte des organismes qui ne le servent pas ;
   score 1, sinon 0.5 (neutre).
 - **Sous-catégories** : si des sous-catégories sont choisies, exclusion des organismes sans
   aucune correspondance ; score = F1 entre précision (part des sous-catégories de l'organisme
   qui correspondent → favorise les structures spécialisées) et rappel (part des sous-catégories
   recherchées couvertes).
-- **Score final** = `0.65 × public + 0.35 × sous-catégories`, puis seuil absolu 0.35, seuil
-  relatif 40 % du meilleur score, 20 résultats maximum.
+- **Score final** = `0.65 × public + 0.35 × sous-catégories`. Il sert **uniquement à trier** (les
+  organismes les plus spécialisés d'abord) : aucun seuil, aucune limite de nombre. Tout organisme
+  qui passe les filtres est affiché.
+- **Sans aucun filtre** (ni public ni sous-catégorie) : aucun résultat, pour ne pas lister tout
+  l'annuaire.
+
+Le panneau de filtres calcule, pour le public choisi, le nombre d'organismes de chaque
+sous-catégorie (une recherche par sous-catégorie) : à 0, elle est désactivée. Ce nombre n'est pas
+affiché : un organisme peut appartenir à plusieurs sous-catégories, et les nombres ne
+s'additionnent pas quand on en coche plusieurs. Les sous-catégories arrivent décochées (demande du client) : tant qu'aucune n'est cochée, le bouton
+affiche « Choisissez au moins une sous-catégorie ».
 
 `categoriesIds` fait partie des paramètres mais **n'est pas utilisé** par l'algorithme.
 

@@ -1,12 +1,11 @@
 import { readFile, writeFile } from 'fs/promises'
 import { join } from 'path'
-import lunr from 'lunr'
-import { removeDiacriticsSpelling } from './removeDiacriticsSpelling'
-import { Organisme, Service } from '@/services/GraphQL'
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-require('lunr-languages/lunr.stemmer.support')(lunr)
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-require('lunr-languages/lunr.fr')(lunr)
+import {
+  createCategoriesIndex,
+  createOrganismesIndex,
+  createServicesIndex,
+  createSubCategoriesIndex,
+} from './indexes'
 
 // Read from disk (not require) so the indexes use the files just written by the fetchers
 async function readStaticJson(file: string) {
@@ -24,76 +23,10 @@ async function buildIndex() {
     readStaticJson('categories.json'),
   ])
 
-  const index = lunr(function () {
-    this.use(removeDiacriticsSpelling)
-    this.ref('id')
-
-    this.field('name_organismes', {
-      extractor: (p: Organisme) => p.Nom,
-    })
-    this.field('address_organismes', {
-      extractor: (p: Organisme) => p.Adresse,
-      boost: 0.5,
-    })
-    this.field('department_organismes', {
-      extractor: (p: Organisme) => p.Departement,
-      boost: 0.5,
-    })
-    this.field('search_text', {
-      extractor: (p: Organisme) =>
-        `${p.Nom} ${p.Adresse ?? ''} ${p.Departement ?? ''}`
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .replace(/[^\w\s]/g, '')
-          .toLowerCase(),
-      boost: 2,
-    })
-
-    organismes.forEach((p) => this.add(p))
-  })
-
-  const servicesIndex = lunr(function () {
-    this.use(removeDiacriticsSpelling)
-    this.ref('id')
-    this.field('name_services', { extractor: (p: Service) => p.Nom })
-    services.forEach((p) => this.add(p))
-  })
-
-  const categoriesIndex = lunr(function () {
-    this.use(removeDiacriticsSpelling)
-    this.ref('id')
-    this.field('name_category')
-    this.field('name_sub_category')
-    this.field('searchTerms')
-    categories.forEach((p) =>
-      this.add({
-        id: p.id,
-        name_category: p.Nom,
-        name_sub_category: p.sous_categories.data
-          .map((s) => s.attributes.Nom)
-          .join(' '),
-        searchTerms: p.sous_categories.data
-          .map((s) => s.attributes.SearchTerms)
-          .join(' '),
-      })
-    )
-  })
-
-  const subCategoriesIndex = lunr(function () {
-    this.use(removeDiacriticsSpelling)
-    this.ref('id')
-    this.field('subcategory')
-    this.field('searchTerms', { boost: 15 })
-    categories.forEach((p) =>
-      p.sous_categories.data.forEach((s) => {
-        this.add({
-          id: s.id,
-          subcategory: s.attributes.Nom,
-          searchTerms: s.attributes?.SearchTerms?.join(' '),
-        })
-      })
-    )
-  })
+  const index = createOrganismesIndex(organismes)
+  const servicesIndex = createServicesIndex(services)
+  const categoriesIndex = createCategoriesIndex(categories)
+  const subCategoriesIndex = createSubCategoriesIndex(categories)
 
   const jsonIndex = JSON.stringify(index)
   await writeFile(join(__dirname, `../../static/index.json`), jsonIndex, {

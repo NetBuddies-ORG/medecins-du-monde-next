@@ -16,6 +16,7 @@ import { setupDB } from '@/services/index-db/IndexDBConfig'
 import { IDBPDatabase } from 'idb'
 import { Index } from 'lunr'
 import { searchByKeyword } from '@/helpers/search'
+import { rankOrganismes } from '@/helpers/rankOrganismes'
 
 const getOrganisme = (slug: string) => {
   return db?.then((data) =>
@@ -66,103 +67,11 @@ async function initialize(language: string = 'fr') {
 async function search(params: SearchAccurateOrganizationParams): Promise<{
   organismes: Organisme[]
 }> {
-  const { subCategoriesIds = [], publicsId } = params
-
-  // --- CONFIGURATION DES POIDS ---
-  const WEIGHT_PUBLIC = 0.65
-  const WEIGHT_SUBCATEGORY = 0.35
-
-  const MIN_FINAL_SCORE = 0.35 // élimine le bruit
-  const RELATIVE_THRESHOLD = 0.4 // % du meilleur score
-  const MAX_RESULTS = 20 // optionnel
-
-  // --- RÉCUPÉRATION DES DONNÉES ---
-  const [organismesList] = await Promise.all([
-    db!.then(
-      (data) =>
-        data.getAll(organismesStoreName) as Promise<
-          (Organisme & { id: string })[]
-        >
-    ),
-  ])
-
-  const searchSubCatSet = new Set(subCategoriesIds)
-  const hasSubCategoryFilter = searchSubCatSet.size > 0
-  const hasPublicFilter = publicsId && publicsId !== '0'
-
-  const scoredResults: { organisme: Organisme; score: number }[] = []
-
-  // --- BOUCLE PRINCIPALE ---
-  for (const organisme of organismesList) {
-    const orgPublics = organisme.public_specifiques?.data || []
-    const orgSubCats = organisme.sous_categories?.data || []
-
-    // ---------- SCORE PUBLIC ----------
-    let publicScore = 0.5 // neutre par défaut
-
-    if (hasPublicFilter) {
-      const matchPublic = orgPublics.some((p) => p.id === publicsId)
-
-      if (!matchPublic) continue // exclusion stricte
-      publicScore = 1
-    }
-
-    // ---------- SCORE SOUS-CATÉGORIES ----------
-    let subCategoryScore = 0
-
-    if (hasSubCategoryFilter) {
-      const matchedSubCats = orgSubCats.filter((sub) =>
-        searchSubCatSet.has(sub.id)
-      )
-
-      if (matchedSubCats.length === 0) continue
-
-      const matchCount = matchedSubCats.length
-      const totalOrgSubCats = orgSubCats.length
-      const totalSearchSubCats = searchSubCatSet.size
-
-      const precision = totalOrgSubCats > 0 ? matchCount / totalOrgSubCats : 0
-
-      const recall =
-        totalSearchSubCats > 0 ? matchCount / totalSearchSubCats : 0
-
-      // F1-score
-      subCategoryScore =
-        precision + recall > 0
-          ? (2 * precision * recall) / (precision + recall)
-          : 0
-    }
-
-    // ---------- SCORE FINAL ----------
-    const finalScore =
-      WEIGHT_PUBLIC * publicScore + WEIGHT_SUBCATEGORY * subCategoryScore
-
-    if (finalScore < MIN_FINAL_SCORE) continue
-
-    // Rounded to 2 decimals: ties in the ranking and thresholds below rely on it
-    scoredResults.push({ organisme, score: Number(finalScore.toFixed(2)) })
-  }
-
-  // --- TRI ---
-  scoredResults.sort((a, b) => b.score - a.score)
-
-  // --- THRESHOLD RELATIF ---
-  if (scoredResults.length > 0) {
-    const bestScore = scoredResults[0].score
-    const cutoff = Math.max(bestScore * RELATIVE_THRESHOLD, MIN_FINAL_SCORE)
-
-    const filtered = scoredResults.filter((r) => r.score >= cutoff)
-
-    scoredResults.length = 0
-    scoredResults.push(...filtered)
-  }
-
-  // --- LIMITE FINALE ---
-  const finalResults = scoredResults.slice(0, MAX_RESULTS)
-
-  return {
-    organismes: finalResults.map((r) => r.organisme),
-  }
+  const organismes = await db!.then(
+    (data) =>
+      data.getAll(organismesStoreName) as Promise<(Organisme & { id: string })[]>
+  )
+  return { organismes: rankOrganismes(organismes, params) }
 }
 
 async function searchOrganismes(
