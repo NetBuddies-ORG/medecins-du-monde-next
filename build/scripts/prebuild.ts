@@ -7,16 +7,26 @@ import {fetchLocales} from "./fetch-data/fetchLocales";
 import { fetchServices } from "./fetch-data/fetchServices";
 import {buildSitemap} from "./utils/build-sitemap";
 
-console.info('Prebuild started...');
+async function prebuild() {
+    console.info('Prebuild started...');
 
-/* Write here procedures to execute before the build */
-Promise.all([
-    fetchLocales(),
-    fetchTranslations(),
-    fetchPublics(),
-    fetchCategories(),
-    fetchOrganismes(),
-    fetchServices(),
-    buildSitemap(),
-    buildIndexes()
-]).then(() => console.info('Prebuild done!'));
+    /* Fetch every dataset first: the indexes are built from the JSON files written here */
+    await Promise.all([
+        fetchLocales(),
+        fetchTranslations(),
+        fetchPublics(),
+        fetchCategories(),
+        fetchOrganismes(),
+        fetchServices(),
+        buildSitemap(),
+    ]);
+
+    await buildIndexes();
+
+    console.info('Prebuild done!');
+}
+
+prebuild().catch((error) => {
+    console.error('Prebuild failed', error);
+    process.exit(1);
+});

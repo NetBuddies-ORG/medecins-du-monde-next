@@ -7,7 +7,6 @@ export interface Configuration
     isPreview: boolean;
     isStatic: boolean;
     isExport: boolean;
-    umbracoCmsBaseUrl: string;
     domain: string;
     apiBaseUrl: string;
     jwt: {
@@ -16,6 +15,9 @@ export interface Configuration
         secret: string;
     },
 }
+
+// Public URL, not a secret. STRAPI_CMS_BASE_URL can override it (e.g. to target a local Strapi)
+export const strapiBaseUrl: string = process.env.STRAPI_CMS_BASE_URL ?? 'https://strapi.monboreseau.be';
 
 // TODO add other languages
 export const languages: readonly string[] = locales;
@@ -26,6 +28,5 @@ export function getConfiguration(): Configuration
     return {
         ...publicRuntimeConfig,
         ...serverRuntimeConfig,
-        umbracoCmsBaseUrl: process.env.STRAPI_CMS_BASE_URL,
     };
 }

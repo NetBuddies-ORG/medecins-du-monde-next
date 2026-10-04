@@ -1,4 +1,4 @@
-import { writeFile } from 'fs/promises'
+import { readFile, writeFile } from 'fs/promises'
 import { join } from 'path'
 import lunr from 'lunr'
 import { removeDiacriticsSpelling } from './removeDiacriticsSpelling'
@@ -8,13 +8,21 @@ require('lunr-languages/lunr.stemmer.support')(lunr)
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 require('lunr-languages/lunr.fr')(lunr)
 
+// Read from disk (not require) so the indexes use the files just written by the fetchers
+async function readStaticJson(file: string) {
+  return JSON.parse(
+    await readFile(join(__dirname, `../../static/${file}`), {
+      encoding: 'utf-8',
+    })
+  )
+}
+
 async function buildIndex() {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const organismes = require(`../../static/organismes.json`)
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const services = require(`../../static/services.json`)
-  // eslint-disable-next-line @typescript-eslint/no-require-import s
-  const categories = require(`../../static/categories.json`)
+  const [organismes, services, categories] = await Promise.all([
+    readStaticJson('organismes.json'),
+    readStaticJson('services.json'),
+    readStaticJson('categories.json'),
+  ])
 
   const index = lunr(function () {
     this.use(removeDiacriticsSpelling)

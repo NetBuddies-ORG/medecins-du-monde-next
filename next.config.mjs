@@ -1,6 +1,29 @@
 import {
     PHASE_PRODUCTION_BUILD,
 } from 'next/constants.js';
+import {createHash} from 'crypto';
+import {readFileSync} from 'fs';
+import {URL} from 'url';
+
+// Hashes of the prebuilt datasets, used by the client to refresh its IndexedDB cache.
+// Computed here (not in .env.js) because this file is loaded by `next build`, i.e. after the prebuild rewrote the JSON.
+function getRevision(file)
+{
+    return createHash('md5')
+        .update(readFileSync(new URL('./build/static/' + file, import.meta.url)))
+        .digest('hex');
+}
+
+function getRevisions()
+{
+    return {
+        NEXT_PUBLIC_REVISION_ORGANISME: getRevision('organismes.json'),
+        NEXT_PUBLIC_REVISION_PUBLICS: getRevision('publics.json'),
+        NEXT_PUBLIC_REVISION_CATEGORIES: getRevision('categories.json'),
+        NEXT_PUBLIC_REVISION_TRANSLATIONS: getRevision('translations.json'),
+        NEXT_PUBLIC_REVISION_SERVICES: getRevision('services.json'),
+    };
+}
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -50,6 +73,7 @@ function build(phase)
     const isExport = phase === PHASE_PRODUCTION_BUILD;
     const res = {
         ...config,
+        env: getRevisions(),
         headers: !isExport ? config.headers : undefined,
         output: isExport ? 'export' : undefined,
         distDir: isExport ? 'dist' : undefined,

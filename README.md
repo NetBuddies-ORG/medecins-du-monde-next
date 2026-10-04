@@ -1,34 +1,48 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# MonBo Réseau
 
-## Getting Started
+Annuaire en ligne des organismes d'aide sociale et de santé de la région de Mons
+([monboreseau.be](https://monboreseau.be)), réalisé pour Médecins du Monde Belgique.
 
-First, run the development server:
+Site Next.js exporté en statique, alimenté par un Strapi headless (GraphQL) et déployé sur Azure
+Static Web Apps. La recherche d'organismes (par mot-clé, public et thématique, avec carte)
+fonctionne entièrement dans le navigateur.
+
+## Démarrer
+
+Prérequis : Node 20 et Yarn, quelle que soit sa version : le dépôt embarque Yarn 4.15 (`.yarn/releases/`).
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+yarn install
+yarn start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Puis ouvrir http://localhost:3000 (redirige vers `/fr/`). Les pages sont lues en direct depuis
+`https://strapi.monboreseau.be` ; la recherche utilise les données figées de `build/static/`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Pour rafraîchir ces données depuis Strapi :
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```bash
+yarn build:pre
+```
 
-## Learn More
+## Scripts
 
-To learn more about Next.js, take a look at the following resources:
+| Commande | Effet |
+| --- | --- |
+| `yarn start` | Serveur de développement |
+| `yarn build:pre` | Télécharge les données Strapi, construit les index de recherche et les sitemaps |
+| `yarn build:static` | Prebuild + export statique dans `dist/` |
+| `yarn graphql` | Régénère le SDK GraphQL typé (`src/services/GraphQL.ts`) |
+| `yarn tsc-check` | Vérification TypeScript |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Documentation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- [AGENTS.md](AGENTS.md) — conventions, recettes et pièges (pour humains comme pour agents IA)
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — build, routage, données, algorithme de recherche, déploiement
 
-## Deploy on Vercel
+## Déploiement
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `dev` → préproduction, `main` → production (GitHub Actions + Azure Static Web Apps).
+- Après une modification de contenu dans Strapi, relancer le workflow **Strapi - Manual deploy**.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Conçu par Alexian Moins et Lucas Lopez.

@@ -1,14 +1,12 @@
 import { getFooter } from '@/context/server'
 import { IconComponent } from '@/features/common/react-icons/IconComponent'
+import {FaArrowUpRightFromSquare} from "react-icons/fa6";
 
 export async function CustomFooter() {
   const { footer } = getFooter()
   return (
     <>
       <div className="footer">
-        {/*<img src='./styles/assets/images/svg-shape/blob-1.svg' className=' blob blob-1' />*/}
-        {/*    <img src='./styles/assets/images/svg-shape/blob-2.svg'  className='blob blob-2' />*/}
-        {/*        <img src='./styles/assets/images/svg-shape/blob-3.svg'  className='blob blob-3' />*/}
         <div className="content">
           {footer.data.attributes.Services.length > 0 && (
             <div className="services">
@@ -87,11 +85,10 @@ export async function CustomFooter() {
           </div>
         </div>
         <footer>
-          <hr />© 2025 MonBo Réseau.
+          <hr />© {new Date().getFullYear()} MonBo Réseau.
           <div>
             <small style={{ opacity: 0.7, fontSize: '.75rem' }}>
-              Conçu par Alexian Moins et Lucas Lopez.
-              {/*Conçu par <a target="_blank" href="https://alexianmoins.be" style={{ color: 'white'}}>Alexian Moins</a> <FaArrowUpRightFromSquare style={{fontSize: '.75rem'}} /> et <a target="_blank" href="https://alexianmoins.be" style={{ color: 'white'}}>Lucas Lopez</a> <FaArrowUpRightFromSquare style={{fontSize: '.75rem'}} />.*/}
+              Conçu par <a target="_blank" href="https://alexianmoins.be" style={{ color: 'white'}}>Alexian Moins et Lucas Lopez</a> <FaArrowUpRightFromSquare style={{fontSize: '.75rem'}} />.
             </small>
           </div>
         </footer>

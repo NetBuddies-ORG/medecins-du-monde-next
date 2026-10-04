@@ -17,12 +17,10 @@ const fixDates = /\.\d+Z$/
 
 export async function buildSitemap() {
   console.log('Build sitemap...')
-  for (const language of languages) {
-    buildSitemapByCulture(language)
-  }
+  await Promise.all(languages.map(buildSitemapByCulture))
 }
 
-async function buildSitemapByCulture(language) {
+async function buildSitemapByCulture(language: string) {
   /* Fetch all the umbraco's pages by culture */
   // @ts-expect-error generated type
   const pages = await client.getPages({ culture: language })
@@ -57,7 +55,7 @@ async function buildSitemapByCulture(language) {
     organismesSitemap +
     '</urlset>'
 
-  writeFile(
+  await writeFile(
     join(__dirname, `../../../public/sitemap-${language}.xml`),
     sitemap,
     { encoding: 'utf8' }

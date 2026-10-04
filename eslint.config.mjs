@@ -15,7 +15,6 @@ export default tseslint.config(
       'src/services/GraphQL.ts',
       'dist/',
       '.next/',
-      '.env.js'
     ],
   },
 );
